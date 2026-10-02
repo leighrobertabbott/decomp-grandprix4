@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x00412708 computes (N*1000 * X) / (X+Y) with N=word/dword 0x00603854, X=0x0062d238, Y=0x0062d23c using a 64-bit imul/idiv. N in 0..0xffff, X in 1..0xffff and Y in 0..0xffff make the divisor nonzero and the quotient at most N*1000 < 2^27, so idiv never faults.",
+  "globals": [
+    {"addr": "0x00603854", "type": "u32", "lo": 0, "hi": 65535},
+    {"addr": "0x0062d238", "type": "i32", "lo": 1, "hi": 65535},
+    {"addr": "0x0062d23c", "type": "i32", "lo": 0, "hi": 65535}
+  ]
+}

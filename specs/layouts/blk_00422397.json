@@ -1,0 +1,5 @@
+{
+  "size": 1504,
+  "_evidence": "0x00422397 uses [0x006097b0] as a block holding an int32 count at +0x18 (limit 0x48; below the limit it is incremented and a 0x14-byte entry at +0x38+count*0x14 is written). Count 0..0x4b covers both sides of the limit; the block is large enough for the last entry (0x38+0x47*0x14+0x14 = 0x5d0).",
+  "fields": [{"off": 24, "type": "i32", "lo": 0, "hi": 75}]
+}

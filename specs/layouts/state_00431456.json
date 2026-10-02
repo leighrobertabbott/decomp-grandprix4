@@ -1,0 +1,14 @@
+{
+  "_evidence": "0x00431456 walks the 0xffff-terminated u16 list at 0x0066fe3c (90 words before the records). Each word is a byte offset (record*0x41c, 0..21) into the record array at 0x0066fef0. Per record: byte +0x203 (and/or on bit 0), word +0xea (zero test), byte +0xfe (bit 6), pointer +0x1c to a block (byte +0x51 bits 0x20 and 8), words +0x90 and +0x94 (difference compared signed with word 0x00603ba8). Addresses: +0x1c=0x0066ff0c, +0x90=0x0066ff80, +0x94=0x0066ff84, +0xea=0x0066ffda, +0xfe=0x0066ffee, +0x203=0x006700f3.",
+  "globals": [
+    {"addr": "0x0066fe3c", "type": "u16", "count": 90, "stride": 2,
+     "values": ["0xffff", "0xffff", "0xffff", "0xffff", 0, "0x41c", "0x838", "0xc54", "0x1070", "0x148c", "0x18a8", "0x1cc4", "0x20e0", "0x24fc", "0x2918", "0x2d34", "0x3150", "0x356c", "0x3988", "0x3da4", "0x41c0", "0x45dc", "0x49f8", "0x4e14", "0x5230", "0x564c", "0x5a68", "0x5e84", "0x62a0", "0x66bc", "0x6ad8", "0x6ef4"]},
+    {"addr": "0x0066ff0c", "type": "ptr", "size": 88, "fill": "layout=blk_00431456", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ff80", "type": "i16", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ff84", "type": "i16", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ffda", "type": "u16", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ffee", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x006700f3", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x00603ba8", "type": "i16"}
+  ]
+}

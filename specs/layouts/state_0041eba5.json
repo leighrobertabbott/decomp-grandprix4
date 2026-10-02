@@ -1,0 +1,12 @@
+{
+  "_evidence": "0x0041eba5 computes (A-B)*(D-C) / max(A,0x10) with a 64-bit imul/idiv twice (A=0x00627858 with B=0x0062785c, D=0x00637ff4 with C=0x00637ff0; then 0x00627860 with 0x0062785c, 0x00637ff8, 0x00637ffc), adding each quotient to a 0x00637ff0/0x00637ffc slot. The divisor is at least 0x10, so inputs in -32768..32767 bound the product by 2^32 and the quotient by 2^28: idiv never faults.",
+  "globals": [
+    {"addr": "0x00627858", "type": "i32", "lo": -32768, "hi": 32767},
+    {"addr": "0x0062785c", "type": "i32", "lo": -32768, "hi": 32767},
+    {"addr": "0x00627860", "type": "i32", "lo": -32768, "hi": 32767},
+    {"addr": "0x00637ff0", "type": "i32", "lo": -32768, "hi": 32767},
+    {"addr": "0x00637ff4", "type": "i32", "lo": -32768, "hi": 32767},
+    {"addr": "0x00637ff8", "type": "i32", "lo": -32768, "hi": 32767},
+    {"addr": "0x00637ffc", "type": "i32", "lo": -32768, "hi": 32767}
+  ]
+}

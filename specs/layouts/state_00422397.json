@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x00422397: pointer global 0x006097b0 -> entry block (see blk_00422397); pointer global 0x0062a058 -> table of 16-byte records indexed by the incoming eax (0..63), three dwords of the record are shifted left by 5 and stored; dword 0x006080c8 is copied into the entry.",
+  "globals": [
+    {"addr": "0x006097b0", "type": "ptr", "size": 1504, "fill": "layout=blk_00422397"},
+    {"addr": "0x0062a058", "type": "ptr", "size": 1024, "fill": "bytes"},
+    {"addr": "0x006080c8", "type": "u32"}
+  ]
+}

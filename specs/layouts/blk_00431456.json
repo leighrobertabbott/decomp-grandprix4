@@ -1,0 +1,5 @@
+{
+  "size": 88,
+  "_evidence": "0x00431456 tests byte [block+0x51] against 0x20 and 0x08, where the block is the pointer stored at record+0x1c. All bit patterns are valid.",
+  "fields": [{"off": 81, "type": "u8"}]
+}
