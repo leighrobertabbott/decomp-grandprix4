@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x00432dcf: pointer global 0x0062ff64 -> block whose dword +0x10 is a bit mask (see ptr_00432dcf). For each of 22 records at 0x0066fef0 (stride 0x41c) it takes byte +0x7c & 0x3f, minus 1, clamped to 0x15, as the BT index and ORs 8 into record byte +0x25f. All byte values are valid (BT register form takes the index modulo 32). Bytes +0x7c are 0x0066ff6c + i*0x41c.",
+  "globals": [
+    {"addr": "0x0062ff64", "type": "ptr", "size": 24, "fill": "layout=ptr_00432dcf"},
+    {"addr": "0x0066ff6c", "type": "u8", "count": 22, "stride": "0x41c"}
+  ]
+}

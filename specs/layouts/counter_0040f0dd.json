@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x0040f0dd clamps the masked root byte index to 21, reads byte table 0x0066d936, clamps that subindex to 43, and increments exactly one byte in the 22-by-44 counter table at 0x0066d962. All u8 patterns are valid.",
+  "globals": [
+    {"addr": "0x0066d936", "type": "u8", "count": 22},
+    {"addr": "0x0066d962", "type": "u8", "count": 968}
+  ]
+}

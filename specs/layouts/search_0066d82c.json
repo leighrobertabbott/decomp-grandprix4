@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x00409c13 reads sought byte 0x0066d87e and compares record bytes at 0x0066fef0+0x7c+i*0x41c for i=0..21; writes pointer global 0x0066d82c. Range 0..22 exercises zero, matching records and exhausted search without assigning semantic names.",
+  "globals": [
+    {"addr": "0x0066d87e", "type": "u8", "lo": 0, "hi": 22},
+    {"addr": "0x0066ff6c", "type": "u8", "lo": 0, "hi": 22, "count": 22, "stride": "0x41c"}
+  ]
+}

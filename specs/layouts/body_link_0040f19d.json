@@ -1,0 +1,9 @@
+{
+  "size": 162,
+  "_evidence": "0x0040f19d reads signed words at root+0x18/+0x9a and a pointer at root+0x1c to a signed word. The pointer is loaded on all paths and dereferenced on the >=94 path. All word bit patterns are valid.",
+  "fields": [
+    {"off": 24, "type": "i16", "lo": -32768, "hi": 32767},
+    {"off": 28, "type": "ptr", "size": 2, "fill": "layout=word_0040f19d"},
+    {"off": 154, "type": "i16", "lo": -32768, "hi": 32767}
+  ]
+}

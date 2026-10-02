@@ -1,0 +1,5 @@
+{
+  "size": 24,
+  "_evidence": "0x00432dcf reads the dword at [[0x0062ff64]+0x10] as a 32-bit mask and tests bits (byte-1) with BT; zero short-circuits. Only that dword is read.",
+  "fields": [{"off": 16, "type": "u32"}]
+}

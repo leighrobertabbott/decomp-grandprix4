@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x00404e9c sums four dwords at 0x00603104..10 with 32-bit wrap, branches on the signed result, and uses signed dword multiplier 0x00603130 with output 0x00603134. All scalar bit patterns are valid.",
+  "globals": [
+    {"addr": "0x00603104", "type": "i32", "count": 4, "stride": 4},
+    {"addr": "0x00603130", "type": "i32", "count": 2, "stride": 4}
+  ]
+}

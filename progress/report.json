@@ -1,0 +1,25 @@
+{
+  "accepted_bytes": 561,
+  "active_goal": "core",
+  "by_state": {
+    "accepted": 33,
+    "excluded": 2310,
+    "todo": 10495
+  },
+  "by_track": {
+    "asm": {
+      "accepted": 11,
+      "todo": 3116
+    },
+    "c": {
+      "accepted": 22,
+      "todo": 7379
+    }
+  },
+  "fpucw": "0x37f",
+  "functions": 12838,
+  "game_bytes": 1731034,
+  "name_conflicts": 0,
+  "names": 2,
+  "progress_pct": 0.032
+}

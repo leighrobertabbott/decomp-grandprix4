@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x0042ec8d multiplies a sign-extended 16-bit record difference by dword 0x00603bcc, shifts the full product by 14, and compares low signed 16 bits against the word difference 0x00603e70 minus 0x00603ba0. All input bit patterns are valid.",
+  "globals": [
+    {"addr": "0x00603bcc", "type": "i32"},
+    {"addr": "0x00603e70", "type": "i16"},
+    {"addr": "0x00603ba0", "type": "i16"}
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x004125ce computes ceil(low16(source)/128) and divides zero-extended source by that positive denominator. The bounded test domain 1..65535 guarantees a nonzero denominator and no IDIV quotient overflow; it is not a recovered semantic range. Output dwords are varied before overwrite.",
+  "globals": [
+    {"addr": "0x00603854", "type": "u32", "lo": 1, "hi": 65535},
+    {"addr": "0x006228ac", "type": "u32"},
+    {"addr": "0x00608164", "type": "u32"}
+  ]
+}

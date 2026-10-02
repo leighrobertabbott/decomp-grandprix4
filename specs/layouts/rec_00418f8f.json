@@ -1,0 +1,5 @@
+{
+  "size": 144,
+  "_evidence": "0x00418f8f reads byte [[0x00679d30]+0x7d] as the start index into the word table at 0x0066fe3c (index+2, step 2). Values 0..40 stay inside the 90-word table.",
+  "fields": [{"off": 125, "type": "u8", "lo": 0, "hi": 40}]
+}

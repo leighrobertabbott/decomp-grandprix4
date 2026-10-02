@@ -1,0 +1,8 @@
+{
+  "size": 1054,
+  "_evidence": "0x004030c6 reads word [esi+0x66], the pointer at [esi+0x1b8] (words +0x18 and +0x178 of that block) and writes word [esi+0x416]. All bit patterns are valid.",
+  "fields": [
+    {"off": 102, "type": "i16"},
+    {"off": 440, "type": "ptr", "size": 380, "fill": "bytes"}
+  ]
+}

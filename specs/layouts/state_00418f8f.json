@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x00418f8f: pointer global 0x00679d30 -> block (byte +0x7d, see rec_00418f8f) indexes the u16 table at 0x0066fe3c (90 words up to the records at 0x0066fef0): 0xffff terminates, otherwise the word is a byte offset (multiple of 0x41c, record 0..21) into the record array at 0x0066fef0, whose byte +0x7a bit 7 and +0x8d bit 1 reject the entry. Bytes: +0x7a at 0x0066ff6a, +0x8d at 0x0066ff7d.",
+  "globals": [
+    {"addr": "0x00679d30", "type": "ptr", "size": 144, "fill": "layout=rec_00418f8f"},
+    {"addr": "0x0066fe3c", "type": "u16", "count": 90, "stride": 2,
+     "values": ["0xffff", "0xffff", 0, "0x41c", "0x838", "0xc54", "0x1070", "0x148c", "0x18a8", "0x1cc4", "0x20e0", "0x24fc", "0x2918", "0x2d34", "0x3150", "0x356c", "0x3988", "0x3da4", "0x41c0", "0x45dc", "0x49f8", "0x4e14", "0x5230", "0x564c", "0x5a68", "0x5e84", "0x62a0", "0x66bc", "0x6ad8", "0x6ef4"]},
+    {"addr": "0x0066ff6a", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ff7d", "type": "u8", "count": 22, "stride": "0x41c"}
+  ]
+}

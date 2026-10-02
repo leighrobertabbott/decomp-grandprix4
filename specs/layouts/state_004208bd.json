@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x004208bd divides two signed wrapping dword differences by 0x006228bc. Full numerator bit patterns and positive divisor 1..INT_MAX avoid zero and INT_MIN/-1 traps. This is an explicit division-valid test domain; negative-divisor cases remain outside it.",
+  "globals": [
+    {"addr": "0x0063839c", "type": "i32", "count": 2, "stride": 4},
+    {"addr": "0x0063899c", "type": "i32", "count": 2, "stride": 4},
+    {"addr": "0x006228bc", "type": "i32", "lo": 1, "hi": 2147483647},
+    {"addr": "0x0062244c", "type": "u32", "count": 2, "stride": 4}
+  ]
+}

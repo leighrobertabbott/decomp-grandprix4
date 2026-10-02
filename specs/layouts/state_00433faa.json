@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x00433faa tests byte 0x00852d8c and copies two opaque source dwords or two fixed addresses to the output dwords. The opaque values are never dereferenced by this function.",
+  "globals": [
+    {"addr": "0x00852d8c", "type": "u8"},
+    {"addr": "0x0062ff5c", "type": "u32", "count": 4, "stride": 4}
+  ]
+}

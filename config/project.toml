@@ -1,0 +1,40 @@
+# GP4 reverse-engineering pipeline - the single settings file (read by gp4re/config.py).
+# Paths are relative to the repository root.
+
+[game]
+exe = "Grand-Prix-4/Grand Prix 4/GP4.exe"
+# Every address in this project assumes this exact build (the one GP4PP targets).
+# `gp4re analyze` refuses a different GP4.exe unless given --allow-other-exe.
+sha256 = "2046f3902246b2aff48dca2e4f7e8c049d410166e60a5dc20fe3750f4a926b12"
+
+[oracle]
+# x87 control word the emulator runs with. Found statically (no game run needed):
+# the asm core's FPU setup routine 0x527453 does `fninit` (-> 0x037F: 64-bit internal
+# precision, round-nearest) and saves it as its "normal" mode; core routines such as
+# the table lookup 0x411891 switch to a round-down mode (0x077F) and back to it.
+# `gp4re fpucw <value>` overrides this in the shared database if in-game logs disagree.
+fpu_cw = 0x037F
+# GP4's own initialisers, run once in the emulator before any test so the globals they
+# set hold their real values (0x527453 fills the two control-word variables 0x6f29a4/6).
+init_calls = [0x527453]
+cases = 200                  # phase 1: random cases from the spec
+max_cases = 1500             # phase 2: coverage-guided cases (budget)
+time_budget_s = 25           # phase 2 wall-clock budget per function
+max_insns = 20000000         # per run; the original hitting it makes the case invalid
+min_block_coverage = 0.90    # share of the original's basic blocks the test set must execute
+min_branch_coverage = 0.70   # share of conditional-branch directions it must take
+ni_cases = 6                 # cases used for the input-completeness (non-interference) check
+lazy_pages = 256             # max on-demand memory pages per run (pointer chasing)
+compare_cases = 120          # phase-2 cases (besides coverage-adding ones) also run on the reconstruction
+
+[queue]
+lease_hours = 2
+default_cap = 8
+
+[ghidra]
+# Optional decompiler context for workers (python -m gp4re ghidra analyze / export).
+dir = "toolchain/ghidra_12.1.4_PUBLIC"
+
+[compiler.msvc6]
+# Optional byte-matching track (T3): drop your own Visual C++ 6 toolchain here.
+dir = "toolchain/msvc6"

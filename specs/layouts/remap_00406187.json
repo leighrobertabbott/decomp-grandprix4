@@ -1,0 +1,11 @@
+{
+  "_evidence": "0x00406187 and 0x004061ba compare EDI with three dword selectors each, substituting other scalar dwords. Ranges 0..3 aligned with EDI cover equality and fallthrough paths; they are test-domain values rather than a recovered pointer layout.",
+  "globals": [
+    {"addr": "0x00866ecc", "type": "u32", "lo": 0, "hi": 3},
+    {"addr": "0x00866ef8", "type": "u32", "lo": 0, "hi": 3},
+    {"addr": "0x00866f00", "type": "u32", "lo": 0, "hi": 3},
+    {"addr": "0x00866f04", "type": "u32", "lo": 0, "hi": 3},
+    {"addr": "0x00891500", "type": "u32", "lo": 0, "hi": 3},
+    {"addr": "0x00891504", "type": "u32", "lo": 0, "hi": 3}
+  ]
+}

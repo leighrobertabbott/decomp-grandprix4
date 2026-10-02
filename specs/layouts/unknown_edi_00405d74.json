@@ -1,0 +1,5 @@
+{
+  "_evidence": "0x00405d74 first reads dword [EDI+0x44] and branches on zero. All other fields in this 0x4c-byte buffer are unobserved. Generic u32 sampling supplies zero and nonzero values.",
+  "size": 76,
+  "fields": [{"off": 68, "type": "u32"}]
+}

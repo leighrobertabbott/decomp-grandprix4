@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x0041de65 arithmetic-shifts signed globals 0x00623e30/38 by 17, masks with 0x00627b90, shifts the second masked value by CL from 0x00627b8c, ORs the index, then sign-extends a byte from 0x00627bbc. Test mask 0..3 and shift 0..4 bound index to 0..51; 64 table bytes are varied. These are bounded emulator input domains, not recovered table dimensions.",
+  "globals": [
+    {"addr": "0x00623e30", "type": "i32"},
+    {"addr": "0x00623e38", "type": "i32"},
+    {"addr": "0x00627b90", "type": "u32", "lo": 0, "hi": 3},
+    {"addr": "0x00627b8c", "type": "u32", "lo": 0, "hi": 4},
+    {"addr": "0x00627bbc", "type": "i8", "lo": -128, "hi": 127, "count": 64, "stride": 1}
+  ]
+}

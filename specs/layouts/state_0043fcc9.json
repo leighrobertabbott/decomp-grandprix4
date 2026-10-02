@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x0043fcc9 starts two records below [0x00866ecc] in the 0x160-byte record array at 0x008943a0 and walks down while edi >= 0x008943a0: byte +0xb6 (zero/nonzero), byte +0x51 (bit 7) and a store to byte +0x134. [0x00866ecc] = base + k*0x160, k in 2..22, keeps every access inside records 0..21. Bytes: +0x51 at 0x008943f1, +0xb6 at 0x00894456, +0x134 at 0x008944d4.",
+  "globals": [
+    {"addr": "0x00866ecc", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 2, "hi": 22}},
+    {"addr": "0x008943f1", "type": "u8", "count": 22, "stride": "0x160"},
+    {"addr": "0x00894456", "type": "u8", "count": 22, "stride": "0x160"},
+    {"addr": "0x008944d4", "type": "u8", "count": 22, "stride": "0x160"}
+  ]
+}

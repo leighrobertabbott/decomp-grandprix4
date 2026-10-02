@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x004322a6 compares the scalar dword at record+0x1c with three unsigned threshold dwords. No compared value is dereferenced. All u32 bit patterns are valid and varied.",
+  "globals": [
+    {"addr": "0x00891500", "type": "u32"},
+    {"addr": "0x00868520", "type": "u32", "count": 2, "stride": 4}
+  ]
+}

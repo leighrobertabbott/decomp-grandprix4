@@ -1,0 +1,46 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m gp4re:*)",
+      "Bash(GP4RE_AGENT=* python -m gp4re:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Edit(build/scratch/**)",
+      "Write(build/scratch/**)",
+      "Edit(include/**)",
+      "Write(include/**)",
+      "Edit(specs/**)",
+      "Write(specs/**)",
+      "Edit(prompts/**)",
+      "Edit(runtime/GP4/gp4hook.ini)"
+    ],
+    "deny": [
+      "Edit(Grand-Prix-4/**)",
+      "Write(Grand-Prix-4/**)",
+      "Edit(input/**)",
+      "Write(input/**)",
+      "Bash(git push:*)",
+      "Bash(git reset:*)",
+      "Bash(git clean:*)",
+      "Bash(rm -rf:*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/tools/hooks/compact_reminder.py\"",
+            "timeout": 20
+          }
+        ]
+      }
+    ]
+  }
+}

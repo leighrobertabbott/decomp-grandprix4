@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x00404f33: pointer global 0x00602d88 may be null; otherwise words at edi+0x162 and edi-0x15e are subtracted, so the pointer addresses the middle of a 0x2c4-byte buffer (0x15e before, 0x166 after). The result is scaled by dwords 0x006f2bec and 0x006030cc (imul, shrd). All word and dword bit patterns are valid.",
+  "globals": [
+    {"addr": "0x00602d88", "type": "ptr", "size": 708, "fill": "bytes", "bias": "0x15e", "nullable": true},
+    {"addr": "0x006f2bec", "type": "i32"},
+    {"addr": "0x006030cc", "type": "i32"}
+  ]
+}

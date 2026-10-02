@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x0040f898 compares pointer globals 0x00679d30 and 0x00679d2c for equality (alias gives both outcomes), then follows 0x00679d30 -> root (+0x1c) -> child (byte +0x51 bit 7, word +0xa6). The word minus dword 0x0062ac50 is compared signed against 0x20; 0x0062fbfc is copied to 0x0062fbf8 on one path.",
+  "globals": [
+    {"addr": "0x00679d30", "type": "ptr", "size": 32, "fill": "layout=root_0040f898"},
+    {"addr": "0x00679d2c", "type": "u32", "alias": "0x00679d30"},
+    {"addr": "0x0062ac50", "type": "i32"},
+    {"addr": "0x0062fbfc", "type": "i32"}
+  ]
+}

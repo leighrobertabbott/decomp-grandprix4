@@ -1,0 +1,5 @@
+{
+  "size": 300,
+  "_evidence": "0x00408186 loads dword [esi+0x124], tests it for zero and returns the nonzero test in CF. Generic u32 sampling supplies zero and nonzero values; the other bytes are not read.",
+  "fields": [{"off": 292, "type": "u32"}]
+}

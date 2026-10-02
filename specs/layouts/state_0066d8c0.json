@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x00401462 reads state 0x0066d8c0 as one dword/two overlapping words and byte 0x0066d8bf. Fields are non-overlapping; this supplies full generated scalar bit patterns without overwriting adjacent state.",
+  "globals": [
+    {"addr": "0x0066d8c0", "type": "u32"},
+    {"addr": "0x0066d8bf", "type": "u8"}
+  ]
+}

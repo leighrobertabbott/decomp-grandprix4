@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x0041a764 writes exactly the byte at 0x00623ada to zero. All original u8 values are valid.",
+  "globals": [
+    {"addr": "0x00623ada", "type": "u8"}
+  ]
+}

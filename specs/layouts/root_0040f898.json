@@ -1,0 +1,5 @@
+{
+  "size": 32,
+  "_evidence": "0x0040f898 loads the pointer at [0x00679d30]+0x1c; the root is read only through that field.",
+  "fields": [{"off": 28, "type": "ptr", "size": 176, "fill": "layout=child_0040f898"}]
+}

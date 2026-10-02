@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x00410901 and 0x00410934 clamp EDX indices outside 0..16 to zero before reading one byte from 0x0062eade. The latter replaces a zero divisor with one. All 17 u8 entries can vary safely.",
+  "globals": [
+    {"addr": "0x0062eade", "type": "u8", "count": 17}
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x0040e949 tests dword 0x0066d824 for zero and compares a record byte as signed against byte 0x007c2e96. Dword values 0 and 1 exercise both boolean paths; all signed byte values are valid.",
+  "globals": [
+    {"addr": "0x0066d824", "type": "u32", "lo": 0, "hi": 1},
+    {"addr": "0x007c2e96", "type": "i8"}
+  ]
+}

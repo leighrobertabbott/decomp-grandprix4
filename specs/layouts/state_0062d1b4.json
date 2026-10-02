@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x004014ba is the instruction-equivalent twin of accepted 0x00401462, reading state 0x0062d1b4 as one dword/two overlapping words and byte 0x0062d1b3. Values are scalar bit-pattern inputs; fields do not overlap.",
+  "globals": [
+    {"addr": "0x0062d1b4", "type": "u32"},
+    {"addr": "0x0062d1b3", "type": "u8"}
+  ]
+}

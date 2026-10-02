@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x00422833 clears one byte at 0x0063bcfc+EAX. Caller 0x00424e7f supplies ECX from a 64-iteration loop, so EAX 0..63 is evidenced. Vary all64 input bytes for observable writes.",
+  "globals": [
+    {"addr": "0x0063bcfc", "type": "u8", "count": 64}
+  ]
+}

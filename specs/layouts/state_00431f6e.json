@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x00431f6e: ebx = [eax*4 + 0x0062a970] is one of four pointers (eax in 0..3) to {i32 offset, u32 count} entries (see entry_00431f6e).",
+  "globals": [
+    {"addr": "0x0062a970", "type": "ptr", "size": 8, "count": 4, "stride": 4, "fill": "layout=entry_00431f6e"}
+  ]
+}

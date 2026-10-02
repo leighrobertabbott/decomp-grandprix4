@@ -1,0 +1,7 @@
+{
+  "size": 2,
+  "_evidence": "Nested word dereferenced through root+0x1c by 0x0040f19d.",
+  "fields": [
+    {"off": 0, "type": "i16", "lo": -32768, "hi": 32767}
+  ]
+}

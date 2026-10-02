@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x004233ab reads divisor 0x00609840 into EBP, returns without division if zero, otherwise signed-divides three numerators at 0x00609834/38/3c and stores quotients at 0x00609844/48/4c. Signed 16-bit-magnitude inputs avoid the INT_MIN/-1 overflow and include zero and both signs. Output fields are randomized too, exposing stores that are omitted on the zero/nonzero paths.",
+  "globals": [
+    {"addr": "0x00609834", "type": "i32", "lo": -32767, "hi": 32767, "count": 7, "stride": 4}
+  ]
+}

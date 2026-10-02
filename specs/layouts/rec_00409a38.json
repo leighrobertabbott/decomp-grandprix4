@@ -1,0 +1,5 @@
+{
+  "size": 242,
+  "_evidence": "0x00409a38 compares word [esi+0xea] with 0x20 and returns equality in CF. Generic u16 sampling includes the compared constant.",
+  "fields": [{"off": 234, "type": "u16"}]
+}

@@ -1,0 +1,12 @@
+{
+  "_evidence": "0x0041d9b6 calls 0x0041de65, retaining its bounded 64-byte table input domain, then uses signed scalar dwords 0x00627bb8, 0x0062d284, and 0x0062d288 in wrapping fixed-point products. No added scalar is dereferenced or used as an index/divisor.",
+  "globals": [
+    {"addr": "0x00623e30", "type": "i32"},
+    {"addr": "0x00623e38", "type": "i32"},
+    {"addr": "0x00627b90", "type": "u32", "lo": 0, "hi": 3},
+    {"addr": "0x00627b8c", "type": "u32", "lo": 0, "hi": 4},
+    {"addr": "0x00627bbc", "type": "i8", "lo": -128, "hi": 127, "count": 64},
+    {"addr": "0x00627bb8", "type": "i32"},
+    {"addr": "0x0062d284", "type": "i32", "count": 2, "stride": 4}
+  ]
+}

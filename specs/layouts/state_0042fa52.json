@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x0042fa52 scans two parallel dword tables from byte offset [0x006077dc]-4 downward in steps of 4: a value table at 0x006077e4 (zero entries skipped) and a signed key table at 0x00607860 (smallest key wins, ties keep the earlier). The index is bounded to 0..124 so offsets stay inside the 31-entry tables (0x006077e4..0x00607860 and 0x00607860..0x006078dc). Few distinct entry values give zeros, ties, negatives.",
+  "globals": [
+    {"addr": "0x006077dc", "type": "u32", "lo": 0, "hi": 124},
+    {"addr": "0x006077e4", "type": "u32", "count": 31, "values": [0, 0, 1, 2, "0x7fffffff", "0xffffffff"]},
+    {"addr": "0x00607860", "type": "u32", "count": 31, "values": [0, 1, 2, 3, "0x7fffffff", "0x80000000", "0xffffffff"]}
+  ]
+}

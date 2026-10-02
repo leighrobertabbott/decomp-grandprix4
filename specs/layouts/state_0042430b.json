@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x0042430b copies twelve dwords from 0x00607f28..0x00607f54 into the block that pointer global 0x00609744 addresses (offsets 0..0x2c). The destination is a writable 0x30-byte buffer; the source dwords are plain data.",
+  "globals": [
+    {"addr": "0x00609744", "type": "ptr", "size": 48, "fill": "zero"},
+    {"addr": "0x00607f28", "type": "u32", "count": 12, "stride": 4}
+  ]
+}

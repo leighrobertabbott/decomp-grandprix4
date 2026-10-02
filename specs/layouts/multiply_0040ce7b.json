@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x0040ce7b multiplies an integer record field by f64 0x006f2a04 in x87, then another bounded positive integer factor, and FISTPs to output dword 0x006f2bf4. Small finite coefficient values exercise nonsaturating conversion; this is an explicit test domain, not a recovered coefficient range.",
+  "globals": [
+    {"addr": "0x006f2a04", "type": "f64", "lo": -0.00000001, "hi": 0.00000001},
+    {"addr": "0x006f2bf4", "type": "i32"}
+  ]
+}

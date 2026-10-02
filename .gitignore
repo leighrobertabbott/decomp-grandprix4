@@ -1,0 +1,28 @@
+# --- Original game: never committed, never modified -------------------------
+/Grand-Prix-4/
+/input/
+
+# --- Generated from the original binary (contains original bytes / derived dumps)
+/analysis/
+/state/
+/runtime/
+/build/
+/logs/
+
+# --- Python / tooling noise
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+
+# --- Native build outputs
+hook/out/
+*.obj
+*.pdb
+*.ilk
+*.exp
+*.lib
+*.map
+
+# --- Third-party tools downloaded locally (Ghidra, optional VC6)
+/toolchain/

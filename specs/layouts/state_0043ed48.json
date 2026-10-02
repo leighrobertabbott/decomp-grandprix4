@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x0043ed48 compares four bytes 0x00627b61..64 against zero. Full u8 patterns retain negative-byte flag cases; branch-guided generation biases the zero discriminator when needed for coverage.",
+  "globals": [
+    {"addr": "0x00627b61", "type": "u8", "count": 4}
+  ]
+}

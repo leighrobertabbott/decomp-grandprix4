@@ -1,0 +1,8 @@
+{
+  "size": 176,
+  "_evidence": "0x0040f898 reads byte [edi+0x51] (tests bit 7) and word [edi+0xa6] of the record that [esi+0x1c] points to. All bit patterns are valid.",
+  "fields": [
+    {"off": 81, "type": "u8"},
+    {"off": 166, "type": "u16"}
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x0040c490 reads signed dword components 0x0063b820/24 and multiplier 0x0062ac74, then adds low fixed-point product dwords to 0x0063b828/2c. These are scalar bit patterns, with no pointer/index/divisor restrictions.",
+  "globals": [
+    {"addr": "0x0062ac74", "type": "i32"},
+    {"addr": "0x0063b820", "type": "i32", "count": 4, "stride": 4}
+  ]
+}

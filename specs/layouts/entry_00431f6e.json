@@ -1,0 +1,8 @@
+{
+  "size": 8,
+  "_evidence": "0x00431f6e adds dword [ebx] (a byte offset) to edx and loops [ebx+4] times over 0x160-byte records. Offset 0..0x40 and count 0..3 keep every record access inside a 0x600-byte edx buffer.",
+  "fields": [
+    {"off": 0, "type": "i32", "lo": 0, "hi": 64},
+    {"off": 4, "type": "u32", "lo": 0, "hi": 3}
+  ]
+}

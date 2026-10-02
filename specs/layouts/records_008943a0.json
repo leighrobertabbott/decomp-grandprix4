@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x0040ad35 and 0x0040ad7c walk the 0x160-byte record array at 0x008943a0 testing dword +0x2c against 0x10 or 0x20 (chosen by the sign of byte 0x00868582). 0x0040ad35 starts at [0x00866ecc]-0x580 (4 records back) and stops at [0x00866f00]; 0x0040ad7c starts at record 4 and stops at [0x00866f04]. The end pointers are record-aligned addresses inside the array, so each is base + k*0x160. 26 records are varied.",
+  "globals": [
+    {"addr": "0x00868582", "type": "u8"},
+    {"addr": "0x008943cc", "type": "u32", "count": 26, "stride": "0x160"},
+    {"addr": "0x00866ecc", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 4, "hi": 26}},
+    {"addr": "0x00866f00", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 24}},
+    {"addr": "0x00866f04", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 5, "hi": 26}}
+  ]
+}

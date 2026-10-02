@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x0040b0a4 zero-extends exactly the word at 0x0062d22a and returns it. All u16 bit patterns are valid.",
+  "globals": [
+    {"addr": "0x0062d22a", "type": "u16"}
+  ]
+}

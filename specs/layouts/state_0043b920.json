@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x0043b920 chooses record 1 or 2 in a 0x41c-byte stride array rooted at 0x0066fef0, then scans 22 byte discriminators at +0x7a for bit 0x80. The union is 23 fields. Correlated clear/single-hit inputs cover complete scans and varied early exits.",
+  "globals": [
+    {"addr": "0x007aafd4", "type": "u8", "lo": 0, "hi": 1},
+    {"addr": "0x00670386", "type": "u8", "count": 23, "stride": "0x41c", "pattern": "bit_scan", "bit": 128}
+  ]
+}

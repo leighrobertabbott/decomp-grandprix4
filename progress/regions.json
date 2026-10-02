@@ -1,0 +1,24 @@
+{
+  "_about": "Provisional map of GP4.exe .text from function alignment/padding fingerprints, string evidence and calling-style statistics (gp4re analyze, 2026-10-02). The lead refines boundaries with `gp4re work region ...`. 'exclude': true removes unconfirmed functions in the region from the worker queue.",
+  "exe_sha256": "2046f3902246b2aff48dca2e4f7e8c049d410166e60a5dc20fe3750f4a926b12",
+  "regions": [
+    {"start": "0x00401000", "end": "0x00440000", "label": "R1-asm-core", "kind": "game", "exclude": false,
+     "confidence": "likely",
+     "note": "Unaligned, unpadded, ~60% of functions take register/flag/x87-stack inputs; essentially no strings or imports. Hand-written x87 assembly: Crammond's simulation core (physics/AI/maths). Semantic (emulator) track."},
+    {"start": "0x00440000", "end": "0x00510000", "label": "R2-cpp-renderer", "kind": "game", "exclude": false,
+     "confidence": "likely",
+     "note": "16-byte aligned, nop padded C++ (thiscall-heavy): CGP4*Shader, CSkyDome, CGP4Cockpit, HUD text ids, memory manager. GP4's D3D8 renderer/front-end layer."},
+    {"start": "0x00510000", "end": "0x00560000", "label": "R3-c-legacy", "kind": "game", "exclude": false,
+     "confidence": "likely",
+     "note": "Unaligned C with an asm mix: gamestate save/load (f1gstate.dat), gconfig.txt, circuits\\*.dat, .jam textures, 'D:\\grand prix 3', GP3 2000 network/2-player sessions. GP3-heritage game logic."},
+    {"start": "0x00560000", "end": "0x005a4000", "label": "R4-libs", "kind": "library", "exclude": true,
+     "confidence": "provisional",
+     "note": "D3DX mesh code (ID3DXMeshOptimize, D3DXValidMesh), DirectX-file loader (d3dxof), CPU-specific SIMD pipeline (DisableD3DXPSGP, GenuineIntel/AuthenticAMD), libpng (1.0.5 version string), zlib. Confirm against the DirectX 8.1 SDK d3dx8.lib / libpng / zlib before treating as final."},
+    {"start": "0x005a4000", "end": "0x005d8000", "label": "R5-cpp-mixed", "kind": "mixed", "exclude": false,
+     "confidence": "provisional",
+     "note": "16-byte aligned C++ like R2, plus DirectX error-string tables (D3DERR_*, DMUS_S_* - dxerr8.lib) and zlib inflate strings. Needs function-level library identification; queued at low priority."},
+    {"start": "0x005d8000", "end": "0x005f0000", "label": "R6-crt", "kind": "library", "exclude": false,
+     "confidence": "provisional",
+     "note": "Visual C++ 6 runtime tail (entry point 0x5ddec6, 'Runtime Error', heap selection, locale) with a few D3DX/game functions interleaved. Evidence-labelled CRT functions are excluded individually."}
+  ]
+}

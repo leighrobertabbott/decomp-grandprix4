@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x004371f3 dereferences pointer 0x00629e04 to test byte +0xe5 bit4, compares word 0x007ad89e with 3/4, and overwrites byte 0x00629f30. Allocated child byte buffer preserves the evidenced pointer dereference.",
+  "globals": [
+    {"addr": "0x00629e04", "type": "ptr", "size": 237, "fill": "bytes"},
+    {"addr": "0x007ad89e", "type": "u16"},
+    {"addr": "0x00629f30", "type": "u8"}
+  ]
+}
