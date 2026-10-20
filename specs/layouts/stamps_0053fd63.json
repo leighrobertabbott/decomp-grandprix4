@@ -1,0 +1,41 @@
+{
+ "_evidence": "0x0053fd63 reads the performance counter (0x54e733 -> QueryPerformanceCounter; in the oracle the stub's seeded counter now = 2^32 + rand(2^40) + 1..50000, so now_hi is 1..257 and now_lo random), stores it at 0x830004/08, then for k = 0..21: 'mov edx,[ebx]; or edx,edx; je skip; cmp edx,[0xb1bb40]; je skip' (ebx = 0xb1b8d8 + 0x1c*k: a record id dword, 0 = unused, equal to the current id [0xb1bb40] = the 23rd slot = skipped), then 'sub eax,[esi]; sbb edx,[esi+4]' with esi = 0x83002b + 8*k (an unaligned qword time stamp, an earlier counter reading) and counts the record if now - stamp > 0x4446390 (hi > 0 signed, or hi == 0 and lo above; 0x4446390 = 20 s at the 3579545 Hz counter frequency). Domain: ids from {0,1,2,3,3,3} (mostly in use, both skip tests taken and not), current id 1 or 2; stamp low dwords full-range, stamp high dwords 0..257 (0 = never stamped, else in the counter's range on both sides of now_hi: the difference's high dword is positive, negative or zero - the last with probability ~1/256 per record, i.e. ~15 records in 200 cases). Only fixed-address dwords are read and nothing is dereferenced, so every value is valid. Not reachable with this counter model: the 'jbe 0x53fdba' TAKEN direction at 0x53fdb7 (a record stamped less than 20 s before now) needs a stamp within 0x4446390 ticks below the seeded counter value, which no fixed-address layout can correlate with (~6.5e-5 per record).",
+ "globals": [
+  {
+   "addr": "0x00b1b8d8",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x1c",
+   "values": [
+    "0",
+    "1",
+    "2",
+    "3",
+    "3",
+    "3"
+   ]
+  },
+  {
+   "addr": "0x00b1bb40",
+   "type": "u32",
+   "values": [
+    "1",
+    "2"
+   ]
+  },
+  {
+   "addr": "0x0083002b",
+   "type": "u32",
+   "count": 22,
+   "stride": 8
+  },
+  {
+   "addr": "0x0083002f",
+   "type": "u32",
+   "count": 22,
+   "stride": 8,
+   "lo": 0,
+   "hi": 257
+  }
+ ]
+}

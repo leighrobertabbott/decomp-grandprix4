@@ -1,0 +1,44 @@
+{
+ "size": 256,
+ "_evidence": "0x0040cd00 parses a u16 stream at esi with lodsw: four words copied to 0x602098..0x6020a4, then a header word (0xffff = empty, 'cmp ax,-1; je 0x40cd89'), two words to 0x62d284/0x62d288, a first segment index (record 0x8943a0 + w*0x160), then up to 0x3b pairs (bx = lane byte word, ax = next segment index or 0xffff, which ends the list with ebp = [0x866ecc]). Segment indexes 0..25 are the ring records; 0xffff appears in about 1/8 of the words so every terminator position occurs. 250 of the 256 bytes are the longest possible read.",
+ "fields": [
+  {
+   "off": 0,
+   "type": "u16",
+   "count": 128,
+   "stride": 2,
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    "0xffff",
+    "0xffff",
+    "0xffff",
+    "0xffff"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,27 @@
+{
+ "_evidence": "Global overlay for 0x0042f16d (compose LAST, after state_00403800+state_004059ef+eq_0042ba87+state_0066d8c0+clock_0066d814). When bit 7 of car byte +0x71 is set and the car's segment pointer +0x1c is below the pit start [0x891500], 0x42f240 adds 0x6e00 (0x50 records) and compares it unsigned with [0x866f00] (jae resets): the static zero made that compare always fail. With esi a pointer buffer, +0x1c (car_0042ba87) is an emulator buffer address near 0x20000000, so both limits are drawn from values below and above that range (0, 0x8943a0, 0x10000000, 0x30000000, 0xffffffff) to reach both outcomes of both unsigned compares; every u32 is valid for this function and for the 0x42a278 -> 0x42ba87 -> 0x4036ca chain, which only compares +0x1c with the pit start (state_00403800 draws it as a plain u32). Nothing is dereferenced through them. The windows 0x603b10/0x603b34/0x603b36/0x603b38/0x603b3c, 0x603ba0 and 0x603ec8 are never written (no store in the image) and keep their image values (20, 90, -160, -220, -100, 64, 1024). Not reachable with pointer-buffer cars: 'cmp ebx,[0x6043e4]' equal (0x42f21b) and 'cmp esi, 0x66fef0 + [ebx+0x1bc]' equal (0x42f30c) need esi/ebx inside the car array 0x66fef0 (a rec[] spec with car-array layouts).",
+ "globals": [
+  {
+   "addr": "0x00866f00",
+   "type": "u32",
+   "values": [
+    0,
+    "0x8943a0",
+    "0x10000000",
+    "0x30000000",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x00891500",
+   "type": "u32",
+   "values": [
+    0,
+    "0x8943a0",
+    "0x10000000",
+    "0x30000000",
+    "0xffffffff"
+   ]
+  }
+ ]
+}

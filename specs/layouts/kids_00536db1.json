@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x00536db1 (replace node eax's link in its parent by edx): every link value v maps to a record by 'sub v,[0x829710]; jl sentinel 0x829700; and 0x1fff; shl 4; add [0x829278]', so any value lands in the 128 KiB table or on the static sentinel record. Same model as list_00829278 (base 0/0x100/0x1000, sentinel +8 at 0x829708 = -2, a 0x2000-record table) but with kidrecs_00536db1 records, whose +8 second-child links include indices >= the base: the block 0x536e02 (child mapped into the table) and 'cmp ecx,esi; jne' with both outcomes are reached. Compose sent_00536e63 after it for the sentinel's +4.",
+ "globals": [
+  {"addr": "0x00829710", "type": "u32", "values": [0, 0, "0x100", "0x1000"]},
+  {"addr": "0x00829278", "type": "ptr", "size": 131072, "fill": "layout=kidrecs_00536db1"},
+  {"addr": "0x00829708", "type": "u32", "values": ["0xfffffffe"]}
+ ]
+}

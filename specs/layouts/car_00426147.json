@@ -1,0 +1,46 @@
+{
+  "_evidence": "esi of 0x00426147: a car record prefix (0x1a8 bytes), background random (fill bytes; +0x71 bit 3 and word +0x66 are plain operands). Dword +0x1a0 (0x426148: js exit, cmp [0x603e18] jge exit, then d = x - 0x2000, w = 0x4000 - 2|d| clamped to 0..0x4000) is a Q14-scale distance (the limit 0x603e18 is static 0x3c00). Random dwords never fell below 0x2000 inside the limit (0x42618e jns), so it draws from a list: negatives (js exit), 0..0x4800 in steps around the 0x2000 fold and the 0x3c00 limit (both fold sides, the low clamp at the ends), and 0x40001fff..0x7fffffff, where 2|d| overflows (shl) and the result reaches the zero clamp (0x40002000) or passes the 0x4000 cap (0x40008000..0x5fffffff, 0x4261ae) when the limit is above it.",
+  "size": 424,
+  "fill": "bytes",
+  "fields": [
+    {
+      "off": "0x1a0",
+      "type": "u32",
+      "values": [
+        "0xfffff000",
+        "0xffffffff",
+        "0x80000000",
+        0,
+        1,
+        "0x400",
+        "0x800",
+        "0xc00",
+        "0x1000",
+        "0x1400",
+        "0x1800",
+        "0x1c00",
+        "0x1fff",
+        "0x2000",
+        "0x2001",
+        "0x2400",
+        "0x2800",
+        "0x2c00",
+        "0x3000",
+        "0x3400",
+        "0x3800",
+        "0x3bff",
+        "0x3c00",
+        "0x4000",
+        "0x4800",
+        "0x40001fff",
+        "0x40002000",
+        "0x40008000",
+        "0x7fffffff",
+        "0x48000000",
+        "0x50000000",
+        "0x58000000",
+        "0x5fffffff"
+      ]
+    }
+  ]
+}

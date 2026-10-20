@@ -1,0 +1,9 @@
+{
+  "_evidence": "Car record for 0x0042ba87/0x0042bae4 (and their callee 0x42784b -> 0x4036ca): random background bytes for the tested/RMW flag bytes (+0x8d bit 1, +0xfe bits 0x40/0x10/8, +0x135, +0x71, +0x122/+0x163/+0x179 for 0x403a1e) and the words 0x4036ca uses (+0x66, +0x90, +0x94); dword +0x1c is the current segment record pointer that 0x4036ca/0x403a1e/0x403938/0x403b19/0x403b3f dereference (words +0x60/+0x62 and +0x1c0/+0x1c2), so it points to a 0x1d0-byte random block (never null in the game); dword +0x114 (test; jne: a nonzero value with bit 0x40 of +0xfe set takes the stc exit) is zero in about half the picks.",
+  "size": 1056,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x1c", "type": "ptr", "size": 464, "fill": "bytes"},
+    {"off": "0x114", "type": "u32", "values": [0, 0, 0, 0, 1, "0x8943a0", "0x80000000", "0xffffffff"]}
+  ]
+}

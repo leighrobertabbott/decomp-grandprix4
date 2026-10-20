@@ -1,0 +1,7 @@
+{
+ "_evidence": "Overlay for state_00416dec (compose AFTER it) in callers whose chain runs 0x417066 and then 0x41c145: the pair 0x637f38/0x637f3c is written only by the Q14 scaler ending at 0x416de0/0x416de5 and copied (optionally scaled by a 0..0x4000 factor) to [0x62fba8]/[0x62fbac] by 0x416dec; 0x417066 adds half of it to each wheel load +0x48/+0x348/+0x648/+0x948 of the block at 0x6380d8, and 0x41c145 then forms a = ((+0x48 - +0x1a0) * K) >> 14 and divides e = ([0x623b84]>>1) + a + [+4] (shl 5, imul K) by [0x623af4] at 0x41c1bc and S<<14 by [0x623b6c] at 0x41bc4e: those need the loads within +-2^18 (state_0041c145), so the pair is drawn in +-2^18 (both signs). state_00416dec's full-range draw made the loads any dword and the original #DE'd at 0x41c1bc/0x41bc4e (4 of 200 cases of 0x41970f once const_006258b8 removed the 0x41bd3b overflow).",
+ "globals": [
+  {"addr": "0x00637f38", "type": "i32", "lo": -262144, "hi": 262144},
+  {"addr": "0x00637f3c", "type": "i32", "lo": -262144, "hi": 262144}
+ ]
+}

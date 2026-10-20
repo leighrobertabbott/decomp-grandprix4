@@ -1,0 +1,12 @@
+{
+ "_evidence": "Car overlay for 0x0041e192 (compose after car_0041e500). Byte +0x2bb is the previous pass's four-wheel mask: 0x41e40f stores the low byte of [0x601eb0] there, and [0x601eb0] is zeroed at 0x41e1cb and changed only by 0x41dbb0's 'bts/btr dword [0x601eb0], edx' with edx = [0x62789c] = the wheel index 0..3 that 0x41e1f5 stores (the only other writers of +0x2bb, 0x40f77d and 0x422865, store 0), so +0x2bb is always 0..0xf in the game. It is read at 0x41e2f3 ('movzx edx,[esi+0x2bb]; xor eax,edx; bt eax,[0x62789c]; jae': this wheel's bit changed since the last pass -> the 0x41e307 reset path) and at 0x41e3db ('xor; jne', then 'cmp eax,0; je' / 'cmp eax,0xf; jne' for 0x41e417). The random background byte matched the new mask only when both were 0, so block 0x41e3f0 (equal nonzero masks) and the 0x41e3f3 directions were never reached. Domain: u8 0..0xf, the game's whole range (0, 0xf and the partial masks all occur); only compares read it.",
+ "size": 1056,
+ "fields": [
+  {
+   "off": "0x2bb",
+   "type": "u8",
+   "lo": 0,
+   "hi": 15
+  }
+ ]
+}

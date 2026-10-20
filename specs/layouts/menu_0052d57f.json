@@ -1,0 +1,9 @@
+{
+ "_evidence": "0x0052d57f walks the static node list whose head cell is 0x83e782 (link at node +0, nodes 0x26..0x2e bytes apart in initialised .data): 10 loads reach node A = 0x83e93e and three more node B = 0x83e9be (the image links; they are fixed menu structure and stay as they are: the neighbouring nodes are not cursor items, e.g. node 0x83e96c's +0x26 dword overlaps the next node's link, so redirecting a link would make the original corrupt its own list). Per node: the pointer +0xe ('mov ebx,[esi+0xe]; test byte [ebx],0x80') selects table 0x81e3d8/0x81e3e8 (A) or 0x81e3f8/0x81e408 (B); in the image both point at the option byte 0x7c2a48, here each is a pointer to its own 8-byte buffer of bytes from {0,0x80,0x7f,0xff} so the two selections vary independently and the pointer is really followed. The cursor dword +0x26 (A: 0x83e964, B: 0x83e9e4; 'sub eax,edx; cmp eax,0; jl; cmp eax,0xc; jle' else 'mov [esi+0x26],edx') draws table-relative offsets 0,4,8,0xc,0xd,-1,-4 against both tables of its node, the other node's table, and far values (0, -1, 0x80000000 away) so the signed bounds and both compares' flags are exercised. The four table dwords are only compared as addresses, never read.",
+ "globals": [
+  {"addr": "0x0083e94c", "type": "ptr", "size": 8, "fill": "u8{=0,0x80,0x7f,0xff}"},
+  {"addr": "0x0083e964", "type": "u32", "values": ["0x81e3d8", "0x81e3dc", "0x81e3e0", "0x81e3e4", "0x81e3e5", "0x81e3d7", "0x81e3d4", "0x81e3e8", "0x81e3ec", "0x81e3f0", "0x81e3f4", "0x81e3f5", "0x81e3e7", "0x81e3f8", 0, "0xffffffff", "0x8081e3d8", "0x12345678"]},
+  {"addr": "0x0083e9cc", "type": "ptr", "size": 8, "fill": "u8{=0,0x80,0x7f,0xff}"},
+  {"addr": "0x0083e9e4", "type": "u32", "values": ["0x81e3f8", "0x81e3fc", "0x81e400", "0x81e404", "0x81e405", "0x81e3f7", "0x81e3f4", "0x81e408", "0x81e40c", "0x81e410", "0x81e414", "0x81e415", "0x81e407", "0x81e418", "0x81e3e8", 0, "0xffffffff", "0x8081e3f8"]}
+ ]
+}

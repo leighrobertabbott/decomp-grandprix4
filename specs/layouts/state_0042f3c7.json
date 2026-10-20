@@ -1,0 +1,11 @@
+{
+  "_evidence": "0x0042f3c7: [0x006043e4] is the other car (dereferenced unconditionally for word +0x90; a car-record pointer, so points_into the 22 cars at 0x66fef0, whose words +0x90 vary); signed word +0 of the 256 0x10-byte entries at 0x006269b8 (indexed by car byte +0x234, so direct-global fuzz never reaches it) gives the sign selector; gains 0x00603b8c/0x00603b90 (imul/shrd 14) are drawn -0x10000..0x10000 and the offset 0x00603b94 -0x4000..0x4000, so the sum is negative and positive and its magnitude both below and above 0x3400 (the clamp to 0xc00). Compose with state_0066d8c0 for the 0x401462 generator. imul/shrd/neg only: no value faults.",
+  "globals": [
+    {"addr": "0x006043e4", "type": "u32", "points_into": {"base": "0x0066fef0", "stride": "0x41c", "lo": 0, "hi": 21}},
+    {"addr": "0x0066ff80", "type": "i16", "count": 22, "stride": "0x41c"},
+    {"addr": "0x006269b8", "type": "i16", "count": 256, "stride": 16},
+    {"addr": "0x00603b8c", "type": "i32", "lo": -65536, "hi": 65536},
+    {"addr": "0x00603b90", "type": "i32", "lo": -65536, "hi": 65536},
+    {"addr": "0x00603b94", "type": "i32", "lo": -16384, "hi": 16384}
+  ]
+}

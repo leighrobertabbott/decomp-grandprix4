@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x00555ea4: edi = [0x965a2c]*8 + 0x965a30 must be below 0x967968 or the int3 assertion at 0x555ebe traps, so the slot count [0x965a2c] is 0..998 ((0x967968-0x965a30)/8 = 999 slots) in every valid game state; the routine then fills slot [0x965a2c].",
+ "globals": [
+  {
+   "addr": "0x00965a2c",
+   "type": "u32",
+   "lo": 0,
+   "hi": 998
+  }
+ ]
+}

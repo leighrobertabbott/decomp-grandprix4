@@ -1,0 +1,14 @@
+{
+  "_evidence": "0x00437888 (esi = a car record, spec rec[0x66fef0,0x41c,0..21]) walks the 22 car records at 0x0066fef0 (stride 0x41c, loop ecx = 0x16). Per record: dword +0x40 zero test (0x00437898; at 0x0066ff30 + k*0x41c), equality with esi (0x004378a1) and with the car pointers 0x0066d820 (always), 0x0066d82c (only if byte 0x007c2e6c != 0) and 0x0066d828 (only if byte 0x007aafd4 != 0); then |word +0x68 - [esi+0x68]| (0x0066ff58 + k*0x41c; esi's own word is one of them) is compared signed with the word 0x00629bdc and the count of hits with the dword 0x0062a7c8 (CF = count >= limit). The three car pointers are record-aligned pointers (points_into 0..22; 22 is one past the array, matching no record); the two flag bytes, the +0x40 dwords and the +0x68 words are unconstrained. 0x00629bdc (static 0x40) and 0x0062a7c8 (static 4) are tuning constants read by no other function; they are varied around their static values (-0x10..0x400 and -1..23) so both outcomes of each compare occur. Only fixed records are dereferenced, so nothing can fault.",
+  "globals": [
+    {"addr": "0x0066ff30", "type": "u32", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ff58", "type": "i16", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066d820", "type": "u32", "points_into": {"base": "0x0066fef0", "stride": "0x41c", "lo": 0, "hi": 22}},
+    {"addr": "0x0066d828", "type": "u32", "points_into": {"base": "0x0066fef0", "stride": "0x41c", "lo": 0, "hi": 22}},
+    {"addr": "0x0066d82c", "type": "u32", "points_into": {"base": "0x0066fef0", "stride": "0x41c", "lo": 0, "hi": 22}},
+    {"addr": "0x007c2e6c", "type": "u8"},
+    {"addr": "0x007aafd4", "type": "u8"},
+    {"addr": "0x00629bdc", "type": "i16", "lo": -16, "hi": 1024},
+    {"addr": "0x0062a7c8", "type": "i32", "lo": -1, "hi": 23}
+  ]
+}

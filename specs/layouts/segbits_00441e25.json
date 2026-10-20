@@ -1,0 +1,29 @@
+{
+ "_evidence": "Segment flag bytes read-modify-written by the group routine 0x00441e25 (via 0x441de4/0x441e18) and 0x441ad7: edi = [0x891504] (lap start, records 0..4 under ring_008943a0) + ((group << 5) | (byte [0x66fd70+4*group] & 0x1f)) records, group 0..1 under groups_00868556, so records 0..67 (segw_00441e25 already varies their word +0x1e over 72 records); 'or byte [edi+0x48],0x40/0x80', 'or byte [edi+0x34|+0x38],0x80' and the matching and-masks 0xbf/0x7f. Pure bit sets/clears, so any byte is valid: bytes +0x34/+0x38/+0x48 of records 0..71 are random (zero in the image, so the masks were never observable against set bits). Also byte +0x1b (bit 4 set/cleared by 0x441d85 on the 32 records it walks with 0x406045 from [0x891504] + group*32 records, group 0..1: up to record ~68, beyond the 64 records of w1a_008943a0) for records 0..71. Compose after ring_008943a0+records_008943a0+segw_00441e25+groups_00868556(+w1a_008943a0).",
+ "globals": [
+  {
+   "addr": "0x008943d4",
+   "type": "u8",
+   "count": 72,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x008943d8",
+   "type": "u8",
+   "count": 72,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x008943e8",
+   "type": "u8",
+   "count": 72,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x008943bb",
+   "type": "u8",
+   "count": 72,
+   "stride": "0x160"
+  }
+ ]
+}

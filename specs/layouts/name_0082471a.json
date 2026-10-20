@@ -1,0 +1,39 @@
+{
+ "_evidence": "0x0052f578 compares the name string at 0x82471a (edi, mov al,[edi]) character by character, both sides folded through 0x54d755 (lower_00833e18 supplies the real CharLowerA map), with each NUL-separated device name of the constant list 0x826e0e..0x826e2e ('com1','com2','com3','com4','con','aux','prn'; kept at its image value: no fuzz in this spec). It stops at a text NUL (je 0x52f5a8, no match), continues while equal, and reports a match (stc) only when the text char is '.' and the name has ended (cmp al,0x2e / cmp ah,0). Every name is at most 4 chars, so at most 5 text bytes are read (0x82471a..0x82471e). The first dword is drawn from device names in mixed case, near misses ('com5','lpt1','co.x' = '.' before the name ends, 'con'+NUL = text ends first) and the empty string; byte +4 from '.', NUL, 'x', ' '.",
+ "globals": [
+  {
+   "addr": "0x0082471a",
+   "type": "u32",
+   "values": [
+    "0x316d6f63",
+    "0x314d4f43",
+    "0x326d6f43",
+    "0x336d4f63",
+    "0x346d6f63",
+    "0x356d6f63",
+    "0x2e6e6f63",
+    "0x2e4e4f43",
+    "0x2e787561",
+    "0x2e6e7250",
+    "0x006e7270",
+    "0x782e6f63",
+    "0x3174706c",
+    "0x00000000",
+    "0x006e6f63",
+    "0x5f787561"
+   ]
+  },
+  {
+   "addr": "0x0082471e",
+   "type": "u8",
+   "values": [
+    "0x2e",
+    "0x2e",
+    "0x2e",
+    "0x00",
+    "0x78",
+    "0x20"
+   ]
+  }
+ ]
+}

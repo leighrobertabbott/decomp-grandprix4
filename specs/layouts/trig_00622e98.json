@@ -1,0 +1,6 @@
+{
+  "_evidence": "Sine/cosine scratch of the fixed body 0x00622e98 (+0x28..+0x50 = 0x622ec0..0x622ee7: the fsincos results 0x401d80 stores for the three body angles, laid out as body_00609860), read by 0x00402ad1 (fmul qword [edx+0x28], [edx+0x38], [edx+0x40]) together with matrix entries +0x88/+0x98 (view_00609860). They are body state written every frame (static zero here), so the six doubles are drawn as finite sines/cosines in [-1,1]. fistp of an out-of-range product gives the indefinite integer on both sides; nothing faults.",
+  "globals": [
+    {"addr": "0x00622ec0", "type": "f64", "count": 6, "stride": 8, "lo": -1, "hi": 1}
+  ]
+}

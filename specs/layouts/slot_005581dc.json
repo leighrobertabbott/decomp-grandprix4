@@ -1,0 +1,39 @@
+{
+ "_evidence": "0x005581dc: the slot counter [0x874d28] is incremented and asserted below 0x10 ('inc edx; cmp edx,0x10; jb; int3'), so in every valid state it is 0..14; the word [0x86855c] bit 0x200 and the mode byte 0x86857c select the stream length; the 16 mask dwords 0x875dc8.. read by the callee 0x5581ba vary.",
+ "globals": [
+  {
+   "addr": "0x00874d28",
+   "type": "u32",
+   "lo": 0,
+   "hi": 14
+  },
+  {
+   "addr": "0x0086855c",
+   "type": "u16",
+   "values": [
+    "0x200",
+    "0x200",
+    "0",
+    "0x201",
+    "0x3ff"
+   ]
+  },
+  {
+   "addr": "0x0086857c",
+   "type": "u8",
+   "values": [
+    2,
+    2,
+    2,
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x00875dc8",
+   "type": "u32",
+   "count": 16,
+   "stride": 4
+  }
+ ]
+}

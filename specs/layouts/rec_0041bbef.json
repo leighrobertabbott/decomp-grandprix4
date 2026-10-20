@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x0041bbef reads only dwords [ebx+0x25c] and [ebx+0x55c] (mov/add at 0x41bbef/0x41bbf5) into S = their 32-bit sum, multiplied by [0x623b10] and subtracted inside the 64-bit numerator of 'idiv ebp' (see state_0041bbef). Both in -2^29..2^29 keep |S| <= 2^30 < 2^31, which the state layout needs to bound the quotient.",
+  "size": 1380,
+  "fields": [
+    {"off": "0x25c", "type": "i32", "lo": -536870912, "hi": 536870912},
+    {"off": "0x55c", "type": "i32", "lo": -536870912, "hi": 536870912}
+  ]
+}

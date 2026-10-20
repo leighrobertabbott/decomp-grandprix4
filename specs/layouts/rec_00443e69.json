@@ -1,0 +1,13 @@
+{
+ "size": 208,
+ "fill": "bytes",
+ "_evidence": "Record esi of 0x00443e69 (0xd0 bytes, as the worker spec): dword +0x74 is a pointer to its parent object (owner_00443e69), every other byte random: +0xa8/+0xac/+0xb0 are fild-ed offsets, +0x44/+0x50 the depth pair ('sub ebp; cmp 0; jge': random dwords give both orders), +0x34/+0x6c/+0x70 imul/shrd factors (wrapping), +0xc0..+0xc8 and +0x18..+0x2c are only written. Nothing faults for any byte value.",
+ "fields": [
+  {
+   "off": "0x74",
+   "type": "ptr",
+   "size": 168,
+   "fill": "layout=owner_00443e69"
+  }
+ ]
+}

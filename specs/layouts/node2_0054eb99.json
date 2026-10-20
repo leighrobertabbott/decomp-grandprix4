@@ -1,0 +1,47 @@
+{
+ "_evidence": "Menu item node for 0x0054eb99 (see hdr_0054eb99): +0 next (null ends the list), +0x10 flags (bit 7 = needs placing, 0x20/0x40 = call path, 0x10 = +0x2e instead of +8; all four bits vary independently), +0x12 depth byte 0..5 (hops from the header), words +4/+6/+8/+0xa random (RMW add).",
+ "size": 24,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": 0,
+   "type": "ptr",
+   "size": 24,
+   "fill": "layout=node3_0054eb99",
+   "nullable": true
+  },
+  {
+   "off": "0x10",
+   "type": "u8",
+   "values": [
+    0,
+    "0x80",
+    "0x90",
+    "0xa0",
+    "0xb0",
+    "0xc0",
+    "0xd0",
+    "0xe0",
+    "0xf0",
+    "0x7f",
+    "0xff",
+    "0x8f",
+    "0x80",
+    "0xc0",
+    "0xa0"
+   ]
+  },
+  {
+   "off": "0x12",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ]
+  }
+ ]
+}

@@ -1,0 +1,13 @@
+{
+ "_evidence": "Byte [0x625a53] (0x42586a: cmp 0; je) picks 0x425473 (nonzero; image 0xff, an option byte with no code writer) or 0x4255d4 (zero) for the car-ahead test: both values.",
+ "globals": [
+  {
+   "addr": "0x00625a53",
+   "type": "u8",
+   "values": [
+    0,
+    "0xff"
+   ]
+  }
+ ]
+}

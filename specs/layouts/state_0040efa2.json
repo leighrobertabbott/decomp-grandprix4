@@ -1,0 +1,7 @@
+{
+ "_evidence": "Mode byte and clock offset for 0x0040efa2 (compose last): [0x7c2ea9] is tested by the target ('test byte [0x7c2ea9],0xff; js' before 'or byte [esi+0x88],2'), compared with 0x44 by the callee 0x40ee7b and with 0x80 by 0x40ed6a/0x40f3f6, so it draws 0x80/0x44 often plus other signed values; [0x66d838] is the clock offset subtracted by 0x40ed6a (any value, only stored). Neither forms an address or a count.",
+ "globals": [
+  {"addr": "0x007c2ea9", "type": "u8", "values": ["0x80", "0x80", "0x44", "0x44", 0, "0x7f", "0x81", "0xff", "0x45", "0xc4"]},
+  {"addr": "0x0066d838", "type": "i32"}
+ ]
+}

@@ -1,0 +1,67 @@
+{
+ "_evidence": "Collision-mesh state read by 0x00453330 (point query: grid cell -> triangle list -> vertex heights and edge signs -> surface code), reached from 0x41d96d -> 0x51fb25 (only when [0x6278cc] != 0) -> 0x49eeb0, whose query point is (i32*0x379c0ebf) floats of [0x6278c0]/[0x6278c8] (within +-41000) and height [0x6278c4]*s + 0.1. All pointers and dwords are zero in the image (the mesh is loaded with the track), so the query always missed (-1 -> code 3) and only that outcome was seen. Domain: grid pointer 0x9fb0a0 to 4 cells (cells_00453330) with width 0x9fb0ac and height 0x9fb0b0 in 1..2 (cell index row*width+col < 4; col clamps to width-1, row >= height misses), cell sizes 0x9fb0b4/0x9fb0b8 positive 30000..100000 and grid origins 0x63ede4/0x63edf4 -60000..20000 (the 'x - origin < 0' clamp, in-range cells and row overflow all occur; the floors go through the CRT 0x5db88c/0x5daabc), triangles 0x9fb0bc (tris_00453330, surface codes 2/4/8/0x10/0x20/other) and vertices 0x9fb0c0 (verts_00453330: a covering triangle with varied heights). 0x9fb2d0 is only compared with the plane divisor on the out-pointer path (null here): any. 0x5f0420 (0.0) is a constant.",
+ "globals": [
+  {
+   "addr": "0x009fb0a0",
+   "type": "ptr",
+   "size": 24,
+   "fill": "layout=cells_00453330"
+  },
+  {
+   "addr": "0x009fb0bc",
+   "type": "ptr",
+   "size": 48,
+   "fill": "layout=tris_00453330"
+  },
+  {
+   "addr": "0x009fb0c0",
+   "type": "ptr",
+   "size": 36,
+   "fill": "layout=verts_00453330"
+  },
+  {
+   "addr": "0x009fb0ac",
+   "type": "u32",
+   "values": [
+    1,
+    2
+   ]
+  },
+  {
+   "addr": "0x009fb0b0",
+   "type": "u32",
+   "values": [
+    1,
+    2
+   ]
+  },
+  {
+   "addr": "0x009fb0b4",
+   "type": "f32",
+   "lo": 30000.0,
+   "hi": 100000.0
+  },
+  {
+   "addr": "0x009fb0b8",
+   "type": "f32",
+   "lo": 30000.0,
+   "hi": 100000.0
+  },
+  {
+   "addr": "0x0063ede4",
+   "type": "f32",
+   "lo": -60000.0,
+   "hi": 20000.0
+  },
+  {
+   "addr": "0x0063edf4",
+   "type": "f32",
+   "lo": -60000.0,
+   "hi": 20000.0
+  },
+  {
+   "addr": "0x009fb2d0",
+   "type": "u32"
+  }
+ ]
+}

@@ -1,0 +1,37 @@
+{
+ "_evidence": "0x5589cb walks the 0x160-byte records from [0x866ec0] to [0x866eb8] (set by segs_00558d9b) and raises the signed words +0x8e/+0x90 to +0xb0/+0xb2 (cmp word; jge). All four words are zero in the image, so the raising stores never ran; any i16 is valid (only compared and copied). Records 0..26 of the ring at 0x8943a0.",
+ "globals": [
+  {
+   "addr": "0x89442e",
+   "type": "i16",
+   "count": 27,
+   "stride": "0x160",
+   "lo": -32768,
+   "hi": 32767
+  },
+  {
+   "addr": "0x894430",
+   "type": "i16",
+   "count": 27,
+   "stride": "0x160",
+   "lo": -32768,
+   "hi": 32767
+  },
+  {
+   "addr": "0x894450",
+   "type": "i16",
+   "count": 27,
+   "stride": "0x160",
+   "lo": -32768,
+   "hi": 32767
+  },
+  {
+   "addr": "0x894452",
+   "type": "i16",
+   "count": 27,
+   "stride": "0x160",
+   "lo": -32768,
+   "hi": 32767
+  }
+ ]
+}

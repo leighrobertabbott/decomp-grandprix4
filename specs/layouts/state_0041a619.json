@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x0041a619 differentiates a 12-bit sample twice: s = (word [esi+0x6a] << 20) >> 18 (-8192..8188), q1 = ((s - [0x0060372c]) << 16) / [0x00603854], q2 = ((q1 - [0x00603730]) << 16) / [0x00603854] (cdq/shld/idiv), then blends q2 into [0x00603738] with the Q14 factor [0x00603740]. The previous sample 0x60372c is a value the function itself stored (same -8192..8188 range); with the rate 0x603854 in 0x800..0xffff |q1| <= 16380*2^16/0x800 < 2^19, so the previous rate 0x603730 (a stored q1) is drawn in -0x80000..0x80000, |q1 - prev| < 2^20 and |q2| < 2^36/2^11 = 2^25: both quotients fit. A zero rate is #DE and a smaller one overflows the second idiv for large sample steps in the original. The blend factor 0x603740 is 0..0x4000 (Q14 weight, 0x4000-k complements it) and the filtered value 0x603738 is any i32 (imul/shrd only).",
+  "globals": [
+    {"addr": "0x00603854", "type": "i32", "lo": 2048, "hi": 65535},
+    {"addr": "0x0060372c", "type": "i32", "lo": -8192, "hi": 8188},
+    {"addr": "0x00603730", "type": "i32", "lo": -524288, "hi": 524288},
+    {"addr": "0x00603740", "type": "i32", "lo": 0, "hi": 16384},
+    {"addr": "0x00603738", "type": "i32"}
+  ]
+}

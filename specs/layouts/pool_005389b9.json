@@ -1,0 +1,16 @@
+{
+ "_evidence": "0x005389b9 allocates eax bytes from the top of the block pool: 'mov eax,[0x82fcb0]; sub eax,[0x82fcb8]; jb' (free end minus the request) and 'cmp eax,[0x82fcac]; jae' (must stay at or above the used end); otherwise it evicts the slot chosen by 0x5388ed (in use: +0xc != 0, and +0x14 below the running limit that starts at [0x82fcb4] and becomes the chosen slot's +4) with 0x538921 (moves [start+len, used end) down to start, lowers every in-use start >= start and the used end by len) and retries, failing (stc, eax 0) when no slot qualifies. A coherent pool, as the allocator 0x538800 builds it (blocks are disjoint and start+len <= used end), keeps every 0x538921 copy inside the pool through any number of evictions: slots 0..3 (0x829cac + 0x18*k) start at 0xa06000 + 0x40*k with length +0xc from {0,0x10,0x3f,0x40} (disjoint inside 0xa06000..0xa06100; 0 = free), all other slots keep the image's zero length (free), used end 0xa06100, free end from 0xa06100..0xa06300 (never below the used end), +4/+0x14 of slots 0..3 and the limit drawn so slots qualify and are rejected. The pool stretch 0xa06000..0xa06100 is the unreferenced zero-initialised .data area used by pool_00538921; its bytes vary so the moves are visible. At most four evictions happen per call (each frees a slot).",
+ "globals": [
+  {"addr": "0x00829cb4", "type": "u32", "values": ["0xa06000"]},
+  {"addr": "0x00829ccc", "type": "u32", "values": ["0xa06040"]},
+  {"addr": "0x00829ce4", "type": "u32", "values": ["0xa06080"]},
+  {"addr": "0x00829cfc", "type": "u32", "values": ["0xa060c0"]},
+  {"addr": "0x00829cb8", "type": "u32", "count": 4, "stride": "0x18", "values": [0, "0x10", "0x3f", "0x40", "0x40"]},
+  {"addr": "0x00829cb0", "type": "u32", "count": 4, "stride": "0x18", "lo": 0, "hi": 4096},
+  {"addr": "0x00829cc0", "type": "u32", "count": 4, "stride": "0x18", "lo": 0, "hi": 4096},
+  {"addr": "0x0082fcb4", "type": "u32", "lo": 1024, "hi": 4096},
+  {"addr": "0x0082fcac", "type": "u32", "values": ["0xa06100"]},
+  {"addr": "0x0082fcb0", "type": "u32", "values": ["0xa06100", "0xa06120", "0xa06180", "0xa06200", "0xa06300"]},
+  {"addr": "0x00a06000", "type": "u8", "count": 256, "stride": 1}
+ ]
+}

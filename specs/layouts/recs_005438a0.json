@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x005438a0 clears bit 7 of byte +9 of the forty 0x20-byte records at 0x830bb4 ('mov edi,0x830bb4; and byte [edi+9],0x7f; add edi,0x20; loop'). Those bytes (0x830bbd + k*0x20) are reached through edi and were never varied; a byte read-modify-write: every value is valid, the random draws mix bit 7 set and clear.",
+ "globals": [
+  {"addr": "0x00830bbd", "type": "u8", "count": 40, "stride": "0x20"}
+ ]
+}

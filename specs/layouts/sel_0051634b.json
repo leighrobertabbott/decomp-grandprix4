@@ -1,0 +1,66 @@
+{
+ "_evidence": "0x0051634b: 'cmp byte [0x7c2ea9],0x80; jne' (equality selector, the other values also vary the cmp flags returned when it is skipped), then esi = [0x679d30] (a car record 0..21 via state_0044334d) is passed to 0x0040e802, which reads car byte +0x26b (test 0x80), signed byte +0xe4 (cmp 1 / jl 2 / jle 5: values 0..6, -1, 0x7f, -0x80 reach the ==1 exit, the 2..5 clock path and the +0x1fc path), dword +0x1fc (test -1: zero in about a third of the cases, otherwise values with different PF/SF), dword +0x274 (returned, or subtracted from the clock [0x66d814], see clock_0066d814). All 22 cars vary the same fields; every read is a fixed car record, so nothing can fault. Compose after state_0044334d+clock_0066d814.",
+ "globals": [
+  {
+   "addr": "0x007c2ea9",
+   "type": "u8",
+   "values": [
+    "0x80",
+    "0x80",
+    "0x80",
+    "0x7f",
+    "0x81",
+    0,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x66ffd4",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    "0xff",
+    "0x7f",
+    "0x80"
+   ]
+  },
+  {
+   "addr": "0x67015b",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x6700ec",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    "0x80",
+    "0x80000000",
+    "0xffffffff",
+    "0x12345678",
+    "0x7ffffffe"
+   ]
+  },
+  {
+   "addr": "0x670164",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c"
+  }
+ ]
+}

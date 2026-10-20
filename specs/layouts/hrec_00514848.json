@@ -1,0 +1,14 @@
+{
+ "_evidence": "Overlay for text_00514877 when 0x00514848 is run directly: its only caller 0x514877 enters it only for a first byte 'h' ('cmp byte [esi],0x68; je 0x514888'), and an 'h' record must then start with one of the seven 'h' keywords (the empty list end at 0x891707 matches anything as index 7 and [0x891724] is the text 'JACK', so the stosb at 0x514870 faults). Use as esi:ptr[0x100]:layout=text_00514877+hrec_00514848: byte 0 is always 'h' (the text is then 'hlight_TYRE' + number blocks).",
+ "size": 256,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": 0,
+   "type": "u8",
+   "values": [
+    "0x68"
+   ]
+  }
+ ]
+}

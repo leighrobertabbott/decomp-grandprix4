@@ -1,0 +1,19 @@
+{
+ "_evidence": "The two counters 0x871c80/0x871c8c that 0x0055753f increments together and asserts equal and below 0x80 (int3 guards): both pinned to the same in-range value per case set (0x10), since a layout cannot correlate two draws exactly.",
+ "globals": [
+  {
+   "addr": "0x00871c80",
+   "type": "u32",
+   "values": [
+    "0x10"
+   ]
+  },
+  {
+   "addr": "0x00871c8c",
+   "type": "u32",
+   "values": [
+    "0x10"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x005159e0 (compose after readout_00515187+hudpos_00514def, which model the glyph chain and the text positions): 'mov eax,2; mov eax,[eax*4+0x891bd0]' and, when car byte +0x8d has bit 5, 'mov eax,0xd; mov eax,[eax*4+0x891bd0]' load the dwords 0x891bd8 and 0x891c04 (entries 2 and 13 of the per-line text pointer table that 0x51488e fills) into eax for the empty callee 0x515b63 ('ret'); the second one is the function's eax output, so both are drawn (only moved, never dereferenced: any u32). The cursor is set by 0x514def(5)/0x514def(6) from the position table before any glyph is drawn (hudpos_00514def). Values are synthetic.",
+ "globals": [
+  {"addr": "0x00891bd8", "type": "u32"},
+  {"addr": "0x00891c04", "type": "u32"}
+ ]
+}

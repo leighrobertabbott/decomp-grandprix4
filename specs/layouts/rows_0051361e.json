@@ -1,0 +1,31 @@
+{
+ "_evidence": "0x51361e: the item count word [0x7c2e7c] drives a 'dec; jne'-style skip loop (0 wraps to 2^32 iterations: zero in the image, the game's list holds 3..26 items) and the slot rows [0x88f614] <= [0x88f618] bound a row walk (0..7). The row pair is drawn as low {0,0,1,2} and high {2..7} so low <= high always, as the game keeps them.",
+ "globals": [
+  {
+   "addr": "0x007c2e7c",
+   "type": "u16",
+   "lo": 3,
+   "hi": 26
+  },
+  {
+   "addr": "0x0088f614",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    1,
+    2
+   ]
+  },
+  {
+   "addr": "0x0088f618",
+   "type": "u32",
+   "values": [
+    2,
+    3,
+    5,
+    7
+   ]
+  }
+ ]
+}

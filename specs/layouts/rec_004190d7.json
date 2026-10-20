@@ -1,0 +1,8 @@
+{
+  "_evidence": "Car block (esi, 0x248 bytes) for 0x004190d7: the dword +0x240 holds four per-wheel bytes (+0x240..+0x243, shifted out of cl in turn) each compared 'cmp cl,0x20; jae' to skip that wheel; they draw mostly below 0x20 (0, 3, 5, 0x10, 0x1e, 0x1f) plus 0x20 and 0xff so both sides occur. Bytes +0x76/+0x86 are only OR-ed; the background is random bytes.",
+  "size": 584,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x240", "type": "u8", "count": 4, "stride": 1, "values": [0, 3, 5, 16, 30, 31, 32, 255]}
+  ]
+}

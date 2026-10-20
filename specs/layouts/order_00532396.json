@@ -1,0 +1,62 @@
+{
+ "_evidence": "0x00532396 (compose after drv_005117d3+tabs_0043ced2+trk_007ad894, which serve 0x548e66 and the circuit index): after 0x548e66 sets the place count [0x831a61] (clamped 1..22: the 22 cars), for k = 1..count 'movzx edx,byte [ebx]; and edx,0x3f; dec edx' takes driver d from the order byte 0x7c31dc[k-1], reads the time dword [0x7c3208 + 4d] and stores k at 0x7c2f2d + [0x7ad894] + 0x11*d unless 'cmp eax,0x80000000; je' or 'cmp eax,-1000; jle'. The order bytes are drawn with low six bits 1..22 (the two high flag bits vary too) plus a few 0 (d = -1: reads the neighbouring dword 0x7c3204, a separate global, and stores 0x11 bytes below the table; valid memory, so the domain keeps it) - the 22 order bytes 0x7c31dc..0x7c31f1. The 23 time dwords 0x7c3204..0x7c325c are drawn from the no-time marker 0x80000000, the -1000 boundary (-1001, -1000, -999), zero, small, large and negative values, so the 0x5323ca je and the 0x5323d1 jle are taken and not taken. Plain loads, compares and byte stores: every value is valid. The race-type byte [0x7ad8b2] read by 0x548e66 ('cmp byte [0x7ad8b2],0; je': nonzero first counts the 0x7c2a48 bytes with bit 7 set (split by bit 6) through 0x52ceef, 'add eax,edx; cmp eax,1; ja' uses that count directly) is drawn zero and nonzero (plain compare). Values are synthetic.",
+ "globals": [
+  {
+   "addr": "0x007ad8b2",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0xff",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x007c31dc",
+   "type": "u8",
+   "count": 22,
+   "stride": 1,
+   "values": [
+    1,
+    2,
+    3,
+    5,
+    8,
+    11,
+    14,
+    17,
+    20,
+    21,
+    22,
+    "0x41",
+    "0x56",
+    "0x83",
+    "0xc7",
+    0
+   ]
+  },
+  {
+   "addr": "0x007c3204",
+   "type": "u32",
+   "count": 23,
+   "stride": 4,
+   "values": [
+    "0x80000000",
+    "0x80000000",
+    "0x80000000",
+    "0xfffffc17",
+    "0xfffffc18",
+    "0xfffffc19",
+    0,
+    1,
+    "0x3e8",
+    "0x12345",
+    "0x7fffffff",
+    "0xffffffff",
+    "0x80000001",
+    "0xfff00000"
+   ]
+  }
+ ]
+}

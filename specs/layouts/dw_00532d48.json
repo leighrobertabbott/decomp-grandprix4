@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x00532d48: 'cmp byte [0x7ad869],0; jne' (the hardware-renderer byte; fuzz:i32 made it nonzero almost always) then 0x541eba stores esi to 0x7a9788, clears 0x7a9790 and copies the dword 0x7a9784 to 0x7a9780 and eax. 0x7a9784 was never varied (read only by the callee). Plain byte/dword loads and stores at fixed addresses: every value is valid.",
+ "globals": [
+  {"addr": "0x007ad869", "type": "u8", "values": [0, 0, 0, 1, "0xff", "0x80"]},
+  {"addr": "0x007a9784", "type": "u32"},
+  {"addr": "0x007a9790", "type": "u8"}
+ ]
+}

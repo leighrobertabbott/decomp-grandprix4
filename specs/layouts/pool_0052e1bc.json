@@ -1,0 +1,6 @@
+{
+ "_evidence": "Overlay for 0x0052e1bc on pool_005389b9 (compose after it): 'mov eax,0x754e; call 0x5389b9; jb 0x52e3bb' requests 0x754e bytes (the file-list buffer [0x826b6c]..[0x826b70]), which 0x5389b9 grants only when free end [0x82fcb0] - 0x754e >= used end 0xa06100 (lowered by evictions to no less than 0xa06000); pool_005389b9 caps the free end at 0xa06300, so the request never fitted and only the early-exit blocks ran. Free end drawn from 0xa06100/0xa06300 (refused after the evictions: stc), 0xa0d60e (fits only once an eviction lowers the used end by >= 0x40), 0xa0d64e (exact fit), 0xa0e000 and 0xa10000 (fit at once). The granted block lies inside 0xa06000..0xa10000, part of the zero-initialised .data stretch 0xa05c40..0xa48cd8 that no instruction addresses directly (pool_005449fd uses the same area), so every write stays in writable data. Values are synthetic.",
+ "globals": [
+  {"addr": "0x0082fcb0", "type": "u32", "values": ["0xa06100", "0xa06300", "0xa0d60e", "0xa0d64e", "0xa0d64e", "0xa0e000", "0xa10000"]}
+ ]
+}

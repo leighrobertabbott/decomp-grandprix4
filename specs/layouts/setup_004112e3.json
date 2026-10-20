@@ -1,0 +1,13 @@
+{
+ "_evidence": "Car-setup dwords stored by 0x4112e3 (fistp from the setup): [0x601314] (0x41adbd: the rev limit returned for |gear| < 2) and [0x601324] (0x41adbd: added to the per-gear threshold word). Read by compares, add/sub and moves only: any i32.",
+ "globals": [
+  {
+   "addr": "0x00601314",
+   "type": "i32"
+  },
+  {
+   "addr": "0x00601324",
+   "type": "i32"
+  }
+ ]
+}

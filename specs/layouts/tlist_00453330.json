@@ -1,0 +1,22 @@
+{
+ "size": 4,
+ "_evidence": "Triangle-index list of one grid cell of the collision mesh (see mesh_00453330): 0x453406 'mov ax,word [ebx]' then 'add ebx,2' per entry, the index times 0x18 into the triangle array [0x9fb0bc]. Two entries, each a triangle 0..1 of tris_00453330.",
+ "fields": [
+  {
+   "off": 0,
+   "type": "u16",
+   "values": [
+    0,
+    1
+   ]
+  },
+  {
+   "off": 2,
+   "type": "u16",
+   "values": [
+    0,
+    1
+   ]
+  }
+ ]
+}

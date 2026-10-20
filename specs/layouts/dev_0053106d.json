@@ -1,0 +1,16 @@
+{
+ "_evidence": "0x0053106d (compose after count_007a97a4+sel_00531859): the gate 'cmp byte [0x7a97a3],0; je go; cmp byte [0x82741e],0; je exit' (both outcomes of each byte). It walks [0x7a97a4]+1 (1..3, count_007a97a4) device records 0x827160 + k*0x3c in step with the dwords 0x7ad880 + 4k: 'cmp byte [ebx+5],4' (values 4 often, else 0/2/3), 'mov edx,[esi]; or edx,edx' and then the UNBOUNDED search 'cmp edx,[ebx+eax*4+0x14]; jne inc'. The only writer of 0x7ad880.. is 0x530f3f, which stores 0 or the result of 0x530f75 = 'mov eax,[ebx+ecx*4+0x14]' with ecx in 0..6, i.e. one of the record's own seven key dwords +0x14..+0x2c; so a nonzero entry is always found within the first 7 columns. The layout keeps that invariant: each entry aliases one key column of its own record (record 0 column 6 = 0x82718c, record 1 column 3 = 0x8271bc, record 2 column 5 = 0x827200) in half the cases and is 0 otherwise; keys repeat (small values, duplicates), so the first match lands anywhere from column 0 to the aliased one and the found columns of different records compare >, == and <. The column value 'mov ecx,[ebx+eax*4+0x28]' (+0x28..+0x40: keys 5/6 and the random dwords of sel_00531859) is plain data; 'mov esi,[ebx]' (owner, 0 adds w>>2) is drawn from {0,0,1,2,3}. [0x827469] is read after the loop even when no record was taken ('or eax,eax' -> 0x7ad869/0x7ad86c), so it is varied too; 0x827471/0x827475 are written by the first taken record before they are compared.",
+ "globals": [
+  {"addr": "0x007a97a3", "type": "u8", "values": [0, 0, "0xff", 1]},
+  {"addr": "0x0082741e", "type": "u8", "values": [0, 1, "0x80"]},
+  {"addr": "0x00827165", "type": "u8", "count": 3, "stride": "0x3c", "values": [4, 4, 4, 4, 0, 2, 3]},
+  {"addr": "0x00827160", "type": "u32", "count": 3, "stride": "0x3c", "values": [0, 0, 1, 2, 3]},
+  {"addr": "0x00827174", "type": "u32", "count": 7, "stride": 4, "values": [0, 1, 2, 3, 3, 4, 5, 6, "0x41", "0x80000001"]},
+  {"addr": "0x008271b0", "type": "u32", "count": 7, "stride": 4, "values": [0, 1, 2, 3, 3, 4, 5, 6, "0x41", "0x80000001"]},
+  {"addr": "0x008271ec", "type": "u32", "count": 7, "stride": 4, "values": [0, 1, 2, 3, 3, 4, 5, 6, "0x41", "0x80000001"]},
+  {"addr": "0x007ad880", "type": "u32", "lo": 0, "hi": 0, "alias": "0x0082718c"},
+  {"addr": "0x007ad884", "type": "u32", "lo": 0, "hi": 0, "alias": "0x008271bc"},
+  {"addr": "0x007ad888", "type": "u32", "lo": 0, "hi": 0, "alias": "0x00827200"},
+  {"addr": "0x00827469", "type": "u32", "values": [0, 0, 1, 2, 3, "0x80000000"]}
+ ]
+}

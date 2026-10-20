@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x0043260e compares esi (a car record) with the car pointers stored at 0x0066d828 (cmp/je at 0x00432617, only when byte 0x007aafd4 is nonzero, test at 0x0043260e) and 0x0066d820 (cmp/jne at 0x0043261f); on equality with 0x0066d820 the word 0x007c2eb8 is compared signed with 2 (jl at 0x00432630) and the dword 0x0066d814 is copied to 0x0066d83c; otherwise byte [esi+0x8d] gets bit 0x40 (then the accepted tail 0x00418097 touches [esi+0x7b]/[esi+0xce]/[esi+0xfe]). The two pointers are only compared here, never dereferenced, so each holds esi itself in about half the cases (alias_reg) and a random dword otherwise; 0x007aafd4 is an unconstrained byte (zero and nonzero), 0x007c2eb8 an unconstrained i16 (both sides of 2), 0x0066d814 a free dword. 0x0066d83c is only written. Nothing can fault.",
+  "globals": [
+    {"addr": "0x007aafd4", "type": "u8"},
+    {"addr": "0x0066d828", "type": "u32", "alias_reg": "esi"},
+    {"addr": "0x0066d820", "type": "u32", "alias_reg": "esi"},
+    {"addr": "0x007c2eb8", "type": "i16"},
+    {"addr": "0x0066d814", "type": "u32"}
+  ]
+}

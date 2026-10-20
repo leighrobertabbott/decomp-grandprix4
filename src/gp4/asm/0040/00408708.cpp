@@ -28,4 +28,4 @@ void __cdecl FUN_00408708(gp4::Regs* r) {
     r->ebp = callee.ebp;
     r->eflags = (r->eflags & ~0x8d5u) | (callee.eflags & 0x8d5u);
 }
-GP4_IMPL(0x00408708, FUN_00408708, "regs(esi:ptr[0x267]:bytes) -> (cf, pf, af, zf, sf, of)")
+GP4_IMPL(0x00408708, FUN_00408708, "regs(esi:ptr[0x267]:bytes) -> (cf, pf, af, zf, sf, of); globals=layout=flags_0066d909")

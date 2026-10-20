@@ -1,0 +1,11 @@
+{
+ "_evidence": "Slider item (esi) drawn by 0x53bd15 (tail of 0x53bd05 with dl = 0xff and 0x53bd0d with dl = 0); compose after rec_005297ba+item_0053a393 (random record, +0xe -> 8-byte value cell, +0x12 text id 0..7 for 0x54d798). The four static items that own these handlers (0x8476c0/0x84770c: +0x16 = 0x53bd05; 0x8476e6/0x847732: +0x16 = 0x53bd0d) carry rect words +4/+6/+8/+0xa = (0x138|0x1d0, 0xf9|0x187, x+0x17, y+0x51), width byte +0xd = 2, value cell +0xe, text id +0x12 = 0 and bar ids +0xc = 3, 4, 5, 6. 0x53bd15: 'mov ebx,[esi+0xe]; call 0x539944' (cell read at the +0xd width), value - 0x1428 clamped to 0..0xd70; 0x53bdcd: 'mul 0x50; div 0xd70' (quotient <= 0x50), the rect words go to 0x82fcf9..0x82fd05 and the pool list (0x549db9, list_00549db9), 'mul [0x82fd18]; div 4' (64-bit product of a dword and 4: the quotient always fits) - any words are valid; drawn as small screen coordinates on both sides of each other. Then 0x503550(bar id = byte +0xc, x, colour) looks the bar id up in the constant table 0x668238 ((control id, key) pairs for keys 1,3..0xa, 0-terminated) through 0x4fd5b0: keys 3..6 of the static items always find a control (0x10e9/0x10eb/0x10ea/0x10ec), and the found path needs the front-end GUI object graph (0x5b4d40 -> [0xb2dd0c] null -> 'mov eax,[esi]' faults at 0x5035ac; with the object, 0x5b7b60/0x5b7950 make virtual calls [vtbl+0x20]/[vtbl+0x5c] on the control object [0xb3d52c + 4*id] without a null test). So +0xc is drawn from the static items' bar ids only.",
+ "size": 64,
+ "fields": [
+  {"off": 4, "type": "u16", "values": ["0x138", "0x1d0", "0xec", 0, "0x27f"]},
+  {"off": 6, "type": "u16", "values": ["0xf9", "0x187", 0, "0x1df"]},
+  {"off": 8, "type": "u16", "values": ["0x14f", "0x1e7", "0x103", "0x27f", 0]},
+  {"off": "0xa", "type": "u16", "values": ["0x14a", "0x1d8", "0x1df", 0]},
+  {"off": "0xc", "type": "u8", "values": [3, 4, 5, 6]}
+ ]
+}

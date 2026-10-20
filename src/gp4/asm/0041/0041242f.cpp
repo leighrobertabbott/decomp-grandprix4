@@ -69,4 +69,4 @@ void __cdecl FUN_0041242f(gp4::Regs* r) {
     r->eax = quotient;
     r->eflags = (r->eflags & ~0x8d5u) | flags;
 }
-GP4_IMPL(0x0041242f, FUN_0041242f, "regs(eax:u32, edx:ptr[0x88]:bytes) -> (eax, edx, cf, pf, af, zf, sf, of); globals=keep")
+GP4_IMPL(0x0041242f, FUN_0041242f, "regs(eax:u32, edx:ptr[0x88]:bytes) -> (eax, edx, cf, pf, af, zf, sf, of); globals=layout=state_0041242f; cases=200")

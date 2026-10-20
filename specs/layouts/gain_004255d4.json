@@ -1,0 +1,23 @@
+{
+ "_evidence": "Gain [0x623df6] for 0x004255d4's guard c = (+0xda * gain) >> 10 (other_004255d4): the game derives it as 0x4000000/[0x603854] (0x4124ea, 0x400..0x200000 for the 32..65535 rate); drawn from 1024..0x200000 values including 3072/4096 (c/2 = +-1 with +0xda = +-1, the equality cases), their negatives (-3072 weighted: with +0xda = -1 it gives c/2 = +1 for a negative d) (a negative c with the same-sign d: the 0x425641 sub-branch) and 0/1. imul/shrd only.",
+ "globals": [
+  {
+   "addr": "0x00623df6",
+   "type": "u32",
+   "values": [
+    1024,
+    3072,
+    3072,
+    4096,
+    "0x8000",
+    "0x200000",
+    "0xfffff400",
+    "0xfffff400",
+    "0xfffff400",
+    "0xfffffc00",
+    0,
+    1
+   ]
+  }
+ ]
+}

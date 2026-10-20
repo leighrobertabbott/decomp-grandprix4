@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x0052f44d: 'call 0x54d755' translates al through the table 0x833e18 (xlat_00833e18), then 'movzx ebx,al; add ebx,0x81e9a7; mov al,[ebx]; cmp al,3/5/4' reads a drive-type byte. 0x81e9a7 + 'a' = 0x81ea08 is the 26-entry drive-type table filled at start-up by 0x54bdcb (one byte per drive A..Z, compared with 3 there and with 5 by 0x5370bd: GetDriveType-style codes 0..6); keys outside 'a'..'z' read neighbouring bytes, which the function only compares. So the whole 256-byte window 0x81e9a7..0x81eaa6 is drawn from {0..6, 0xff} weighted to 3/4/5 (both the scan and the early exit). The scan then compares the translated first byte of each of the four 0x105-byte path records at 0x82474b (drives_0082474b: random) with the key and else looks for a record whose first byte is 0 ('cmp byte [edi],0; je'): the record first bytes 0x82474b + k*0x105 are drawn here from a set with NUL in ~2/9 of the draws so the match, empty-slot and no-slot exits all occur (compose after drives_0082474b). On a hit 'mov esi,0x81e7f2; mov ecx,0x104; rep movsb' copies the current path buffer (0x81e7f2, 0x104 bytes, random so the copy is visible) into the record.",
+ "globals": [
+  {"addr": "0x0081e9a7", "type": "u8", "count": 256, "stride": 1, "values": [0, 1, 2, 3, 3, 4, 4, 5, 5, 6, "0xff"]},
+  {"addr": "0x0081e7f2", "type": "u8", "count": 260, "stride": 1},
+  {"addr": "0x0082474b", "type": "u8", "count": 4, "stride": "0x105", "values": [0, 0, "0x41", "0x43", "0x61", "0x63", "0x5f", "0x20", "0x7a"]}
+ ]
+}

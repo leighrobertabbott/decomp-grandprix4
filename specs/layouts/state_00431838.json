@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x00431838 compares |[esi+0xe] - ([[esi+0x1c]] + ax)| with the word 0x00603ad0 (cmp/jg at 0x00431851) and, when byte [esi+0xe5] bit 0 is set, |[esi+0xe] - [esi+0x18]| with the word 0x00603ad2 (cmp/jl at 0x00431874). Both words are tuning constants read by no other function (static 0x0c00 and 0x0800); they are varied over 0..0x7fff (the static values included) so both outcomes of each signed compare occur often enough to reach all nine blocks (with the static values the stc paths are hit in only a few percent of cases). No value can fault.",
+  "globals": [
+    {"addr": "0x00603ad0", "type": "i16", "lo": 0, "hi": 32767},
+    {"addr": "0x00603ad2", "type": "i16", "lo": 0, "hi": 32767}
+  ]
+}

@@ -1,0 +1,127 @@
+{
+ "_evidence": "Free-node pool of the sorted draw list, for callers that insert SEVERAL entries per call (0x52822a calls 0x549db9 once per live animation slot, up to 8 times). 0x549d81 builds the pool: 'mov edi,0x831d89; mov [0x831d85],edi' then 255 x 'mov [edi],edi+0x14; add edi,0x14' and a null last link, i.e. 256 linked 0x14-byte nodes at 0x831d89; 0x549db9 pops 'mov edi,[0x831d85]; mov edx,[edi]; mov [0x831d85],edx' whenever the count [0x831d7d] is below 0x100, so the free list always has 0x100-count valid nodes. list_00549db9 gives the head one random 0x14-byte buffer, whose random +0 link faults on the second pop (fault@0x549dfe). Here (compose AFTER list_00549db9; it keeps the count and the used-list head) the head points into the real pool at node 0..7 and nodes 0..15 carry their builder links (node k +0 = 0x831d89+(k+1)*0x14), so at least 9 distinct, acyclic free nodes follow the head: every pop of up to 8 inserts is valid. Nodes +4..+0x10 are written by the insert before the list walk reads +8. Values are the addresses 0x549d81 itself computes (not image bytes).",
+ "globals": [
+  {
+   "addr": "0x00831d85",
+   "type": "u32",
+   "points_into": {
+    "base": "0x831d89",
+    "stride": "0x14",
+    "lo": 0,
+    "hi": 7
+   }
+  },
+  {
+   "addr": "0x831d89",
+   "type": "u32",
+   "values": [
+    "0x831d9d"
+   ]
+  },
+  {
+   "addr": "0x831d9d",
+   "type": "u32",
+   "values": [
+    "0x831db1"
+   ]
+  },
+  {
+   "addr": "0x831db1",
+   "type": "u32",
+   "values": [
+    "0x831dc5"
+   ]
+  },
+  {
+   "addr": "0x831dc5",
+   "type": "u32",
+   "values": [
+    "0x831dd9"
+   ]
+  },
+  {
+   "addr": "0x831dd9",
+   "type": "u32",
+   "values": [
+    "0x831ded"
+   ]
+  },
+  {
+   "addr": "0x831ded",
+   "type": "u32",
+   "values": [
+    "0x831e01"
+   ]
+  },
+  {
+   "addr": "0x831e01",
+   "type": "u32",
+   "values": [
+    "0x831e15"
+   ]
+  },
+  {
+   "addr": "0x831e15",
+   "type": "u32",
+   "values": [
+    "0x831e29"
+   ]
+  },
+  {
+   "addr": "0x831e29",
+   "type": "u32",
+   "values": [
+    "0x831e3d"
+   ]
+  },
+  {
+   "addr": "0x831e3d",
+   "type": "u32",
+   "values": [
+    "0x831e51"
+   ]
+  },
+  {
+   "addr": "0x831e51",
+   "type": "u32",
+   "values": [
+    "0x831e65"
+   ]
+  },
+  {
+   "addr": "0x831e65",
+   "type": "u32",
+   "values": [
+    "0x831e79"
+   ]
+  },
+  {
+   "addr": "0x831e79",
+   "type": "u32",
+   "values": [
+    "0x831e8d"
+   ]
+  },
+  {
+   "addr": "0x831e8d",
+   "type": "u32",
+   "values": [
+    "0x831ea1"
+   ]
+  },
+  {
+   "addr": "0x831ea1",
+   "type": "u32",
+   "values": [
+    "0x831eb5"
+   ]
+  },
+  {
+   "addr": "0x831eb5",
+   "type": "u32",
+   "values": [
+    "0x831ec9"
+   ]
+  }
+ ]
+}

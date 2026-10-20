@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x0042f450 passes eax = [0x6223e8] to 0x42a0cf, which clamps eax + word [esi+0xb6] to <= 0x7fff and >= [0x6223f4] (signed). Both plain i32: every value is valid and both clamps occur.",
+  "globals": [
+    {"addr": "0x006223e8", "type": "i32"},
+    {"addr": "0x006223f4", "type": "i32"}
+  ]
+}

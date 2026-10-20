@@ -1,0 +1,6 @@
+{
+ "_evidence": "Sound-system session for 0x509d80 (called by 0x53edd4 'call 0x509d80; ret', reached from the menu handler 0x53ed4f). 0x509d80: 'mov eax,[0xb1d3d8]; mov ecx,[eax+4]; mov eax,[ecx+0x238]; test eax,eax; jne'. [0xb1d3d8] is written only by the sound init at 0x509f2f (HeapAlloc(8) -> ctor 0x4cac70: vtable 0x5f0d14 at +0, +4 = HeapAlloc(0x274) object built by 0x4d87e0) and is dereferenced without a null test here and in 0x509ca0/0x509f59/0x50a00b, so callers only run with it set: non-null ptr[8] (sessobj_00b1d3d8). +4 -> 0x274-byte sound manager (sndmgr_00b1d3d8) whose +0x238 is the current DirectSound device wrapper (written 0 by the base ctor 0x4d6543, set from [[+0x234]+4] by 0x4d88ef) - either null (0x509d94 early return, al=0) or a device (sndev_00b1d3d8).",
+ "globals": [
+  {"addr": "0x00b1d3d8", "type": "ptr", "size": 8, "fill": "layout=sessobj_00b1d3d8"}
+ ]
+}

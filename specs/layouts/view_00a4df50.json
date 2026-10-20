@@ -1,0 +1,14 @@
+{
+ "_evidence": "Viewport flag records for the twins 0x4814c0/0x481520/0x481580/0x4815e0 (tails of 0x51f060/0x51f07a/0x51f094): 'mov eax,[0xa4df50]; imul by 0x43; shl 3' selects the 0x218-byte record 0xa4b430 + k*0x218 whose six flag bytes +0..+5 are cleared, then 'cmp byte [0x7c2e6c],0; je' picks record 0 or ([0x645950] - 1) and sets one byte (+0, +1 or +2 for the three twins) to 1. [0xa4df50] is the viewport index stored by 0x49a1a0 (its argument) and used there as an index into the per-viewport byte array 0xa53aac and the dword array 0xa5110c: drawn 0..3. [0x645950] is the active player number the menu code cycles 1..[0x64594c] ('inc [0x645950]; cmp eax,[0x64594c]; jle' else 1, or set to 1/2): drawn 1..4. Byte [0x7c2e6c] (the two-player flag also used by save_00510309) draws 0 and nonzero. The six flag bytes of records 0..3 are random so the clears and the store of 1 are visible. Every index stays inside the 20-record array (0xa4b430..0xa4df50), so nothing faults; image values were the only inputs before (fuzz:i32 had no globals to vary in the tail wrappers).",
+ "globals": [
+  {"addr": "0x00a4df50", "type": "u32", "lo": 0, "hi": 3},
+  {"addr": "0x00645950", "type": "u32", "lo": 1, "hi": 4},
+  {"addr": "0x007c2e6c", "type": "u8", "values": [0, 0, 1, "0xff"]},
+  {"addr": "0x00a4b430", "type": "u8", "count": 4, "stride": "0x218"},
+  {"addr": "0x00a4b431", "type": "u8", "count": 4, "stride": "0x218"},
+  {"addr": "0x00a4b432", "type": "u8", "count": 4, "stride": "0x218"},
+  {"addr": "0x00a4b433", "type": "u8", "count": 4, "stride": "0x218"},
+  {"addr": "0x00a4b434", "type": "u8", "count": 4, "stride": "0x218"},
+  {"addr": "0x00a4b435", "type": "u8", "count": 4, "stride": "0x218"}
+ ]
+}

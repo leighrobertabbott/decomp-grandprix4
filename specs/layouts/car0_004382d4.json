@@ -1,0 +1,31 @@
+{
+  "_evidence": "0x004382d4 with esi fixed to car record 0 (0x66fef0): dword [esi] (0x438313 add eax,[esi]) and [esi+4] (0x43834a) are the car x/z positions, word [esi+0xe] (0x4382df add ax,[esi+0xe]) its heading. They are car state written by the game, so they vary here (compose after ring_004317ae+ring_0043edd3+ring_00405a12). x + sin/cos(heading+probe)*[0x629f24]>>14 is stored, >>11, into 0x623e30/0x623e38, which 0x406262 (one ring step) reads as record-frame coordinates; ring_00405a12 needs those in -32768..32766 (car positions are i16 frame coordinates <<11, so |x| < 2^26 in the game). The probe word table 0x629f1c..0x629f23 (0x90a9, 0x6f57, 0xef57, 0x10a9) and the multiplier 0x629f24 (0x20b00) are static .data that only 0x4381ab/0x4382d4 read and nothing writes (xref), so they stay constant; with |offset| <= 0x20b00 the positions are drawn in -0x3fd0000..0x3fd0000 so the shifted coordinates stay in the frame. The heading is any i16 (Q16 angle; the 16-bit sum wraps, the sine-table index (|a|>>2)&0xfffe <= 0x2000 stays inside the constant table 0x7c5c5c). Nothing here is a pointer or divisor. Car 0's segment pointer +0x1c (0x66ff0c, edi for the 0x406262 step at 0x43835a) is a record-aligned pointer to records 0..11, the start domain of 0x406262's own spec: ring_00405a12 models one coherent track of records 0..14 (lap 0..E-1, pit 9..14) and every record one step from 0..11 is inside it, so all words the step and 0x438374..0x438446 then read from the returned record (+0, +4, +8, +0x14, byte +0x92) are varied (ring_0043edd3 +0, ring_00405a12 +4/+8/+0x92, ring_004317ae +0x14); ring_004317ae alone drew 0..29, whose records 15..30 lie outside that track and were static zero.",
+  "globals": [
+    {
+      "addr": "0x0066fef0",
+      "type": "i32",
+      "lo": -66912256,
+      "hi": 66912256
+    },
+    {
+      "addr": "0x0066fef4",
+      "type": "i32",
+      "lo": -66912256,
+      "hi": 66912256
+    },
+    {
+      "addr": "0x0066fefe",
+      "type": "i16"
+    },
+    {
+      "addr": "0x0066ff0c",
+      "type": "u32",
+      "points_into": {
+        "base": "0x008943a0",
+        "stride": "0x160",
+        "lo": 0,
+        "hi": 11
+      }
+    }
+  ]
+}

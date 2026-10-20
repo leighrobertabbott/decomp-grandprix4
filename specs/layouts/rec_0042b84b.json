@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x0042b84b / 0x0042b86b compare word [esi+0xea] with -8 / 8 (jne returns) and then ebx with dword [esi+0x114] (equal: store 8 / -8 into +0xea). The word takes 0xfff8 and 8 in two thirds of the picks; the dword is 0..3 like the spec's ebx, so equality occurs in about a quarter of the cases. No other bytes are read.",
+  "size": 284,
+  "fields": [
+    {"off": "0xea", "type": "u16", "values": ["0xfff8", "0xfff8", 8, 8, 0, "0x20"]},
+    {"off": "0x114", "type": "u32", "lo": 0, "hi": 3}
+  ]
+}

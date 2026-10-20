@@ -1,0 +1,7 @@
+{
+ "_evidence": "Overlay for the car at esi of 0x004147d6 (compose after rec_00414562+rec_00426091+car_00425473+car_004149f4): dword +0x128 is the car's target/neighbour car block pointer (car_004149f4: null in about a quarter of the cases, else a 264-byte block with pos_00405cf8 positions); here the block also varies its flag byte +0xff (body_004147d6), which 0x4147d6 tests for bit 3 after the null check. Nothing else changes.",
+ "size": 576,
+ "fields": [
+  {"off": "0x128", "type": "ptr", "size": 264, "fill": "layout=pos_00405cf8+body_004147d6", "nullable": true}
+ ]
+}

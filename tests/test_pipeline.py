@@ -144,5 +144,22 @@ class NativeAdapterTest(unittest.TestCase):
         self.assertIn("ALL PASS", r.stdout)
 
 
+@unittest.skipUnless(have_msvc(), "needs MSVC x86")
+class NativeFlagsTest(unittest.TestCase):
+    def test_flag_helpers_match_the_cpu(self):
+        from gp4re import msvc
+        from gp4re.paths import build_dir
+        env = msvc.msvc_env()
+        out = build_dir() / "native"
+        out.mkdir(parents=True, exist_ok=True)
+        exe = out / "test_flags.exe"
+        rc, log = msvc._run(["cl", "/nologo", "/O2", "/arch:IA32", "/MT", "/EHsc", "/std:c++17",
+                             f"/I{ROOT / 'include'}", f"/Fe{exe}", f"/Fo{out}\\",
+                             str(ROOT / "tests/native/test_flags.cpp")], env, ROOT)
+        self.assertEqual(rc, 0, log[-2000:])
+        r = subprocess.run([str(exe)], capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stdout)
+        self.assertIn("ALL PASS", r.stdout)
+
 if __name__ == "__main__":
     unittest.main()

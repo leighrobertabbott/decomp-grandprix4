@@ -1,0 +1,20 @@
+{
+ "_evidence": "0x0055ab0e parses a word stream at esi into the 32-entry dword tables 0x6f2f6c.. (index ebx). Per entry: word 0 'mov ax,[esi]; cmp ax,-1; je 0x55ac7d' (0xffff ends the stream; with ebx = 0 that is the int3 0x55ac82), words 0/3/5 go through 0x55ac8a ('test ax,0x4000; jne; test ax,0x8000; je; int3': 0x8000..0xbfff fault; then edi = 0x8943a0 + 0x160*min(ax & 0x3fff, word [0x868558]-1), signed jle), the first record's dword +0x2c is OR'ed into its +0x30/+0x34/+0x38/+0x3c/+0x40 (0x559bc0), the third record must lie below [0x866ef8] - 0x840 (else int3 0x55ab90), words 1,2,4,6..9 are movsx'd, then word [0x86855c] bit 0x800 adds words 10..14 and (bit 0x80 under it) word 15 ('or eax,eax; jne', 0 takes 0x6f316c[n]), bit 0x40 adds two movsx words and a movzx word; 'inc ebx; cmp ebx,0x20; jle' (a 33rd entry is the int3 0x55ac77). So the valid domain: no stream word in 0x8000..0xbfff (any word can sit at an id position), the first word not 0xffff, a terminator within 32 entries (each 10..19 words: 0xffff is 1/4 of the draws after word 0, so more than 32 entries has probability 0.75^32 = 1e-4; 0x600 bytes hold 32 entries of 19 words), and record count 1..20 with the pit end record 27..32 (a record-aligned pointer as in ring_008943a0, pit end 1..32), so every clamped third record (index <= 19) lies below pit end - 6 records (0x840 = 6*0x160): the game asserts that invariant with the int3. Count 0 is not drawn (edx = -1 makes the id -1 and the record 0x160 below the array). Word values cover zero (the 0x55ac2b fallback), small and clamped ids (> count-1, 0x3fff), bit-14 ids (0x4000..0x7fff, 0xc000..0xfffe) and negative movsx data. Globals: dwords +0x2c (-1..20, flag-like) and +0x30..+0x40 (any u32; only OR'ed) of records 0..19 vary; [0x86855c] word from every combination of the three tested bits plus junk-bit patterns (other bits are not read here).",
+ "size": 1536,
+ "fill": "zero",
+ "fields": [
+  {"off": 0, "type": "u16", "values": [0, 1, 2, 5, 19, 20, "0x3fff", "0x4000", "0x4007", "0x7fff", "0xc000", "0xc013", "0xfffe"]},
+  {"off": 2, "type": "u16", "count": 767, "stride": 2, "values": ["0xffff", "0xffff", "0xffff", "0xffff", 0, 0, 1, 2, 5, 19, 20, "0x3fff", "0x4000", "0x4007", "0x7fff", "0xc000"]}
+ ],
+ "globals": [
+  {"addr": "0x00868558", "type": "u16", "lo": 1, "hi": 20},
+  {"addr": "0x00866ef8", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 27, "hi": 32}},
+  {"addr": "0x0086855c", "type": "u16", "values": [0, "0x40", "0x80", "0xc0", "0x800", "0x840", "0x880", "0x8c0", "0xffff", "0x7f3f"]},
+  {"addr": "0x008943cc", "type": "i32", "count": 20, "stride": "0x160", "lo": -1, "hi": 20},
+  {"addr": "0x008943d0", "type": "u32", "count": 20, "stride": "0x160"},
+  {"addr": "0x008943d4", "type": "u32", "count": 20, "stride": "0x160"},
+  {"addr": "0x008943d8", "type": "u32", "count": 20, "stride": "0x160"},
+  {"addr": "0x008943dc", "type": "u32", "count": 20, "stride": "0x160"},
+  {"addr": "0x008943e0", "type": "u32", "count": 20, "stride": "0x160"}
+ ]
+}

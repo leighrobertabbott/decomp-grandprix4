@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x00406a57 clamps edi to the record window [0x00866ed0, 0x00866ed4) (cmp/jb, cmp/jb: below start -> start, at/after end -> end-0x160), then walks forward with 0x406a31 (add edi,0x160; cmp [0x866ed4]; jbe: stops past the end) or backward with 0x406a43 (sub edi,0x160; cmp [0x866ed0]; jae: stops below the start), classifying each record with 0x4067ea. Both bounds are record-aligned pointers into the 0x160-byte array at 0x008943a0 (start before end, as in the game): start records 0..10, end records 11..25, so every record the walk classifies (start-1 .. end) is one of the records ring_00406ac7 varies (compose after it: its record 2 always gives CF=1 and record 3 CF=0, so walks stop on a classification inside the window in some cases and run to a bound in others). 0x4067ea is fault-free for every field value (fild/fpatan/fistp with masked exceptions, signed compares).",
+  "globals": [
+    {"addr": "0x00866ed0", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 10}},
+    {"addr": "0x00866ed4", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 11, "hi": 25}}
+  ]
+}

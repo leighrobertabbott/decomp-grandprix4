@@ -1,0 +1,46 @@
+{
+ "_evidence": "0x00531648 runs [0x8274ad] entries of one of the two static 7-entry callback tables (12-byte entries {fn0, fn1, x}: 0x8274b1 when byte [0x7ad869] != 0, else 0x827505; the code pointers are image constants such as 0x531721/0x53177b/0x531741/0x531743, so the tables are NOT varied: fuzz:i32 had overwritten their first dwords). The count is drawn 0..7: 0x5316b8 bounds its walk of the same tables by 7 ('cmp ecx,7; jb'). [0x7ad869] is 0 or 0xff (the only values stored by 0x530c2d/0x52fe95/0x53106d). The callbacks read [0x7ad87c] (cmp 0: stc/clc and 'mov byte [ebx+0x24],0'), [0x7ad86c] = device record - 1 (stored as [ebx]-1 for a nonzero record type 1..2 and used as (x+1)*0x3c + 0x827160 over the 3 records that 0x531859 walks, so 0 or 1) and test bits 4/8 of dword +8 of records 1 and 2 (0x8271a4, 0x8271e0). The callbacks write the render-state record ebx (+0..+0x27), which the spec supplies.",
+ "globals": [
+  {
+   "addr": "0x008274ad",
+   "type": "u32",
+   "lo": 0,
+   "hi": 7
+  },
+  {
+   "addr": "0x007ad869",
+   "type": "u8",
+   "values": [
+    0,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x007ad86c",
+   "type": "u32",
+   "values": [
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x007ad87c",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    1,
+    "0x10",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x008271a4",
+   "type": "u32"
+  },
+  {
+   "addr": "0x008271e0",
+   "type": "u32"
+  }
+ ]
+}

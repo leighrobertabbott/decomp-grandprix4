@@ -1,0 +1,85 @@
+{
+  "_evidence": "Added to recs_006380d8 for 0x00418942 (telemetry snapshot of the four 0x300-byte wheel records at 0x6380d8 into the 0xa8-byte slot 0x625abc+byte[esi+0x202]*0xa8, any byte stays inside .data). Per record (count 4, stride 0x300): byte +0x2e (test 0x20) and byte +0x2d (copied) are full-range; dword +0x26c is clamped to <= 0x7000 (jle), minus [0x62692c] or [0x626930] and clamped at 0 (jge), so it is a plain i32 (both sides of 0x7000) and the two offsets are -0x8000..0x8000 (the difference is negative in some cases, positive in others); the f64 gains +0x280/+0x288 multiply fild of that 0..0xf000 value and are fistp-ed and abs-ed, so they are finite in -4..4 (both signs: the neg blocks). 0x4187d3's flag bytes 0x625ab8..0x625abb and 0x638d1c (cmp/test with 0) are zero in some picks. Nothing here can fault; the f64 range only keeps fistp out of the indefinite-integer case. The flag dwords +0 and +4 of the 22 slots (read-modify-written bit by bit by 0x4187d3 and 0x418ef6) are full-range u32.",
+  "globals": [
+    {
+      "addr": "0x00638105",
+      "type": "u8",
+      "count": 4,
+      "stride": "0x300"
+    },
+    {
+      "addr": "0x00638106",
+      "type": "u8",
+      "count": 4,
+      "stride": "0x300"
+    },
+    {
+      "addr": "0x00638344",
+      "type": "i32",
+      "count": 4,
+      "stride": "0x300"
+    },
+    {
+      "addr": "0x00638358",
+      "type": "f64",
+      "count": 4,
+      "stride": "0x300",
+      "lo": -4,
+      "hi": 4
+    },
+    {
+      "addr": "0x00638360",
+      "type": "f64",
+      "count": 4,
+      "stride": "0x300",
+      "lo": -4,
+      "hi": 4
+    },
+    {
+      "addr": "0x0062692c",
+      "type": "i32",
+      "lo": -32768,
+      "hi": 32768
+    },
+    {
+      "addr": "0x00626930",
+      "type": "i32",
+      "lo": -32768,
+      "hi": 32768
+    },
+    {
+      "addr": "0x00625ab8",
+      "type": "u8",
+      "count": 4,
+      "stride": 1,
+      "values": [
+        0,
+        0,
+        1,
+        "0xff"
+      ]
+    },
+    {
+      "addr": "0x00638d1c",
+      "type": "u8",
+      "values": [
+        0,
+        0,
+        1,
+        "0xff"
+      ]
+    },
+    {
+      "addr": "0x00625abc",
+      "type": "u32",
+      "count": 22,
+      "stride": "0xa8"
+    },
+    {
+      "addr": "0x00625ac0",
+      "type": "u32",
+      "count": 22,
+      "stride": "0xa8"
+    }
+  ]
+}

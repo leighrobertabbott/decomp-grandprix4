@@ -1,0 +1,27 @@
+{
+ "_evidence": "0x52a0ec: 0x52a260 returns 0x7adb4c + 4 + driver*0xf28 + track*0xe4 with driver = [0x7c2f28] and track = [0x81d1dc] (when [0x81d1e8] == 0xff) or [0x7ad894] (trk_007ad894, 0..16); a 4-byte rep movsb stores there. Drivers 0..21 and tracks 0..16 keep the store inside the 22 x 0xf28 records (17 x 0xe4 < 0xf28); wild values store outside .data and fault.",
+ "globals": [
+  {
+   "addr": "0x007c2f28",
+   "type": "u32",
+   "lo": 0,
+   "hi": 21
+  },
+  {
+   "addr": "0x0081d1dc",
+   "type": "u32",
+   "lo": 0,
+   "hi": 16
+  },
+  {
+   "addr": "0x0081d1e8",
+   "type": "u8",
+   "values": [
+    "0xff",
+    "0xff",
+    0,
+    1
+   ]
+  }
+ ]
+}

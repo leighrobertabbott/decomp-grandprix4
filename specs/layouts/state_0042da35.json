@@ -1,0 +1,16 @@
+{
+ "_evidence": "Remaining scalar inputs of 0x0042da35's overtaking chain (compose LAST after the accepted list ending in step_0042b17e). Never-written tuning constants (no instruction in their readers 0x42c1f4/0x42cd1e/0x42d4e6/0x42d665/0x42d782/0x42d7de/0x42e330/0x42f05a stores to them), each drawn as its image value in about a third of the cases and otherwise other values: words 0x603b52 (0x40; 0x42d7de 'sub ax,[0x603b52]; js'), 0x603b9e (0x20; 0x42d4e6 sub, movsx, imul), 0x603bfa (0x280; copied to 0x603bf8), 0x603e60/0x603e62 (0x300/0xfd00; 0x42d782 signed word compares with [0x604404]: jg/jl), dwords 0x603bb8 (0x4000), 0x603bdc (0x10000), 0x603be4 (0x3000) (imul/shrd 14 factors) and 0x603be0 (0x40: 'cmp eax,[0x603be0]; jge' with eax = a record byte & 0x7f, the look-ahead distance n; then [edi + n*0x160 (+ wrap) + 0x10] is read: n < 0x80 keeps it inside .data, so 0..0x80 are drawn, all fault-free). Run-time state, any value: word 0x604404 (19 readers, gap/time value; movsx/imul/cmp) and the flag byte 0x6077c9 (OR-accumulated from segment bytes +0x51 by 0x42b27b, tested for 0x20/8 by 0x42bb90, cleared by 0x42beea). Only arithmetic, compares and the bounded look-ahead read: nothing faults.",
+ "globals": [
+  {"addr": "0x603b52", "type": "u16", "values": ["0x40", "0x40", "0x40", 0, "0x20", "0x100", "0x7fff", "0x8000", "0xffff"]},
+  {"addr": "0x603b9e", "type": "u16", "values": ["0x20", "0x20", "0x20", 0, "0x10", "0x100", "0x7fff", "0x8000", "0xffff"]},
+  {"addr": "0x603bfa", "type": "u16", "values": ["0x280", "0x280", "0x280", 0, "0x100", "0x7fff", "0x8000", "0xffff"]},
+  {"addr": "0x603e60", "type": "u16", "values": ["0x300", "0x300", "0x300", 0, "0x100", "0x7fff", "0x8000", "0xffff"]},
+  {"addr": "0x603e62", "type": "u16", "values": ["0xfd00", "0xfd00", "0xfd00", 0, "0x300", "0x7fff", "0x8000", "0xffff"]},
+  {"addr": "0x603bb8", "type": "u32", "values": ["0x4000", "0x4000", "0x4000", 0, "0x2000", "0x8000", "0x7fffffff", "0x80000000", "0xffffc000"]},
+  {"addr": "0x603bdc", "type": "u32", "values": ["0x10000", "0x10000", "0x10000", 0, "0x4000", "0x20000", "0x7fffffff", "0x80000000", "0xffff0000"]},
+  {"addr": "0x603be0", "type": "u32", "values": ["0x40", "0x40", "0x40", 0, 1, 8, "0x20", "0x7f", "0x80"]},
+  {"addr": "0x603be4", "type": "u32", "values": ["0x3000", "0x3000", "0x3000", 0, "0x1000", "0x8000", "0x7fffffff", "0x80000000", "0xffffd000"]},
+  {"addr": "0x604404", "type": "i16"},
+  {"addr": "0x6077c9", "type": "u8"}
+ ]
+}

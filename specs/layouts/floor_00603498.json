@@ -1,0 +1,6 @@
+{
+  "_evidence": "[0x603498] is the lower bound of 0x00416bbb's magnitude (|[ebx+0x1c]| compared signed with jge; image value 0xc0000, written by 0x4169c3). The bound feeds an unsigned 'div' only after the function replaces a bound not above the dividend's high dword, so every value is valid; the list mixes zero, small, the image value, huge and negative patterns so the floor wins and loses and the bound is both below and above |root|>>14.",
+  "globals": [
+    {"addr": "0x00603498", "type": "u32", "values": [0, 1, "0x40", "0x100", "0x10000", "0xc0000", "0xc0000", "0x7fffffff", "0xffffffff", "0x80000000"]}
+  ]
+}

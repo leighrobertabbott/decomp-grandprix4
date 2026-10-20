@@ -1,0 +1,11 @@
+{
+ "_evidence": "Texture-slot state for 0x51c894 (called only by 0x51c8c0 with ebx = 0x43d, 0x43f, 0x43e, 0x440; compose after args_0051c865). 'movzx ebx,word [ebx*2+0x9e1b20]' reads the slot words 0x9e239a/0x9e239c/0x9e239e/0x9e23a0 (zero in the image: runtime state); 'cmp bx,-1; je' = no texture (skip), otherwise the word is a byte offset of a 0x20-byte entry of the texture table 0x6975ec (as for slots_0051cb69/slots_0051cc50): drawn 0xffff (two in five) or 0/0x20/0x40, the first three entries. 'mov edi,[ebx]' loads the entry's pixel pointer (dereferenced by 0x51c865's callees with no null test) and 'test word [ebx+0x14],0x80; jne' keeps it, otherwise 'add edi,0x10000' (the second 64 KiB plane). With args_0051c865 the callees 0x51c80d/0x51c7c7 touch [edi+0, edi+0x2010) (32 rows of 0x100, offsets 0x20..0xd0, length <= 32, shift <= 16), so each entry's +0 points at a 0x12300-byte buffer (0x10000 + 0x2010 < 0x12300) of random bytes, and its flag word +0x14 has bit 7 clear and set with other bits mixed. Values are synthetic.",
+ "globals": [
+  {"addr": "0x009e239a", "type": "u16", "values": ["0xffff", "0xffff", 0, "0x20", "0x40"]},
+  {"addr": "0x009e239c", "type": "u16", "values": ["0xffff", "0xffff", 0, "0x20", "0x40"]},
+  {"addr": "0x009e239e", "type": "u16", "values": ["0xffff", "0xffff", 0, "0x20", "0x40"]},
+  {"addr": "0x009e23a0", "type": "u16", "values": ["0xffff", "0xffff", 0, "0x20", "0x40"]},
+  {"addr": "0x006975ec", "type": "ptr", "count": 3, "stride": "0x20", "size": "0x12300", "fill": "bytes"},
+  {"addr": "0x00697600", "type": "u16", "count": 3, "stride": "0x20", "values": [0, 0, "0x80", "0x80", "0x7f", "0xff7f", "0xffff"]}
+ ]
+}

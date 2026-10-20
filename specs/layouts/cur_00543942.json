@@ -1,0 +1,29 @@
+{
+ "_evidence": "0x543942 works on the 0x830b00 list block: +0 cursor, +4 count (sort_00542224 varies it), +8 window; 0x543917 walks [0x830bac] entries of the 40-pointer table 0x830b0c (sort_00542224 fills it) with lodsd, so a count above 40 reads past the table and dereferences garbage (fault). Cursor, window and count are only compared and subtracted: count 0..40, window from small values and the full 40, cursor 0..40.",
+ "globals": [
+  {
+   "addr": "0x00830bac",
+   "type": "u32",
+   "lo": 0,
+   "hi": 40
+  },
+  {
+   "addr": "0x00830b08",
+   "type": "u32",
+   "values": [
+    1,
+    2,
+    3,
+    5,
+    8,
+    40
+   ]
+  },
+  {
+   "addr": "0x00830b00",
+   "type": "u32",
+   "lo": 0,
+   "hi": 40
+  }
+ ]
+}

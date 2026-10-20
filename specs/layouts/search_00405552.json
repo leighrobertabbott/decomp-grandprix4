@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x00405552 is a bisection on the word [0x604116]: [0x604124] = word, step ebp = word >> 1, each pass 'sub/add [0x604124],ebp; shr ebp,1; cmp ebp,[0x604130]; jl exit' then calls 0x4054e6 (eax <= 0x4000) and exits when |eax - last| <= [0x60412c] ('cmp edx,[0x60412c]; jle') or |eax - ecx| <= [0x604128] ('cmp edx,[0x604128]; jle'); the sign of eax - ecx picks the sub (jl 0x405595) or add (jg 0x4055e0) phase. [0x604128]/[0x60412c]/[0x604130] are only referenced by 0x405552 and never written (image 2, 1, 16): the minimum step [0x604130] must be >= 1, otherwise ebp reaches 0 and the loop only ends if the solver result stops moving (unbounded in the original), so 1..0x400 with the image value weighted; the two tolerances take values on both sides of the |differences| (<= 0x4400 with ecx 0..0x4400), including <= 0 (never satisfied unless exactly equal). The word [0x604116] is written by 0x43dbdc with this function's result (a u16): any u16, small values included so the first step already falls below the minimum.",
+  "globals": [
+    {"addr": "0x00604116", "type": "u16", "values": [0, 1, "0x20", "0x100", "0x800", "0x2000", "0x3d00", "0x3d00", "0x4000", "0x7fff", "0xffff"]},
+    {"addr": "0x00604128", "type": "u32", "values": ["0xffffffff", 0, 1, 2, 2, 4, 16, 64, 256, 4096]},
+    {"addr": "0x0060412c", "type": "u32", "values": ["0xffffffff", 0, 1, 1, 2, 4, 16, 64, 256]},
+    {"addr": "0x00604130", "type": "i32", "values": [1, 2, 4, 16, 16, 16, 64, 256, 1024]}
+  ]
+}

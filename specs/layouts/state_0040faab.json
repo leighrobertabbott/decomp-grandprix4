@@ -1,0 +1,10 @@
+{
+ "_evidence": "Remaining state of 0x0040faab and its callees (compose after state_0040fa01+carx_0042fe2f+cur_00852d30). Byte 0x62fb4b ('cmp byte,0; je': or/and word [0x7ad892] with 0x40) is a flag: 0 in about 2/5 of the cases, else 1/0x40/0xff (fuzz:i32 wrote 4 random bytes over it and its neighbours). When [0x7aafd4] != 0 the replay/network writer 0x445303 -> 0x445342 runs: 0x444e03 appends the byte 0x7c2ead to the stream (any u8), 0x4453d1 and 0x4452a0/0x445423 branch on byte 0x7aafd8 == 0xff (drawn 0xff in half the cases, else 0/1/0xfe): 0xff skips the copy, any other value copies the packet ([0x62d1a0]-[0x62d19c] = 2 bytes after 0x4453bc reset both pointers) through 0x51f0ae/0x51f0b8 into the dispatcher 0x531f9c (cases 0x4b/0x4c: 0x54b8fe stores and copies the packet into slot ([0x7aafd0] & 7) of 0x7aa7b0, length [0x7a97ac] = 3; 0x532d85 returns CF=1 at once), and 0x445423's exit path or-s 0x20 into byte 0x8914e0 and 0x10 into 0x7c2ead (both any u8). [0x7aafd0] is the packet slot counter (every use masks it with 7): any u8. Byte 0x7aafd3 stays at its image value 0: it is the network-session flag, and any nonzero value sends the packet through 0x507410 (DirectPlay, vtable call) in 0x54b910 and 0xff enters 0x532d85's Win32 message pump 0x509b50 (GetMessageA/PeekMessageA...), which the oracle cannot execute; single-player state is 0. The car pointer [0x852d30] (null or a car record, bytes +0x7a/+0x80/+0x81) comes from cur_00852d30. Nothing faults.",
+ "globals": [
+  {"addr": "0x62fb4b", "type": "u8", "values": [0, 0, 1, "0x40", "0xff"]},
+  {"addr": "0x7aafd8", "type": "u8", "values": ["0xff", "0xff", "0xff", 0, 1, "0xfe"]},
+  {"addr": "0x7aafd0", "type": "u8"},
+  {"addr": "0x7c2ead", "type": "u8"},
+  {"addr": "0x8914e0", "type": "u8"}
+ ]
+}

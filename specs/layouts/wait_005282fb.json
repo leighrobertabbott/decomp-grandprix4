@@ -1,0 +1,7 @@
+{
+ "_evidence": "Wait cell addressed by +0x14 of a 0x81cd91 record (anim_005282fb): the second loop of 0x005282fb does 'mov eax,[edx+0x14]; cmp dword [eax],0; jne' for records in state 1 and starts them (state 2) when the dword is 0, so it is 0 in half the draws and nonzero otherwise.",
+ "size": 4,
+ "fields": [
+  {"off": 0, "type": "u32", "values": [0, 0, 1, "0xffffffff"]}
+ ]
+}

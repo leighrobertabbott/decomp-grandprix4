@@ -1,0 +1,13 @@
+{
+ "_evidence": "32-entry pointer table at 0x6f2f6c (zero in the image) indexed by eax in 0x0051adcd, which reads +0x1a of the target: each entry a fresh 0x20-byte block.",
+ "globals": [
+  {
+   "addr": "0x006f2f6c",
+   "type": "ptr",
+   "size": 32,
+   "fill": "bytes",
+   "count": 32,
+   "stride": 4
+  }
+ ]
+}

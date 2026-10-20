@@ -1,0 +1,20 @@
+{
+ "_evidence": "Car byte +0x1cd is the gear count (0x41034e stores 6 or 7; read by 0x40f833/0x41043d/0x415ef6/0x4161fb/0x41ac8b/0x41adbd). 0x40f833 loops 'add cl,1; cmp cl,[esi+0x1cd]; jle' (signed byte) from cl = 1, which never ends for 0x7f (cl wraps to -128), so the count draws 6/7 and the non-faulting edges 0, 1, 0x80 (one pass). Car-buffer overlay (size 0x1ce, compose last).",
+ "size": 462,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x1cd",
+   "type": "u8",
+   "values": [
+    6,
+    6,
+    7,
+    7,
+    0,
+    1,
+    "0x80"
+   ]
+  }
+ ]
+}

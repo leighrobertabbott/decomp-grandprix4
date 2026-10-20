@@ -1,0 +1,35 @@
+{
+  "_evidence": "Track words read by 0x004291f4 and its callees, composed after state_00403850+ring_008943a0+records_008943a0+div_00403bb6 (which make every segment pointer a record: spec edi 0..29, pit start [0x891500] 0..30, pit end [0x866ef8]-0x160 0..31, pit entry [0x866f00] 0..24, pit exit [0x866f04]-0x160 4..25). 0x42921c movsx word [edi+0x16] of the pit entry/exit record (any i16; 0x403938 then offsets it); 0x403b19/0x403b3f interpolate movzx words +0x60/+0x1c0 or +0x62/+0x1c2 (this and the next record) and 0x429100 reads movzx +0x60/+0x62: the u16 words +0x60/+0x62 of records 0..32 and +0x16 of records 0..31 vary (all the records those pointers and edi+0x160 can reach). The band-edge arithmetic of 0x403bb6/0x403ab9 stays fault-free for any word values (div_00403bb6: divisor >= 0x100 with |ecx-edge| < 2^25; the idiv divisor is positive or the numerator is -0x4000/0). Word 0x603baa (0x403938 movzx lane offset, as state_004059ef) are any value; the two dwords 0x852c44/0x852c48 (0x403800: pit-lane widths, +0x50 then used as band edges) are stored by the track loader 0x557a19 as movsx of file words, so they are i16-range (-32768..32767), which also keeps |ecx - edge| < 2^25 for the div in 0x403bb6/0x403c4c (full-range dwords overflowed it).",
+  "globals": [
+    {
+      "addr": "0x00603baa",
+      "type": "u16"
+    },
+    {
+      "addr": "0x00852c44",
+      "type": "i32",
+      "count": 2,
+      "stride": 4,
+      "lo": -32768,
+      "hi": 32767
+    },
+    {
+      "addr": "0x008943b6",
+      "type": "i16",
+      "count": 32,
+      "stride": "0x160"
+    },
+    {
+      "addr": "0x00894400",
+      "type": "u16",
+      "count": 33,
+      "stride": "0x160"
+    },
+    {
+      "addr": "0x00894402",
+      "type": "u16",
+      "count": 33,
+      "stride": "0x160"
+    }
+  ]
+}

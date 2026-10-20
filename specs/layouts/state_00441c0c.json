@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x00441c0c uses dword 0x62fc0c as an entry number: scaled by 0x10 into a table and passed as a bit index to 0x434063; its writer derives it as (word & 0x7ff) >> 5, so it is 0..63 (fuzzed it faults).",
+ "globals": [
+  {
+   "addr": "0x0062fc0c",
+   "type": "u32",
+   "lo": 0,
+   "hi": 63
+  }
+ ]
+}

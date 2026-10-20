@@ -27,4 +27,4 @@ void __cdecl FUN_00424553(gp4::Regs* r) {
         | ((((result >> 31) ^ carry) & 1u) != 0u ? 0x800u : 0u);
     r->eflags = (r->eflags & ~0x8d5u) | flags;
 }
-GP4_IMPL(0x00424553, FUN_00424553, "regs(esi:ptr[0x75]:bytes) -> (cf, pf, af, zf, sf, of)")
+GP4_IMPL(0x00424553, FUN_00424553, "regs(esi:ptr[0x75]:layout=rec_0042453d) -> (cf, pf, af, zf, sf, of); globals=layout=blk_00424553")

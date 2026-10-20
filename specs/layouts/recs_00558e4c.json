@@ -1,0 +1,10 @@
+{
+ "_evidence": "0x558e4c walks the ring records [0x866ec0]..[0x866eb8] (stride 0x160, at most 26 with segs_00558d9b) with esi = 0x6f6dc4 + k*0x60 and calls 0x558de7, which compares the 0x60-byte key at esi ('mov ecx,0x18; repe cmpsd') with table entries 0x9559f8 + j*0x60 for j = 0,1,... ('inc eax; add ebp,0x60; cmp eax,[0x9559f0]; jne'): the compare is a do-while, so a count of 0 with an unmatched key never terminates (eax wraps; the scan runs off .data and faults at 0x558dff) - the count is never 0 in that state, so it is drawn 1..464. On a miss (stc) 0x558e19 appends the key ('inc eax; cmp eax,0x200; jb' else int3), so count + 26 must stay below 0x200: 464 + 26 = 490 < 512. Hits need equal records, so instead of random 24-dword records (never equal) both sides use a small alphabet on two dwords and zero elsewhere: table dword +0 of the 512 entries is a prefix-filled list (first n entries from {1,2,3,0x80000000}, the rest 0; n in {0,1,3,40,300,512}), table dword +0x30 is 0 or 5; key dword +0 is from {0,1,2,3,0x80000000,0x12345} (0x12345 never in the table -> always appended) and key +0x30 is 0 or 5. So a key is found at index 0, at a later index, beyond the count (appended), or equal to an earlier appended key (found among the new entries), and the index stored to word +0x56 of each ring record varies. All contents are plain data (no pointers/indices), so every pattern is valid.",
+ "globals": [
+  {"addr": "0x009559f0", "type": "u32", "lo": 1, "hi": 464},
+  {"addr": "0x009559f8", "type": "u32", "count": 512, "stride": "0x60", "values": [1, 2, 3, "0x80000000"], "prefix": [0, 1, 3, 40, 300, 512]},
+  {"addr": "0x00955a28", "type": "u32", "count": 512, "stride": "0x60", "values": [0, 0, 0, 5]},
+  {"addr": "0x006f6dc4", "type": "u32", "count": 26, "stride": "0x60", "values": [0, 1, 2, 3, "0x80000000", "0x12345"]},
+  {"addr": "0x006f6df4", "type": "u32", "count": 26, "stride": "0x60", "values": [0, 0, 0, 5]}
+ ]
+}

@@ -1,0 +1,91 @@
+{
+ "_evidence": "0x00432f18 (esi = car record) switches on the index from 0x432c21: ((byte +0xfd * 0x420 + [0x866f08] + 0x160 (+0x160 when [0x62d2b0] != 0 and byte +0x7e is 2 or 3, 0x432c03)) - dword +0x1c) idiv 0x160 (truncating), +1 for kind 2, +2 for kind 3. 0x420 = 3*0x160, [0x866f08] and +0x1c are track-segment addresses in the 0x160-stride array at 0x8943a0 (+0x1c is the car's current segment, see state_00432330), so +0xfd draws small grid slots 0..1 and +0x1c segments 0..8 at a record start or mid-record (both signs of the truncating division), giving indices about -8..8: <0 (stc), 0, 1, 2 and >2 all occur. Then word +0x9a is compared with 0x600/0x300/0x200/0x100 (lists straddle each), movsx word +0x66 with [0x62787c]/[0x627880] (+-64 both), byte +0xe5 bit 0 selects which; bytes +0xca/+0xcb/+0x232 get 'or 2' (read-modify-write). The divisor is the constant 0x160 and |dividend| < 2^31, so nothing can fault.",
+ "size": 576,
+ "fields": [
+  {
+   "off": "0x1c",
+   "type": "u32",
+   "values": [
+    "0x8943a0",
+    "0x894450",
+    "0x894500",
+    "0x8945b0",
+    "0x894660",
+    "0x894710",
+    "0x8947c0",
+    "0x894870",
+    "0x894920",
+    "0x8949d0",
+    "0x894a80",
+    "0x894b30",
+    "0x894be0",
+    "0x894c90",
+    "0x894d40",
+    "0x894df0",
+    "0x894ea0",
+    "0x894f50"
+   ]
+  },
+  {
+   "off": "0x66",
+   "type": "i16",
+   "lo": -64,
+   "hi": 64
+  },
+  {
+   "off": "0x7e",
+   "type": "u8",
+   "values": [
+    0,
+    2,
+    3,
+    1,
+    255
+   ]
+  },
+  {
+   "off": "0x9a",
+   "type": "u16",
+   "values": [
+    0,
+    "0xff",
+    "0x100",
+    "0x1ff",
+    "0x200",
+    "0x2ff",
+    "0x300",
+    "0x5ff",
+    "0x600",
+    "0x7fff",
+    "0x8000",
+    "0xffff"
+   ]
+  },
+  {
+   "off": "0xca",
+   "type": "u8"
+  },
+  {
+   "off": "0xcb",
+   "type": "u8"
+  },
+  {
+   "off": "0xe5",
+   "type": "u8"
+  },
+  {
+   "off": "0xfd",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "off": "0x232",
+   "type": "u8"
+  }
+ ]
+}

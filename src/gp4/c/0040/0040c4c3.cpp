@@ -29,4 +29,4 @@ void __cdecl FUN_0040c4c3(gp4::Regs* r) {
     r->edx = shiftedY - 0x1000000u;
     r->eflags = (r->eflags & ~0x8d5u) | subtractionFlags32(shiftedY, 0x1000000u);
 }
-GP4_IMPL(0x0040c4c3, FUN_0040c4c3, "regs() -> (eax, edx, cf, pf, af, zf, sf, of)")
+GP4_IMPL(0x0040c4c3, FUN_0040c4c3, "regs() -> (eax, edx, cf, pf, af, zf, sf, of); globals=layout=map_0062aca4")

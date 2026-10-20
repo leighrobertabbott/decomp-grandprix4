@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x00556dee (also reached from 0x556ddb when [0x86857c] == 2): ebx = word [esi] >> 4 (spec words 0..0x10f, so 0..0x10) is the object index, 'cmp ebx,[0x932440]; jb' else 'mov [0x932440],ebx': a running maximum index (run-time state, zero in the image, where the 'jb' is never taken). Drawn 0..0x14 (unsigned compare only) so both outcomes occur; any value is valid.",
+ "globals": [
+  {
+   "addr": "0x00932440",
+   "type": "u32",
+   "lo": 0,
+   "hi": 20
+  }
+ ]
+}

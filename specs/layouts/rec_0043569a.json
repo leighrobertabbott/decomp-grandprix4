@@ -1,0 +1,72 @@
+{
+ "size": 1056,
+ "_evidence": "Car record (esi) for 0x0043569a and the callees of its two call blocks (0x434e1e flag RMW; 0x42784b -> 0x4036ca -> 0x403a1e/0x403938/0x403ab9 -> 0x403b19/0x403b3f/0x403d10/0x403800; 0x42783c -> 0x4275d1 -> 0x427579). Pointers as rec_00409416, enlarged: +0x1c is the current segment (never null; 0x4036ca hands it to the interpolators, which read words +0x60/+0x62 and the next record's +0x1c0/+0x1c2), so a random 0x1d0-byte block, and +0x1b8 a random 0x17c-byte block (words +0x18/+0x178, 0x4275d1). The gate bytes favour the call paths but keep every outcome: +0x71 bit 7 set 5/8 (bit 3 mixed: 0x427579 and the 0x4036ca RMW), +0x8d bit 1 set 2/6, +0x179 bit 6 set 2/6, +0x230 bit 7 set 3/5. The background is random (fill bytes): the remaining flags (+0xfe, +0x122, +0x163, +0x9c, +0xce, +0xff, +0x135, +0xe4) take both states, and the words +0x66/+0x90/+0x94 feeding 0x403938/0x403ab9/0x403d10 are i16, inside the +-2^23 register domain for which div_00403bb6 proves the 0x403d10 divisions (divisor [0x622354], image 0x500) cannot fault.",
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x1c",
+   "type": "ptr",
+   "size": 464,
+   "fill": "bytes"
+  },
+  {
+   "off": "0x66",
+   "type": "i16"
+  },
+  {
+   "off": "0x71",
+   "type": "u8",
+   "values": [
+    "0x80",
+    "0x88",
+    "0xff",
+    "0x81",
+    "0xc0",
+    "0x0",
+    "0x8",
+    "0x7f"
+   ]
+  },
+  {
+   "off": "0x8d",
+   "type": "u8",
+   "values": [
+    "0x0",
+    "0x1",
+    "0xfd",
+    "0x10",
+    "0x2",
+    "0xff"
+   ]
+  },
+  {
+   "off": "0x179",
+   "type": "u8",
+   "values": [
+    "0x0",
+    "0xbf",
+    "0x10",
+    "0x20",
+    "0x40",
+    "0xff"
+   ]
+  },
+  {
+   "off": "0x1b8",
+   "type": "ptr",
+   "size": 380,
+   "fill": "bytes"
+  },
+  {
+   "off": "0x230",
+   "type": "u8",
+   "values": [
+    "0x80",
+    "0xff",
+    "0x90",
+    "0x0",
+    "0x7f"
+   ]
+  }
+ ]
+}

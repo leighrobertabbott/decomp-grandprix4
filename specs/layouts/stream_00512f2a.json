@@ -1,0 +1,67 @@
+{
+ "_evidence": "Stream-record writer 0x512f2a (callers 0x512fd1, 0x512fe0, 0x513c83, 0x512742). 'mov edi,[0x7a93e0]' is the write cursor base: 0x512c7d copies the 0x16254-byte block 0x7ad890..0x7c3ae4 there, and unless word [0x7c2e70] (temporarily replaced by word [0x88f633]: 'push [0x7c2e70]; push [0x88f633]; pop [0x7c2e70]', restored by the final pop) is 3 or 4, also 0x512c8d (renderer blob into 0x68d5bc, then 'movsb' of 0x66d7a4..0x6975bc = 0x29e18 bytes), 0x40b0ac (0xdf68 bytes of 0x630224..) and 0x512eac (at most the 0x50000 bytes its own spec allows), then a trailing word when byte [0x7aafd4] != 0 ('mov ax,[0x7aafd6]; cmp byte [0x7aafd8],0xff; jne; or ax,0x8000; stosw'). So [0x7a93e0] is a fresh 0xa0000-byte buffer (0x16254 + 0x29e18 + 0xdf68 + 0x50000 + 2 < 0xa0000; the game allocates its stream buffer once and sizes it for a whole record). [0x7a93d8] is only compared with the written length ('cmp edi,[0x7a93d8]; jbe' to the same ret): small and large values. Word [0x88f633] (the record kind; 0x512742 stores 2 and 3) draws 0..5 with 3 and 4 often (both arms). Word [0x7ad88c] (copied to [0x7c2e7c]), byte [0x868554] (copied to [0x66d880]) and word [0x7aafd6] are any values; [0x7aafd4]/[0x7aafd8] are flag bytes (0/nonzero, 0xff/other). Compose after block_00512c7d and the 0x512eac layouts.",
+ "globals": [
+  {
+   "addr": "0x007a93e0",
+   "type": "ptr",
+   "size": "0xa0000",
+   "fill": "zero"
+  },
+  {
+   "addr": "0x007a93d8",
+   "type": "u32",
+   "values": [
+    0,
+    "0x16256",
+    "0x40000",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x0088f633",
+   "type": "u16",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    3,
+    4,
+    4,
+    5
+   ]
+  },
+  {
+   "addr": "0x007ad88c",
+   "type": "u16"
+  },
+  {
+   "addr": "0x00868554",
+   "type": "u8"
+  },
+  {
+   "addr": "0x007aafd4",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x007aafd6",
+   "type": "u16"
+  },
+  {
+   "addr": "0x007aafd8",
+   "type": "u8",
+   "values": [
+    0,
+    "0xff",
+    "0xff",
+    1
+   ]
+  }
+ ]
+}

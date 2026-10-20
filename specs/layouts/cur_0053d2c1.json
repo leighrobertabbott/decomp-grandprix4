@@ -1,0 +1,39 @@
+{
+ "_evidence": "Globals of 0x0053d2c1: [0xa69878] = the current item (never null-tested; its callers 0x5002d0/0x5016c0 run with an item selected) -> item_0053d2c1 (64 bytes, see its _evidence for the handler choice). [0xa6987c] is loaded into ebx and overwritten by [esi+0xe] before any use (not an input). [0xa69880] = the mode passed in edx: 'cmp edx,2; jne' (2 drawn often) and, through the handler, the selector of 0x53dbbc (which clamps >= 10 to 9), so 0..12 plus large/negative values. [0x82fd88] is cleared by 0x53dbbc cases 5/6: random so the store is visible.",
+ "globals": [
+  {
+   "addr": "0x00a69878",
+   "type": "ptr",
+   "size": 64,
+   "fill": "layout=item_0053d2c1"
+  },
+  {
+   "addr": "0x00a69880",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    2,
+    2,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    "0x10",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x0082fd88",
+   "type": "u32"
+  }
+ ]
+}

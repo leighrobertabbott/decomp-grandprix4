@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x0040e9ac dereferences the slot [0x6279ec + 4*k] (k = esi byte +0x74, 0..2) and reads word +0x1a & 0x7ff of that segment record; the slots hold record pointers of the 0x160-stride array at 0x008943a0 (0x40b028/0x40b047/0x40afb9 store edi/ebx record pointers), so each is a record-aligned pointer to record 0..25 and word +0x1a of those records is varied. The static zero slots faulted every case. The quotient 1000*max(0, 0x400*(+-0x7ff) + i16)/max(w, 0x3ab) always fits, so no input faults.",
+  "globals": [
+    {"addr": "0x006279ec", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 25}},
+    {"addr": "0x006279f0", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 25}},
+    {"addr": "0x006279f4", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 25}},
+    {"addr": "0x008943ba", "type": "u16", "count": 26, "stride": "0x160"}
+  ]
+}

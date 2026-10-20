@@ -1,0 +1,45 @@
+{
+ "_evidence": "0x54f555: 'mov eax,[0x7ad894]; shl eax,2; add eax,[0x838e94]; add eax,0x236; call 0x527fd4'. 0x527fd4 returns at once unless byte [0x81cd90] is nonzero ('cmp byte [0x81cd90],0; jne'; the only writer, 0x527ce7, stores 0xff, image 0), then 'cmp eax,0x328; jae ret' guards the frame number before 0x5280ac indexes the 808-cell table, so every eax value is valid. [0x838e94] is the per-circuit sub-index added to circuit*4 by six readers (0x54f21d/0x54f28a/0x54f3b0/0x54f4a4/0x54f524 frame numbers, 0x54f65a table 0x83916d); no instruction stores to it directly (image 0), so fuzz:i32 drew it uniformly and eax almost never fell below 0x328 (the 0x5280ac/0x5388ba/0x531b3b body was missed). Here it draws -0x300..0x200: with the circuit 0..16 (trk_007ad894) eax spans -0xca..0x476, so frame numbers below 0x328 (body), at/above it and wrapped negatives (jae exit) all occur; [0x81cd90] draws 0 and nonzero. Compose after trk_007ad894 and the slot/cell layouts of 0x527fd4's accepted spec. The selected frame record's rectangle (0x8174f8 + n*0x18: x, y, width, height, loaded from the frame file at run time, zero in the image) is read into ebx/eax/ebp/ecx for the no-op 0x531b3b: all 808 records' four dwords are any i32 so those reads are varied too.",
+ "globals": [
+  {
+   "addr": "0x0081cd90",
+   "type": "u8",
+   "values": [
+    0,
+    "0xff",
+    "0xff",
+    1
+   ]
+  },
+  {
+   "addr": "0x00838e94",
+   "type": "i32",
+   "lo": -768,
+   "hi": 512
+  },
+  {
+   "addr": "0x8174f8",
+   "type": "i32",
+   "count": 808,
+   "stride": "0x18"
+  },
+  {
+   "addr": "0x8174fc",
+   "type": "i32",
+   "count": 808,
+   "stride": "0x18"
+  },
+  {
+   "addr": "0x817500",
+   "type": "i32",
+   "count": 808,
+   "stride": "0x18"
+  },
+  {
+   "addr": "0x817504",
+   "type": "i32",
+   "count": 808,
+   "stride": "0x18"
+  }
+ ]
+}

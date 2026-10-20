@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x0041bd28: eax = [0x62474c]-[0x6258ac]; cdq; shld/shl 19 gives the 64-bit dividend (A-B)*2^19; 'idiv dword [0x6013a8]'; then imul [0x60384c] / shrd 16 and imul [0x601e84] / shrd 20 (64-bit products, cannot fault). A,B in -2^19..2^19 bound |A-B| <= 2^20 and |dividend| <= 2^39; every divisor in the list has |d| >= 0x101 so |quotient| < 2^31 and idiv never faults (a zero or tiny divisor is the original's own #DE). [0x6013a8] is compared with 0x130 by the caller 0x41bb95, so small positive divisors are the realistic case; both signs are included. No branches.",
+  "globals": [
+    {"addr": "0x0062474c", "type": "i32", "lo": -524288, "hi": 524288},
+    {"addr": "0x006258ac", "type": "i32", "lo": -524288, "hi": 524288},
+    {"addr": "0x006013a8", "type": "u32", "values": ["0x101", "0x130", "0x131", "0x200", "0x1000", "0x12345", "0x80000", "0x7fffffff", "0xfffffeff", "0xfffffed0", "0xffff0000", "0x80000001"]},
+    {"addr": "0x0060384c", "type": "i32"},
+    {"addr": "0x00601e84", "type": "i32"}
+  ]
+}

@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x00538d70 (publish three memory-block descriptors): edx = 0x829840, 0x829890 and 0x829868 in turn (fixed records, so the fields are fixed addresses) and 'test byte [edx+0xd],0x80; je' on each: bytes 0x82984d, 0x82989d and 0x829875 take values with bit 7 set (0x80, 0xff) and clear (0, 1, 0x7f). Set at 0x82984d: 'mov eax,[edx+0x14]' (0x829854) is stored to 0x822258 and, plus 0xea600 twice, to 0x82225c/0x822260/0x822264; set at 0x82989d: [edx+0x14] (0x8298a4) is stored to 0x82fd4a/0x82fd38/0x82fd3c and 'add eax,[edx+0x10]' (0x8298a0) to 0x82fd4e. These dwords are only copied and added (any u32, the adds may wrap). Set at 0x829875: call 0x53872f (fixed-table reset reading [0x829868+0x14]/[+0x10], varied by pool_00538a24; any value valid). Nothing is dereferenced.",
+ "globals": [
+  {"addr": "0x0082984d", "type": "u8", "values": [0, "0x80", "0xff", "0x7f", 1]},
+  {"addr": "0x0082989d", "type": "u8", "values": [0, "0x80", "0xff", "0x7f", 1]},
+  {"addr": "0x00829875", "type": "u8", "values": [0, "0x80", "0xff", "0x7f", 1]},
+  {"addr": "0x00829854", "type": "u32"},
+  {"addr": "0x008298a4", "type": "u32"},
+  {"addr": "0x008298a0", "type": "u32"}
+ ]
+}

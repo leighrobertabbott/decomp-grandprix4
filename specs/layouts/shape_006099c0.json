@@ -1,0 +1,365 @@
+{
+ "_evidence": "The 22 collision-shape blocks at 0x6099c0 + k*0x5d8 (k = object byte +0x6d, 0..21; zero in the image, built at run time: header x/y/z, angles and +0x1c by 0x4227e5, the 0x14-byte point records from +0x38 with count +0x18 by 0x422397/0x4223ed (count capped below 0x48), the box +0x20..+0x37 by 0x424625), read by the contact chain of 0x0043ac7f: 0x438c98 (todo, the oriented-box separating-axis test: half extents +0x2c/+0x30/+0x34 max-compared to order the pair, offsets +0x20/+0x24/+0x28 fild-rotated, then 'abs(projection) - radius >= extent: jge no contact') and 0x438c1f, then 0x43a83d -> 0x43a32a (edi = block+0x38: kind [edi+0xc] cmp 1/2, point x/y/z). Domain as blk_00424625 for the header/points (any i32 header and angles, count 1..8 so the point walk ends inside the 8 described records, kinds 0..3, point coordinates +-0x40000), the box as 0x424625 builds it: offsets +-0x4000 and positive half extents 0x1000..0x40000 in every ordering (both outcomes of each max and of the pair swap), so with object positions within +-0x20000 (obj_0043ac7f) the separating-axis test both finds contact and rejects. Also the frame-rate scale dword 0x603854 (imul/shrd 16 against the object velocities in 0x43aa07/0x43aac6; zero in the image, which hid the velocity terms), drawn 0..0x4000000 as state_0040bce6's rate range: products stay below 2^43, no fault.",
+ "globals": [
+  {
+   "addr": "0x6099c0",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8"
+  },
+  {
+   "addr": "0x6099c4",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8"
+  },
+  {
+   "addr": "0x6099c8",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8"
+  },
+  {
+   "addr": "0x6099cc",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8"
+  },
+  {
+   "addr": "0x6099d0",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8"
+  },
+  {
+   "addr": "0x6099d4",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8"
+  },
+  {
+   "addr": "0x6099dc",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8"
+  },
+  {
+   "addr": "0x6099d8",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": 1,
+   "hi": 8
+  },
+  {
+   "addr": "0x6099e0",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "addr": "0x6099e4",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "addr": "0x6099e8",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "addr": "0x6099ec",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": 4096,
+   "hi": 262144
+  },
+  {
+   "addr": "0x6099f0",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": 4096,
+   "hi": 262144
+  },
+  {
+   "addr": "0x6099f4",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": 4096,
+   "hi": 262144
+  },
+  {
+   "addr": "0x6099f8",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x6099fc",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x609a00",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x609a04",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": 0,
+   "hi": 3
+  },
+  {
+   "addr": "0x609a0c",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x609a10",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x609a14",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x609a18",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": 0,
+   "hi": 3
+  },
+  {
+   "addr": "0x609a20",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x609a24",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x609a28",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x609a2c",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": 0,
+   "hi": 3
+  },
+  {
+   "addr": "0x609a34",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x609a38",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x609a3c",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x609a40",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": 0,
+   "hi": 3
+  },
+  {
+   "addr": "0x609a48",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x609a4c",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x609a50",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x609a54",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": 0,
+   "hi": 3
+  },
+  {
+   "addr": "0x609a5c",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x609a60",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x609a64",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x609a68",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": 0,
+   "hi": 3
+  },
+  {
+   "addr": "0x609a70",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x609a74",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x609a78",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x609a7c",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": 0,
+   "hi": 3
+  },
+  {
+   "addr": "0x609a84",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x609a88",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x609a8c",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x609a90",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": 0,
+   "hi": 3
+  },
+  {
+   "addr": "0x00603854",
+   "type": "u32",
+   "lo": 0,
+   "hi": 67108864
+  }
+ ]
+}

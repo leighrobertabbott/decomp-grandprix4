@@ -1,0 +1,11 @@
+{
+ "_evidence": "Dword table 0x835846 (1024 entries, all zero in the image; filled at run time by the text loaders 0x54cd69/0x54cfbd/0x54cfec/0x54d04c/0x54e426): 0x54d1ad does esi = [esi*4+0x835846] for an index 0..0x3ff. Functions that only copy or discard the looked-up dword (0x534123 stores it into 0x828214[eax] through 0x53413f) use this layout so the copied value is visible; any u32 is valid there because nothing dereferences it. Do not use it for functions that dereference the entries.",
+ "globals": [
+  {
+   "addr": "0x00835846",
+   "type": "u32",
+   "count": 1024,
+   "stride": 4
+  }
+ ]
+}

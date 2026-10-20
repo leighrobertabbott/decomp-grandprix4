@@ -1,0 +1,12 @@
+{
+  "_evidence": "0x0040da62 (edi = segment record of the 0x160-byte array at 0x008943a0, records 0..24): test dword +0x44 (link; je to the fallback, never dereferenced here) - values give zero about 2/5 of the time; word +0x7a indexes the 8-byte entries of the lane table at 0x00604435 (zero in the image, filled at run time; read unaligned: u16 +0 in the fallback, u16 +4 'or eax,eax; je' exits at 0x40da7e/0x40dab1, i16 +6) for this record and for the next one, edi+0x160 wrapped to 0x8943a0 when it reaches [0x00866ecc] (cmp; jb). The index is a per-segment entry number, drawn 0..31, and the 32 entries are varied (u16 +0, +2, i16 +6 plain; u16 +4 with zero in about a quarter of the picks so both exits occur). [0x866ecc] is a record-aligned end pointer 1..25 so both wrap outcomes occur. The rest is imul/shrd arithmetic with word [esi+0x66]: no input faults.",
+  "globals": [
+    {"addr": "0x008943e4", "type": "u32", "count": 26, "stride": "0x160", "values": [0, 0, "0x8943a0", "0x894500", "0x894660", 1, "0xffffffff"]},
+    {"addr": "0x0089441a", "type": "u16", "count": 26, "stride": "0x160", "lo": 0, "hi": 31},
+    {"addr": "0x00604435", "type": "u16", "count": 32, "stride": 8},
+    {"addr": "0x00604437", "type": "u16", "count": 32, "stride": 8},
+    {"addr": "0x00604439", "type": "u16", "count": 32, "stride": 8, "values": [0, 0, 1, "0x100", "0x3fff", "0x7fff", "0x8000", "0xffff"]},
+    {"addr": "0x0060443b", "type": "i16", "count": 32, "stride": 8},
+    {"addr": "0x00866ecc", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 1, "hi": 25}}
+  ]
+}

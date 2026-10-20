@@ -1,0 +1,6 @@
+{
+  "_evidence": "Pit-lane widths 0x852c44/0x852c48, read by 0x403800 (+0x50, then used as the band edge by 0x403938 mode 7 and 0x429100 -> 0x4291f4): the track loader 0x557a19 stores them as movsx of file words, so they are i16-range (-32768..32767). state_00403800 drew them as full u32; with mode 0 on a pit record (0x40350c clc -> 0x429284 -> 0x4291f4) such widths make |ecx - edge| reach 2^25 and the div [0x622354] in 0x403bb6/0x403c4c overflow (#DE at 0x403c19), which no loaded track can produce. Compose after state_00403800.",
+  "globals": [
+    {"addr": "0x00852c44", "type": "i32", "count": 2, "stride": 4, "lo": -32768, "hi": 32767}
+  ]
+}

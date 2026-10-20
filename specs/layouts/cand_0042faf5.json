@@ -1,0 +1,8 @@
+{
+  "_evidence": "Overlay for 0x0042faf5 (compose LAST, after the 0x42e06a car composition pair_0042e8e6+cars_0066fef0+carf_004036ca+carea_0042f6ee+flags_00408f7b+cars_0042dd4b and the 0x42dd4b segment family). Its first callee 0x42fa52 scans the candidate tables 0x6077e4 (pointer) / 0x607860 (key) downward from byte offset [0x6077dc]-4 and hands the winner in ebx (key in ebp) to the todo 0x42cd1e, which dereferences ebx as a car (+0x9c, +0xe2, ... via 0x40dc8a/0x42beea): small integers there (state_0042fa52) faulted 8/10. The only writer 0x42a0fb appends ebx/edx at offset [0x6077dc] while it is below 0x74 and adds 4 (so the offset is a multiple of 4, 0..0x78), and 0x42fa30 zeroes entries equal to a removed car: pointer entries are car records 0x66fef0+k*0x41c or 0. Domain: offset from {0,4,4,8,12,16,0x20,0x40,0x78} (0 = empty: stc; 4 = the single-entry path), 31 pointer entries from 0 and cars 0..5, 31 keys from 0x6000 (the 'cmp ebp,0x6000; je' at 0x42fafc), 0x5fff, 0, 1, 0x100, 0x7fffffff, 0x80000000, 0xffffffff (ties, both signs of the signed min). Car word +0x1bc (cars_0066fef0: 0xffff or k*0x41c) then meets ebx - 0x66fef0 for cars 0..5 often enough for the 0x42fb21 reset.",
+  "globals": [
+    {"addr": "0x006077dc", "type": "u32", "values": [0, 4, 4, 8, 12, 16, "0x20", "0x40", "0x78"]},
+    {"addr": "0x006077e4", "type": "u32", "count": 31, "stride": 4, "values": [0, "0x66fef0", "0x67030c", "0x670728", "0x670b44", "0x670f60", "0x67137c"]},
+    {"addr": "0x00607860", "type": "u32", "count": 31, "stride": 4, "values": ["0x6000", "0x6000", "0x5fff", 0, 1, "0x100", "0x7fffffff", "0x80000000", "0xffffffff"]}
+  ]
+}

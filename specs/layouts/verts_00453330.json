@@ -1,0 +1,60 @@
+{
+ "size": 36,
+ "_evidence": "Vertices of the collision mesh [0x9fb0c0] (12-byte x/y/z float records, see mesh_00453330). The x/z of the three vertices span a large triangle (+-1e6, query points are i32*2^-15.7 i.e. within +-41000), so the edge-sign test 0x45349d..0x453564 accepts the point for one vertex winding and either order; heights y are drawn -1e5..1e5 against the query height (both sides of 'fcomp [esp+0x50]' at 0x453420/0x45343b/0x453453).",
+ "fields": [
+  {
+   "off": 0,
+   "type": "f32",
+   "lo": -1100000.0,
+   "hi": -900000.0
+  },
+  {
+   "off": 4,
+   "type": "f32",
+   "lo": -100000.0,
+   "hi": 100000.0
+  },
+  {
+   "off": 8,
+   "type": "f32",
+   "lo": -1100000.0,
+   "hi": -900000.0
+  },
+  {
+   "off": 12,
+   "type": "f32",
+   "lo": 900000.0,
+   "hi": 1100000.0
+  },
+  {
+   "off": 16,
+   "type": "f32",
+   "lo": -100000.0,
+   "hi": 100000.0
+  },
+  {
+   "off": 20,
+   "type": "f32",
+   "lo": -1100000.0,
+   "hi": -900000.0
+  },
+  {
+   "off": 24,
+   "type": "f32",
+   "lo": -100000.0,
+   "hi": 100000.0
+  },
+  {
+   "off": 28,
+   "type": "f32",
+   "lo": -100000.0,
+   "hi": 100000.0
+  },
+  {
+   "off": 32,
+   "type": "f32",
+   "lo": 900000.0,
+   "hi": 1100000.0
+  }
+ ]
+}

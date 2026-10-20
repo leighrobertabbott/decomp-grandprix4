@@ -1,0 +1,13 @@
+{
+ "size": 64,
+ "fill": "bytes",
+ "_evidence": "Opcode-stream record read by 0x00444ff1 through the read cursor [0x62d1a8]: byte +8 is stored as car +0x7f, the tyre-set index that callees use to index the 6-entry table 0x6f2cc4, so it is 0..5; the other bytes stay random.",
+ "fields": [
+  {
+   "off": 8,
+   "type": "u8",
+   "lo": 0,
+   "hi": 5
+  }
+ ]
+}

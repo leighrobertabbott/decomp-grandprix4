@@ -1,0 +1,7 @@
+{
+ "_evidence": "One HUD text entry as 0x51488e leaves it: the parser (called once through 0x5146e0) compacts the script text loaded at 0x891ce0 in place into 0x44 entries and stores each entry's start in [0x891bd0 + 4*k] ('mov [ecx*4+0x891bd0],edi'; quoted characters via 0x514734 'stosb', numbers as bytes via 0x5147a3, entry end 0xff). 0x5144c6 hands entries 0x2d/0x2e to 0x51f3c3, which prints 'mov al,[esi]; inc esi; test al,0xff; jne' up to the NUL byte through 0x51f3bd (stosb to the 0x100-byte edi buffer when [0x89152b] = 1, else the glyph writer 0x51d329: font 0x7a8ac0 + (ch-0x20)*8). The text is drawn from upper-case letters, space, '-', '.', digits (bytes 0x20..0x5a), with 0 among the choices so lengths 0..8 occur; bytes 8..15 are zero, so every string ends inside the 16-byte buffer and at most 8 characters are printed. Values are synthetic.",
+ "size": 16,
+ "fields": [
+  {"off": 0, "type": "u8", "count": 8, "stride": 1, "values": ["0x41", "0x4c", "0x50", "0x53", "0x5a", "0x20", "0x2d", "0x2e", "0x30", "0x39", 0]}
+ ]
+}

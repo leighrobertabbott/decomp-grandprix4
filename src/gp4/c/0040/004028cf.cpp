@@ -7,4 +7,4 @@ void __cdecl FUN_004028cf(void) {
     GP4_GLOBAL(double, 0x00622cb8) = (double)GP4_GLOBAL(int32_t, 0x00623ebc) * GP4_GLOBAL(double, 0x006f2bdc);
     GP4_GLOBAL(double, 0x00622cc0) = (double)GP4_GLOBAL(int32_t, 0x00623ec0) * GP4_GLOBAL(double, 0x006f2bdc);
 }
-GP4_IMPL(0x004028cf, FUN_004028cf, "cdecl() -> void")
+GP4_IMPL(0x004028cf, FUN_004028cf, "cdecl() -> void; globals=layout=state_004028cf")

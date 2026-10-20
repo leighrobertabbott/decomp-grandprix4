@@ -1,0 +1,8 @@
+{
+  "_evidence": "Inputs of 0x00415f79 (called by 0x415fe2 when the car flags select it): eax = [0x6039f4] or -[0x6039f8] (image tuning dwords read only here; varied as any i32 rather than trusted), imul by the frame time step [0x60384c] (Q16; 0x412604 stores the rate S = 1..0x10000 there, drawn 0..0x10000), shrd 16, plus the word [0x638d6a] (movzx, any u16; also read by 0x418138), clamped to 0..0x4000 and to the car word +0xee (signed jle). Only imul/shrd and compares: no value faults.",
+  "globals": [
+    {"addr": "0x006039f4", "type": "i32", "count": 2, "stride": 4},
+    {"addr": "0x0060384c", "type": "i32", "lo": 0, "hi": 65536},
+    {"addr": "0x00638d6a", "type": "u16"}
+  ]
+}

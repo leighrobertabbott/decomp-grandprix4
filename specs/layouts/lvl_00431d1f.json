@@ -1,0 +1,13 @@
+{
+ "_evidence": "Car prefix for 0x00431d1f: byte +0x7f is the driver level, kept in 0..5 by its writers (0x431d1f itself stores clamp(level + step, 0, 5); 0x410b09 clamps it to 0..5 before using it), so it draws 0..5: with the step eax -3..3 the sum goes below 0 (block 0x431d6c), above 5 and stays inside, and the 'cmp edx,2' tests take every side; it also indexes the 6-dword table 0x6f2cc4 after the store. Byte +0x7c (car number, (b & 0x3f) - 1 clamped to <= 0x15 as the 0x66d94c index) and the rest are random.",
+ "size": 135,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x7f",
+   "type": "u8",
+   "lo": 0,
+   "hi": 5
+  }
+ ]
+}

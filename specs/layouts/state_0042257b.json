@@ -1,0 +1,13 @@
+{
+  "_evidence": "0x0042257b: do-while over ebx = 0 .. [0x0062a05c]-1 (jne, so 0 would run 2^32 times; its caller 0x42458b stores max([0x62a04c],1)), here 1..16. Per entry of the dword table [0x0062a048] (tab_0042257b): test with the mask [0x0062a054] (the caller stores [esi+0x4c] or 1 if zero: nonzero masks of one or several bits) skips, a nonzero test with 0x14280 calls 0x4223ed(eax=ebx, edx=entry), otherwise signed byte [0x0060932c+ebx] >= 4 calls 0x422397(eax=ebx). The callees use the entry block [0x006097b0] (blk_00422397: count +0x18 0..75 against the 0x48 limit, room for every entry), the 16-byte record table [0x0062a058] indexed by ebx < 16 (1024 bytes) and dwords 0x006080c8 / 0x006080cc, as in state_00422397.",
+  "globals": [
+    {"addr": "0x0062a048", "type": "ptr", "size": 64, "fill": "layout=tab_0042257b"},
+    {"addr": "0x0062a054", "type": "u32", "values": [1, 2, "0x80", "0x200", "0x4000", "0x10000", "0x14280", "0x3", "0xffff0000", "0xffffffff"]},
+    {"addr": "0x0062a05c", "type": "u32", "lo": 1, "hi": 16},
+    {"addr": "0x0060932c", "type": "i8", "count": 16, "stride": 1},
+    {"addr": "0x006097b0", "type": "ptr", "size": 1504, "fill": "layout=blk_00422397"},
+    {"addr": "0x0062a058", "type": "ptr", "size": 1024, "fill": "bytes"},
+    {"addr": "0x006080c8", "type": "u32"},
+    {"addr": "0x006080cc", "type": "u32"}
+  ]
+}

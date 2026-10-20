@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x0041325b divides ((+0x2f4 + +0x2f8) << 14) by the sum of the four dwords +0x2ec..+0x2f8 (replaced by 1 when zero: test ebp; jne). With every dword in -0x7fff..0x7fff, |+0x2f4 + +0x2f8| <= 0xfffe, so |dividend| < 2^30 and even the divisor 1 gives a fitting quotient: no #DE for any combination (larger magnitudes can overflow the idiv in the original). The values mix zero, +-1, +-0x4000 and +-0x7fff so the four-way sum is zero (the mov ebp,1 block) in a fair share of cases and both signs occur. Word +0x1b6 is a plain u16 (movzx, imul) and is rewritten.",
+  "size": 768,
+  "fields": [
+    {"off": "0x2ec", "type": "u32", "count": 4, "stride": 4, "values": [0, 0, 1, "0xffffffff", "0x4000", "0xffffc000", "0x7fff", "0xffff8001", "0x1234"]},
+    {"off": "0x1b6", "type": "u16"}
+  ]
+}

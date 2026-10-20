@@ -1,0 +1,28 @@
+{
+ "_evidence": "Text-script entries [0x835846+4*id] for ids 0x13f..0x141 (dwords 0x835d42/0x835d46/0x835d4a; zero in the image, filled at resource load, never null-tested) that 0x53b7d0 passes to 0x54d798, each its own 0x40-byte script with the script_0054d798 byte set; plus the byte pair 0x81d60a/0x81d60b compared for equality ('mov al,[0x81d60a]; cmp al,[0x81d60b]'): drawn equal in some cases.",
+ "globals": [
+  {
+   "addr": "0x00835d42",
+   "type": "ptr",
+   "count": 3,
+   "stride": 4,
+   "size": 64,
+   "fill": "u8{=0,1,2,3,5,6,7,8,9,0xa,0xb,0xc,0xd,0xe,0xf,0x10,0x11,0x12,0x13,0x14,0x20,0x41,0x7f,0x80,0xff}"
+  },
+  {
+   "addr": "0x0081d60a",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    2,
+    3
+   ]
+  },
+  {
+   "addr": "0x0081d60b",
+   "type": "u8",
+   "alias": "0x0081d60a"
+  }
+ ]
+}

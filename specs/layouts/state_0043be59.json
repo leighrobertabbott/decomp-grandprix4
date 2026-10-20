@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x0043be59 loops esi = 0..21 and calls 0x43ca66 with eax = esi, which reads 'movzx eax, byte [eax+0x66fd20]; shl 6' (per-driver level bytes 0x66fd20..0x66fd35, written by 0x43cc12 [ebx+0x66fd20], zero in the image) before the imul/shrd with [0x622798]-[0x62279c]: any u8. Compose with state_0043bcd4 (the 22 driver flag bytes 0x7c2a48, bit 7 = skip) and state_0043bd97 (0x622798/0x62279c, never-written tuning dwords drawn as any u32).",
+  "globals": [
+    {"addr": "0x0066fd20", "type": "u8", "count": 22}
+  ]
+}

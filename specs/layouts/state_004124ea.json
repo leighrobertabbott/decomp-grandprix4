@@ -1,0 +1,11 @@
+{
+  "_evidence": "0x004124ea derives tables from the rate dword 0x603854 (S): 16-bit imul with 0x4ce0, 0x4000000/S (unsigned div: S must be nonzero), 0x517d*S>>14, the 18 words 0x603978..0x60399a times low16(S) (imul word), dwords 0x6037ec/0x6037f0 times low16(S), clamp(0x2000-S) * [0x6039c0] >> 14 clamped at 0x4000, and finally (S<<20)/[0x6013d8] (unsigned div, edx = S>>12). S is a positive rate below 2^17 (copied from 0x7ad8b8 by 0x412604, see state_0041246e): 1..0x20000 covers both sides of the 0x2000 clamp and of the int16 sign at 0x8000; then S>>12 <= 0x20, so any divisor 0x6013d8 >= 0x21 keeps the last quotient in 32 bits (fuzzed 0/small values faulted in 79 of 200 cases). The words and the other dwords are any value.",
+  "globals": [
+    {"addr": "0x00603854", "type": "u32", "lo": 1, "hi": 131072},
+    {"addr": "0x006013d8", "type": "u32", "lo": 33, "hi": 4294967295},
+    {"addr": "0x00603978", "type": "i16", "count": 18, "stride": 2},
+    {"addr": "0x006037ec", "type": "i32"},
+    {"addr": "0x006037f0", "type": "i32"},
+    {"addr": "0x006039c0", "type": "i32"}
+  ]
+}

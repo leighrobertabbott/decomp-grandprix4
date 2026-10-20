@@ -1,0 +1,18 @@
+{
+ "_evidence": "22-slot table at 0xb1b8d8 (stride 0x1c) whose first dword marks a used slot: zero and nonzero mixed so the n-th used slot search runs.",
+ "globals": [
+  {
+   "addr": "0x00b1b8d8",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x1c",
+   "values": [
+    0,
+    0,
+    1,
+    "0x1f1f",
+    "0xffffffff"
+   ]
+  }
+ ]
+}

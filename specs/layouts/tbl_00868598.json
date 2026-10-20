@@ -1,0 +1,13 @@
+{
+  "_evidence": "Track threshold tables filled by the track loader 0x5584de (one 16-byte row per entry: four movsx'd words at 0x868598+16k .. +0xc, and two at 0x86c59c+16k/+0x86c5a0; 0x553f72 seeds rows 0 and 1, the row counter 0x870598 starts at 2), so they are game state, not constants. Read by 0x403263 (cmp ecx with rows +0xc/+4/+8 and, after add esi 8, +8 again; jg/jle/jle signed) and 0x4031ed (row +4 - row +0 as the idiv divisor, 0 -> 1, numerator clamped to 0..divisor or to the negative divisor, so the quotient is at most 2^14 in magnitude for any values; then rows of 0x86c598 +0/+4 (+4/+8, +8/+0xc) as an imul/shrd lerp). The row index is word +0xaa or +0x132 of the segment record (edi), bounded to 0..31 by the record layouts that compose this one (seg_00402db6), so the 32 rows reachable are varied: every dword drawn as a sign-extended i16 (-32768..32767), as the loader stores them. No combination faults.",
+  "globals": [
+    {"addr": "0x00868598", "type": "i32", "count": 32, "stride": 16, "lo": -32768, "hi": 32767},
+    {"addr": "0x0086859c", "type": "i32", "count": 32, "stride": 16, "lo": -32768, "hi": 32767},
+    {"addr": "0x008685a0", "type": "i32", "count": 32, "stride": 16, "lo": -32768, "hi": 32767},
+    {"addr": "0x008685a4", "type": "i32", "count": 32, "stride": 16, "lo": -32768, "hi": 32767},
+    {"addr": "0x0086c598", "type": "i32", "count": 32, "stride": 16, "lo": -32768, "hi": 32767},
+    {"addr": "0x0086c59c", "type": "i32", "count": 32, "stride": 16, "lo": -32768, "hi": 32767},
+    {"addr": "0x0086c5a0", "type": "i32", "count": 32, "stride": 16, "lo": -32768, "hi": 32767},
+    {"addr": "0x0086c5a4", "type": "i32", "count": 32, "stride": 16, "lo": -32768, "hi": 32767}
+  ]
+}

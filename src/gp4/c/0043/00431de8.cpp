@@ -37,4 +37,4 @@ void __cdecl FUN_00431de8(gp4::Regs* r) {
     // leave ZF=1 and PF=1 with CF/AF/SF/OF clear.
     r->eflags = (r->eflags & ~0x8d5u) | 0x44u;
 }
-GP4_IMPL(0x00431de8, FUN_00431de8, "regs() -> (cf, pf, af, zf, sf, of); globals=fuzz:i32")
+GP4_IMPL(0x00431de8, FUN_00431de8, "regs() -> (cf, pf, af, zf, sf, of); globals=fuzz:i32+layout=state_00431e58")

@@ -1,0 +1,6 @@
+{
+  "_evidence": "[0x66d814] is the race clock (copied into due times and compared with them by 0x432acb and others). Drawn 0..0x10000 so it lies on both sides of the due-time values used by pit_00432acb (both js outcomes) without wrapping. Nothing can fault.",
+  "globals": [
+    {"addr": "0x0066d814", "type": "u32", "lo": 0, "hi": 65536}
+  ]
+}

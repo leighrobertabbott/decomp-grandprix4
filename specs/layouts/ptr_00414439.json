@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x00414439 reads the target pointer dword +0x128 (or ebx,ebx; je: null takes the stc exit, so it is nullable), and when set subtracts the car position dwords [esi]/[esi+4] from the target's [ebx]/[ebx+4], feeding 0x401315 (atan2 by div) and the 64-bit sum of squares to 0x40113f (sqrt). Positions are coordinates of the i16 record frame << 11 (-0x4000000..0x3fff7ff, pos_00405cf8 for the target), so the differences stay below 2^27: a difference of exactly 0x80000000 would make 0x401315's neg overflow and its div #DE in the original, which game positions never produce.",
+  "size": 304,
+  "fields": [
+    {"off": 0, "type": "i32", "lo": -67108864, "hi": 67106815},
+    {"off": 4, "type": "i32", "lo": -67108864, "hi": 67106815},
+    {"off": "0x128", "type": "ptr", "size": 64, "fill": "layout=pos_00405cf8", "nullable": true}
+  ]
+}

@@ -1,0 +1,15 @@
+{
+ "_evidence": "Globals for 0x0041d645's tilt test (compose LAST). 0x402906 (called first) turns the car angles +0xc/+0x10/+0x14 and the ground angles [0x638dd0]/[0x638dd4]/[0x638dd8] (i32, 2^31 = pi: 0x402655 does sar 1, fild, fmul [0x6f2bdc] = pi/2^31, fsincos) into the relative pitch/roll [0x638034]/[0x638038] (fpatan, fmul [0x6f2be4], fistp at 0x402a9a), so those two are outputs of the chain, not inputs; the ground angles are drawn small (0, +-2^21, +-2^24: a level track) so the relative angles follow the car angles of rec_0041d645. The six limits 0x608068 (0x14000000), 0x60806c (0x20000000), 0x608070/0x608074 (0x8000000), 0x608078 (0x400000) and 0x60807c (0x800000) are never written (a scan of the in-scope code finds only the six compares in 0x41d645) and keep their image values: fuzz:i32 replaced them with random dwords before. Byte 0x622424 (nonzero skips the whole test) is 0 in most picks.",
+ "globals": [
+  {"addr": "0x00608068", "type": "u32", "values": ["0x14000000"]},
+  {"addr": "0x0060806c", "type": "u32", "values": ["0x20000000"]},
+  {"addr": "0x00608070", "type": "u32", "values": ["0x8000000"]},
+  {"addr": "0x00608074", "type": "u32", "values": ["0x8000000"]},
+  {"addr": "0x00608078", "type": "u32", "values": ["0x400000"]},
+  {"addr": "0x0060807c", "type": "u32", "values": ["0x800000"]},
+  {"addr": "0x00622424", "type": "u8", "values": [0, 0, 0, 1, "0xff"]},
+  {"addr": "0x00638dd0", "type": "u32", "values": [0, 0, "0x200000", "0xffe00000", "0x1000000", "0xff000000"]},
+  {"addr": "0x00638dd4", "type": "u32", "values": [0, 0, "0x200000", "0xffe00000", "0x1000000", "0xff000000"]},
+  {"addr": "0x00638dd8", "type": "u32", "values": [0, 0, "0x200000", "0xffe00000", "0x1000000", "0xff000000"]}
+ ]
+}

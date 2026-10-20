@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x0043b9ae (called by 0x00408708 and 0x00408742) reads byte [esi+0x7c]; when nonzero it does 'and byte [(b & 0x3f) - 1 + 0x0066d90a], 0x7f', a read-modify-write of per-car flag bytes (game state). The index spans -1..62, i.e. bytes 0x0066d909..0x0066d948, all writable data; every value is valid, so all 64 bytes vary over the full u8 range.",
+  "globals": [
+    {"addr": "0x0066d909", "type": "u8", "count": 64}
+  ]
+}

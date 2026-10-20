@@ -1,0 +1,17 @@
+{
+ "size": 112,
+ "_evidence": "Block addressed by pointer global 0x609744 as read by 0x00423160: byte +0x6d (movzx edx: the second id matched against entry +0x18/+0x1c and stored to +0x1c) draws 0..3 like the esi key, dword +0x4c (copied to entry +0x24) and the rest are random.",
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x6d",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    2,
+    3
+   ]
+  }
+ ]
+}

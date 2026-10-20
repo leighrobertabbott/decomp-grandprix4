@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00557e76 clamps (word [esi] - 1) to 0..7 ('cmp ax,7; jle; cmp ax,0; jge', movzx) and reads 'mov dl,[eax+0x875918]' and 'mov dl,[eax+0x875920]', i.e. the two 8-byte tables 0x875918..0x87591f and 0x875920..0x875927, whose bytes it stores zero-extended as words for each selected channel. fuzz:i32 only varied bytes 0..3 of each; here all 16 bytes are random (stored data, never an index or divisor), so a wrong index or table changes the stored words. Values are synthetic.",
+ "globals": [
+  {"addr": "0x00875918", "type": "u8", "count": 16, "stride": 1}
+ ]
+}

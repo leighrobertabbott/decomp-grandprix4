@@ -1,0 +1,9 @@
+{
+ "_evidence": "Record behind edi for 0x00558ece -> 0x558e7b (eight calls with ebp = 0x800, 0x1000, 0x2000, 0x4000, 0x8000, 0x10000, 0x20000, 0x40000): 'test dword [edi+0x2c],ebp; je' selects the attribute lookups, so dword +0x2c draws those single bits, mixes and 0/all-ones (the old u16[0..7] fill never set bits 0x800..0x8000); 'mov ax,[edi+0x56]; lea eax,[eax+eax*2]; shl eax,4; add eax,ebx; mov bx,[eax*2+0x9559f8]' indexes the 0x60-byte entries of the 0x200-entry table 0x9559f8 (tab_00558e19), so word +0x56 is an entry index; it is drawn 0..7 (entries varied by attr_00558e7b; a large word reads past the table end and faults, as the earlier v2 attempt showed at 0x558e8e). The other bytes are random (not read).",
+ "size": 96,
+ "fill": "bytes",
+ "fields": [
+  {"off": "0x2c", "type": "u32", "values": [0, "0x800", "0x1000", "0x2000", "0x4000", "0x8000", "0x10000", "0x20000", "0x40000", "0x7f800", "0x5555d555", "0xaaaa2aaa", "0x0002a800", "0xffffffff"]},
+  {"off": "0x56", "type": "u16", "lo": 0, "hi": 7}
+ ]
+}

@@ -1,0 +1,22 @@
+{
+ "_evidence": "NOT SUFFICIENT ON ITS OWN (L51, 2026-10-20): every edx==2 run of 0x52d5f8 calls user32!PostMessageA through 0x46ae90 (0x53d4f9 reaches it on both arms: 0x549d12->0x52cbb3 msg 0x404 when [0x81e4fc]!=0, else 0x549e2c msg 0x407 + Sleep(4)), and 0x46ae90 then pumps messages (0x5086b0: PeekMessageA/GetMessageA/TranslateMessage/DispatchMessageA). The oracle models none of these, so every case is 'external' until the lead adds models; this family was checked only with a probe-local model (PostMessageA -> 1, PeekMessageA -> 0). Live menu header [0x82fd34] for the 0x52d5f8 chain: +0 first item (nullable: an empty menu ends the 0x53d4f9 loop at once), +0x20 the header handler called by 0x53d536 'call [eax+0x20]' when [0x82fd60]==0xff: the static headers all hold a bare ret there (0x53b297 or 0x53ddba, image scan of the 28 headers with the 01 02 00 05 signature at +0xd). Other header bytes random. ",
+ "size": 48,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": 0,
+   "type": "ptr",
+   "size": 48,
+   "fill": "layout=mitem1_0052d5f8",
+   "nullable": true
+  },
+  {
+   "off": "0x20",
+   "type": "u32",
+   "values": [
+    "0x53b297",
+    "0x53ddba"
+   ]
+  }
+ ]
+}

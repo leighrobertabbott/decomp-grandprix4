@@ -1,0 +1,9 @@
+{
+  "_evidence": "Object record behind esi for 0x00424e1b: dword +0x64 is the object's current segment as a byte offset into the 0x160-stride ring 0x8943a0 (edi = 0x8943a0 + [esi+0x64]; written back as edi - 0x8943a0), dwords +0 and +8 are its x/z position read by the accepted walker 0x405c30 (stored to 0x623e30/0x623e38, then ecx/ebx for 0x405a12/0x405c9a). 0x405c30 was verified on edi = rec[0x8943a0,0x160,0..11] and positions -0x4000000..0x3fff7ff under ring_00405a12 (coordinates of the i16 frame <<11: the pinned CF records end every walk), so +0x64 is k*0x160 for k 0..11 and both positions lie in that range; a wild offset or position runs the walk off the varied geometry. Nothing else of the record is read (+0x58 and +0x64 are written).",
+  "size": 108,
+  "fields": [
+    {"off": 0, "type": "i32", "lo": -67108864, "hi": 67106815},
+    {"off": 8, "type": "i32", "lo": -67108864, "hi": 67106815},
+    {"off": "0x64", "type": "u32", "values": [0, "0x160", "0x2c0", "0x420", "0x580", "0x6e0", "0x840", "0x9a0", "0xb00", "0xc60", "0xdc0", "0xf20"]}
+  ]
+}

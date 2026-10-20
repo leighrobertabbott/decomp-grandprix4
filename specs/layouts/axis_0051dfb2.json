@@ -1,0 +1,76 @@
+{
+ "_evidence": "0x0051dfb2 (compose after bits_006f2d90; esi is the spec's random 0x78-byte record): 'mov bl,[0x7ab550]; cmp bl,1; jne' - mode 1 tests 'byte [0x679d1b],1' (jne: return, else or byte [esi+0x6f],1) - any other mode calls 0x51ddda (table entry != 0xff: the flag bit decides, set -> or [esi+0x6f],1; entry 0xff -> CF: the mode is compared with the axis list 6,7,0x20,0x22,0x23,0x24,8,9,0x21,0x25,0x26,0x27, non-members return). Axis path, identical in shape to 0x51e1c4 (axis_0051e1c4): ecx = A - B with A = [0x7ab140], B = [0x7ab144] ('jns' picks the clamp order), V = [0x7ab15c] clamped into [A,B] (signed), ecx = 0 becomes 1, ((V' - B) << 14) cdq idiv ecx, |q| capped at 0x3f80 on both signs, sar 7 into byte [esi+0x6e], then al >= 0x40 (not js) sets [esi+0x6f] bit 0. Domain: the mode from 1 (often), every list member and the non-members 0,5,0x0a,0x1f,0x28,0xff (the table entry of each is 0xff in about half the cases via bits_006f2d90), 0x679d1b from {0,1,2,3,0xfe,0xff} (bits 0 and 1 both ways), A and B from axis_0051e1c4's sets (differences include exactly +-0x20000 so the 'shl 14' wraps and the negative cap is reached), V aliases A in about half the cases. The idiv cannot fault: quotient overflow needs divisor -1 with dividend -2^31, but ecx = -1 means A = B - 1 (mod 2^32) and the clamp leaves V' - B in {-1, 0}; ecx = 0 is replaced by 1. Values are synthetic.",
+ "globals": [
+  {
+   "addr": "0x007ab550",
+   "type": "u8",
+   "values": [
+    1,
+    1,
+    1,
+    1,
+    6,
+    7,
+    8,
+    9,
+    "0x20",
+    "0x21",
+    "0x22",
+    "0x23",
+    "0x24",
+    "0x25",
+    "0x26",
+    "0x27",
+    0,
+    5,
+    "0x0a",
+    "0x1f",
+    "0x28",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x00679d1b",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    "0xfe",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x007ab140",
+   "type": "u32",
+   "values": [
+    "0x20000",
+    "0x20000",
+    "0x40000",
+    0,
+    "0x1ffff",
+    "0x20400",
+    "0xffffff00",
+    "0x7fffffff"
+   ]
+  },
+  {
+   "addr": "0x007ab144",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    "0x20000",
+    "0xfffe0000",
+    "0x100",
+    "0x80000000"
+   ]
+  },
+  {
+   "addr": "0x007ab15c",
+   "type": "i32",
+   "alias": "0x007ab140"
+  }
+ ]
+}

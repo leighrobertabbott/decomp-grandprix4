@@ -1,0 +1,15 @@
+{
+ "_evidence": "Distance-unit word [0x7ad8ac] (part of the 0x7ad890 settings block, block_00512c7d): 0x53afa7 'cmp word [0x7ad8ac],0; je' picks ebx = 0x14a00 / esi = 0x14 (km) or ebx = 0xcd0d / esi = 0x15 (miles) for 'mul ecx(0x3e80); div ebx' (eax <= 0xffff, so edx = 0 and the quotient fits) and the unit text; only compared with zero, so 0, 1 and 0xffff (as strtab_00542da8 draws it).",
+ "globals": [
+  {
+   "addr": "0x007ad8ac",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    1,
+    "0xffff"
+   ]
+  }
+ ]
+}

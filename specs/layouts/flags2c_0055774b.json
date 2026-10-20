@@ -1,0 +1,11 @@
+{
+ "_evidence": "Ring record flag dwords for 0x0055774b/0x00557788 (and their wrappers 0x55776f/0x5577ac) and 0x005593ef (compose after ring_008943a0+bits_0055616f). 0x55774b/0x557788: 'mov eax,[edi+0x2c]; mov edx,edi; sub edx,0x160; cmp edx,[0x866ec0]; jae; add edx,[0x866ebc]; or eax,[edx+0x2c]; and eax,0x8007800' (0x10078000 for 0x557788) with edi = records 0..29, so the own and previous record's +0x2c of records 0..29 are read (after the wrap, edx is never below record 0); the wrappers then OR the result into +0x30/+0x34/+0x38/+0x3c/+0x40. 0x5593ef: edi = [0x891500] (pit start, records 0..30): 'mov al,[edi+0x2c]; test al,0x80 / 0x40' and 0x559391 'and byte [edi+0x2c]', 'test byte [edi-0x134],dl' (the previous record's +0x2c byte: record -1 at 0x89426c when the pit start is record 0) and RMW of bytes +0x30/+0x3c. bits_0055616f draws +0x2c only for records 0..26 and from low-bit values that never meet the 0x8007800/0x10078000 masks. Here +0x2c of records -1..31 draws single bits and mixes of both masks plus 0x40/0x80/0xc0 and 0/-1, and +0x30..+0x40 of the same records are random (OR/AND targets). Plain flag data: every value is valid.",
+ "globals": [
+  {"addr": "0x0089426c", "type": "u32", "count": 33, "stride": "0x160", "values": [0, "0x40", "0x80", "0xc0", "0x800", "0x1000", "0x4000", "0x7800", "0x8000", "0x10000", "0x70000", "0x08000000", "0x10000000", "0x18007800", "0xffffffff"]},
+  {"addr": "0x00894270", "type": "u32", "count": 33, "stride": "0x160"},
+  {"addr": "0x00894274", "type": "u32", "count": 33, "stride": "0x160"},
+  {"addr": "0x00894278", "type": "u32", "count": 33, "stride": "0x160"},
+  {"addr": "0x0089427c", "type": "u32", "count": 33, "stride": "0x160"},
+  {"addr": "0x00894280", "type": "u32", "count": 33, "stride": "0x160"}
+ ]
+}

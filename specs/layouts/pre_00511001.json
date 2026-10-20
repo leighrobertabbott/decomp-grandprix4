@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x00511001 only writes: 'mov dword [0x7ad894],0', 'mov byte [0x7c2e81],0' and the loop 'mov byte [esi],0; inc esi; loop' over the 0x176 bytes 0x7c2f2d..0x7c30a2. If those bytes start as zero (their image value), a reconstruction that skips or shortens a clear still matches; here the whole pre-image is random (fuzz:i32 only touched the first dword of each), so every byte the original clears is visibly changed. Overwritten state: every value is valid.",
+ "globals": [
+  {"addr": "0x007ad894", "type": "u32"},
+  {"addr": "0x007c2e81", "type": "u8", "values": [1, "0x5a", "0xff"]},
+  {"addr": "0x007c2f2d", "type": "u8", "count": "0x176", "stride": 1, "values": [1, 2, "0x3c", "0x80", "0xa5", "0xff"]}
+ ]
+}

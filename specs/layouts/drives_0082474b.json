@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x0052f4b8 scans 4 records of 0x105 bytes at 0x82474b (mov esi,0x82474b; mov ecx,4; mov al,[esi]; ...; add esi,0x105; dec ecx) comparing each translated first byte with the translated key, and on a match copies 0x104 bytes from the record start to 0x81e7f2 (rep movsb). It reads 0x82474b..0x824b5e at most; all byte patterns are valid (no index or pointer), so the whole 0x414-byte block is random. The block is zero in the image (path records filled at run time). Compose with xlat_00833e18 so first bytes collide after translation.",
+ "globals": [
+  {"addr": "0x0082474b", "type": "u8", "count": 1044, "stride": 1}
+ ]
+}

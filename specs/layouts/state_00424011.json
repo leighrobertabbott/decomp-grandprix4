@@ -1,0 +1,19 @@
+{
+  "_evidence": "0x00424011: do-while ecx = 0 .. [0x6097cc]-1 (count 1..8; 0 would run 2^32 iterations), records from [0x6097ac] (recs_006097ac) while ecx < [0x6082b4] (jb, unsigned; 0..8 gives below/equal/above the count), switching to the fixed array 0x620fc0 (8 x 0x14) at ecx == [0x6082b4]. Each used record: (x-[0x6097b4])*[0x622ef8] + (y-[0x6097b8])*[0x622f10] + (z-[0x6097bc])*[0x622f28] fistp-ed (matrix column f64 in [-4,4]), + [0x607f2c] - [0x607fbc]; negative sums are negated, imul [0x608010], shrd 14 and accumulated. Afterwards ebp = n*[0x608010] (n = accumulated count 1..8) and, when [0x608184]-([0x639630]<<8) >= 0 (js guards), idiv ebp of that value <<14 (< 2^45). Every multiplier in the list has 0x4000 <= |m| <= 2^28, so |ebp| is in 2^14..2^31 (no wrap to a small or zero divisor) and the quotient fits: no #DE. Positions, offsets and 0x639630 are plain i32 (both js outcomes).",
+  "globals": [
+    {"addr": "0x006097ac", "type": "ptr", "size": 168, "fill": "layout=recs_006097ac"},
+    {"addr": "0x006097cc", "type": "u32", "lo": 1, "hi": 8},
+    {"addr": "0x006082b4", "type": "u32", "lo": 0, "hi": 8},
+    {"addr": "0x00620fc0", "type": "i32", "count": 8, "stride": 20},
+    {"addr": "0x00620fc4", "type": "i32", "count": 8, "stride": 20},
+    {"addr": "0x00620fc8", "type": "i32", "count": 8, "stride": 20},
+    {"addr": "0x006097b4", "type": "i32"},
+    {"addr": "0x006097b8", "type": "i32"},
+    {"addr": "0x006097bc", "type": "i32"},
+    {"addr": "0x00622ef8", "type": "f64", "count": 3, "stride": "0x18", "lo": -4, "hi": 4},
+    {"addr": "0x00607f2c", "type": "i32"},
+    {"addr": "0x00607fbc", "type": "i32"},
+    {"addr": "0x00608010", "type": "u32", "values": ["0x4000", "0x4001", "0x7fff", "0x8000", "0x12345", "0x100000", "0x1234567", "0x10000000", "0xffffc000", "0xffff0000", "0xfedcba98", "0xf0000000"]},
+    {"addr": "0x00639630", "type": "i32"}
+  ]
+}

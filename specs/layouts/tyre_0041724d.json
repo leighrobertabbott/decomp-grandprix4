@@ -1,0 +1,8 @@
+{
+  "_evidence": "State doubles of 0x0041724d beyond tyre_00601510 (compose after it). globals=fuzz:i32 only replaced the low dword of the direct f64 globals, so their high halves (sign, exponent) stayed static. 0x601420 (scale of the lateral force, fmul then fistp into +0x274; written from the setup by 0x4112e3, image 3.28) is drawn 0..8; 0x601480 (the magic-formula result 0x411e17 stores and 0x411e3d reuses; copied to 0x601488/0x601490 and read stale when 0x411e69/0x411f09 return early) is any finite -4..4; the wheel-record double +0x98 of the four records (0x6015a8 + k*0x158, read by 0x411e69/0x411f09 like the +0x18/+0x48/+0x90 factors of tyre_00601510, filled by 0x411922/0x411a22) is -4..4. The doubles 0x601460/0x601498, the per-wheel ints 0x6014d0[0..3], 0x601450 and the coefficient tables at 0x62f5c0..0x62f87f have no writer (image constants) and keep their values. x87 exceptions are masked (FPU 0x037F): no value faults.",
+  "globals": [
+    {"addr": "0x00601420", "type": "f64", "lo": 0, "hi": 8},
+    {"addr": "0x00601480", "type": "f64", "lo": -4, "hi": 4},
+    {"addr": "0x006015a8", "type": "f64", "count": 4, "stride": "0x158", "lo": -4, "hi": 4}
+  ]
+}

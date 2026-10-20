@@ -1,0 +1,16 @@
+{
+  "_evidence": "0x0040cb38 reads the segment record 18 records after [0x00866f08] (edi = ptr + 0x18c0; the pointer is a record of the 0x160-stride array at 0x008943a0, see ring_0040b060), words +0x74+0x60 or +0x76+0x62 chosen by the sign of byte 0x00868582, so the pointer is record 0..20 and those words of records 18..38 are varied. eax = word sum + 0x50 - 0xbd - [0x627890], replaced by [0x62d2b4] when that is nonzero, then (eax<<14)/0x5a4 (idiv): the quotient fits only for |eax| < 0x5a4*2^17 = 189267968, so 0x627890 and 0x62d2b4 are -1e8..1e8 (the generator also yields 0, so both je outcomes occur); 0x62d2b8 (nonzero replaces the max), 0x62788c (jge) and 0x603b1c (imul/shrd) are any i32. Random pointers faulted every case.",
+  "globals": [
+    {"addr": "0x00866f08", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 20}},
+    {"addr": "0x00868582", "type": "u8"},
+    {"addr": "0x00895cc0", "type": "u16", "count": 21, "stride": "0x160"},
+    {"addr": "0x00895cc2", "type": "u16", "count": 21, "stride": "0x160"},
+    {"addr": "0x00895cd4", "type": "u16", "count": 21, "stride": "0x160"},
+    {"addr": "0x00895cd6", "type": "u16", "count": 21, "stride": "0x160"},
+    {"addr": "0x00627890", "type": "i32", "lo": -100000000, "hi": 100000000},
+    {"addr": "0x0062d2b4", "type": "i32", "lo": -100000000, "hi": 100000000},
+    {"addr": "0x0062d2b8", "type": "i32"},
+    {"addr": "0x0062788c", "type": "i32"},
+    {"addr": "0x00603b1c", "type": "i32"}
+  ]
+}

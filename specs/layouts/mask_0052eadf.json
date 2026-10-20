@@ -1,0 +1,152 @@
+{
+ "_evidence": "Toggle masks of the static menu items for 0x0052eadf (compose after menu_0084300a; globals=layout fields only, so the next pointers, ids and handlers keep their image values). With edx = 2 the handler reads the item value (0x539944 via +0xd and ebx), 'xor eax,[esi+0x26]', stores it back (0x539a13), marks the next item [esi] (+0x1f bits 0x40/0x20, 'cmp al,0xff'), and on edx = 1/2 'and eax,[esi+0x26]; cmp eax,[esi+0x26]; jne' sets +0x1f bit 7 when every mask bit is set. Items 6..12 (0x8430fe.. stride 0x2a) carry this dword +0x26 in front of the next item (items 1..5 have stride 0x26, so their +0x26 is the next item's +0 link, which stays static); in the image each mask is one fixed constant, so the xor/and/cmp ran on just those patterns. Here every one of the seven masks draws zero, single bits, byte/word/top patterns and all-ones, so both outcomes of the all-bits compare occur for every item. Used only in xor/and/cmp, never as an address: every value is valid. Values are synthetic.",
+ "globals": [
+  {
+   "addr": "0x00843124",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    4,
+    "0x10",
+    "0x80",
+    "0xff",
+    "0x100",
+    "0x8000",
+    "0xf000",
+    "0x10000",
+    "0x80000000",
+    "0xffff",
+    "0xffffffff",
+    "0x00ff00ff"
+   ]
+  },
+  {
+   "addr": "0x0084314e",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    4,
+    "0x10",
+    "0x80",
+    "0xff",
+    "0x100",
+    "0x8000",
+    "0xf000",
+    "0x10000",
+    "0x80000000",
+    "0xffff",
+    "0xffffffff",
+    "0x00ff00ff"
+   ]
+  },
+  {
+   "addr": "0x00843178",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    4,
+    "0x10",
+    "0x80",
+    "0xff",
+    "0x100",
+    "0x8000",
+    "0xf000",
+    "0x10000",
+    "0x80000000",
+    "0xffff",
+    "0xffffffff",
+    "0x00ff00ff"
+   ]
+  },
+  {
+   "addr": "0x008431a2",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    4,
+    "0x10",
+    "0x80",
+    "0xff",
+    "0x100",
+    "0x8000",
+    "0xf000",
+    "0x10000",
+    "0x80000000",
+    "0xffff",
+    "0xffffffff",
+    "0x00ff00ff"
+   ]
+  },
+  {
+   "addr": "0x008431cc",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    4,
+    "0x10",
+    "0x80",
+    "0xff",
+    "0x100",
+    "0x8000",
+    "0xf000",
+    "0x10000",
+    "0x80000000",
+    "0xffff",
+    "0xffffffff",
+    "0x00ff00ff"
+   ]
+  },
+  {
+   "addr": "0x008431f6",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    4,
+    "0x10",
+    "0x80",
+    "0xff",
+    "0x100",
+    "0x8000",
+    "0xf000",
+    "0x10000",
+    "0x80000000",
+    "0xffff",
+    "0xffffffff",
+    "0x00ff00ff"
+   ]
+  },
+  {
+   "addr": "0x00843220",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    4,
+    "0x10",
+    "0x80",
+    "0xff",
+    "0x100",
+    "0x8000",
+    "0xf000",
+    "0x10000",
+    "0x80000000",
+    "0xffff",
+    "0xffffffff",
+    "0x00ff00ff"
+   ]
+  }
+ ]
+}

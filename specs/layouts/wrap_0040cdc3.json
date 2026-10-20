@@ -1,0 +1,19 @@
+{
+ "_evidence": "Overlay for 0x0040cdc3 (track set-up; compose LAST, after pitgeo_0040d644). Its 0x40d4c4 walk starts at the pit entry [0x866f00] and steps 'add edi,0x160' until it EQUALS the pit exit [0x866f04], wrapping at the lap end [0x866ecc] by 'sub edi,[0x866ec4]' (while below the pit start) - with the family's short wraps (ring_008943a0: 1..4 records) a lap-end record 6 sends the walk into a cycle that misses exits 1..2 (the 8/8 timeouts). In a closed lap the wrap is the lap length (lap end minus the lap start [0x891504]): with pitgeo_0040d644's lap records 0..5 that is [0x866ec4] = 6*0x160 = 0x840 and [0x891504] = record 0, so the walk entry 4..5 -> 5 -> 0 -> .. -> exit 1..3 always ends.",
+ "globals": [
+  {
+   "addr": "0x00866ec4",
+   "type": "u32",
+   "values": [
+    "0x840"
+   ]
+  },
+  {
+   "addr": "0x00891504",
+   "type": "u32",
+   "values": [
+    "0x8943a0"
+   ]
+  }
+ ]
+}

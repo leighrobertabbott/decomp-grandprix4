@@ -1,0 +1,8 @@
+{
+ "size": 128,
+ "_evidence": "0x00444837 passes the parts mask [ebx+0x4c] to 0x444517 (Parts_ComputeMassProperties), which divides by the summed masses of the selected parts: a mask with none of the low 23 bits set (rec_0042453d draws 0) divides by zero, so the overlay keeps the low 23 bits nonzero (single parts, part groups and all parts). +0x6f is the part-state byte.",
+ "fields": [
+  {"off": "0x4c", "type": "u32", "values": [1, 2, "0x80", "0x200", "0x4000", "0x10000", "0x7fffff", "0x1ffff", "0x400001", "0xff800001"]},
+  {"off": "0x6f", "type": "u8", "values": [0, 2, 3, "0x80", "0xff"]}
+ ]
+}

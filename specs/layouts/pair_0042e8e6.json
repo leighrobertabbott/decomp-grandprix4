@@ -1,0 +1,19 @@
+{
+  "_evidence": "0x0042e8e6 (esi = car rec[0x66fef0,0x41c,0..21]) compares it with the other car [0x006043e0] (cmp ebx,esi; je: same car exits), a record-aligned pointer into the same 22-car array (points_into 0..21, so it equals esi in about 1/22 of the cases). Fields of all 22 cars: byte +0xe5 (bit 2), word +0x68 (lap distance: difference js and cmp with [0x00603afc], drawn -0x1000..0x1000 with the threshold 0..0x7fff so negative, below and above occur), byte +0x9c (bit 1 selects 0x40dc8a), word +0xe2, words +0xea (cmp 0; zero in most picks), byte +0xfe (bit 0x40), and for 0x40dc8a byte +0x21d (bit 2) and words +0x148/+0x14a/+0x14c/+0x14e; threshold 0x00603b28 (cmp ax; jl) -0x4000..0x4000. Pointer reads are fixed records; nothing faults.",
+  "globals": [
+    {"addr": "0x006043e0", "type": "u32", "points_into": {"base": "0x0066fef0", "stride": "0x41c", "lo": 0, "hi": 21}},
+    {"addr": "0x0066ffd5", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ff58", "type": "i16", "count": 22, "stride": "0x41c", "lo": -4096, "hi": 4096},
+    {"addr": "0x0066ff8c", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ffd2", "type": "i16", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ffda", "type": "u16", "count": 22, "stride": "0x41c", "values": [0, 0, 0, 0, 0, 1, "0x28", "0xffff"]},
+    {"addr": "0x0066ffee", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0067010d", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x00670038", "type": "i16", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0067003a", "type": "i16", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0067003c", "type": "i16", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0067003e", "type": "i16", "count": 22, "stride": "0x41c"},
+    {"addr": "0x00603afc", "type": "i16", "lo": 0, "hi": 32767},
+    {"addr": "0x00603b28", "type": "i16", "lo": -16384, "hi": 16384}
+  ]
+}

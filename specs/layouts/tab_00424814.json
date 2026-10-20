@@ -1,0 +1,7 @@
+{
+ "_evidence": "Overlay for the shape-entry table behind [0x62a048] (compose after tab_0042453d) for the debris path 0x424814 -> 0x424d65 -> 0x424878: there the mask passed to 0x42453d/0x42257b (via object +0x4c and 0x62a054) is a group of detached parts produced by 0x4447b2 from the constant adjacency table 0x62a15c (23 rows, each a subset of 0x7fffff containing its own bit), so it can be any connected part set, including ones with no part 0..16 (e.g. the single parts 21 or 22, or {17..20}). 0x42257b adds an entry only for a table entry with 'test [esi+ebx*4], edi' nonzero (then 0x14280 bit -> 0x4223ed, else byte [0x60932c+i] >= 4 -> 0x422397); with no entry 0x424625's 'inc ecx; cmp ecx,[block+0x18]; jne' runs on until ecx wraps (the 4/200 v3 timeouts: mask 0x200000 against tab_0042453d's entry 0 = 0x1ffff and count max([0x62a04c],1) = 1). A part group the game detaches always has a shape entry (otherwise the game would hang the same way), so entry 0 here always covers all 23 part bits and a 0x14280 bit: 0xffffffff, 0x7fffffff or 0x7fffff. Entries 1..15 keep tab_0042453d's free draws.",
+ "size": 64,
+ "fields": [
+  {"off": 0, "type": "u32", "values": ["0xffffffff", "0x7fffffff", "0x007fffff"]}
+ ]
+}

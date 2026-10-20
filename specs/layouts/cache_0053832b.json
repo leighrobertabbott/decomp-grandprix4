@@ -1,0 +1,16 @@
+{
+ "_evidence": "Temp-file cache state for 0x0053832b (cached write) and 0x00538440 (cached read), set up by 0x538282: cache buffer [0x829c44] with capacity [0x829c4c] and end [0x829c48], cached file range [0x829c54]..[0x829c58] valid when byte [0x829c50] = 0xff, dirty byte [0x829c51], backing block [0x829c5c]..[0x829c60], file mode [0x829c68]. The two targets only test the mode for zero ('cmp byte [0x829c68],0'); 0 and nonzero lead to the same target blocks for any nonzero value, while the callees 0x5385df/0x538635/0x5386a5 call CreateFileA/SetFilePointer/WriteFile/ReadFile only for mode 2 and copy to/from the backing block [0x829c5c] + offset ('rep movsb') for other nonzero modes. So the mode is drawn from {0, 1}: 1 stands for 'file present' in the target bodies and keeps every callee free of unmodelled imports (the game stores only 0 and 2: 0x538715/0x538309). [0x81ea2c] (shared file-open flag; 0x53862f -> 0x53646a calls CloseHandle when set) is 0: in modes 0/1 nothing opens a handle, and every cached operation closes the file it opened. The cache and backing block are fresh buffers (0x600 / 0x800 bytes) sized for every access the domain allows: cached range start s in {0,0x100,0x200} <= end e in {0x200,0x300,0x380} (so 0 <= e-s <= 0x380), counts <= 0x200 (spec), capacities <= 0x400, offsets <= 0x400 (spec): writes reach at most A+0x580, flushes copy A[0..e-s) to B+s, reloads copy capacity bytes from B+offset (<= B+0x800). The end pointers cannot be expressed relative to the allocated buffers, so [0x829c48] / [0x829c60] are 0 (every room / bounds check fails: flush, resp. failed flush/reload) or 0xffffffff (every check passes); both outcomes of each end compare occur and no access leaves the buffers.",
+ "globals": [
+  {"addr": "0x00829c68", "type": "u8", "values": [0, 1, 1]},
+  {"addr": "0x0081ea2c", "type": "u8", "values": [0]},
+  {"addr": "0x00829c44", "type": "ptr", "size": 1536, "fill": "bytes"},
+  {"addr": "0x00829c48", "type": "u32", "values": [0, "0xffffffff", "0xffffffff"]},
+  {"addr": "0x00829c4c", "type": "u32", "values": [0, "0x80", "0x100", "0x200", "0x200", "0x400"]},
+  {"addr": "0x00829c50", "type": "u8", "values": ["0xff", "0xff", 0, 1]},
+  {"addr": "0x00829c51", "type": "u8", "values": ["0xff", 0, "0x7f"]},
+  {"addr": "0x00829c54", "type": "u32", "values": [0, "0x100", "0x200"]},
+  {"addr": "0x00829c58", "type": "u32", "values": ["0x200", "0x300", "0x380"]},
+  {"addr": "0x00829c5c", "type": "ptr", "size": 2048, "fill": "bytes"},
+  {"addr": "0x00829c60", "type": "u32", "values": [0, "0xffffffff", "0xffffffff"]}
+ ]
+}

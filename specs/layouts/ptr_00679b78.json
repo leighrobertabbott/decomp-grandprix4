@@ -1,0 +1,15 @@
+{
+ "_evidence": "[0x679b78] is a ring-record pointer (records 0..25 of the 0x160-byte array at 0x8943a0) read by 0x00527095.",
+ "globals": [
+  {
+   "addr": "0x00679b78",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 25
+   }
+  }
+ ]
+}

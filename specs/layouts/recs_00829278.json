@@ -1,0 +1,22 @@
+{
+ "size": 131072,
+ "fill": "bytes",
+ "_evidence": "16-byte records of the 0x829278 table walked by 0x00536f64: +8 is a negative link (-2 = end sentinel).",
+ "fields": [
+  {
+   "off": 8,
+   "type": "u32",
+   "count": 8192,
+   "stride": 16,
+   "values": [
+    "0xfffffffe",
+    "0xfffffffe",
+    "0xfffffffe",
+    "0xfffffffe",
+    "0xffffffff",
+    "0x80000000",
+    "0xfffffff0"
+   ]
+  }
+ ]
+}

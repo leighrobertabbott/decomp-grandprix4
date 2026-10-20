@@ -1,0 +1,19 @@
+{
+ "_evidence": "Overlay for 0x0043bcd4 (compose after trk_007ad894+circ_007adb50+codes_0043ba12+adj_0066d802+codes_007adb54). The loop over drivers esi 0..21 tests the flag byte [esi+0x7c2a48] (test 0xff; js skips the driver): all 22 bytes are driver flags (only the first dword was fuzzed, bytes 4..21 kept the image value), drawn so bit 7 is set in about two fifths of the picks (skip) and clear otherwise. Test only: nothing faults.",
+ "globals": [
+  {
+   "addr": "0x007c2a48",
+   "type": "u8",
+   "count": 22,
+   "stride": 1,
+   "values": [
+    0,
+    0,
+    1,
+    "0x7f",
+    "0x80",
+    "0xff"
+   ]
+  }
+ ]
+}

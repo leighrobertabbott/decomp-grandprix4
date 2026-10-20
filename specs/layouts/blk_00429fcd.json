@@ -1,0 +1,19 @@
+{
+ "_evidence": "Segment block behind car +0x1b8 for 0x00429fcd: when car byte +0x135 bit 0 is set, the new lane byte is +0x2a, or +0x8d when bit 7 of +0x51 is set (0x42a016..0x42a01f), stored into car +0x234 and used by 0x425cb3 as the 0x6269b8 entry index: both are lane ids 0..0x5f (see lanes_00429fcd). Other bytes random (rec_00409416's +0x1b8 block: words +0x18/+0x178).",
+ "size": 380,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x2a",
+   "type": "u8",
+   "lo": 0,
+   "hi": 95
+  },
+  {
+   "off": "0x8d",
+   "type": "u8",
+   "lo": 0,
+   "hi": 95
+  }
+ ]
+}

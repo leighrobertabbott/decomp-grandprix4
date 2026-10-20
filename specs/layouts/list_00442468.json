@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x00442468 (compose LAST, after order_00675958+tabs_0043ced2): key al = byte [0x66d896] ('test al,0xff; jns' and 'test al,0x40; jne' exit with CF=1), then a scan 'cmp al,[ebx+0x66d8f4]' for ebx < dword [0x66d8ec] and, on a hit, a wrapping walk over the same count for the next entry with bit 6 clear and bit 7 set (else the key itself, block 0x4424bb), stored to 0x66d897. The list 0x66d8f4..0x66d909 holds the 22 car codes of the order list (count [0x66d8ec] <= 22, order_00675958 draws 2..22; any count 0..22 is fault-free: both loops are bounded by it); codes are bytes (car number in the low six bits, bit 6 / bit 7 flags), compared and tested only, so any byte is valid. Entries draw flagged codes 0x81..0x96 often (so the key is found and the walk finds a successor), bit-6 codes 0xc1/0xc2 and unflagged codes; the key draws the same flagged codes plus bit-6 keys (0x442475:taken) and unflagged ones (0x442471 jns).",
+ "globals": [
+  {"addr": "0x0066d8f4", "type": "u8", "count": 22, "stride": 1, "values": ["0x81", "0x82", "0x83", "0x96", "0x81", "0x82", "0xc1", "0xc2", 1, 2, "0x16", 0, "0xff"]},
+  {"addr": "0x0066d896", "type": "u8", "values": ["0x81", "0x82", "0x83", "0x96", "0x81", "0xc1", "0xc2", 1, 0]}
+ ]
+}

@@ -1,0 +1,9 @@
+{
+ "_evidence": "Menu item record esi for the handler 0x00529148 (buffer part; the globals of the lists it edits are vals_00529148). Fields read on its paths: byte +0xd by 0x539944 / 0x539a13 ('mov dl,[esi+0xd]; and edx,3', a 4-way dispatch: byte / word / dword value at [ebx], 3 = none (eax = 0, or the empty stub for 0x539a13)) and the dword +0x26 by 'cmp eax,[esi+0x26]; jb 0x529193' (the lower limit the decremented value must not go under). The earlier spec drew every byte from {0,0,0,1,2}, so +0x26 was mostly a large dword and the compare almost always took the early return. +0x26 here mixes 0, small limits around the 0..0x33 values of vals_00529148, and large ones; +0xd covers all four types. Other bytes random: no other offset is read, nothing is dereferenced.",
+ "size": 64,
+ "fill": "bytes",
+ "fields": [
+  {"off": "0x0d", "type": "u8", "values": [0, 0, 0, 1, 2, 3, "0x80", "0x41"]},
+  {"off": "0x26", "type": "u32", "values": [0, 0, 0, 1, 2, "0x10", "0x20", "0x30", "0x40", "0x100", "0x10000", "0xffffffff"]}
+ ]
+}

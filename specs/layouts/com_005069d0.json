@@ -1,0 +1,7 @@
+{
+ "_evidence": "Synthetic effect object for 0x005069d0: dword +0 is the method-table pointer (vtbl_005069d0); only 'mov eax,[esi]' reads the object itself.",
+ "size": 8,
+ "fields": [
+  {"off": 0, "type": "ptr", "size": 32, "fill": "layout=vtbl_005069d0"}
+ ]
+}

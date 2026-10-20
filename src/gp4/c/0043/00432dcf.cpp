@@ -48,4 +48,4 @@ void __cdecl FUN_00432dcf(gp4::Regs* r) {
     // flags of the final "add esi, 0x41c"
     r->eflags = (r->eflags & ~0x8D5u) | addFlags(esi - 0x41cu, 0x41cu, esi);
 }
-GP4_IMPL(0x00432dcf, FUN_00432dcf, "regs(ecx:u32, esi:u32) -> (eax, ecx, esi, ebp, cf, pf, af, zf, sf, of); globals=layout=state_00432dcf")
+GP4_IMPL(0x00432dcf, FUN_00432dcf, "regs(ecx:u32, esi:u32) -> (eax, ecx, esi, ebp, cf, pf, af, zf, sf, of); globals=layout=state_00432dcf+flags_00432dcf")

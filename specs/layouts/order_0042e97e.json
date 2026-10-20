@@ -1,0 +1,49 @@
+{
+ "_evidence": "Car-order words for scans that walk list_0066fe3c up to the end pointer [0x6043f8] = 0x66fe68 (cursor_006043fc): every slot below the end is an active car's byte offset k*0x41c (0x4091b5 builds the list from the 22 records; the 0xffff terminator sits after the last active car, which cursor_006043fc's end puts at slot 22), so the 22 words draw only record offsets 0..21 here (list_0066fe3c's 0xffff picks would make 0x42e97e's 'movsx ebx,word [edi]; add ebx,0x66fef0' a misaligned non-record pointer 0x66feef). Overlay after list_0066fe3c / cars_0066fef0; the guard words 0x66fe3a/0x66fe68 keep 0xffff.",
+ "globals": [
+  {
+   "addr": "0x0066fe3c",
+   "type": "u16",
+   "count": 22,
+   "stride": 2,
+   "values": [
+    "0x0",
+    "0x41c",
+    "0x838",
+    "0xc54",
+    "0x1070",
+    "0x148c",
+    "0x18a8",
+    "0x1cc4",
+    "0x20e0",
+    "0x24fc",
+    "0x2918",
+    "0x2d34",
+    "0x3150",
+    "0x356c",
+    "0x3988",
+    "0x3da4",
+    "0x41c0",
+    "0x45dc",
+    "0x49f8",
+    "0x4e14",
+    "0x5230",
+    "0x564c"
+   ]
+  },
+  {
+   "addr": "0x0066fe3a",
+   "type": "u16",
+   "values": [
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x0066fe68",
+   "type": "u16",
+   "values": [
+    "0xffff"
+   ]
+  }
+ ]
+}

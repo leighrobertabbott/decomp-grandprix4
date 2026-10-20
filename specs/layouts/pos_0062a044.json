@@ -1,0 +1,31 @@
+{
+ "_evidence": "Position-record table behind [0x62a044] (copied to [0x62a058] by 0x42458b) for chains that feed it to the contact solver: 0x422397 reads x/y/z dwords +0/+4/+8 of 16-byte record eax (0..63 here: 1024 bytes) and stores each shifted left 5 into the contact list that 0x42320a projects with fistp; +-2^11 keeps the stored points in the +-2^16 range of pts_0042320a (random dwords <<5 overflowed the 0x421f53 weighted sums). Dword +0xc is not read by 0x422397: plain random.",
+ "size": 1024,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": 0,
+   "type": "i32",
+   "count": 64,
+   "stride": 16,
+   "lo": -2048,
+   "hi": 2048
+  },
+  {
+   "off": 4,
+   "type": "i32",
+   "count": 64,
+   "stride": 16,
+   "lo": -2048,
+   "hi": 2048
+  },
+  {
+   "off": 8,
+   "type": "i32",
+   "count": 64,
+   "stride": 16,
+   "lo": -2048,
+   "hi": 2048
+  }
+ ]
+}

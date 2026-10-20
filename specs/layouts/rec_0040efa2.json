@@ -1,0 +1,8 @@
+{
+ "_evidence": "Car block at esi for 0x0040efa2 (overlay after car_004129fa+rec_0040e9ac+rec_0040ee7b): 'cmp dword [esi+0xc0],0xc0000000; jne' selects the first-timing path (+0xc0 is the 0xc0000000 'no previous time' sentinel, as in 0x40f02e), so the sentinel is drawn in about a third of the cases and otherwise a previous clock value (any); the elapsed time [0x66d814]-ebx-[+0xc0] is stored, never used as an address. Byte +0x7c is the car number passed on to 0x40f06c, which stores at ((b & 0x3f) - 1) with only an upper clamp: low bits 0 would write onto the order list 0x675958 itself and hang the 0x52286e bubble sort, and no car has number 0, so the domain is rec_0040f06c's (1..22 with flag bits, 23/63 for the clamp).",
+ "size": 1056,
+ "fields": [
+  {"off": "0x7c", "type": "u8", "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, "0x41", "0x96", "0xc5", "0x7f", "0x17", "0x3f"]},
+  {"off": "0xc0", "type": "u32", "values": ["0xc0000000", "0xc0000000", "0xc0000000", 0, 1, "0x7fffffff", "0x80000000", "0x00012345", "0xfffff000"]}
+ ]
+}

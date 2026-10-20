@@ -1,0 +1,11 @@
+{
+ "_evidence": "Overlay for 0x00416708 (fuzz:i32 varied only the directly addressed entry 0). The loop over the four wheel records (ebx = 0x6380d8 + ecx*0x300, ecx 0..3) loads 'fild dword [ecx*4 + 0x603020]', scales by the constant 0x6f29c4, negates and hands st0/ecx to 0x411922 (x87 products/sums into the tyre record 0x601510 + ecx*0x158 with the front/rear coefficient tables 0x62f410/0x62f638; masked exceptions, no integer division): all four dwords are per-wheel state and draw any i32.",
+ "globals": [
+  {
+   "addr": "0x00603020",
+   "type": "i32",
+   "count": 4,
+   "stride": 4
+  }
+ ]
+}

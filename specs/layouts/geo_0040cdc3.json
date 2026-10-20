@@ -1,0 +1,65 @@
+{
+ "_evidence": "Budget overlay for the branch-free 0x0040cdc3 (compose LAST, after pitgeo_0040d644+wrap_0040cdc3+pitgeo_0040cdc3). Every case runs the whole track set-up (0x40d4c4: per walk step two 0x40d106 range scans, each record six 0x406ebc ring classifications; then 0x40d644/0x40d9e6/0x40d8a5), about 1.7 s per case with pitgeo_0040d644's widest geometry, so 200 cases exceed the 300 s gate. The target has one block and no branch, so the shortest geometry of the same family is used: pit start record 9, window 11..12 to 13 (0x40d106 #1 scans pit start+2 .. window start+1, #2 window end-1 .. pit end-2: both 'jne' walks need the end above the start, so window start >= pit start+2 and pit end >= window end+2), pit end 15..16, entry record 5 and exit 1..2 (walk 5 -> wrap -> 0 -> exit). All the invariants of pitgeo_0040d644 hold (pit start > lap end 6, window start < window end, pit end > pit start, walked lap positions ascending in [L/2, L)); the callee branches are covered by their own accepted specs.",
+ "globals": [
+  {
+   "addr": "0x00891500",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 9,
+    "hi": 9
+   }
+  },
+  {
+   "addr": "0x00866ed0",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 11,
+    "hi": 12
+   }
+  },
+  {
+   "addr": "0x00866ed4",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 13,
+    "hi": 13
+   }
+  },
+  {
+   "addr": "0x00866ef8",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 15,
+    "hi": 16
+   }
+  },
+  {
+   "addr": "0x00866f00",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 5,
+    "hi": 5
+   }
+  },
+  {
+   "addr": "0x00866f04",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 1,
+    "hi": 2
+   }
+  }
+ ]
+}

@@ -1,0 +1,35 @@
+{
+ "_evidence": "Car record prefix (0x225 bytes) for esi and ebx of 0x0042a533 (and 0x0042a792's family), background random (fill bytes: +0x9a speed words, +0xcc flags and the 0x40dc8a lane words are plain operands). Word +0xe2 is the lateral position: ax = ebx.e2 - esi.e2 (- [0x603b98] when +0xcc bit 3) - [0x603b50], and the 'js / or ax,ax; jne' at 0x42a578 takes the zero-gap path only when these cancel exactly, which random words never did; so +0xe2 draws from a list of round positions (0, 0x100, 0x200, -0x100 repeated, plus 0x1234 and the extremes) and byte +0x9c (bit 1 selects 0x40dc8a instead of the e2 difference) is clear in half the picks. Every value is valid: 16-bit sub/imul/sar, and the only idiv (0x42a69b) divides diff^2/16 (dx >= 0) by c = 2*gap (16-bit) only when dx < |c >> 1|, so c != 0 and the quotient is below 2^15.",
+ "size": 549,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0xe2",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    "0x100",
+    "0x100",
+    "0x200",
+    "0xff00",
+    "0x1234",
+    "0x7fff",
+    "0x8000",
+    "0xffff"
+   ]
+  },
+  {
+   "off": "0x9c",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    "0xfd",
+    2,
+    "0xff",
+    "0x10"
+   ]
+  }
+ ]
+}

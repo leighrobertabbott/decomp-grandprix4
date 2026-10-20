@@ -1,0 +1,14 @@
+{
+  "_evidence": "0x004178e0 uses ebx = 0x006380d8, four records of 0x300 bytes (pairs 0/1 and 2/3): byte +0x2e bits 0x40 (enter) and 0x20, dword +0x178 compared only with 0x1e3c0000 (signed jl, never used otherwise, so a band 0x1e000000..0x1e800000 around the threshold gives both outcomes without losing any behaviour), and dwords +0x18/+0x1c or +0x190/+0x194 (by esi+0x7a bit 5) which are summed pairwise, sar 1, clamped in magnitude by dword 0x00601dd0 (unsigned jb, so 0..0x40000 makes the clamp go both ways) and multiplied by 0x00601dc4 or 0x00601dc8 (imul/shrd 14). Add/sar/neg/imul cannot fault, so those dwords and multipliers are full-range i32.",
+  "globals": [
+    {"addr": "0x00638106", "type": "u8", "count": 4, "stride": "0x300"},
+    {"addr": "0x00638250", "type": "i32", "lo": 503316480, "hi": 511705088, "count": 4, "stride": "0x300"},
+    {"addr": "0x006380f0", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x006380f4", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x00638268", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x0063826c", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x00601dc4", "type": "i32"},
+    {"addr": "0x00601dc8", "type": "i32"},
+    {"addr": "0x00601dd0", "type": "u32", "lo": 0, "hi": 262144}
+  ]
+}

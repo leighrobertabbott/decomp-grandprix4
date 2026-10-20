@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x0042bb90 reads four words of the esi car record: [esi+0xdc] and [esi+0x90] (sub at 0x0042bbe0/0x0042bc12, sign tests and |diff| as the imul dx operand), [esi+0x9a] (sub with [ebx+0x9a] at 0x0042bc04/0x0042bd48, sum at 0x0042bd08, and movzx/neg/jge at 0x0042bd5f, taken only when the word is 0) and [esi+0x174] (signed max target, written at 0x0042bc75/0x0042bc89/0x0042bd01/0x0042bde4). All are plain i16 values; unconstrained i16 draws include 0 often enough for the [esi+0x9a]==0 case. Nothing else of the record is read.",
+  "size": 380,
+  "fields": [
+    {"off": 144, "type": "i16"},
+    {"off": 154, "type": "i16"},
+    {"off": 220, "type": "i16"},
+    {"off": 372, "type": "i16"}
+  ]
+}

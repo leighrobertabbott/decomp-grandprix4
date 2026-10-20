@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x00427d4b dereferences [0x624868] (byte +0x51 bits 5/3, words +0 and +0x18 added and compared with the car's word +0x18). Its only writer is 0x4284e1 (DAT_00624868 = edi), where edi is the car's segment record of the 0x160-byte ring at 0x8943a0 (compared with the pit start [0x891500] and the grid limits [0x868518]/[0x86851c]), so the pointer is a record-aligned address of records 0..26; their byte +0x51 and words +0/+0x18 (count 27, stride 0x160) are any value (bit tests, 16-bit add/sub, abs, imul/shrd). The gains 0x624874/0x624878/0x62487c stay with fuzz:i32 (imul/shrd only).",
+  "globals": [
+    {"addr": "0x00624868", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 26}},
+    {"addr": "0x008943f1", "type": "u8", "count": 27, "stride": "0x160"},
+    {"addr": "0x008943a0", "type": "i16", "count": 27, "stride": "0x160"},
+    {"addr": "0x008943b8", "type": "i16", "count": 27, "stride": "0x160"}
+  ]
+}

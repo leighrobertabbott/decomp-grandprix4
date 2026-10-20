@@ -1,0 +1,9 @@
+{
+  "_evidence": "Inputs of 0x004169c3 in the four 0x300-byte wheel records at 0x6380d8 (0x00416add runs it on records 0/1, 0x00416b13 on records 2/3; same fields as body_004169c3): dword +0x00 is a full-turn angle (fild * the startup scale, fsincos), any i32; dwords +0x40, +0x190 and +0x194 are magnitudes drawn -0x10000000..0x10000000 (the root |(+0x40, rotated +0x190/+0x194)| then stays below 2^31, so its fistp never yields the indefinite 0x80000000 whose << 14 overflows the idiv by [0x60349c]). Every other field 0x4169c3/0x416981 touch is written before it is read; the caller then averages the +0x30 results it wrote. Compose with floor_00603498.",
+  "globals": [
+    {"addr": "0x006380d8", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x00638118", "type": "i32", "count": 4, "stride": "0x300", "lo": -268435456, "hi": 268435456},
+    {"addr": "0x00638268", "type": "i32", "count": 4, "stride": "0x300", "lo": -268435456, "hi": 268435456},
+    {"addr": "0x0063826c", "type": "i32", "count": 4, "stride": "0x300", "lo": -268435456, "hi": 268435456}
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x00424625 (pushal/popal, no register outputs): ebx = edi = [0x006097b0] is the only input pointer (block layout blk_00424625: header x/y/z, count at +0x18 in 1..8, 8 records of x/y/z/kind). 0x00607a14..0x00607a28 are written (0x7fffffff / 0x80000000) before they are read, so they are outputs, not inputs. The six dwords read at [edx+0x00607da8], [edx+0x00607db0], [edx+0x00607db8] (edx = 4 for kind 1, 0 for kind 2) are a constant table of half-extents (static 0x2800, 0x2000, 0x4555, 0x4400, 0x4555, 0x4400) referenced by no other function, so they keep their static values.",
+  "globals": [
+    {"addr": "0x006097b0", "type": "ptr", "size": 1496, "fill": "layout=blk_00424625"}
+  ]
+}

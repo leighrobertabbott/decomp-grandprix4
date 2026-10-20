@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x00543842 (only when edx==2): 'mov edi,[esi+0xe]' reads the u32 at esi+0xe (unaligned) as a block pointer, then 'mov ebx,[edi+4]; cmp ebx,0; je' and '[0xabc088]*4 + edi + 0xc -> mov eax,[eax]; test byte [eax+9],0x80'. The block must be readable for 0xc + 4*([0xabc088]+1) bytes, so +0xe is a pointer to a 0x30-byte blk_00543842 (6 slots for index 0..5, see sel_00543842). All other bytes of the 0x20-byte object are never read: random.",
+ "size": 32,
+ "fill": "bytes",
+ "fields": [
+  {"off": "0xe", "type": "ptr", "size": 48, "fill": "layout=blk_00543842"}
+ ]
+}

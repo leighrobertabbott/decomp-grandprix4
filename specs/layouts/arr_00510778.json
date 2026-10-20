@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00510778: when the car tests pass, 'add byte [eax+0x89104f],0x20; js' bumps the byte eax of the array 0x89104f and returns 1 unless it went negative. eax comes from the caller 0x5107da as the previous value of the parameter slot [0xa69878] (pushed before the slot is overwritten), which its own callers fill with indices such as a segment number '& 0x7ff' - not only 0..3 - so the spec draws eax 0..255 and all 256 bytes 0x89104f..0x89114e are random here (run-time counters, zero in the image; fuzz:i32 reached only the first dword). The bytes are plain counters (no index use), any value is valid and both signs of the bumped byte occur.",
+ "globals": [
+  {"addr": "0x0089104f", "type": "u8", "count": 256}
+ ]
+}

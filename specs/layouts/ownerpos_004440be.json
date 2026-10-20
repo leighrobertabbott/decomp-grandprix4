@@ -1,0 +1,18 @@
+{
+ "_evidence": "Overlay for owner_00443e69 used by parts_00854414 (0x004440be): 0x443e69 adds owner dwords +0 and +4 (sar 5) into the record positions +0x18/+0x20 that 0x443dd1 then walks the track ring with (view_00443de9: +-2^21); a car position in +-2^24 (>>5: +-2^19) keeps the sum inside that range together with the rotated offset (see parts_00854414). Everything else keeps owner_00443e69's background.",
+ "size": 168,
+ "fields": [
+  {
+   "off": 0,
+   "type": "i32",
+   "lo": -16777216,
+   "hi": 16777216
+  },
+  {
+   "off": 4,
+   "type": "i32",
+   "lo": -16777216,
+   "hi": 16777216
+  }
+ ]
+}

@@ -1,0 +1,11 @@
+{
+ "_evidence": "Display fields of the forty 0x20-byte datalog channel records at 0x830bb4 (0x537f33 copies each one in with 'mov esi,[0x6975cc]; ... imul eax,eax,0x20; add eax,0x830bb4; mov ecx,0x20; rep movsb', the index bounded by 'cmp eax,0x28; jae'). Readers: the row drawer 0x543682 (edi = record): 'movzx eax,byte [edi+7]' (number, 0x54d969 divides by 10 until zero: any value), 'mov eax,[edi+0x10]; call 0x52ad37' (lap time: 'cmp eax,0x3e80000; jae' writes an empty string for larger values, else 0x52ae08 splits it by div 1000/60: any value valid), 'test byte [edi+9],0x20|0x10|0x40' (recs_005438a0 draws the whole byte at random), 0x54373b 'movzx eax,byte [edi+0xf]; cmp eax,0xc; jb; ... je; sub eax,0xc' (hour) and 'movzx eax,byte [edi+0xe]' (minute), 0x54377d 'mov esi,edi; add esi,0x14; mov ecx,8; lodsb; cmp al,0x20; jb' (8 name characters, stops at a control byte); and 0x4fe340 (reached through 0x4fe160): 'mov al,[esi+7]', 'mov ecx,[esi+0x10]; mov [0xa69878],ecx; call 0x52ad2a', 'mov al,[esi+9]', strncpy 8 from esi+0x14, 'mov cl,[esi+0xe]; mov al,[esi+0xf]; cmp eax,0xc; jl'. The record copies a lap header written at the time of the run: hour 0..23 and minute 0..59 (system time), lap time drawn 0..0x4000000 (both sides of the 0x3e80000 cut-off), the number and the 8 name bytes at random (random bytes include control bytes, so the name loop ends early and at full length). Compose with recs_005438a0 (byte +9). Values are synthetic.",
+ "globals": [
+  {"addr": "0x00830bbb", "type": "u8", "count": 40, "stride": "0x20"},
+  {"addr": "0x00830bc2", "type": "u8", "count": 40, "stride": "0x20", "lo": 0, "hi": 59},
+  {"addr": "0x00830bc3", "type": "u8", "count": 40, "stride": "0x20", "lo": 0, "hi": 23},
+  {"addr": "0x00830bc4", "type": "u32", "count": 40, "stride": "0x20", "lo": 0, "hi": "0x4000000"},
+  {"addr": "0x00830bc8", "type": "u32", "count": 40, "stride": "0x20"},
+  {"addr": "0x00830bcc", "type": "u32", "count": 40, "stride": "0x20"}
+ ]
+}

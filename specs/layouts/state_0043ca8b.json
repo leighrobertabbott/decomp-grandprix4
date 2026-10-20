@@ -1,0 +1,11 @@
+{
+ "_evidence": "Overlay for 0x0043ca8b (compose LAST, after state_0043c1ba+state_0043c31b). [0x622780] is the selector 0x43ca01 compares signed with 0x10 (jl at 0x43ca13: full-gain vs half-gain blend): its only writer 0x43bf98 stores the mean of per-segment bytes 0x675a83[10*word] over [0x62277c] segments (unsigned div), so it is 0..255; drawn over that range (both sides of 0x10). The curve table 0x602dec (8 records of 12 dwords read by 0x41efb5 via 0x43c1ba) has no writer in the image (readers 0x41efd0/0x43c0a2/0x44139e only; static Q14 factors 0x3f20, 0x3c60, ...) and keeps its image values as a constant table.",
+ "globals": [
+  {
+   "addr": "0x00622780",
+   "type": "i32",
+   "lo": 0,
+   "hi": 255
+  }
+ ]
+}

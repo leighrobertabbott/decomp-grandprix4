@@ -1,0 +1,11 @@
+{
+ "size": 364,
+ "fill": "bytes",
+ "_evidence": "Segment-sized record behind dword +0x1c of the 0x443e69 parent object (see owner_00443e69): 0x402fcd (accepted with edi:ptr[0x16c]:bytes) reads it as edi; random bytes, 0x16c bytes as that domain.",
+ "fields": [
+  {
+   "off": 0,
+   "type": "u8"
+  }
+ ]
+}

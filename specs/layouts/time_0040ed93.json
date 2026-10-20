@@ -1,0 +1,8 @@
+{
+ "_evidence": "Inputs of 0x0040ed93 (called by 0x0051682d with esi = the player car [0x679d30]): 'test byte [esi+0x8d],4; jne' picks the table path 'mov al,[esi+0x7c]; and eax,0x3f; sub eax,1; mov eax,[eax*4+0x7c3208]' - a dword per car number, index -1..62, i.e. the 64 dwords 0x7c3204..0x7c3300 (run-time data inside the 0x7ad890..0x7c3ae4 state block, zero in the image) - or the clock path 'mov eax,[0x66d838]; or eax,eax; je' else eax = [0x66d814] - [0x66d838]. The start time [0x66d838] is zero in a third of the cases (je) and otherwise a time of either sign; the clock [0x66d814] is any i32 (a plain subtraction). Car bytes +0x7c/+0x8d come from carbg_0066fef0. Nothing is an index or divisor beyond the bounded table, so any value is valid.",
+ "globals": [
+  {"addr": "0x0066d838", "type": "u32", "values": [0, 0, 0, 1, 100, "0x12345", "0x7fffffff", "0x80000000", "0xfffffff0"]},
+  {"addr": "0x0066d814", "type": "i32"},
+  {"addr": "0x007c3204", "type": "u32", "count": 64, "stride": 4}
+ ]
+}

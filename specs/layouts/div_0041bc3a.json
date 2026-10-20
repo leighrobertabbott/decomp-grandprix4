@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x0041bc3a divides twice. First 'idiv dword [0x623b6c]' on S<<14 (cdq/shld/shl) with S = [ebx+0x25c]+[ebx+0x55c] (rec_0041bbef: each +-2^29, so |S| <= 2^30 and |S<<14| <= 2^44): any divisor with |d| >= 0x2001 keeps |q1| < 2^31, so [0x623b6c] (an imul factor in state_0041bbef, +-2^20 there) is drawn from both signs with |d| in 0x2001..2^31-1; a zero or small divisor is the original's own #DE (22% of the earlier cases). Second 'idiv ebp' of N = A*(2*AF+G) - q1*W by D = 2*AF+W+G (AF=[0x623af4] 0..0x7fff and G=[0x623b10] 1..0x7fff from state_0041bbef, W=[0x623b0c] 0..0x7fff here): all weights are nonnegative and D >= 1, so N/D is a weighted mean of A and -q1 and fits. A is [0x62474c] (state_0041bd28) or its imul/shrd by [0x62fb54] (byte 0x62fb4a selects, state_0041b950); [0x62fb54] and the clamp [0x6258b4] (|q| jge compare, both outcomes) are full-range.",
+  "globals": [
+    {"addr": "0x00623b6c", "type": "u32", "values": ["0x2001", "0x4000", "0x8000", "0x10000", "0x12345", "0x100000", "0x7fffffff", "0xffffdfff", "0xffffc000", "0xffff0000", "0xfff00000", "0x80000001"]},
+    {"addr": "0x00623b0c", "type": "i32", "lo": 0, "hi": 32767},
+    {"addr": "0x0062fb54", "type": "i32"},
+    {"addr": "0x006258b4", "type": "i32"}
+  ]
+}

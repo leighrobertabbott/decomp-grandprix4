@@ -1,0 +1,17 @@
+{
+ "size": 1054,
+ "_evidence": "Car record (esi) for 0x004275d1 and its siblings 0x00427695/0x00427760 (same body; they store to +0x142, 0x427760 first reading the old word +0x142, random) and their callee 0x00427579: word +0x66 (imul word, the blend factor), the pointer +0x1b8 (never null in the game: dereferenced unconditionally for words +0x18 and +0x178, so a random 0x17c-byte block as in rec_004030c6), the flag bytes +0xfe (bit 6), +0x9c (bit 4), +0x163 (bits 7, 6), +0x122 (bit 7), +0x71 (bit 3, callee) and dword +0x1a0 (low word: imul dx). Only 16-bit imul/shl/rcl/sar and bit tests: every bit pattern is valid, so the rest of the record is random (fill bytes) and every flag combination occurs.",
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x66",
+   "type": "i16"
+  },
+  {
+   "off": "0x1b8",
+   "type": "ptr",
+   "size": 380,
+   "fill": "bytes"
+  }
+ ]
+}

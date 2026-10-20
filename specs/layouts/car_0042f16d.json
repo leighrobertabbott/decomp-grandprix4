@@ -1,0 +1,76 @@
+{
+ "_evidence": "Overlay for esi of 0x0042f16d (compose AFTER car_0042ba87+car_0042a278+rec_0042b84b, which give the random background, the +0x1c segment block, +0x114 and the +0x90/+0x94 words of 0x42a278). Dword +0x124 is the linked car, dereferenced unconditionally on the +0xea == 0 path (mov ebx,[esi+0x124]; [ebx+0x68] at 0x42f1ce) and by 0x42a278/0x40dc8a/0x42d665, so it is never null: a 0x420-byte other_0042f16d car whose position words sit near this car's. Word +0xea (cmp 0; jne 0x42f372) is zero in about half the picks (0x42b84b's 8/-8 and 0x20 otherwise). Word +0xe2 is this car's along-track position (ax = X - [esi+0xe2]), drawn from the same near values as other_0042f16d so ax falls both inside and outside the windows. Dword +0xf0 is the due time compared with the race clock (neg; add [0x66d814]; js at 0x42f1a3/0x42f299; clock_0066d814 draws 0..0x10000): 0..0x10000 gives zero (test; je) and both signs. Flag bytes +0x9c, +0x71, +0x179, +0x21d stay random. Only tests, 16/32-bit compares and RMW: nothing faults. Byte +0x122 holds the state bits the function walks (0x42f16d test 2, then 0x10 / 8 / 4 at 0x42f256/0x42f263/0x42f270): random bytes reached the bit-4-clear due-time blocks 0x42f279..0x42f29f too rarely, so it is drawn from bit combinations with bit 1 set in most picks (2, 6, 0xa, 0x12, 0x16, 0x1e, 0x22, 0x42) plus 0, 4 and 0xfd/0xff; the RMW only changes bits 2..5.",
+ "size": 1056,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x124",
+   "type": "ptr",
+   "size": 1056,
+   "fill": "layout=other_0042f16d"
+  },
+  {
+   "off": "0xea",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    8,
+    "0xfff8",
+    "0x20"
+   ]
+  },
+  {
+   "off": "0xe2",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0xffe0",
+    "0x40",
+    "0xffc0",
+    "0x59",
+    "0x5a",
+    "0x64",
+    "0xff9c",
+    "0xff9b",
+    "0xa0",
+    "0xc8",
+    "0xff38",
+    "0xe6",
+    "0xff1a",
+    "0x7fff",
+    "0x8000"
+   ]
+  },
+  {
+   "off": "0xf0",
+   "type": "u32",
+   "lo": 0,
+   "hi": 65536
+  },
+  {
+   "off": "0x122",
+   "type": "u8",
+   "values": [
+    "0x02",
+    "0x02",
+    "0x02",
+    "0x06",
+    "0x0a",
+    "0x12",
+    "0x16",
+    "0x1e",
+    "0x22",
+    "0x42",
+    0,
+    4,
+    "0xfd",
+    "0xff"
+   ]
+  }
+ ]
+}

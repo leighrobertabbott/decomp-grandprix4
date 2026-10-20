@@ -1,0 +1,19 @@
+{
+ "_evidence": "Car overlay for 0x00429fcd (after car_0042ba87+rec_00409416): byte +0x234 is the car's lane id 0..0x5f (index of the 96 lane entries at 0x6269b8, lanes_00429fcd) and dword +0x1b8 the segment block whose bytes +0x2a/+0x8d supply a new lane id (blk_00429fcd).",
+ "size": 1056,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x234",
+   "type": "u8",
+   "lo": 0,
+   "hi": 95
+  },
+  {
+   "off": "0x1b8",
+   "type": "ptr",
+   "size": 380,
+   "fill": "layout=blk_00429fcd"
+  }
+ ]
+}

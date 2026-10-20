@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x0053ddbb (compose as menu_0084300a+mitems_0053ddbb+save_0053ddbb): edi = [0x82fd3c] is the output stream, only written ('mov edi,[0x82fd3c]; mov [0x82fd38],edi', rep movsb / movsb / movsw / movsd / lodsb-stosb into it, 'mov [0x82fd3c],edi' at the end). In the game it points into the heap block [0x8298a4] (0x538d70 sets [0x82fd38] = [0x82fd3c] = [0x8298a4], end [0x82fd4e] = [0x8298a4] + [0x8298a0]). Here a zeroed 0x400-byte buffer: the longest output is 3 table entries x 0x100 + 13 items x at most 5 bytes = 0x341.",
+ "globals": [
+  {"addr": "0x0082fd3c", "type": "ptr", "size": 1024, "fill": "zero"}
+ ]
+}

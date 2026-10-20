@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x0055a9b5: 'mov ebx,[0x891504]; or byte [ebx+0x92],8' sets bit 3 of the segment flag byte +0x92 of the lap-start record. [0x891504] is a record-aligned pointer into the 0x160-byte ring at 0x8943a0 (lap start; ring_008943a0 draws it 0..4, ring_0040aec5 pinned it to record 0), drawn here over records 0..29, and byte +0x92 of those records is random (an OR is valid for any byte; ebx and the flags of the OR are the outputs).",
+ "globals": [
+  {"addr": "0x00891504", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 29}},
+  {"addr": "0x00894432", "type": "u8", "count": 30, "stride": "0x160"}
+ ]
+}

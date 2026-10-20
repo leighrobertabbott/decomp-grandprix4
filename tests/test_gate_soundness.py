@@ -15,12 +15,12 @@ class GateSoundnessTests(unittest.TestCase):
         self.con = sqlite3.connect(":memory:")
         self.con.row_factory = sqlite3.Row
         self.con.executescript("""
-            CREATE TABLE functions(addr INTEGER, n_insn INTEGER, x87 INTEGER, n_cond INTEGER);
+            CREATE TABLE functions(addr INTEGER, n_insn INTEGER, x87 INTEGER, n_cond INTEGER, kind TEXT DEFAULT 'game');
             CREATE TABLE edges(src INTEGER, dst INTEGER);
             CREATE TABLE func_imports(addr INTEGER, import TEXT);
             CREATE TABLE func_globals(addr INTEGER, gaddr INTEGER);
             CREATE TABLE strings(gaddr INTEGER, text TEXT);
-            INSERT INTO functions VALUES (4198400, 1, 0, 0);
+            INSERT INTO functions VALUES (4198400, 1, 0, 0, 'game');
         """)
         self.rec = Impl(0x401000, 0x10001000, "FUN_00401000", "cdecl() -> void")
 

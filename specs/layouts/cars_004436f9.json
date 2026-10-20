@@ -1,0 +1,9 @@
+{
+ "_evidence": "0x004436f9 walks the 22 car records (stride 0x41c) reading dword +0xf0 (0x66ffe0, a due time compared with the clock 0x66d814) and byte +0x237 (0x670127, a flag); both are zero in the image. +0xf0 is zero or within the clock range, +0x237 mostly 0 with 1, +0x7b bit 1 mixed.",
+ "globals": [
+  {"addr": "0x0066ffe0", "type": "u32", "count": 22, "stride": "0x41c", "values": [0, 0, 1, 1000, 20000, 70000, "0x10000", "0x7fffffff"]},
+  {"addr": "0x00670127", "type": "u8", "count": 22, "stride": "0x41c", "values": [0, 0, 1]},
+  {"addr": "0x0066ff6b", "type": "u8", "count": 22, "stride": "0x41c"},
+  {"addr": "0x0066d814", "type": "u32", "values": [0, 1000, 20000, 70000, "0x10000", "0x7ffffff0"]}
+ ]
+}

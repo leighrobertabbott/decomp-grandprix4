@@ -1,0 +1,18 @@
+{
+ "_evidence": "Keyword string addressed by +4 of a 0x0052b2c0 table entry and compared by 0x52b2db with the text at esi until its NUL ('mov edi,[edx+4]; call 0x52b2db'): bytes 0..6 from {a,b,c,NUL} (empty, short and long keywords that match or fail against a text drawn from the same letters), byte 7 NUL so every keyword ends inside its 8-byte buffer as a real string does.",
+ "size": 8,
+ "fields": [
+  {
+   "off": 0,
+   "type": "u8",
+   "count": 7,
+   "stride": 1,
+   "values": [
+    "0x61",
+    "0x62",
+    "0x63",
+    "0"
+   ]
+  }
+ ]
+}

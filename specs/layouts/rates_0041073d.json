@@ -1,0 +1,14 @@
+{
+ "_evidence": "Car overlay for 0x0041073d's divisors (compose AFTER the final car_00420d3f in a car list). 0x41073d (called by 0x4198c7 at 0x4199a0 when car byte +0x203 has 0x40) first calls 0x41062a, which sets the four dwords +0x2ec..+0x2f8 to X_w = max(0, [0x60309c + 4w]) (0x41062f..0x41068f, 'cmp eax,0; jge'), so 0 <= X_w <= 0x7fffffff. Per wheel w = ecx 0..3 it then does 'xor edx,edx; shld edx,eax,6; shl eax,6; div dword ptr [esi+ecx*4+0x2cc]' at 0x41077b: the dividend X_w<<6 has high dword X_w>>26 in 0..31, so the div raises #DE whenever the rate +0x2cc+4w is 0 or <= X_w>>26. car_00420d3f draws these four rates (the suspension spring rates, also copied to the wheel records' +0x11c by 0x41f805) from 0..0x1000, and the edge/directed picks make 0 and small values frequent (42/200 cases of v5 faulted or stalled at 0x41077b). A real car's spring rate is a positive setup value, and every rate >= 0x20 > 31 keeps the quotient below 2^32 for every possible X_w, so the rates draw 0x20..0x1000: a subset of car_00420d3f's 0..0x1000, which keeps that layout's integrator bounds. No branch in 0x41073d or its callers tests these rates, so no outcome the original can take is excluded.",
+ "size": 1056,
+ "fields": [
+  {
+   "off": "0x2cc",
+   "type": "i32",
+   "count": 4,
+   "stride": 4,
+   "lo": 32,
+   "hi": 4096
+  }
+ ]
+}

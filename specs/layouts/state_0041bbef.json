@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x0041bbef computes N = (2*AF)*T - S*G (64-bit: imul edx at 0x41bc1e, sub/sbb with the imul at 0x41bc01) and idiv by D = 2*AF + G (0x41bc24..0x41bc32), with AF=[0x623af4], G=[0x623b10], T = low dword of ([0x6258ac]*[0x623b6c]) >> 14 (shrd at 0x41bc12) and S from rec_0041bbef. With AF in 0..0x7fff and G in 1..0x7fff both weights are nonnegative and D >= 1, so N/D is a weighted mean of T and -S: |quotient| <= max(|T|,|S|) < 2^31 and idiv never faults. [0x6258ac],[0x623b6c] in -2^20..2^20 bound |T| <= 2^26. Mixed-sign weights (D near 0 with large N) are the original's own #DE and are excluded; the function has no branches.",
+  "globals": [
+    {"addr": "0x00623af4", "type": "i32", "lo": 0, "hi": 32767},
+    {"addr": "0x00623b10", "type": "i32", "lo": 1, "hi": 32767},
+    {"addr": "0x006258ac", "type": "i32", "lo": -1048576, "hi": 1048576},
+    {"addr": "0x00623b6c", "type": "i32", "lo": -1048576, "hi": 1048576}
+  ]
+}

@@ -1,0 +1,22 @@
+{
+ "_evidence": "0x005329e2 clears header bytes +0 and +3 of every setup entry: for ebx = 0..16 (entry) and eax = 0..21 (record) it calls 0x51f82c with ecx = 0 and edx = 0 / 3, which stores cl at 0x52a260(eax, ebx) + edx = 0x7adb4c + 4 + rec*0xf28 + entry*0xe4 + {0,3}. The routine only writes these bytes (nothing is read, no branch depends on them), but the array is zero in the image, so without a layout the stores of 0 are invisible to the memory comparison. Each entry's 4-byte header dword at 0x7adb50 + entry*0xe4 (+ rec*0xf28) is drawn at random so the cleared bytes +0/+3 change and the untouched +1/+2 must survive: 17 fields x 22 records.",
+ "globals": [
+  {"addr": "0x7adb50", "type": "u32", "count": 22, "stride": "0xf28"},
+  {"addr": "0x7adc34", "type": "u32", "count": 22, "stride": "0xf28"},
+  {"addr": "0x7add18", "type": "u32", "count": 22, "stride": "0xf28"},
+  {"addr": "0x7addfc", "type": "u32", "count": 22, "stride": "0xf28"},
+  {"addr": "0x7adee0", "type": "u32", "count": 22, "stride": "0xf28"},
+  {"addr": "0x7adfc4", "type": "u32", "count": 22, "stride": "0xf28"},
+  {"addr": "0x7ae0a8", "type": "u32", "count": 22, "stride": "0xf28"},
+  {"addr": "0x7ae18c", "type": "u32", "count": 22, "stride": "0xf28"},
+  {"addr": "0x7ae270", "type": "u32", "count": 22, "stride": "0xf28"},
+  {"addr": "0x7ae354", "type": "u32", "count": 22, "stride": "0xf28"},
+  {"addr": "0x7ae438", "type": "u32", "count": 22, "stride": "0xf28"},
+  {"addr": "0x7ae51c", "type": "u32", "count": 22, "stride": "0xf28"},
+  {"addr": "0x7ae600", "type": "u32", "count": 22, "stride": "0xf28"},
+  {"addr": "0x7ae6e4", "type": "u32", "count": 22, "stride": "0xf28"},
+  {"addr": "0x7ae7c8", "type": "u32", "count": 22, "stride": "0xf28"},
+  {"addr": "0x7ae8ac", "type": "u32", "count": 22, "stride": "0xf28"},
+  {"addr": "0x7ae990", "type": "u32", "count": 22, "stride": "0xf28"}
+ ]
+}

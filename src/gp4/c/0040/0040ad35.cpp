@@ -35,4 +35,4 @@ void __cdecl FUN_0040ad35(gp4::Regs* r) {
     r->eax = record + 0x160u;
     r->eflags = (r->eflags & ~0x8d5u) | additionFlags32(record, 0x160u);
 }
-GP4_IMPL(0x0040ad35, FUN_0040ad35, "regs() -> (eax, cf, pf, af, zf, sf, of); globals=layout=records_008943a0")
+GP4_IMPL(0x0040ad35, FUN_0040ad35, "regs() -> (eax, cf, pf, af, zf, sf, of); globals=layout=records_0040ad35")

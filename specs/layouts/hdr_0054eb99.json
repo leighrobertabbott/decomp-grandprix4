@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x0054eb99 (offsets the visible items of the current menu by their parent levels): 'mov edi,[0x82fd34]; mov edi,[edi+0x1c]' dereferences the menu header without a null test (callers 0x53c8fa/0x53e9bf only run with a current menu), so [0x82fd34] is an allocated header H (lvl0_0054eb99). H+0x1c heads a null-terminated item list (node_0054eb99, 1..3 nodes or empty). For every node with +0x10 bit 7 the code hops 'mov esi,[esi]' (+0x12 byte) times from H (no null test), then, when +0x10 has 0x20 or 0x40, calls 0x54cb71 (save/restore only), 'mov esi,[esi+0x12]; call 0x54d1ad' (esi = [esi*4+0x835846]: the level's dword +0x12 must be a valid index of that table, 0..0x3ff as 0x54d1ad's own accepted domain; the result is discarded by 'pop esi') and the empty 0x54d6f2, and adds the level's words +4 (minus 8/9), +6, +8 or +0x2e (bit 0x10) and +0xa to the node's words +4/+6/+8/+0xa (16-bit RMW, any value valid), then clears bit 7. Levels: H -> lvl1 -> lvl2 -> lvl3, whose +0 links to itself, so every depth byte is a valid hop count (the game's depth is the nesting level; 0..5 here reaches each distinct level and the self-linked last one). Unlisted level and node bytes are random (fill bytes): only the links, the table index, the flag byte and the depth are pinned.",
+ "globals": [
+  {
+   "addr": "0x0082fd34",
+   "type": "ptr",
+   "size": 64,
+   "fill": "layout=lvl0_0054eb99"
+  }
+ ]
+}

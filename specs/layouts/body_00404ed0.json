@@ -1,0 +1,12 @@
+{
+  "size": 392,
+  "_evidence": "0x00404ed0 reads, through pointer global 0x00602d84 (edi): movsx word +0x26 (zero test at 0x404edf, then 0x4000-w with sign fold indexes the static cosine table 0x007c5c5c, index <= 0x2000 bytes), test byte +0x51 bits 0x20 (0x404f06) and 8 (0x404f25), and 16-bit words +0x178 + +0x160 - +0x18 - +0x00 (sign at 0x404f21). Full-range i16/u8 values are all valid (no faults; the table index is bounded by the shr/and); the i16 generator yields 0 often enough for the +0x26 zero exit and both signs elsewhere.",
+  "fields": [
+    {"off": 0, "type": "i16"},
+    {"off": 24, "type": "i16"},
+    {"off": 38, "type": "i16"},
+    {"off": 81, "type": "u8"},
+    {"off": 352, "type": "i16"},
+    {"off": 376, "type": "i16"}
+  ]
+}

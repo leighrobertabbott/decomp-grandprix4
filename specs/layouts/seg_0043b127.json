@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x0043b127 builds two points from segment records k and k+1 (edi = 0x8943a0 + [esi+0x64], k = 0..11 by obj_00424e1b, then +0x160: records 0..12): words +6 plus +0xbc (sign of [0x934df0] < 0, 0x43b159/0x43b1af) or +0xbe (0x43b235/0x43b28b), each added as 16-bit and shifted; ring_00405a12/seg_00424e1b vary +4/+6/+8/+0xb8/+0xba/+0xc0/+0xc2. Words +0xbc/+0xbe (0x89445c/0x89445e + k*0x160) are runtime record state: any i16 (only add/shl). 0x608284 is never written (read only by the two compares in 0x43b070, image -0x4000): image value in most picks plus 0 and the extremes, so 'cmp eax,[0x608284]; jge' stays two-way.",
+  "globals": [
+    {"addr": "0x0089445c", "type": "i16", "count": 13, "stride": "0x160"},
+    {"addr": "0x0089445e", "type": "i16", "count": 13, "stride": "0x160"},
+    {"addr": "0x00608284", "type": "u32", "values": ["0xffffc000", "0xffffc000", "0xffffc000", "0xffffc000", 0, "0x7fffffff", "0x80000000"]}
+  ]
+}

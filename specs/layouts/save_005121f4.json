@@ -1,0 +1,11 @@
+{
+  "_evidence": "Inputs of state command 0x42 (0x531f9c -> 0x532c61, the f1gstate.tmp writer) as reached from 0x5121f4/0x51221a. [0x7a93e0] = a 0x16400-byte sbuf_007a93e0 buffer overlaid by ffslot_005121f4 (the tested bytes B+0x155e2/B+0x155f2 are 0xff in half the cases); [0x826d11] = the 0x48-byte sblk_00826d11 block (0x532c61 replaces it with the descriptor 0x826f1a before any read). Descriptor 0x826f1a: +0x3c/+0x44/+0x48 (0x826f56/0x826f5e/0x826f62) are zero in the image and set to 0x7c2e70-0x7ab028 = 0x17e48 by the startup routine 0x52f933 (via 0x54bb3d) before any save can run; with the image zero the checksum loop 0x536437 ('dec ecx; jne') would run 2^32 times, so they hold the init value. Block pool (compose after pool_005389b9): 0x52f8b9 requests 0x17e48 bytes through 0x538a77 -> 0x5389b9, which grants them only when free end [0x82fcb0] - 0x17e48 >= used end 0xa06100; the free end is drawn from 0xa1df48 (exact fit) .. 0xa30000, all inside the zero-initialised .data stretch 0xa05c40..0xa48cd8 that no instruction addresses directly (pool_005389b9/pool_005449fd use its start). The refused request (stc) clears the 800x600 screen [0x822258] (0x549d26) and shows the error 0x82fcbc through 0x53c8c8, whose MessageBox path calls LoadCursorA/SetCursor/ShowCursor (0x50a1a0) or a PeekMessageA loop (0x54faff) - imports the emulator does not model, so those draws could never be valid cases and are left out. Values are synthetic.",
+  "globals": [
+    {"addr": "0x007a93e0", "type": "ptr", "size": "0x16400", "fill": "layout=sbuf_007a93e0+ffslot_005121f4"},
+    {"addr": "0x00826d11", "type": "ptr", "size": "0x48", "fill": "layout=sblk_00826d11"},
+    {"addr": "0x00826f56", "type": "u32", "values": ["0x17e48"]},
+    {"addr": "0x00826f5e", "type": "u32", "values": ["0x17e48"]},
+    {"addr": "0x00826f62", "type": "u32", "values": ["0x17e48"]},
+    {"addr": "0x0082fcb0", "type": "u32", "values": ["0xa1df48", "0xa1df48", "0xa1e000", "0xa20000", "0xa28000", "0xa30000"]}
+  ]
+}

@@ -1,0 +1,13 @@
+{
+ "size": 16,
+ "_evidence": "Singly linked list walked by the bubble pass 0x0054a09f: [ebx] is the head link, each node is +0 next (nullable) and +8 a signed key; acyclic chains of up to 5 nodes (each level a fresh buffer). This is the list head (only +0 is read).",
+ "fields": [
+  {
+   "off": 0,
+   "type": "ptr",
+   "size": 16,
+   "fill": "layout=node1_0054a09f",
+   "nullable": true
+  }
+ ]
+}

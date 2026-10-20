@@ -1,0 +1,13 @@
+{
+ "_evidence": "Text-script entries for the distance callback 0x53afa7 (run by 0x4ff7a0 through the register-block thunk 0x53d2f5 with [0xa69878] = 0x53afa7): 'mov esi,0x14' (km) or, when the word [0x7ad8ac] is nonzero, 'mov esi,0x15' (miles), then 'call 0x54d1ad' (esi = [0x835846 + 4*esi]) and the interpreter body 0x54d7c0 with no null test. Dwords 0x835896 (id 0x14) and 0x83589a (id 0x15), zero in the image (filled when the text resources load); each points at its own 0x20-byte script with the script_0054d798 byte set (no opcode 4, which dereferences the never-written [0x833f1c]).",
+ "globals": [
+  {
+   "addr": "0x00835896",
+   "type": "ptr",
+   "count": 2,
+   "stride": 4,
+   "size": 32,
+   "fill": "u8{=0,1,2,3,5,6,7,8,9,0xa,0xb,0xc,0xd,0xe,0xf,0x10,0x11,0x12,0x13,0x14,0x20,0x41,0x7f,0x80,0xff}"
+  }
+ ]
+}

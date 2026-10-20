@@ -1,25 +1,32 @@
 {
-  "accepted_bytes": 561,
+  "accepted_bytes": 401386,
   "active_goal": "core",
   "by_state": {
-    "accepted": 33,
-    "excluded": 2310,
-    "todo": 10495
+    "accepted": 3953,
+    "accepted-runtime": 149,
+    "deferred": 82,
+    "excluded": 2793,
+    "todo": 5954
   },
   "by_track": {
     "asm": {
-      "accepted": 11,
-      "todo": 3116
+      "accepted": 1725,
+      "accepted-runtime": 29,
+      "deferred": 14,
+      "todo": 1061
     },
     "c": {
-      "accepted": 22,
-      "todo": 7379
+      "accepted": 2225,
+      "accepted-runtime": 119,
+      "deferred": 68,
+      "excluded": 1,
+      "todo": 4893
     }
   },
   "fpucw": "0x37f",
-  "functions": 12838,
-  "game_bytes": 1731034,
+  "functions": 12931,
+  "game_bytes": 1682784,
   "name_conflicts": 0,
-  "names": 2,
-  "progress_pct": 0.032
+  "names": 8,
+  "progress_pct": 23.852
 }

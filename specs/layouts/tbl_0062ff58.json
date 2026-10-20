@@ -1,0 +1,32 @@
+{
+ "_evidence": "8-byte entries behind pointer global 0x62ff58, indexed by the byte (0..255) that 0x433ff8 returns, so 256 entries are present. 0x00432cc2 reads dword +0 as an f32 (fld; times the f64s 0x6f2af4 (1000.0) and 0x601400, fistp; out-of-range values give the masked integer indefinite) and dword +4 as the idiv divisor (0 -> 'mov ebp,1'). The dividend is ((x>>10 - word)*k low dword * 1000) >> 16, |dividend| < 2^25, so any nonzero divisor is valid; the list makes 0 frequent.",
+ "size": 2056,
+ "fields": [
+  {
+   "off": 0,
+   "type": "f32",
+   "count": 256,
+   "stride": 8,
+   "lo": -4000,
+   "hi": 4000
+  },
+  {
+   "off": 4,
+   "type": "u32",
+   "count": 256,
+   "stride": 8,
+   "values": [
+    0,
+    0,
+    1,
+    2,
+    1000,
+    "0xffffffff",
+    "0x7fffffff",
+    "0x80000000",
+    "0x12345",
+    "0xfffffc18"
+   ]
+  }
+ ]
+}

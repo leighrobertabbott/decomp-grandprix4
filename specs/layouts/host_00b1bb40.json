@@ -1,0 +1,20 @@
+{
+ "_evidence": "Player ids of the multiplayer front end: [0xb1bb40] (this machine's id; 0x53f745 clears it, 0x53f801 copies it to [0xae6b64]) and [0xae6b64] (the host id), both zero in the image. Readers on the 0x540aff path only compare them: 0x541a0a 'cmp [0xb1bb40],[0xae6b64]' (flags; 0x540159 picks mask 4 or 0x8e on it), 0x541d06 'cmp eax,[ebx]' over the 22 slot dwords 0xb1b8d8+k*0x1c (slots_00541d5a) with eax = [0xb1bb40] (0x54017c/0x540ffb) and then, when not found and the ids differ, 'cmp eax,[0xb1bb40]; cmp byte [0x82fffd],0' before 0x540054 ([0x82fffd] keeps its zero image value, as menu_00529408 notes). Ids are opaque dwords (no index or pointer use), so any value is valid; drawn from the slot values {0,1,0x1f1f} (found and not found) plus a wild id, and the host id equals this id in about half the cases (alias, as 0x53f801 leaves them), else a random id. Compose after slots_00541d5a.",
+ "globals": [
+  {
+   "addr": "0x00b1bb40",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    "0x1f1f",
+    "0x12345678"
+   ]
+  },
+  {
+   "addr": "0x00ae6b64",
+   "type": "u32",
+   "alias": "0x00b1bb40"
+  }
+ ]
+}

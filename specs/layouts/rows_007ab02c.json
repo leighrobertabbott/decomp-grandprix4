@@ -1,0 +1,11 @@
+{
+ "_evidence": "Two-page table 0x7ab02c (2 pages x 6 entries x 16 bytes = 0xc0 bytes; run-time state: 0x510309/0x51006c save and restore 0xc4 bytes of it with the slots 0x853cae, 0x5002d0 copies the two 0x60-byte pages to/from 0xabbfa0/0xabc000, 0x506552/0x52f998/0x51ff02 store single dwords). 0x534de4 reads entry (page*6 + slot), page = [ebx+4] in 0..1, and formats its dwords +4/+8/+0xc as decimal numbers through 0x54dad5 (any dword is valid: 'div' by the constant 10, bh = 0x60 padding with '?' overflow marks); 0x534d02 compares +4/+0xc. All 48 dwords are random so a wrong page, slot or field shows in the formatted text.",
+ "globals": [
+  {
+   "addr": "0x007ab02c",
+   "type": "u32",
+   "count": 48,
+   "stride": 4
+  }
+ ]
+}

@@ -1,0 +1,96 @@
+{
+ "_evidence": "0x0042506e walks the 64 0x78-byte object records at 0x0063bd7c with ecx = 0..63: byte [0x0063bcfc+ecx] (cmp 0; je: drawn mostly zero so only a few objects run the heavy 0x42453d chain and the run stays within the instruction budget) and record dword +0x4c against the remembered slot [0x006098c0+4*ecx] (cmp; je: both drawn from the same small mask list, so equality and difference occur). A selected record goes to 0x42453d/0x424553 with the fields of rec_0042453d: +0x6d index 0..21, +0x4c mask, +0x30..+0x44 i32.",
+ "globals": [
+  {
+   "addr": "0x0063bcfc",
+   "type": "u8",
+   "count": 64,
+   "stride": 1,
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x006098c0",
+   "type": "u32",
+   "count": 64,
+   "stride": 4,
+   "values": [
+    0,
+    1,
+    2,
+    "0x80",
+    "0x200",
+    "0x4000",
+    "0x10000"
+   ]
+  },
+  {
+   "addr": "0x0063bdc8",
+   "type": "u32",
+   "count": 64,
+   "stride": "0x78",
+   "values": [
+    0,
+    1,
+    2,
+    "0x80",
+    "0x200",
+    "0x4000",
+    "0x10000"
+   ]
+  },
+  {
+   "addr": "0x0063bde9",
+   "type": "u8",
+   "count": 64,
+   "stride": "0x78",
+   "lo": 0,
+   "hi": 21
+  },
+  {
+   "addr": "0x63bdac",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78"
+  },
+  {
+   "addr": "0x63bdb0",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78"
+  },
+  {
+   "addr": "0x63bdb4",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78"
+  },
+  {
+   "addr": "0x63bdb8",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78"
+  },
+  {
+   "addr": "0x63bdbc",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78"
+  },
+  {
+   "addr": "0x63bdc0",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78"
+  }
+ ]
+}

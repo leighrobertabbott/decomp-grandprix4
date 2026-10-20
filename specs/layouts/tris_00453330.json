@@ -1,0 +1,79 @@
+{
+ "size": 48,
+ "fill": "bytes",
+ "_evidence": "Triangles of the collision mesh [0x9fb0bc] (0x18-byte records, see mesh_00453330): ushort vertex indices +0/+2/+4 (0..2 of verts_00453330), ushort surface code +6 (returned when the query point lies inside and the out pointer is null; 0x49eeb0 maps 2 -> 0, 4 -> 1, 8 -> 3, 0x10 -> 4, 0x20 -> 5, anything else -> 3 through its jump table 0x49ef78/0x49ef90), plane floats +8/+0x10/+0x14 and divisor +0xc (copied to 0x9fb084..0x9fb090; the height division runs only with an out pointer). Codes are drawn from the mapped values and two unmapped ones; the plane floats are finite.",
+ "fields": [
+  {
+   "off": 0,
+   "type": "u16",
+   "lo": 0,
+   "hi": 2,
+   "count": 2,
+   "stride": 24
+  },
+  {
+   "off": 2,
+   "type": "u16",
+   "lo": 0,
+   "hi": 2,
+   "count": 2,
+   "stride": 24
+  },
+  {
+   "off": 4,
+   "type": "u16",
+   "lo": 0,
+   "hi": 2,
+   "count": 2,
+   "stride": 24
+  },
+  {
+   "off": 6,
+   "type": "u16",
+   "values": [
+    2,
+    4,
+    8,
+    "0x10",
+    "0x10",
+    "0x20",
+    7,
+    "0xffff"
+   ],
+   "count": 2,
+   "stride": 24
+  },
+  {
+   "off": 8,
+   "type": "f32",
+   "lo": -1.0,
+   "hi": 1.0,
+   "count": 2,
+   "stride": 24
+  },
+  {
+   "off": 12,
+   "type": "f32",
+   "lo": 0.5,
+   "hi": 1.0,
+   "count": 2,
+   "stride": 24
+  },
+  {
+   "off": 16,
+   "type": "f32",
+   "lo": -1.0,
+   "hi": 1.0,
+   "count": 2,
+   "stride": 24
+  },
+  {
+   "off": 20,
+   "type": "f32",
+   "lo": -1000.0,
+   "hi": 1000.0,
+   "count": 2,
+   "stride": 24
+  }
+ ]
+}

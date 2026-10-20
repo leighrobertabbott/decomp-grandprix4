@@ -1,0 +1,16 @@
+{
+ "_evidence": "Pointer<->offset rebasing of the save/restore pair 0x513982/0x5139ed (via 0x40b232/0x40b24b: 'mov ecx,0x16; mov esi,0x66fef0; call 0x40b0da|0x40b186; add esi,0x41c'): for each of the 22 car records 0x40b0da/0x40b186 subtract/add the immediate 0x89423c to dwords +0x1c and +0x1b8 (plain u32 arithmetic, every value valid) and, for each link dword +0x110/+0x114/+0x118/+0x124/+0x128/+0x12c/+0x130, 'test r/m32,-1; je' skips a zero (null link) else subtract/add 0x66feec. Then 0x513982/0x5139ed walk 0x679d20..0x679d2b (3 dwords, +-0x89423c when nonzero) and 0x679d2c..0x679d3b (4 dwords, +-0x66feec when nonzero) through esi. These bytes are car/selection state (zero in the image, so only the null branch ran). Links and table dwords draw zero in about half the picks (both je outcomes), car pointers 0x66fef0+k*0x41c, saved offsets k*0x41c+4 and wild dwords (add/sub never fault); +0x1c/+0x1b8 random u32. Same values as the pointer-buffer layout links_0040b186, laid over the fixed car array.",
+ "globals": [
+  {"addr": "0x0066ff0c", "type": "u32", "count": 22, "stride": "0x41c"},
+  {"addr": "0x006700a8", "type": "u32", "count": 22, "stride": "0x41c"},
+  {"addr": "0x00670000", "type": "u32", "count": 22, "stride": "0x41c", "values": [0, 0, 0, 0, 0, 4, "0x420", "0x5234", "0x66fef0", "0x67030c", "0x80000000", "0xffffffff"]},
+  {"addr": "0x00670004", "type": "u32", "count": 22, "stride": "0x41c", "values": [0, 0, 0, 0, 0, 4, "0x420", "0x5234", "0x66fef0", "0x67030c", "0x80000000", "0xffffffff"]},
+  {"addr": "0x00670008", "type": "u32", "count": 22, "stride": "0x41c", "values": [0, 0, 0, 0, 0, 4, "0x420", "0x5234", "0x66fef0", "0x67030c", "0x80000000", "0xffffffff"]},
+  {"addr": "0x00670014", "type": "u32", "count": 22, "stride": "0x41c", "values": [0, 0, 0, 0, 0, 4, "0x420", "0x5234", "0x66fef0", "0x67030c", "0x80000000", "0xffffffff"]},
+  {"addr": "0x00670018", "type": "u32", "count": 22, "stride": "0x41c", "values": [0, 0, 0, 0, 0, 4, "0x420", "0x5234", "0x66fef0", "0x67030c", "0x80000000", "0xffffffff"]},
+  {"addr": "0x0067001c", "type": "u32", "count": 22, "stride": "0x41c", "values": [0, 0, 0, 0, 0, 4, "0x420", "0x5234", "0x66fef0", "0x67030c", "0x80000000", "0xffffffff"]},
+  {"addr": "0x00670020", "type": "u32", "count": 22, "stride": "0x41c", "values": [0, 0, 0, 0, 0, 4, "0x420", "0x5234", "0x66fef0", "0x67030c", "0x80000000", "0xffffffff"]},
+  {"addr": "0x00679d20", "type": "u32", "count": 3, "stride": 4, "values": [0, 0, 0, "0x8943a0", "0x164", "0x89423c", "0xffffffff"]},
+  {"addr": "0x00679d2c", "type": "u32", "count": 4, "stride": 4, "values": [0, 0, 0, "0x66fef0", "0x420", 4, "0xffffffff"]}
+ ]
+}

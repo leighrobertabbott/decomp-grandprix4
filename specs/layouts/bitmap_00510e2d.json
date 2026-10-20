@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x00510e2d: bit cl&7 of byte (cl>>3) - 0..31 for any cl - of the 32-byte bitmap 0x8245a0 ('test byte [ebx],cl') selects between clearing ('not cl; and [edx+0x8910d5],cl') and testing/setting ('test [edx+0x8910d5],cl; jne' / 'or') the same bit of the 32-byte bitmap 0x8910d5. fuzz:i32 reached only the first dword of each (bits_00510e2d only byte 3), so every byte of both bitmaps is random here: each tested bit is set or clear with about even odds for any ecx.",
+ "globals": [
+  {"addr": "0x008245a0", "type": "u8", "count": 32},
+  {"addr": "0x008910d5", "type": "u8", "count": 32}
+ ]
+}

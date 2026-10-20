@@ -1,0 +1,11 @@
+{
+  "_evidence": "Command 0x24 (0x513be7 -> dispatcher 0x531f9c -> table 0x531d74[0x24] = 0x5325b6 -> 0x52b4c3) reaches 0x52e131 after 0x54acd3 (image [0x7aafd3] = 0 < 0xff: stc, continue) and 0x52b96d (copies key-table row [0x7ab544] of 0x7ab5b4, static). 0x52e131 walks the six static .data pairs at 0x8246b2 (key-word offset 0x12/0x14/0x1a/0x1c/0x1a/0x1c, text index 0x3af/0x3be/0x144/0x145/0x14e/0x14f): `mov esi,[ebx+4]; call 0x54d1ad` (esi = [0x835846 + 4*index]) then `mov ecx,0xf; mov al,0x20; rep stosb` clears 15 bytes of that caption string and copies at most 15 bytes of the key name over it. The string-pointer table 0x835846 is zero in the image (filled when the text resources load), so the original faulted at 0x52e155 storing through a null pointer. The six entries it dereferences (0x836702, 0x83673e, 0x835d56, 0x835d5a, 0x835d7e, 0x835d82) are pointers to separate 16-byte writable string buffers (random contents: they are only overwritten). The key words of row 0 are nonzero in the image, so the walk next calls MapVirtualKeyA (unmodelled; 0x52e131 itself is accepted with emu=skip:win32 MapVirtualKeyA) and the run ends there as external.",
+  "globals": [
+    {"addr": "0x00836702", "type": "ptr", "size": 16, "fill": "bytes"},
+    {"addr": "0x0083673e", "type": "ptr", "size": 16, "fill": "bytes"},
+    {"addr": "0x00835d56", "type": "ptr", "size": 16, "fill": "bytes"},
+    {"addr": "0x00835d5a", "type": "ptr", "size": 16, "fill": "bytes"},
+    {"addr": "0x00835d7e", "type": "ptr", "size": 16, "fill": "bytes"},
+    {"addr": "0x00835d82", "type": "ptr", "size": 16, "fill": "bytes"}
+  ]
+}

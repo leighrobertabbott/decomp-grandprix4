@@ -1,0 +1,131 @@
+{
+ "_evidence": "Strengthening overlay for 0x004362a9 (compose LAST): it walks the order list 0x66fe3c and calls 0x40f1d1 for each car (esi = 0x66fef0 + word, edi = car +0x1c), whose callees index tables with car bytes that carbg_0066fef0 left as full-range random draws, so they read far outside the state the other layouts vary: byte +0x70 (lap count; 0x40ed29 increments it, 0x40f112 uses (+0x70 - 1)*0x16 + (+0x415 >> 1) as the slot of the 99-row x 22 lap chart 0x7c3260 that state_0040f112 varies, 0x40e84e/0x40eb6b/0x40f175 compare it with [0x7c2e96]) is drawn 0..99, so the chart index stays inside 0x7c3260..0x7c3ae1; byte +0x74 (0x40f1d1 writes 0/1/2, 0x40e9ac loads [0x6279ec + 4*v] - the three record pointers state_0040e9ac pins - and dereferences +0x1a) is drawn 0..2; byte +0x415 (twice the race position, 0x408f42 stores 2*i) 0..43. Globals the chain reads that no layout varied: the bit arrays 0x62fc18 / 0x63b94c (0x434063 'bts [eax*8 + base], edx', read-modify-write state: any dword, 22 two-dword rows), byte 0x66d87f (0x40f26b 'test 0xff; jne', then set to 0x80), dword 0x66d8cc (0x40e986 / 0x40ebee 'test; je') and dword 0x7c2e98 (0x40ebca / 0x40ec12: 'dec edx; cmp al,dl' only). Segment records 0..25 (edi = car +0x1c): byte +0x64 bits 0/1 ('test [edi+0x64],1/2' at 0x40f1ee/0x40f216: the line-crossing paths into 0x40f02e, never taken on the image zeros) drawn both ways; bytes +0x34/+0x38/+0x48 are only OR-ed by 0x441a78 (any value). Dword 0x679b50 (0x40ec39 signed min with 3) any; sign byte 0x868582 (0x441cbe) any. On the 0x40f02e path 0x40e9ac divides (|word diff| * 0x400 + sx +0x96) * 1000 by max(sx +0x9a, 0x3ab): the dividend is below 2^32 / 2 for every 11-bit diff, so the quotient fits. Compares, table reads inside varied state and RMW bytes: nothing faults.",
+ "globals": [
+  {
+   "addr": "0x0066ff60",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "lo": 0,
+   "hi": 99
+  },
+  {
+   "addr": "0x0066ff64",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "lo": 0,
+   "hi": 2
+  },
+  {
+   "addr": "0x00670305",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "lo": 0,
+   "hi": 43
+  },
+  {
+   "addr": "0x0062fc18",
+   "type": "u32",
+   "count": 44,
+   "stride": 4
+  },
+  {
+   "addr": "0x0063b94c",
+   "type": "u32",
+   "count": 44,
+   "stride": 4
+  },
+  {
+   "addr": "0x0066d87f",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x80",
+    "0xff",
+    1
+   ]
+  },
+  {
+   "addr": "0x0066d8cc",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    1,
+    "0xffffffff",
+    "0x10000"
+   ]
+  },
+  {
+   "addr": "0x007c2e98",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    5,
+    10,
+    22,
+    23,
+    "0x7f",
+    "0x80",
+    "0xff",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x00894404",
+   "type": "u8",
+   "count": 26,
+   "stride": "0x160",
+   "values": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    "0xff",
+    "0x10",
+    "0x80"
+   ]
+  },
+  {
+   "addr": "0x008943d4",
+   "type": "u8",
+   "count": 26,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x008943d8",
+   "type": "u8",
+   "count": 26,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x008943e8",
+   "type": "u8",
+   "count": 26,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x00679b50",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    "0x7fffffff",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x00868582",
+   "type": "u8"
+  }
+ ]
+}

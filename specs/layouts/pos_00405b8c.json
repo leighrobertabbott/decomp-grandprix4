@@ -1,0 +1,10 @@
+{
+  "_evidence": "Car-side view read by the wrapper pair 0x00405b8c / 0x00405bde (byte-identical bodies): word +0x90 (movsx, abs, -0x200, 16-bit 'cmp ax,[esi+0xb0]; jl' and 'test word [esi+0x90]' sign for byte 0x603c78) and word +0xb0 are plain i16 (both compare outcomes, both signs), dwords +0 and +4 are the car position (ecx, ebx) handed to the accepted ring walks 0x405a12/0x405c9a (0x405b8c) or 0x405a70/0x405d05 (0x405bde). Those walks were verified on ecx, ebx in -0x4000000..0x3fff7ff (coordinates of the i16 record frame <<11, see ring_00405a12: the >>11 positions stay <= 32766 so the pinned CF records 2 and 3 end every walk); a wild dword makes the walk run off the varied records, which a car on the closed track never does. Nothing else in the buffer is read.",
+  "size": 184,
+  "fields": [
+    {"off": 0, "type": "i32", "lo": -67108864, "hi": 67106815},
+    {"off": 4, "type": "i32", "lo": -67108864, "hi": 67106815},
+    {"off": "0x90", "type": "i16"},
+    {"off": "0xb0", "type": "i16"}
+  ]
+}

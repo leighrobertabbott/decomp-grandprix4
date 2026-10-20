@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x00553db1 loads esi = [0x8914e8] and calls the block unpacker 0x553dbd, so [0x8914e8] points at a loaded block: a fresh buffer described by hdr_00553dbd (the layout validated for 0x553dbd).",
+ "globals": [
+  {
+   "addr": "0x008914e8",
+   "type": "ptr",
+   "size": 5160,
+   "fill": "layout=hdr_00553dbd"
+  }
+ ]
+}

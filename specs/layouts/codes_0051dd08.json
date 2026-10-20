@@ -1,0 +1,68 @@
+{
+ "_evidence": "Control-code bytes +0x1f/+0x20/+0x21 of the control block 0x7ab548 read by the byte-identical twins 0x51dd08 ('mov bl,[0x7ab567]'), 0x51dd3e ([0x7ab568]) and 0x51dd74 ([0x7ab569]): 'cmp bl,0; je' (0 = unbound: clc, eax kept) else 0x51ddda is called with bl (compose after bits_006f2d90, which makes the table entry 0xff - callee CF, clc path - in about half the cases and a bit number otherwise, the bit in 0x7a979c set or clear: stc with eax 1/0). Domain: 0 in about a fifth of the cases, else nonzero codes across the byte range (axis/button codes 6..9, 0x20..0x27 and others); a byte index into the 256-entry table, every value valid.",
+ "globals": [
+  {
+   "addr": "0x007ab567",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    5,
+    6,
+    8,
+    "0x1f",
+    "0x20",
+    "0x23",
+    "0x27",
+    "0x41",
+    "0x80",
+    "0xfe",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x007ab568",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    5,
+    6,
+    8,
+    "0x1f",
+    "0x20",
+    "0x23",
+    "0x27",
+    "0x41",
+    "0x80",
+    "0xfe",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x007ab569",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    5,
+    6,
+    8,
+    "0x1f",
+    "0x20",
+    "0x23",
+    "0x27",
+    "0x41",
+    "0x80",
+    "0xfe",
+    "0xff"
+   ]
+  }
+ ]
+}

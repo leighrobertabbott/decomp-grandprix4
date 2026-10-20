@@ -1,0 +1,16 @@
+{
+ "_evidence": "Overlay for 0x0043247d (compose LAST, after state_0043260e+state_004327cd+state_0066d8c0+state_00432372+temp_00602b50). [0x679d30] is the remembered car pointer compared with esi (cmp esi,[0x679d30]; jne at 0x4324b3, then 0x852d34 = esi): only compared, never dereferenced here, so it holds esi itself in about half the cases (alias_reg), which reaches block 0x4324bb (a fuzzed dword never equalled the buffer address). [0x602b58] is the minimum-delay dword (also read by 0x432438/0x432478) compared signed with ebp = max(0x602b54 = 4960..9040, 0x4323c5's 2495..3005 + clamped 0x432372 term) at 0x432554 and with 0x602b54 at 0x43255f: drawn -0x100..0x6000 so it lies below, between and above those, reaching both outcomes of both compares (the fuzzed dword was mostly small). Compares/stores only: nothing faults.",
+ "globals": [
+  {
+   "addr": "0x00679d30",
+   "type": "u32",
+   "alias_reg": "esi"
+  },
+  {
+   "addr": "0x00602b58",
+   "type": "i32",
+   "lo": "-0x100",
+   "hi": "0x6000"
+  }
+ ]
+}

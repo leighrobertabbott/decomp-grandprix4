@@ -1,0 +1,25 @@
+{
+ "size": 168,
+ "fill": "bytes",
+ "_evidence": "Parent object of a 0x00443e69 record (dword +0x74 of the record, dereferenced unconditionally: 'mov esi,[edi+0x74]; test byte [esi+0x7a],0x80; jne stc-exit'). Byte +0x7a draws bit 7 set in a third of the picks (the stc exit) and clear otherwise; dword +0x1c is a pointer to a 0x16c-byte record (seg_00443e69: 0x402fcd's edi). Everything else is random, the domain of the accepted readers: 0x4045d9 (dwords +0/+4/+8, words +0x12/+0x16, esi:ptr[0x20]:bytes), 0x4049bf (words +0x18/+0x9a, ptr[0xa2]:bytes), 0x402fcd (esi:ptr[0xa2]:bytes) and the target's own copies of +0/+4 (sar 5) and +0xc/+0x10 (angles fild-ed by 0x401d5c).",
+ "fields": [
+  {
+   "off": "0x7a",
+   "type": "u8",
+   "values": [
+    "0x80",
+    "0x81",
+    "0xff",
+    0,
+    "0x7f",
+    "0x40"
+   ]
+  },
+  {
+   "off": "0x1c",
+   "type": "ptr",
+   "size": 364,
+   "fill": "layout=seg_00443e69"
+  }
+ ]
+}

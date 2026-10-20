@@ -1,0 +1,33 @@
+{
+ "_evidence": "0x0051dcc7 reads up to four optional source pointers 0x6f2c0c/0x6f2c10/0x6f2c14/0x6f2c18 (null in the image): each is null in about a quarter of the draws, else a 4-byte block.",
+ "globals": [
+  {
+   "addr": "0x006f2c0c",
+   "type": "ptr",
+   "size": 4,
+   "fill": "bytes",
+   "nullable": true
+  },
+  {
+   "addr": "0x006f2c10",
+   "type": "ptr",
+   "size": 4,
+   "fill": "bytes",
+   "nullable": true
+  },
+  {
+   "addr": "0x006f2c14",
+   "type": "ptr",
+   "size": 4,
+   "fill": "bytes",
+   "nullable": true
+  },
+  {
+   "addr": "0x006f2c18",
+   "type": "ptr",
+   "size": 4,
+   "fill": "bytes",
+   "nullable": true
+  }
+ ]
+}

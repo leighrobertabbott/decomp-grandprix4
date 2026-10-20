@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x0051b7cd maps the 0x2a00 index bytes at 0x922704 through five 256-byte tables 0x9346d8 + k*0x100 (k = 1..5: ebx = 0x100..0x500) into the five planes 0x922704 + k*0x2a00 ('mov al,[ecx+0x922704]; mov dl,[eax+ebx+0x9346d8]; mov [ecx+edi+0x922704],dl'). Index bytes are 0..255 by width and every table has 256 entries, so any byte pattern is valid; the image holds zeros (run-time data), so both the 0x2a00 index bytes and the 0x500 table bytes the loop reads are random here.",
+ "globals": [
+  {"addr": "0x00922704", "type": "u32", "count": 2688, "stride": 4},
+  {"addr": "0x009347d8", "type": "u32", "count": 320, "stride": 4}
+ ]
+}

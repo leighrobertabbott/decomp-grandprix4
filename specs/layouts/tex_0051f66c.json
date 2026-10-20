@@ -1,0 +1,7 @@
+{
+ "_evidence": "Texture-mapped span renderer 0x0051f66c (compose after surf_0051f4bd+rec_0051f2d2: surface [0x874ee4] 0x1100 bytes with pitch 64..128, texture record words 0x94c008/0x94c00a any u16; the spec's ecx/ebp value sets from 0x51f555 keep the w x h rectangle centred at (x,y) inside the surface: rows 0..23, columns 0..79). 'mov ebx,0x94c004 ... mov esi,[ebx]' is the texel pointer; per pixel 'shld ebx,v,8; shld ebx,u,8; and ebx,[0x9e7da0]' with [0x9e7da0] = ((h-1)&0xff)<<8 | ((w-1)&0xff) built from the words +6/+4, so the index is <= 0xffff for any words: 'mov al,[ebx+esi]' needs a 0x10000-byte texel buffer (random bytes = texels). Every texel goes through the 256-byte remap table 'mov al,[eax+0x817494]' (index = a texel byte 0..255): varied as random bytes so the stored pixels depend on it. u/v/du/dv (esi/edi/ebx/edx) and 0x9658f0/0x9658f4/0x9e7d8c/0x9e7d90/0x9e7da0 are written before they are read. Values are synthetic. Dead directions (not exempted, coverage holds without them): the 'js' at 0x51f727 and 0x51f72d follow 'and ebp,0xffff' / 'and ecx,0xffff' and 'or reg,reg', so SF = 0 and they are never taken.",
+ "globals": [
+  {"addr": "0x0094c004", "type": "ptr", "size": 65536, "fill": "bytes"},
+  {"addr": "0x00817494", "type": "u8", "count": 256}
+ ]
+}

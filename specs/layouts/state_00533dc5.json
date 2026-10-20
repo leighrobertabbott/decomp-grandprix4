@@ -1,0 +1,31 @@
+{
+ "_evidence": "0x00533dc5 copies [0x8280f5]-[0x8280ed] bytes with rep movsb from 0x82811f: the end offset 0x8280f5 is at or above the start 0x8280ed (equal in some cases: the zero-count branch that calls 0x54e232), both small; source bytes random.",
+ "globals": [
+  {
+   "addr": "0x008280ed",
+   "type": "u32",
+   "lo": 0,
+   "hi": 32
+  },
+  {
+   "addr": "0x008280f5",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    8,
+    16,
+    32,
+    33,
+    40,
+    64
+   ]
+  },
+  {
+   "addr": "0x0082811f",
+   "type": "u8",
+   "count": 64,
+   "stride": 1
+  }
+ ]
+}

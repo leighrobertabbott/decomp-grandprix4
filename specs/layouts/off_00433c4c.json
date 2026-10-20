@@ -1,0 +1,7 @@
+{
+ "_evidence": "Offset pair read directly by 0x00433c4c ('mov ebx,[0x627874]; shl ebx,8; test byte [0x868582],0xff; jns; neg ebx' and 'mov edi,[0x627878]', then only imul/shrd/sub/add rotation arithmetic): 0x627874 is run-time state (written by 0x40cb38 'mov [0x627874],eax'), 0x627878 is read only here. 0x433c4c's own spec varies both through fuzz:i32 (any dword valid, no division or index); a wrapper such as 0x0051f87e that only addresses 0xa69878 leaves them at their image values (0 and 0x20000), so they are drawn as random dwords here. Compose after the other 0x433c4c layouts.",
+ "globals": [
+  {"addr": "0x00627874", "type": "u32"},
+  {"addr": "0x00627878", "type": "u32"}
+ ]
+}

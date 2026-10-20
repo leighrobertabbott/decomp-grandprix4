@@ -1,0 +1,13 @@
+{
+ "_evidence": "0x0051c9cb fills a 0x10000-byte map through the pointer array at 0x811928 (4 entries, index edx 0..3): each a fresh 0x10000-byte buffer.",
+ "globals": [
+  {
+   "addr": "0x00811928",
+   "type": "ptr",
+   "size": 65536,
+   "fill": "zero",
+   "count": 4,
+   "stride": 4
+  }
+ ]
+}

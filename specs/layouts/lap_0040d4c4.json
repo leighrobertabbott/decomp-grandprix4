@@ -1,0 +1,12 @@
+{
+ "_evidence": "0x0040d4c4 walks the pit lane forward with a wrap of [0x866ec4] bytes; the pit geometry pitgeo_0040d644 is a 6-record lap, so the wrap is 6*0x160 = 0x840 (random wraps never end the walk).",
+ "globals": [
+  {
+   "addr": "0x00866ec4",
+   "type": "u32",
+   "values": [
+    "0x840"
+   ]
+  }
+ ]
+}

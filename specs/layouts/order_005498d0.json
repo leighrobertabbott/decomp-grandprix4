@@ -1,0 +1,12 @@
+{
+ "_evidence": "0x005498d0 key 2 (compose after cur_00549849+keys_00831d67): 'mov eax,0x7c31dc; add eax,[esi+0x26]; mov al,[eax]; or al,al; je' reads the menu row's order byte, then 'and eax,0x3f; dec eax; cmp dword [eax*4+0x7c3208],0xfffffc18; jle' (signed, -1000 = no entry) gates the 0x549976 lookup. Buffer (esi, the menu item): only dword +0x26 is read, the row index into the 22-byte order array 0x7c31dc (the sibling row loop 0x549beb walks 0..0x15); 0..22 is drawn (22 = the byte after the array, also varied). Globals: order bytes 0x7c31dc..0x7c31f3 (24) from car numbers 0..23 (0 takes the je), flagged numbers 0x41/0x7f (masked 1 / 0x3f) and number-0 flags 0x40/0xc0 (masked 0: index -1 reads 0x7c3204, and 0x549976 maps 0 to 0xff), as carno_0066ff6c; so the dwords read are 0x7c3204 + 4*(0..63) = 0x7c3204..0x7c3300, drawn around the signed threshold (-1001/-1000 take jle, -999/0/1/5000/0x7fffffff do not, 0x80000000 is the most negative). Plain compares and fixed addresses: every value is valid.",
+ "size": 64,
+ "fill": "zero",
+ "fields": [
+  {"off": "0x26", "type": "u32", "lo": 0, "hi": 22}
+ ],
+ "globals": [
+  {"addr": "0x007c31dc", "type": "u8", "count": 24, "stride": 1, "values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, "0x41", "0x7f", "0x40", "0xc0"]},
+  {"addr": "0x007c3204", "type": "u32", "count": 64, "stride": 4, "values": ["0xfffffc17", "0xfffffc18", "0xfffffc18", "0xfffffc19", 0, 1, 5000, "0x7fffffff", "0x80000000"]}
+ ]
+}

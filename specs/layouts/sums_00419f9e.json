@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x00419f9e (ebx = 0x006380d8) adds dwords +0x34 and +0x3c of the four 0x300-byte records at 0x006380d8 (0x0063810c/0x00638114 + k*0x300) with plain i32 globals and stores the two totals to 0x00637fc8/0x00637fd0. They are per-record force/torque terms (state written each frame), used only in add, so any i32 is valid (wraparound included).",
+  "globals": [
+    {"addr": "0x0063810c", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x00638114", "type": "i32", "count": 4, "stride": "0x300"}
+  ]
+}

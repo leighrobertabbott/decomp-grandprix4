@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x00520c08 searches [0x7a8e1c] rows (1..24) of the surface [0x7a8e18] (compose after rows_00520584, which makes it a 0x1000-byte block); fuzzed counts never end.",
+ "globals": [
+  {
+   "addr": "0x007a8e1c",
+   "type": "i32",
+   "lo": 1,
+   "hi": 24
+  }
+ ]
+}

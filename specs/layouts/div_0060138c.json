@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x0040fbf3 (callers 0x410a65, 0x432933, 0x4379a0, 0x44107d) forms edx:eax = x << 13 with 'xor edx,edx; shld edx,eax,0xd; shl eax,0xd' (edx <= 0x1fff) and does 'div dword ptr [0x60138c]' at 0x40fde2: the quotient fits 32 bits only for a divisor > 0x1fff, otherwise the original #DEs (the game never does). Compose after state_004087aa (which draws the same dword -2^24..2^24 as an idiv dividend): this keeps it positive 0x2000..2^24, inside that domain.",
+ "globals": [
+  {"addr": "0x0060138c", "type": "u32", "lo": 8192, "hi": 16777216}
+ ]
+}

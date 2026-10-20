@@ -1,0 +1,54 @@
+{
+ "_doc": "Lead-proven dead reads: globals the original reads only to set flags that every path then overwrites with identical effects (e.g. cmp byte [g],K / je to a block identical to the fallthrough). A compiler deletes such loads, so the shape gate ignores these globals for the named function. Each entry needs evidence. 'callees': calls that sit only on lead-proven dead paths (blocks also listed in specs/coverage_exempt.json).",
+ "0x00555e93": {
+  "globals": [
+   "0x0086857c"
+  ],
+  "evidence": "'cmp byte [0x86857c],K; je' selects between two blocks that are both 'add esi,0x18; ret' (the add overwrites the cmp flags), so the byte's value never affects any output."
+ },
+ "0x005571d5": {
+  "globals": [
+   "0x0086857c"
+  ],
+  "evidence": "'cmp byte [0x86857c],K; je' selects between two blocks that are both 'add esi,0x2; ret' (the add overwrites the cmp flags), so the byte's value never affects any output."
+ },
+ "0x0055747d": {
+  "globals": [
+   "0x0086857c"
+  ],
+  "evidence": "'cmp byte [0x86857c],K; je' selects between two blocks that are both 'add esi,0x6; ret' (the add overwrites the cmp flags), so the byte's value never affects any output."
+ },
+ "0x0055878f": {
+  "globals": [
+   "0x0086857c"
+  ],
+  "evidence": "'cmp byte [0x86857c],K; je' selects between two blocks that are both 'add esi,0x6; ret' (the add overwrites the cmp flags), so the byte's value never affects any output."
+ },
+ "0x0053ddbb": {
+  "callees": [
+   "0x0054e232"
+  ],
+  "evidence": "0x54e232 (debug print) is called only at 0x53de5a, reached only from switch case 4 (0x53de3a); the index is byte [ebx+0xd] & 3 (0..3), so 'cmp eax,5; jb' always skips the 'mov eax,4' block 0x0053de03 and case 4 never runs (coverage_exempt lists the block; L27 proof, lead check)."
+ },
+ "0x0053de6f": {
+  "callees": [
+   "0x0054e232"
+  ],
+  "evidence": "0x54e232 (debug print) is called only at 0x53df23, reached only from switch case 4 (0x53df03); the index is byte [ebx+0xd] & 3 (0..3), so 'cmp eax,5; jb' always skips the 'mov eax,4' block 0x0053debf and case 4 never runs (coverage_exempt lists the block; L27 proof, lead check)."
+ },
+ "0x0053df39": {
+  "callees": [
+   "0x0054e232"
+  ],
+  "evidence": "0x54e232 (debug print) is called only at 0x53dfd6, reached only from switch case 4 (0x53dfba); the index is byte [ebx+0xd] & 3 (0..3), so 'cmp eax,5; jb' always skips the 'mov eax,4' block 0x0053df85 and case 4 never runs (coverage_exempt lists the block; L27 proof, lead check)."
+ },
+ "0x00551f83": {
+  "globals": [
+   "0x006f3c80",
+   "0x00874fb4",
+   "0x006f2c04",
+   "0x00679d30"
+  ],
+  "evidence": "Bytes 66 9c 50 .. 58 66 9d c3: pushfw/push eax, a cmp/jne chain over these four globals, pop eax/popfw/ret. The pops restore eax and the low 16 EFLAGS bits (CF/PF/AF/ZF/SF/OF), nothing is stored, so the reads never affect any output."
+ }
+}

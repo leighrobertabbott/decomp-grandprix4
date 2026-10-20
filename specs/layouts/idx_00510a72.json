@@ -1,0 +1,25 @@
+{
+ "_evidence": "0x00510a72's callees index with [0xa6987c] (0..11) and [0x9beb90] (-1 = none, else a car 0..21); fuzzed both fault.",
+ "globals": [
+  {
+   "addr": "0x00a6987c",
+   "type": "i32",
+   "lo": 0,
+   "hi": 11
+  },
+  {
+   "addr": "0x009beb90",
+   "type": "u32",
+   "values": [
+    "0xffffffff",
+    "0xffffffff",
+    "0xffffffff",
+    0,
+    1,
+    5,
+    10,
+    21
+   ]
+  }
+ ]
+}

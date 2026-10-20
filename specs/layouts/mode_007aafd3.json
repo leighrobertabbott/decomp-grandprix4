@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x00528623 (callee of the wrapper 0x5337d5): 'cmp byte [0x7aafd3],0; jne 0x52863e' - nonzero returns at once; zero runs 0x5047a0 (pushal-wrapped; with the image's zero [0xabc07c] it takes 'test eax,eax; je 0x50482f' and returns), 0x54aff0 ('cmp byte [0x7aafd3],0xff; jb' exits for 0) and 0x53c374 (clears 0x82fd6a/0x7ab00e/0x82fd9c and copies the dword [0x8245c0] to 0x8245c4 via 0x52d813: any u32, varied so the copy is visible). The byte is the menu/mode flag other layouts draw from {0, 1, 0xff} (pair_00539b56, flag_007ab020); a plain byte compare, every value valid. [0xabc07c] keeps its image value: nonzero would enter 0x5047a0's message loop ('call 0x5b4930; mov esi,eax; test esi,esi; je 0x5047c5', polling the session message list [0xb2dd04]/[0xb2dd0c] until a message arrives), which generated inputs cannot model.",
+ "globals": [
+  {"addr": "0x007aafd3", "type": "u8", "values": [0, 0, 1, "0xff", "0x80"]},
+  {"addr": "0x008245c0", "type": "u32"}
+ ]
+}

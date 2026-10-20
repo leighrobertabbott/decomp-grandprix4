@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x51c865 (pushal wrapper) loads three parameter dwords for each callee: 'mov eax,[0x817434]; mov ecx,[0x817438]; mov edx,[0x81743c]; call 0x51c80d' then 'mov eax,[0x817440]; mov ecx,[0x817444]; mov edx,[0x817448]; call 0x51c7c7'. No instruction in GP4.exe writes 0x817434..0x817448 (immediate scan of .text: only these six reads), so they are initialized parameters: eax a byte offset into each 0x100-byte row of the caller's image (edi = [0x6975ec+k], +0x10000 for one variant, from 0x51c894), ecx a copy length, edx a signed shift. Bounds come from the callees: 0x51c80d copies ecx bytes backwards with 'loop' (ecx = 0 would loop 2^32 times -> fault), then fills |edx| bytes below the destination base+eax+edx, over 32 rows of stride 0x100; 0x51c7c7 copies with 'rep movsb' (ecx = 0 is a valid no-op), reads [edi-1] and fills |edx| bytes above. Synthetic domain (not the image values): eax 0x20..0xd0, ecx 1..32 (first call) / 0..32 (second), edx -16..16. Then every access stays in [base+0, base+31*0x100+0xd0+32+16] = [0, 0x2010) inside the 0x2200-byte edi buffer, so no case faults, and both signs of the shift and the zero-shift skip ('or ecx,ecx; je') are reached.",
+ "globals": [
+  {"addr": "0x00817434", "type": "u32", "lo": 32, "hi": 208},
+  {"addr": "0x00817438", "type": "u32", "lo": 1, "hi": 32},
+  {"addr": "0x0081743c", "type": "i32", "lo": -16, "hi": 16},
+  {"addr": "0x00817440", "type": "u32", "lo": 32, "hi": 208},
+  {"addr": "0x00817444", "type": "u32", "lo": 0, "hi": 32},
+  {"addr": "0x00817448", "type": "i32", "lo": -16, "hi": 16}
+ ]
+}

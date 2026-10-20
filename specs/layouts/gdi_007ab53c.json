@@ -1,0 +1,15 @@
+{
+ "_evidence": "0x00546636 (called by 0x545fa5 and its siblings) tests byte 0x7ab53c: nonzero skips the SelectObject call (returns with eax untouched); this overlay keeps it nonzero so the emulator compares the callers on that path (the SelectObject path is the callee's, checked in-game).",
+ "globals": [
+  {
+   "addr": "0x007ab53c",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    "0x80",
+    "0xff"
+   ]
+  }
+ ]
+}

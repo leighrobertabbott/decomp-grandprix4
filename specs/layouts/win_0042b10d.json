@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x0042b10d compares two segment-record pointers (eax a lap record, edx a pit record: spec rec[0x8943a0,0x160,0..11]) unsigned against the pit start [0x00891500] and the window bounds [0x00866ef0]/[0x00866ef4] (for eax) and [0x00866ed0]/[0x00866ed4] (for edx), each test asking whether the pointer lies within 0x580 (4 records) of a bound. All five globals are record-aligned positions in the same array (points_into records 0..11: the pit start 4..8), so 'within 4 records', 'beyond' and 'before' all occur often; nothing is dereferenced, every value is valid.",
+  "globals": [
+    {"addr": "0x00891500", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 4, "hi": 8}},
+    {"addr": "0x00866ef0", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 11}},
+    {"addr": "0x00866ef4", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 11}},
+    {"addr": "0x00866ed0", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 11}},
+    {"addr": "0x00866ed4", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 11}}
+  ]
+}

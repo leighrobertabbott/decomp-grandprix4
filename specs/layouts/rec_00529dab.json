@@ -1,0 +1,11 @@
+{
+  "_evidence": "esi record shared by 0x00529dab and its twin 0x00529ea3 (sub/jge vs add/jle): 0x539944 reads the width selector byte +0xd (& 3: byte/word/dword/zero) and loads eax from [ebx]; then 'sub|add eax,[esi+0x2a]; jo; cmp eax,[esi+0x26]; jge|jle; mov eax,[esi+0x26]' clamps against the limit dword +0x26 (random +0x2a/+0x26 reach the overflow, both compare outcomes and the clamp); 0x539a13 stores eax at [ebx] at the +0xd width. 'cmp byte [0x81d1eb],0xff; jne' then, when the mode byte is 0xff, 'mov ebx,[esi+0x2e]; call 0x539a13' stores the same value through the record's second target pointer +0x2e: a real 8-byte buffer (a dword store at most), never random. The rest of the 0x40-byte record is random background (fill bytes). Global part: u8 0x0081d1eb draws 0xff (second store) in half the cases and 0/1 otherwise; use it as the esi layout AND as a globals layout after fuzz:i32 (the same file carries both).",
+  "size": 64,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x2e", "type": "ptr", "size": 8, "fill": "bytes"}
+  ],
+  "globals": [
+    {"addr": "0x0081d1eb", "type": "u8", "values": ["0xff", "0xff", 0, 1]}
+  ]
+}

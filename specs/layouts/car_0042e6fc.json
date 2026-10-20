@@ -1,0 +1,22 @@
+{
+ "_evidence": "Car overlay for 0x0042e6fc's three cars (after the 0x42dd4b car composition): word +0x9a (speed; 0x42dd4b clamps it to <= 0x1000, *4, times the heading difference >> 14, *[0x603c60]=0x800 >> 14) is small in most picks so the 0x42dd4b result can fall within +-0xbd, and 0x1000/0x7fff/0x8000/negative otherwise; any i16 is valid (imul/shrd only).",
+ "size": 668,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x9a",
+   "type": "u16",
+   "values": [
+    0,
+    8,
+    "0x20",
+    "0x40",
+    "0xffe0",
+    0,
+    "0x1000",
+    "0x7fff",
+    "0x8000"
+   ]
+  }
+ ]
+}

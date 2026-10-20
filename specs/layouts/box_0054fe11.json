@@ -1,0 +1,13 @@
+{
+  "_evidence": "0x54fe11 reads the box record through the unaligned pointer global [0x83e69e] (non-null: caller 0x54fdde tests it, 0x54fdfd stores the esi it was given): words +8/+0xc/+0xa/+0xe (movzx; x0,x1,y0,y1 of the box, any u16), dword +0 multiplied by (word+0xc - word+8 - 0x27) ('imul dword [esi]') and dword +4 tested for 0 ('cmp [esi+4],0; je' -> eax = 0) else the divisor of 'idiv dword [esi+4]'. |word+0xc - word+8 - 0x27| <= 0x10026, so +0 in -0x4000..0x4000 keeps |edx:eax| < 2^31 and the quotient fits for every nonzero divisor (no #DE; a larger +0 with divisor +-1 faults in the original, the only excluded inputs). The divisor list has 0, both signs, small and large magnitudes, so q = width*N/D is >= 1 (the 0x531af4/0x531b2e calls) and < 1 (skip) in many cases.",
+  "size": 16,
+  "fill": "bytes",
+  "fields": [
+    {"off": 0, "type": "i32", "lo": -16384, "hi": 16384},
+    {"off": 4, "type": "u32", "values": [0, 0, 1, "0xffffffff", 2, "0x100", "0xffffff00", "0x1000", "0x4000", "0x7fffffff", "0x80000000"]},
+    {"off": 8, "type": "u16"},
+    {"off": "0xa", "type": "u16"},
+    {"off": "0xc", "type": "u16"},
+    {"off": "0xe", "type": "u16"}
+  ]
+}

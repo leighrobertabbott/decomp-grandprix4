@@ -1,0 +1,20 @@
+{
+ "_evidence": "Item flag bytes of the static menu item chain at 0x84869c (header) as walked by 0x0053e4db -> 0x53e4e5 (esi = 0x84869c, eax = bit mask, edx = 0). 0x53e4e5: first 'push edx; push eax; push esi; call 0x4fd260' (sound/help hook, below), then 'mov esi,[esi]; or esi,esi; je / cmp esi,0x838c94; je' walks the 15 items 0x8486f0, 0x848716, 0x84873c, 0x848762, 0x848788, 0x8487ae, 0x8487d4, 0x8487fa, 0x848820, 0x84884a, 0x848874, 0x84889a, 0x8488c0, 0x8488e6, 0x84890c (link +0 of the last is 0) and for each 'shr edx,1; rcr eax,1; jb' takes the next mask bit: bit set -> 'test byte [esi+0x1f],0x20; jne' else 'or [esi+0x1f],0x20; or [esi+0x1f],0x40'; bit clear -> 'test byte [esi+0x1f],0x20; je' else 'and [esi+0x1f],0xdf; or [esi+0x1f],0x40'. The links and the item ids (+0xc) are constant .data: the image holds the only references to the items (each link, plus the immediates 'mov esi,0x84869c' at 0x53fa5e/0x540195), no instruction stores into the chain except these flag bytes. Byte +0x1f is run-time item state (bit 0x20 is switched here and by the menu code) and zero in the image, so the 'clear 0x20' arm never ran: all 15 flag bytes (item + 0x1f) draw any byte, giving bit 0x20 both ways under both mask bits. Constant, kept: the help table 0x6698e8 (116 x 12-byte entries {menu header, help id, item list}; only read: 0x4fd260/0x4fd310/0x4fd3f0/0x4fd4a0 compare/load from it, never store) and the item lists such as 0x668470 ({value, item id} pairs, 0-terminated; no writer). 0x4fd260 finds the header in entry 41 and, per item, its id in list 0x668470, then calls 0x5b4da0(value, ~mask & 1), which returns at once while [0xb2dd0c] (the help/voice manager object, image 0) is null; [0xb2dd0c] keeps that value: non-null enters 0x5b79d0 (Bink video, registry and CRT file code, not modelled by gp4re/stubs.py). Values are synthetic.",
+ "globals": [
+  {"addr": "0x0084870f", "type": "u8"},
+  {"addr": "0x00848735", "type": "u8"},
+  {"addr": "0x0084875b", "type": "u8"},
+  {"addr": "0x00848781", "type": "u8"},
+  {"addr": "0x008487a7", "type": "u8"},
+  {"addr": "0x008487cd", "type": "u8"},
+  {"addr": "0x008487f3", "type": "u8"},
+  {"addr": "0x00848819", "type": "u8"},
+  {"addr": "0x0084883f", "type": "u8"},
+  {"addr": "0x00848869", "type": "u8"},
+  {"addr": "0x00848893", "type": "u8"},
+  {"addr": "0x008488b9", "type": "u8"},
+  {"addr": "0x008488df", "type": "u8"},
+  {"addr": "0x00848905", "type": "u8"},
+  {"addr": "0x0084892b", "type": "u8"}
+ ]
+}

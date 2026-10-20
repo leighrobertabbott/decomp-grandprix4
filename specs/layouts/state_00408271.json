@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x00408271 (ebx = an index, -1 selects the byte path [edx+esi+0x218]; spec ebx -1..21, edx 0..32 inside the 0x260-byte esi buffer) addresses the 0x78-byte records of the table at 0x0063bd7c and reads only dwords +0x24 (0x0063bda0) and +0x28 (0x0063bda4) of record ebx (test/jns/neg absolute values, signed max), then multiplies by dword 0x006f2bec (imul/shrd 22). The record dwords are state (static zero), so both are varied full-range i32 for records 0..21 (both signs and both max outcomes); 0x6f2bec any i32. No value faults. The second |+0x28| compare (0x4082ad) can never move eax, which is already the signed max of the two absolute values, so block 0x4082b1 is dead.",
+  "globals": [
+    {"addr": "0x0063bda0", "type": "i32", "count": 22, "stride": "0x78"},
+    {"addr": "0x0063bda4", "type": "i32", "count": 22, "stride": "0x78"},
+    {"addr": "0x006f2bec", "type": "i32"}
+  ]
+}

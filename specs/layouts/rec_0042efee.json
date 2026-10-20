@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x0042efee reads the car's segment record pointer dword +0x1c (never null in the game; dereferenced unconditionally) and from that record byte +0x51 (test 0x80; je) and byte +0xb6 (index into the 256-entry table at 0x626fb8, stride 0x40: any byte stays inside). The pointer gets a 0xc0-byte random block so both are free u8 draws.",
+  "size": 64,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x1c", "type": "ptr", "size": 192, "fill": "bytes"}
+  ]
+}

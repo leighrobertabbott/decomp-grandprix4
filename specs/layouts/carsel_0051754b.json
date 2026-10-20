@@ -1,0 +1,25 @@
+{
+ "_evidence": "0x0051754b / 0x0051769c load esi = [0x66d818] / [0x66d824] and read the car record byte [esi+0x7c] without a null test, so whenever the game calls them these two car pointers are valid records 0x66fef0 + k*0x41c (k 0..21). Overlay composed after ptrs_0066d818 (which allows null).",
+ "globals": [
+  {
+   "addr": "0x0066d818",
+   "type": "u32",
+   "points_into": {
+    "base": "0x66fef0",
+    "stride": "0x41c",
+    "lo": 0,
+    "hi": 21
+   }
+  },
+  {
+   "addr": "0x0066d824",
+   "type": "u32",
+   "points_into": {
+    "base": "0x66fef0",
+    "stride": "0x41c",
+    "lo": 0,
+    "hi": 21
+   }
+  }
+ ]
+}

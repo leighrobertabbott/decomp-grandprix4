@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x00418f8f: [0x00679d30] is the player's car record (see state_0040f898/rec_00411017), so it points at one of the 22 records 0x0066fef0+k*0x41c; its byte +0x7d (varied even 0..42 for all 22 records by list_0066fe3c, the offset 2*i that 0x00408f42 stores) starts the forward walk at list entry i+1 ([ebx+0x0066fe3c], ebx = +0x7d+2, step 2) which stops at a 0xffff word, at the latest the 0x0066fe68 guard. Compose after list_0066fe3c (22 list words each 0xffff or a record offset, guards, record byte +0x7a bit 7). This layout adds the second reject test, record byte +0x8d bit 1 (0x0066ff7d+k*0x41c). Every walk stays between the guards and every word read is a record offset, so all reads are the varied +0x7a/+0x8d bytes; nothing faults.",
+  "globals": [
+    {"addr": "0x00679d30", "type": "u32", "points_into": {"base": "0x0066fef0", "stride": "0x41c", "lo": 0, "hi": 21}},
+    {"addr": "0x0066ff7d", "type": "u8", "count": 22, "stride": "0x41c"}
+  ]
+}

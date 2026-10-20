@@ -1,0 +1,8 @@
+{
+  "size": 232,
+  "fill": "bytes",
+  "_evidence": "0x004243cd (eax = esi = the object built by 0x00552bea at 0x00854414+edx) reads byte +0xdc as the index of one of the 64 0x78-byte object records at 0x0063bd7c (0x0042506e walks them with ecx 0..63; recs_0063bd7c varies their dwords +0x30..+0x44), then stores dwords +0x30/+0x34/+0x38 of that record, sar 5, to +0x78/+0x7c/+0x80. The index is drawn 0..63 so the reads land in the varied records; every other byte is unused (random fill).",
+  "fields": [
+    {"off": "0xdc", "type": "u8", "lo": 0, "hi": 63}
+  ]
+}

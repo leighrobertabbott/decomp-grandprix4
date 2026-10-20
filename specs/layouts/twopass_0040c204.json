@@ -1,0 +1,16 @@
+{
+ "_evidence": "0x0040c204 repeats its warm-up pass while ecx += [0x603854] stays below 0x2580000 ('jl 0x40c211' at 0x40c229): state_0040bce6 draws 0x2580000.. (one pass); this overlay adds rates just above half (0x12c0001..0x13c0000) so a second pass runs, still within the emulator budget.",
+ "globals": [
+  {
+   "addr": "0x00603854",
+   "type": "u32",
+   "values": [
+    "0x2580000",
+    "0x3000000",
+    "0x12c0001",
+    "0x13c0000",
+    "0x1800000"
+   ]
+  }
+ ]
+}

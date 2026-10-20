@@ -1,0 +1,21 @@
+{
+ "_evidence": "Renderer object pointer [0xa539c0] (null in the image; set by the renderer start-up at 0x498549 and cleared at 0x49864c) for the snapshot path 0x512c8d -> 0x49efc0 'mov ecx,[0xa539c0]; push 0xa000; push 0x68d5bc; call 0x4dd7f0', which dereferences it without a null test (the stream writer 0x512f2a only takes that path in a running session, when the renderer exists): a 0x70-byte robj_004dd7f0 object. Byte [0xaa1b56] ('test cl,cl; jle' over the 22-entry part of the blob, then stored at blob+0x9c3f) draws 0, 1, 0x16 and 0x80 (negative).",
+ "globals": [
+  {
+   "addr": "0x00a539c0",
+   "type": "ptr",
+   "size": "0x70",
+   "fill": "layout=robj_004dd7f0"
+  },
+  {
+   "addr": "0x00aa1b56",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    "0x16",
+    "0x80"
+   ]
+  }
+ ]
+}

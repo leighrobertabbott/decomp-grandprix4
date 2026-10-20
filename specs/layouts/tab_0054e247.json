@@ -1,0 +1,189 @@
+{
+ "_evidence": "0x0054e247: 'cmp dword [0x81e5c4],0x40; jb 0x54e2a1' gates a walk of the 33 table dwords at 0x833ff0 ('shl eax,2; add eax,0x833ff0; mov eax,[eax]; cmp eax,[0x833f58]; je'; eax = 0..0x20 from the pushed counter, 'cmp eax,0x20; jbe'), calling the empty failure stub 0x54e232 (esi = 0x54e270) for every dword that differs from [0x833f58]. The table is only reached through the computed address, so fuzz:i32 leaves it at its image value: each dword is drawn equal to the reference 0x833f58 in about half the cases (alias) and random otherwise, so both the je and the stub call occur at varying positions. The count 0x81e5c4 takes both sides of the 0x40 bound. Plain compares only: every value is valid.",
+ "globals": [
+  {
+   "addr": "0x0081e5c4",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    "0x3f",
+    "0x40",
+    "0x40",
+    "0x41",
+    "0x100",
+    "0x7fffffff",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x00833f58",
+   "type": "u32"
+  },
+  {
+   "addr": "0x833ff0",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x833ff4",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x833ff8",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x833ffc",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x834000",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x834004",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x834008",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x83400c",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x834010",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x834014",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x834018",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x83401c",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x834020",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x834024",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x834028",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x83402c",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x834030",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x834034",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x834038",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x83403c",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x834040",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x834044",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x834048",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x83404c",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x834050",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x834054",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x834058",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x83405c",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x834060",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x834064",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x834068",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x83406c",
+   "type": "u32",
+   "alias": "0x00833f58"
+  },
+  {
+   "addr": "0x834070",
+   "type": "u32",
+   "alias": "0x00833f58"
+  }
+ ]
+}

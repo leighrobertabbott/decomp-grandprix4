@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x00530bd3 loops [0x7a97a4]+1 times (a small packet count, 0..2); fuzzed it never ends.",
+ "globals": [
+  {
+   "addr": "0x007a97a4",
+   "type": "u32",
+   "lo": 0,
+   "hi": 2
+  }
+ ]
+}

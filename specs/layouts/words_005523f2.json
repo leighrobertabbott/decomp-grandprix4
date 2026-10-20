@@ -1,0 +1,35 @@
+{
+ "_evidence": "0x5523f2: mov ax,[edi+0x8e]; or ax,[edi+0x90]; je exit - the two ring walks run only when one of the words +0x8e/+0x90 of the record is nonzero. These words are zero in the image; edi is a 0x160-byte record of the ring 0x8943a0, so vary them for records 0..31. Any u16 is valid (only tested for zero).",
+ "globals": [
+  {
+   "addr": "0x0089442e",
+   "type": "u16",
+   "count": 32,
+   "stride": "0x160",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0x100",
+    "0x8000",
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x00894430",
+   "type": "u16",
+   "count": 32,
+   "stride": "0x160",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0x100",
+    "0x8000",
+    "0xffff"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,9 @@
+{
+  "size": 576,
+  "fill": "bytes",
+  "_evidence": "ESI of 0x00413fb0 is a car record (its caller 0x0041464c passes cars of 0x0066fef0). Its callee 0x00413ea0 takes edi = byte +0x7d and walks the car-order list words [edi+0x0066fe3e] up to the 0xffff guard at 0x0066fe68 (list_0066fe3c); +0x7d is the list offset 2*i (0..42) stored by 0x00408f42, so it draws even 0..42 and the walk stays between the guards (a random byte would start the walk inside the car array). 0x00414548 (called directly and from 0x00413ea0) tests byte +0x235 < 2 (cmp 2; jb): values 0..3 and 0xff give both carries. Every other byte read here (+0x0e, +0x6f, +0x71, +0x90, +0x9a, +0xb0, +0xd8, +0xe7, +0x203, +0x68) is a plain flag/word compare or RMW byte, so random bytes are valid.",
+  "fields": [
+    {"off": "0x7d", "type": "u8", "values": [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42]},
+    {"off": "0x235", "type": "u8", "values": [0, 1, 2, 3, "0xff"]}
+  ]
+}

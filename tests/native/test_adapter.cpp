@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <gp4/gp4.h>
+#include <gp4/x87.h>
 #include "../../hook/src/adapter.h"
 
 // "original": edx -> double[2], esi = k, st0 = x  =>  eax = 3k, st0 = x*p[0]+p[1], CF = (k < 10u)
@@ -47,6 +48,28 @@ uint32_t call_flags(uint32_t target, uint32_t input_flags) {
     return result;
 }
 
+// "original": st0 = a, st1 = b  =>  st0 = b / a, kept at 80-bit precision
+__declspec(naked) void orig_div() { __asm { fdivp st(1), st } __asm { ret } }
+
+void __cdecl recon_div(gp4::Regs* r) {
+    const gp4::x87::Ext a = gp4::x87::in_st(r, 0), b = gp4::x87::in_st(r, 1);
+    gp4::x87::set_out_st(r, 0, b / a);
+}
+
+// Calls target with st1 = 1/3 and st0 = 1/7, both extended (not doubles); stores st0 as 80-bit.
+void call_div(uint32_t target, uint8_t* out) {
+    double three = 3.0, seven = 7.0;
+    __asm {
+        fld1
+        fdiv three
+        fld1
+        fdiv seven
+        call target
+        mov eax, out
+        fstp tbyte ptr [eax]
+    }
+}
+
 struct Out { uint32_t eax, ebx, ecx, edi, esi, flags; double st0; };
 
 Out call_machine(uint32_t target, double* p, uint32_t k, double x) {
@@ -82,6 +105,21 @@ Out call_machine(uint32_t target, double* p, uint32_t k, double x) {
 
 int failures = 0;
 #define CHECK(c, ...) do { if (!(c)) { ++failures; printf("FAIL: " __VA_ARGS__); printf("\n"); } } while (0)
+
+// stdcall probe for gp4_call_regs_stdcall: arg0 == 0 leaves eax untouched (test flags),
+// else eax = arg0 + arg1 (add flags); ecx = arg0, edx = 0x1234; pops both arguments.
+static __declspec(naked) void stdcall_probe() {
+    __asm {
+        mov ecx, [esp+4]
+        test ecx, ecx
+        jz keep
+        mov eax, [esp+8]
+        add eax, ecx
+    keep:
+        mov edx, 0x1234
+        ret 8
+    }
+}
 
 int main() {
     gp4::ImplRecord flag_rec = {0, (const void*)&recon_flags, "recon_flags", "regs() -> (eax)"};
@@ -120,6 +158,22 @@ int main() {
         recon_routine(&r2);
         CHECK(r.eax == r2.eax && r.st[0] == r2.st[0] && (r.eflags & 1) == (r2.eflags & 1),
               "gp4_call_regs k=%u x=%g: eax %08x/%08x st0 %.17g/%.17g", k, x, r.eax, r2.eax, r.st[0], r2.st[0]);
+    }
+    // gp4_call_regs_stdcall: live registers in, two stack arguments popped by the callee.
+    const uint32_t probe_a0[] = {0u, 3u, 0x80000000u};
+    for (uint32_t a0 : probe_a0) {
+        gp4::Regs r = {};
+        r.eax = 0xAAAA5555u; r.ebx = 0x11111111u; r.esi = 0x22222222u; r.edi = 0x33333333u; r.ebp = 0x44444444u;
+        r.ecx = 0x55555555u; r.eflags = 0x202;
+        const uint32_t args[2] = {a0, 0x7ffffffeu};
+        gp4::call_regs_stdcall((uintptr_t)&stdcall_probe, r, args);
+        const uint32_t want_eax = a0 ? a0 + 0x7ffffffeu : 0xAAAA5555u;
+        CHECK(r.eax == want_eax, "call_regs_stdcall a0=%08x: eax %08x want %08x", a0, r.eax, want_eax);
+        CHECK(r.ecx == a0 && r.edx == 0x1234u, "call_regs_stdcall a0=%08x: ecx %08x edx %08x", a0, r.ecx, r.edx);
+        CHECK(r.ebx == 0x11111111u && r.esi == 0x22222222u && r.edi == 0x33333333u && r.ebp == 0x44444444u,
+              "call_regs_stdcall a0=%08x: preserved registers", a0);
+        const uint32_t zf = (r.eflags >> 6) & 1, of = (r.eflags >> 11) & 1;
+        CHECK(zf == (a0 == 0) && of == (a0 == 3u), "call_regs_stdcall a0=%08x: flags %03x", a0, r.eflags & 0xfff);
     }
     printf(failures ? "%d FAILURES\n" : "ALL PASS (%d)\n", failures ? failures : 88);
     return failures ? 1 : 0;

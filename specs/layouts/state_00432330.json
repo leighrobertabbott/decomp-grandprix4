@@ -1,0 +1,13 @@
+{
+  "_evidence": "0x00432330: esi is a car record (fixed to car 0 at 0x0066fef0, so [esi+0x1c] is the global 0x0066ff0c), and [esi+0x1c] is its current track-segment pointer into the 0x160-stride array at 0x008943a0. It is compared unsigned with [0x00891500] (jae at 0x00432340: read that record's word) and [0x00866f00] (jb at 0x00432348: stc), both record-aligned pointers into the same array (points_into, 0..26, both orders). In between, the dword +0x44 of the record is a link (or 0 -> stc at 0x0043234f) to another segment record (0x00403800 / 0x004059d2 treat it as a ring position), so +0x44 of each of the 26 records draws 0 or a record pointer 0..25; then word +0x1a & 0x7ff of the (linked) record is subtracted from the word 0x00868564 (callers store it as ax & 0x7ff at 0x005572b2, so 0..0x7ff) and the signed result compared with the dwords 0x0062a950 (jl) and 0x0062a954 (jge). Those two are tuning constants read by no other function (static 0 and 0x3c); they are varied over -0x800..0x800 so all three outcomes occur often. Every dereferenced pointer is a varied record, so nothing faults.",
+  "globals": [
+    {"addr": "0x0066ff0c", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 25}},
+    {"addr": "0x00891500", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 26}},
+    {"addr": "0x00866f00", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 26}},
+    {"addr": "0x8943e4", "type": "u32", "count": 26, "stride": "0x160", "values": [0, 0, 0, 0, "0x8943a0", "0x894500", "0x894660", "0x8947c0", "0x894920", "0x894a80", "0x894be0", "0x894d40", "0x894ea0", "0x895000", "0x895160", "0x8952c0", "0x895420", "0x895580", "0x8956e0", "0x895840", "0x8959a0", "0x895b00", "0x895c60", "0x895dc0", "0x895f20", "0x896080", "0x8961e0", "0x896340", "0x8964a0", "0x896600"]},
+    {"addr": "0x8943ba", "type": "u16", "count": 26, "stride": "0x160"},
+    {"addr": "0x00868564", "type": "u16", "lo": 0, "hi": 2047},
+    {"addr": "0x0062a950", "type": "i32", "lo": -2048, "hi": 2048},
+    {"addr": "0x0062a954", "type": "i32", "lo": -2048, "hi": 2048}
+  ]
+}

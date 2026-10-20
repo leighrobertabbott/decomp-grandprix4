@@ -1,0 +1,529 @@
+{
+ "_evidence": "Inputs of the key-mask builder 0x52bf0f beyond its registers (layout-only globals: fuzz:i32 would also rewrite its own globals, among them the chain head dword 0x8522a9, which 0x53e4e5 dereferences). (1) The 22-byte key-code tables at 0x828237 (eax = 0) and 0x82824d ('mov al,[esi]; inc esi' x 0x16): no instruction writes them (immediate scan of .text: only 'mov esi|ebx,imm' at 0x52bf14/0x52bf1b, 0x534912/0x534919, 0x534a1a/0x534a2b, then byte reads), so they are constant; they are drawn here from a small synthetic set shared with the option bytes and with the spec's dl/dh values, so 'cmp al,dl / cmp al,dh; je' and the 6-byte scan of 0x52bd14 ('cmp al,[0x81d60f+k]', k < 6, then 'cmp byte [0x81d62e],0; je' / 'cmp al,[0x81d62e]') hit and miss often: every byte value is valid (plain compares). (2) The option bytes 0x81d60f..0x81d614 and 0x81d62e (any byte per set_0081d60f, which this overrides). (3) The flag byte +0x1f of the 30 static items of the chain 0x8522a9 (0x8522f3 .. 0x8527d5, next links never written; the last link is 0): 0x53e4db -> 0x53e4e5 walks the chain ('mov esi,[esi]; or esi,esi; je; cmp esi,0x838c94; je') and per item 'shr edx,1; rcr eax,1; jb', then 'test byte [esi+0x1f],0x20' and 'and 0xdf / or 0x20' + 'or 0x40': run-time selection bits, zero in the image, so only the set-bit arm ever wrote; drawn with bit 0x20 clear and set (and 0x40/0x80 mixed) so both arms write. 0x4fd260 (pushed by 0x53e4e5) maps the chain's item keys through the constant table 0x6698e8 to control ids and calls 0x5b4da0, which returns at once with the image's null front-end object [0xb2dd0c] (not varied here). Values are synthetic.",
+ "globals": [
+  {
+   "addr": "0x00828237",
+   "type": "u8",
+   "count": 44,
+   "stride": 1,
+   "values": [
+    1,
+    2,
+    3,
+    "0x10",
+    "0x20",
+    "0x3f",
+    "0x80",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0081d60f",
+   "type": "u8",
+   "count": 6,
+   "stride": 1,
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    "0x10",
+    "0x20",
+    "0x3f",
+    "0x80",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0081d62e",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0x20",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x852312",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x852338",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x85235e",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x852388",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x8523b2",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x8523dc",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x852406",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x852430",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x85245a",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x852484",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x8524ae",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x8524d8",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x852502",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x85252c",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x852556",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x852580",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x8525aa",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x8525d4",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x8525fe",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x852628",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x852652",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x85267c",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x8526a6",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x8526d0",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x8526fa",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x85272c",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x85275e",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x852790",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x8527c2",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x8527f4",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x80",
+    "0xa0",
+    "0xe0",
+    "0x1f",
+    "0xff"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,9 @@
+{
+  "_evidence": "The two lerp fractions 0x627950 and 0x627958 that 0x406f05 scales by the image constant 16384.0 at 0x6f2b04 (never written; use globals=layout, not fuzz:f64, which would also fuzz that constant) and fistps. Writers store clamp(x,0,m)/m (0x407a0d) or int*2^-14 (0x407ffb, not clamped), so both in-range and extrapolating fractions occur. Each double is drawn as raw bits: the high dword from 0.0, 0.25, 0.5, 0.75, just below 1, 1.0, -0.5 and 1.5, the low dword any u32 (a perturbation below 2^-20 relative, or a denormal near 0), i.e. t in about -0.5..1.5 with the endpoints and interior values; seg_00406f05 bounds the record magnitudes so that every such t is fault-free.",
+  "globals": [
+    {"addr": "0x00627950", "type": "u32"},
+    {"addr": "0x00627954", "type": "u32", "values": [0, "0x3fd00000", "0x3fe00000", "0x3fe80000", "0x3fefffff", "0x3ff00000", "0xbfe00000", "0x3ff80000"]},
+    {"addr": "0x00627958", "type": "u32"},
+    {"addr": "0x0062795c", "type": "u32", "values": [0, "0x3fd00000", "0x3fe00000", "0x3fe80000", "0x3fefffff", "0x3ff00000", "0xbfe00000", "0x3ff80000"]}
+  ]
+}

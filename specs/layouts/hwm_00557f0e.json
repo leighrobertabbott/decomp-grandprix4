@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00557f0e: 'cmp edi,[0x871ca4]; jbe ret', else OR [0x8705f4] into the dword [edi+0x2c] and [0x87062f] into the byte [edi+0x67] and store edi into [0x871ca4]: the dword is the highest record address marked so far (a high-water-mark pointer compared with the record pointer edi). Fuzzed, it was a random dword that is above a buffer address in nearly every case and never equal to it, so the unsigned 'jbe' boundary (edi == mark: no update) was not tested. Here it equals edi in about half the cases (alias_reg; the mark is set from edi by this very function) and otherwise is drawn from 0 / small / mid / top values on both sides of any buffer address. Only compared and overwritten, never dereferenced: every value is valid. Compose after fuzz:i32 (which keeps varying the two OR masks).",
+ "globals": [
+  {"addr": "0x00871ca4", "type": "u32", "alias_reg": "edi", "values": [0, 1, "0x1000", "0x00400000", "0x7fffffff", "0x80000000", "0xfffffff0", "0xffffffff"]}
+ ]
+}

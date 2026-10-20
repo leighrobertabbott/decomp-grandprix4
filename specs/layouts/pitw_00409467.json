@@ -1,0 +1,21 @@
+{
+ "_evidence": "Pit split for 0x00409467's callee 0x40db6c (edi = the car's segment +0x1c, a record 0..25 from car_0043c677): 'cmp edi,[0x891500]; jb' picks the lap path (lane entry by word +0x7a, lanes_0040da62) or the pit path (word +0x1a & 0x7ff into 0x405985, whose 'sub cx,0x40' loop is bounded by the cbw'd byte, state_004094e3). The pit start is a record pointer 0..26 (both sides of every record 0..25) and words +0x1a of records 0..25 any u16 (masked, then sub/mul word: no fault), as cars_0066fef0 draws them.",
+ "globals": [
+  {
+   "addr": "0x00891500",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 26
+   }
+  },
+  {
+   "addr": "0x008943ba",
+   "type": "u16",
+   "count": 26,
+   "stride": "0x160"
+  }
+ ]
+}

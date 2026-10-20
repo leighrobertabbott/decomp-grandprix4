@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x00431838 reads from the esi car record: dword [esi+0x1c] (the current track-segment pointer, 0x00431838) and the word at its +0 (0x0043183b; nested word layout word_0040f19d, full i16), word [esi+0xe] (0x00431841, 0x00431863), word [esi+0x18] (0x00431867) and byte [esi+0xe5] (bit 0 at 0x0043185a). All are plain values (16-bit sub/neg/signed cmp), so any bit pattern is valid; unconstrained i16 draws give small differences that pass the threshold tests as well as large ones. Nothing else of the 0xed-byte prefix is read.",
+  "size": 237,
+  "fields": [
+    {"off": 14, "type": "i16"},
+    {"off": 24, "type": "i16"},
+    {"off": 28, "type": "ptr", "size": 2, "fill": "layout=word_0040f19d"},
+    {"off": 229, "type": "u8"}
+  ]
+}

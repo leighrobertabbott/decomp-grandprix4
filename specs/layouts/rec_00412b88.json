@@ -1,0 +1,48 @@
+{
+ "size": 261,
+ "_evidence": "Car block at esi for 0x00412b88 and its helpers 0x432c21/0x43207c/0x432c03: byte +0xfd (grid row, 0..2: *0x420 = 3 records), byte +0x7e (kinds 2/3 add one or two records), dword +0x1c (the car's segment record: one of records 0..12 of the 0x160-stride array at 0x8943a0, so the signed record difference idiv 0x160 is small and lands on both sides of the 1/3 thresholds and on them), word +0x96 (0x400 - w compared with 0x300/0x200; any i16).",
+ "fields": [
+  {
+   "off": "0x1c",
+   "type": "u32",
+   "values": [
+    "0x8943a0",
+    "0x894500",
+    "0x894660",
+    "0x8947c0",
+    "0x894920",
+    "0x894a80",
+    "0x894be0",
+    "0x894d40",
+    "0x894ea0",
+    "0x895000",
+    "0x895160",
+    "0x8952c0",
+    "0x895420"
+   ]
+  },
+  {
+   "off": "0x7e",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    3,
+    2,
+    255
+   ]
+  },
+  {
+   "off": "0x96",
+   "type": "i16"
+  },
+  {
+   "off": "0xfd",
+   "type": "u8",
+   "lo": 0,
+   "hi": 2
+  }
+ ]
+}

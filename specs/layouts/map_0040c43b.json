@@ -1,0 +1,11 @@
+{
+  "_evidence": "0x0040c43b looks up a byte of the track surface map: ebx = (high byte of (-edx<<13) + ([0x62aca8]<<23) + [0x63b82c]) << 8 | high byte of (eax<<13) + ([0x62aca4]<<23) + [0x63b828], masked by [0x62aca0], then byte [[0x62ac9c] + ebx], signed-compared with 6 (jl keeps it, else 0). 0x40bc4a sets the map pointer from 0x51f2d2, 0x62aca4/0x62aca8 to the map width/height words and the mask to ((h-1)&0xff) | ((w-1)&0xff)<<8, so the mask is at most 0xffff and the map is a byte grid of at most 0x10000 bytes. Domain: map pointer to 0x10000 random bytes (both signs and values on both sides of 6), mask, width and height 0..0xffff, offsets 0x63b828/0x63b82c any i32. Static zero pointer faulted.",
+  "globals": [
+    {"addr": "0x0062ac9c", "type": "ptr", "size": 65536, "fill": "bytes"},
+    {"addr": "0x0062aca0", "type": "u32", "lo": 0, "hi": 65535},
+    {"addr": "0x0062aca4", "type": "u32", "lo": 0, "hi": 65535},
+    {"addr": "0x0062aca8", "type": "u32", "lo": 0, "hi": 65535},
+    {"addr": "0x0063b828", "type": "i32"},
+    {"addr": "0x0063b82c", "type": "i32"}
+  ]
+}

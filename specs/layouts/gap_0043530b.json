@@ -1,0 +1,18 @@
+{
+  "_evidence": "0x0043530b (slipstream/gap scan) composed after cars_0066fef0 + list_0066fe3c: esi = [0x679d30] is the player car, a record of the 22 at 0x66fef0 (points_into 0..21), whose byte +0x7d (even 0..42, cars_0066fef0/list_0066fe3c) starts a backward walk of the order list 0x66fe3c down to the 0xffff guard 0x66fe3a; every list word is a car offset (list_0066fe3c), so ebx is always one of the 22 records. Per car: dword +0x240 is tested for zero (skip; value list keeps both), bytes +0x7a bit 7 and +0x8d bit 1 (player vs car) reject entries (random from the family layouts); word +0x68 is the lap distance whose u16 difference car-player is compared with 0x20 (ja ends the scan): drawn 0..0x40 so both outcomes occur; words +0x90/+0x94 (lateral position/width) and +0xe2 (gap, also via 0x40dc8a when byte +0x9c bit 1 is set) are drawn -0x600..0x600 so the overlap and gap clamps (<0, inside, >0x200/0x800) all happen; +0x9c bit 1 is clear in most picks; 0x40dc8a's byte +0x21d bit 2 and words +0x148..+0x14e are full-range; +0x9a (both sides of 0x800, list_0066fe3c) and +0xba scale the result. The gains 0x622560/0x622564 come from fuzz:i32. Nothing is a divisor; the cos-table index is masked to 0..0xfffe.",
+  "globals": [
+    {"addr": "0x00679d30", "type": "u32", "points_into": {"base": "0x0066fef0", "stride": "0x41c", "lo": 0, "hi": 21}},
+    {"addr": "0x00670130", "type": "u32", "count": 22, "stride": "0x41c", "values": [0, 0, 1, "0xffffffff", "0x12345678", "0x80000000"]},
+    {"addr": "0x0066ff58", "type": "i16", "count": 22, "stride": "0x41c", "lo": 0, "hi": 64},
+    {"addr": "0x0066ff80", "type": "i16", "count": 22, "stride": "0x41c", "lo": -1536, "hi": 1536},
+    {"addr": "0x0066ff84", "type": "i16", "count": 22, "stride": "0x41c", "lo": -1536, "hi": 1536},
+    {"addr": "0x0066ffd2", "type": "i16", "count": 22, "stride": "0x41c", "lo": -1536, "hi": 1536},
+    {"addr": "0x0066ff8c", "type": "u8", "count": 22, "stride": "0x41c", "values": [0, 0, 0, 1, "0xfd", 2, "0xff"]},
+    {"addr": "0x0066ffaa", "type": "u16", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0067010d", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x00670038", "type": "u16", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0067003a", "type": "u16", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0067003c", "type": "u16", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0067003e", "type": "u16", "count": 22, "stride": "0x41c"}
+  ]
+}

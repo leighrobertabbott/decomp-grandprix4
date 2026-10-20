@@ -1,0 +1,57 @@
+{
+  "_evidence": "Loop bounds of 0x0041df3f (noise-texture build), composed after grid_00628bc0 (later fields win). The image config is the pristine one: count [0x627b94] = 0x1000 (W*W), row step [0x627b98] = 0x40 (W), mask 0x3f, wrap 0xfc0, taps 6. The fill is 'loop' with ecx = count (0 would be 2^32 stosb), then two do-while grids: ebx = 0.. 'inc ebx; cmp ebx,[0x627b98]; jne' (W = 0 never ends) and edi += W until 'cmp edi,[0x627b94]; jne' (count must be a nonzero multiple of W or the walk never meets it), with stosb/movsb/filter writes at 0x627bbc+ebx+edi < 0x627bbc+count (count <= 0x1000 keeps them in the 4 KiB buffer before the grid). So W is a power of two 1..0x40 and count a multiple of 0x40 up to 0x1000 (every pair valid; smaller grids keep the 3*count filter calls cheap enough for the emulator). The RNG seed words 0x629bca/cc/ce (copied into 0x66d8be/c0/c2 for 0x401462, whose old values are pushed and restored) are full-range; the saved words 0x66d8be..0x66d8c3 vary too (state_0066d8c0 + the byte 0x66d8be). With W below mask+1 the horizontal filter 0x41de96 reads up to mask-W+1 bytes past the grid end; the 10 bytes 0x629bc0..0x629bc9 there (dwords of 0x401586/0x4015b1) vary as bytes.",
+  "globals": [
+    {
+      "addr": "0x00627b94",
+      "type": "u32",
+      "values": [
+        "0x40",
+        "0x40",
+        "0x80",
+        "0x100",
+        "0x100",
+        "0x200",
+        "0x400",
+        "0x1000"
+      ]
+    },
+    {
+      "addr": "0x00627b98",
+      "type": "u32",
+      "values": [
+        1,
+        2,
+        4,
+        8,
+        "0x10",
+        "0x20",
+        "0x40",
+        "0x40"
+      ]
+    },
+    {
+      "addr": "0x00629bca",
+      "type": "u16",
+      "count": 3,
+      "stride": 2
+    },
+    {
+      "addr": "0x0066d8be",
+      "type": "u8"
+    },
+    {
+      "addr": "0x0066d8bf",
+      "type": "u8"
+    },
+    {
+      "addr": "0x0066d8c0",
+      "type": "u32"
+    },
+    {
+      "addr": "0x00629bc0",
+      "type": "u8",
+      "count": 10,
+      "stride": 1
+    }
+  ]
+}

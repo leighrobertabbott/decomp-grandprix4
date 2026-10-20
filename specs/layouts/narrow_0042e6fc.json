@@ -1,0 +1,35 @@
+{
+ "_evidence": "Narrow lane geometry for 0x0042e6fc (compose after words_008943a0, overriding its lane words): 0x42e6fc compares |eax| of two 0x42dd4b calls with 0xbd, and that eax is [0x604404] (+-[0x603e5e]) plus ((A-B)*[0x603c60])>>14 with A, B = clamp(car +0x9a, 0x1000)*4*heading-difference>>14; [0x604404] is the difference of two 0x4035c3 lateral positions on the same record (0x42b27b/0x42b318/0x42b60f: 0x604402 - 0x603d9c), i.e. of interpolated lane-edge words +0x60/+0x62 (next record +0x1c0/+0x1c2, minus 0x100, 0x403b19/0x403b3f), the segment word +0x16 (0x431ffb) and the lane offset [0x603baa] (0x403938). With full-range words it is almost never within +-0xbd, so the lane words of records 0..33 are drawn as a narrow track (+0x60/+0x62 0..0x200, +0x16 -0x100..0x100, [0x603baa] 0..0x80): the differences then fall on both sides of 0xbd. Only add/sub/imul/shrd/sar/compare consume them (no division, index or loop bound), so the narrower range is a valid subset of words_008943a0's.",
+ "globals": [
+  {
+   "addr": "0x00894400",
+   "type": "u16",
+   "count": 34,
+   "stride": "0x160",
+   "lo": 0,
+   "hi": 512
+  },
+  {
+   "addr": "0x00894402",
+   "type": "u16",
+   "count": 34,
+   "stride": "0x160",
+   "lo": 0,
+   "hi": 512
+  },
+  {
+   "addr": "0x008943b6",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160",
+   "lo": -256,
+   "hi": 256
+  },
+  {
+   "addr": "0x00603baa",
+   "type": "u16",
+   "lo": 0,
+   "hi": 128
+  }
+ ]
+}

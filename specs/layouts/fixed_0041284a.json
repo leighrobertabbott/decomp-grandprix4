@@ -1,0 +1,57 @@
+{
+ "_evidence": "Fixed car-shaped working records of 0x0041284a (compose after state_004127b3+work_00639204+ring_008943a0): esi = 0x638de8 and ebx = 0x639204, whose dwords +0x1c ([0x638e04], [0x639220]) are the current segment: 0x418138 stores the car's segment edi into both, so they are record pointers 0x8943a0 + k*0x160 (k 0..29, ring_008943a0 varies bytes +0x51 (bits 7/3) and +0xa8 (bit 0) of records 0..31, the only record fields read here and by 0x4127b3's own record). The mode bytes +0x294 ([0x63907c], [0x639498]: cmp 0; jne exits) have the car-record domain 0..7 (car_004035c3 / work_00639204: written by the 0x403a1e/0x403721/0x429284 interpolators) and are zero in most picks so the body runs; dword +0x1a0 of the first record ([0x638f88], the blend fraction, read as 0x4000 - v and incremented) is the car fraction domain -0x400000..0x400000.",
+ "globals": [
+  {
+   "addr": "0x00638e04",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 29
+   }
+  },
+  {
+   "addr": "0x00639220",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 29
+   }
+  },
+  {
+   "addr": "0x0063907c",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    7
+   ]
+  },
+  {
+   "addr": "0x00639498",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    7
+   ]
+  },
+  {
+   "addr": "0x00638f88",
+   "type": "i32",
+   "lo": -4194304,
+   "hi": 4194304
+  }
+ ]
+}

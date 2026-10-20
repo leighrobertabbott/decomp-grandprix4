@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x00539d99: 'movzx eax, byte [0x82fcf0]; cmp eax,4; jb; mov eax,3' indexes the 4-entry jump table 0x539db8 (0 -> 0x539eca popal/ret, 1 and 2 -> 0x539dc8, 3 -> 0x539eca): the mode byte draws 0, 1, 2, 3 and the clamped >= 4 side (4, 0xff), with 1/2 weighted so the body runs in most cases. Body x side: 'mov eax,[0x82fcd0]; sub eax,[0x8310c0]; imul eax,eax,0x278; imul dword [0x83137b]; cmp [0x8310c4],0; je; idiv [0x8310c4]' and the same for [0x82fcd8] (0x539dfd..0x539e1d). With bounds_00542c43 (zoom 0x83137b in +-2^20, divisor c4 0 or >= 0x1000) and grid_00542aa8 (origin c0 in -2048..8192) the corner positions 0x82fcd0/0x82fcd8 are drawn from the same -2048..8192 plot range: |pos-c0| <= 10240, 10240*0x278*2^20/0x1000 = 1.66e9 < 2^31, so the 32-bit imul never wraps and the idiv quotient fits (no #DE); positions far outside the view overflow the quotient and divide-fault the original (states the plot never holds). y side ('[0x82fcdc]/[0x82fcd4] - [0x8310cc]', 'imul eax,eax,0x13c' truncated, 'imul [0x83137f]', 'idiv [0x8310d0]') is safe for any i32 corner with grid_00542aa8 (|zoom2| < 2^20, d0 0 or >= 2^20), so 0x82fcdc/0x82fcd4 stay fuzzed by fuzz:i32. Compose as fuzz:i32+layout=bounds_00542c43+grid_00542aa8+list_00549db9+scale_00539d99.",
+ "globals": [
+  {"addr": "0x0082fcf0", "type": "u8", "values": [0, 1, 1, 1, 2, 2, 2, 3, 4, "0xff"]},
+  {"addr": "0x0082fcd0", "type": "i32", "lo": -2048, "hi": 8192},
+  {"addr": "0x0082fcd8", "type": "i32", "lo": -2048, "hi": 8192}
+ ]
+}

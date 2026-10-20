@@ -1,0 +1,17 @@
+{
+ "_evidence": "0x00549811 / 0x005497e1 / 0x005497f9 copy six bytes ('rep movsb', ecx = 6) from 0x831d07 / 0x831d0d / 0x831d13 to 0x831cfd: three consecutive 6-byte source records (0x831d07..0x831d18) and the destination 0x831cfd..0x831d02. All 18 source bytes and the 6 destination bytes vary (pure byte copy, any value valid), so every copied byte is visible.",
+ "globals": [
+  {
+   "addr": "0x00831d07",
+   "type": "u8",
+   "count": 18,
+   "stride": 1
+  },
+  {
+   "addr": "0x00831cfd",
+   "type": "u8",
+   "count": 6,
+   "stride": 1
+  }
+ ]
+}

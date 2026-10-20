@@ -1,0 +1,6 @@
+{
+ "_evidence": "[0x62f8b8] is the car-record save length (image 0x2ac): 0x4457f9 copies [0x62f8b8] >> 2 dwords from esi to edi (rep movsd) before 0x40b0da relocates the copy's pointers, and 0x44580c reads it again; no instruction writes it, so it is a never-written constant and draws its image value in about half the cases, otherwise other lengths that fit the 0x41c-byte car buffers of the spec (0, 3: zero dwords, 4, 0x100, 0x2af, 0x41c: a whole car). Larger values would copy past the 0x41c-byte source/destination records. Nothing faults.",
+ "globals": [
+  {"addr": "0x62f8b8", "type": "u32", "values": ["0x2ac", "0x2ac", "0x2ac", "0x2ac", 0, 3, 4, "0x100", "0x2af", "0x41c"]}
+ ]
+}

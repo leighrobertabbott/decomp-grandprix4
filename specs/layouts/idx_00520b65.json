@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x00520b65 (compose after slot_00520b1b, which makes [0x7a8e18] a 0x10000-byte slot area and the pitch [0x6975c4] one of 0x2d78/0x3000/0x3400): 'mov edx,2; mov eax,[edx*4+0x679b34]; cmp eax,[edx*4+0x679b24]; jle' compares the third ring position 0x679b3c with the third upper limit 0x679b2c (signed) and above it takes the third lower bound 'mov eax,[edx*4+0x679b9c]' = 0x679ba4; the chosen value is a slot index ('imul dword [0x6975c4]; add esi,[0x7a8e18]; mov eax,[esi+4]'), so it must address a slot inside the area: all three are drawn from 0..3 like the slot argument eax (index 3 reads at most 3*0x3400+4 = 0x9c04 < 0x10000; a negative or large index reads outside the slot area and faults the original). With independent 0..3 draws the position lies above the limit in 6 of 16 cases, so both outcomes of the jle occur.",
+ "globals": [
+  {"addr": "0x00679b3c", "type": "i32", "lo": 0, "hi": 3},
+  {"addr": "0x00679b2c", "type": "i32", "lo": 0, "hi": 3},
+  {"addr": "0x00679ba4", "type": "i32", "lo": 0, "hi": 3}
+ ]
+}

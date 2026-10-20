@@ -1,0 +1,55 @@
+{
+ "_evidence": "0x0043c677: with A = [0x00891500] (pit start, points_into records 0..12) <= edi < B = [0x00866f08] (pit end, records 13..26) it divides (B - edi) << 14 by B - A (idiv: B > edi >= A makes the divisor >= 0x160 and the quotient <= 2^14, no #DE), scales by [0x0062d250] (-0x8000..0x8000) and by (byte +1 of the 10-byte entry 0x675a82 + 10*word[[0x00866ed0]+0x7a]) << 4 + 0x4000. [0x866ed0] is dereferenced, so it is a record pointer (points_into 0..25) whose word +0x7a (per-segment entry index, 0..31 for all 26 records) selects one of the 32 varied entries. edi below A, at/above B and in between all occur.",
+ "globals": [
+  {
+   "addr": "0x00891500",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 12
+   }
+  },
+  {
+   "addr": "0x00866f08",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 13,
+    "hi": 26
+   }
+  },
+  {
+   "addr": "0x0062d250",
+   "type": "i32",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x00866ed0",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 25
+   }
+  },
+  {
+   "addr": "0x0089441a",
+   "type": "u16",
+   "count": 26,
+   "stride": "0x160",
+   "lo": 0,
+   "hi": 31
+  },
+  {
+   "addr": "0x00675a83",
+   "type": "u8",
+   "count": 32,
+   "stride": 10
+  }
+ ]
+}

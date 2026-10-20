@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x00418c68 read-modify-writes dword +0 of the selected record (and 0xffffff7f / or 0x80 / and 0xffffffbf / or 0x40; 22 records at 0x00625abc, stride 0xa8), stores movsx words 0x00629dce/0x00629dd0 <<8 at +0x98/+0x9c, sets bit 7 only when byte 0x00638d1c is zero (the generic u8 draw is zero in about 1/8 of the cases) and copies dword 0x0066d814 (+0x15e) to esi+0x254. No value can fault. The je at 0x418c9e/0x418cd3 taken directions are exempted as dead in specs/coverage_exempt.json.",
+  "globals": [
+    {"addr": "0x00625abc", "type": "u32", "count": 22, "stride": "0xa8"},
+    {"addr": "0x00629dce", "type": "i16"},
+    {"addr": "0x00629dd0", "type": "i16"},
+    {"addr": "0x00638d1c", "type": "u8"},
+    {"addr": "0x0066d814", "type": "u32"}
+  ]
+}

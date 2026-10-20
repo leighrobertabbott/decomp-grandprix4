@@ -1,0 +1,6 @@
+{
+ "_evidence": "Dword 0x6258b8 is never written: a scan of every in-scope executable section finds one reference, the read 'mov eax,[0x6258b8]' at 0x41bb21, which forms the clamp limit [0x6258b4] = (0x6258b8 * [0x638d50]) >> 14 (0x638d50 is a 0..0x4000 Q14 factor). Its image value is 0x20000, so in the game the limit is 0..0x20000 and the clamped value [0x6258ac] that 0x41bc3a stores (|q| < limit, else +-limit) stays within +-0x20000, inside the domain of 0x41bd28's 'idiv [0x6013a8]' on ([0x62474c]-[0x6258ac]) << 19 (state_0041bd28: |A-B| <= 2^20). state_0041b950 draws it as a full-range multiplier, which made the limit any dword and 0x41bd28 #DE in the 0x41970f chain (31 timeouts + 2 faults of 200 at 0x41bd3b, once 0x41bc3a ran before 0x41bd28). Compose AFTER state_0041b950: the constant keeps its image value.",
+ "globals": [
+  {"addr": "0x006258b8", "type": "u32", "values": ["0x20000"]}
+ ]
+}

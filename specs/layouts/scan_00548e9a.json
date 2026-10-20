@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x00548e9a (compose after drv_005117d3, whose 0x7c2a48 bytes have bit 7 in a third of the 22 entries, so the count was almost never <= 1): 'cmp byte [0x7ad8b2],0; je 0x548eaf' (nonzero in most draws), then 0x52ceef counts over the 22 driver bytes 0x7c2a48 ('test byte [ebx],0x80; je; test 0x40; jne -> inc edx, else inc eax'), 'add eax,edx; cmp eax,1; ja 0x548eb4' - i.e. the number of bytes with bit 7 set - and only a total of 0 or 1 falls through to 0x548ec5 (count of bytes == 1 in 0x7c2a74, tabs_0043ced2). The bytes are driver status flags (any value valid, plain bit tests), drawn with the bit_scan pattern on bit 7: independent bytes, all clear (total 0) or exactly one set (total 1), with the other bits (bit 6) still random, so both ja outcomes and both 0x52ceef counters occur.",
+ "globals": [
+  {"addr": "0x007ad8b2", "type": "u8", "values": [1, 1, "0xff", "0x80", 0]},
+  {"addr": "0x007c2a48", "type": "u8", "count": 22, "stride": 1, "pattern": "bit_scan", "bit": 128}
+ ]
+}

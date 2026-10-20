@@ -1,0 +1,18 @@
+{
+ "_evidence": "Byte 0x868582 is read by 0x4080eb ('movsx ax,byte [0x868582]; xor ax,word [esi+0x90]; js'): its sign against the sign of the word +0x90 picks the clc exit. It is direction/side state (also the sign selector of records_008943a0's walkers), so both signs and zero are drawn. Any byte is valid.",
+ "globals": [
+  {
+   "addr": "0x00868582",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    "0x7f",
+    "0x80",
+    "0xff",
+    "0x40",
+    "0xc0"
+   ]
+  }
+ ]
+}

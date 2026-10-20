@@ -1,0 +1,7 @@
+{
+  "size": 608,
+  "_evidence": "0x00418c68 calls 0x418901, which returns 0x625abc + byte [esi+0x202]*0xa8 (a car's 0xa8-byte record; 22 cars, so the index is 0..21 and every write stays in the table). It writes [esi+0x254] (store then add, never read first); nothing else of esi is read.",
+  "fields": [
+    {"off": 514, "type": "u8", "lo": 0, "hi": 21}
+  ]
+}

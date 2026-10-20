@@ -1,0 +1,10 @@
+{
+ "_evidence": "Text-capture state behind 0x0054d3a1 ('push [0x833cc9]; push [0x833cc5]; push eax; call 0x4fd730' inside pushal/popal; the two dwords are the text position words stored by 0x54cb7e, any value). 0x004fd730: 'mov eax,[0x669ed8]; cmp eax,-1; je ret' - the capture index, -1 = off (image value; 0x4fd770 resets it to -1, 0x4fd700 starts it at 0); else 'cmp [0xaa2d48],[esp+0xc]; je' (row key = [0x833cc9]: alias, equal in about half the cases) and 'test eax,eax; jle' gate a newline byte 0xa, then the char goes to 0xaa2e50 + index, index+1 is stored and [0xaa2d48] = the row. 0xaa2e50 is the 0x100-byte capture buffer (0x4fd770 hands it to 0x4fdd40 with length 0x100; the next global is 0xaa2f50). The index draws -1 (a third), 0, 1 and small values up to 0xe0, so the at most 8 chars + 8 newlines of one 0x54377d call stay inside the buffer (an index near 0x100 would write past it, which the short menu lines captured between 0x4fd700 and 0x4fd770 never do); the buffer bytes are random so every store shows.",
+ "globals": [
+  {"addr": "0x00833cc5", "type": "u32"},
+  {"addr": "0x00833cc9", "type": "u32"},
+  {"addr": "0x00aa2d48", "type": "u32", "alias": "0x00833cc9"},
+  {"addr": "0x00669ed8", "type": "u32", "values": ["0xffffffff", "0xffffffff", "0xffffffff", 0, 0, 1, 2, 7, "0x40", "0x9f", "0xe0"]},
+  {"addr": "0x00aa2e50", "type": "u8", "count": 256, "stride": 1}
+ ]
+}

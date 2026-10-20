@@ -1,0 +1,13 @@
+{
+ "_evidence": "Device bitmaps 0x7ad844/0x7ad848 tested by 'bt dword [0x7ad848],eax' in 0x531803/0x531847 with the selector eax = [0x7ad87c] (via 0x530774). bt with a register offset addresses the dword at 0x7ad848 + 4*floor(eax/32), so a selector of -1 (drawn by cb_00531648) reads bit 31 of 0x7ad844 and 0..31 read 0x7ad848; 0x530706 sets bits with 'or [0x7ad848],eax'. Both dwords are run-time state (zero in the image) and only bit-tested, so any value is valid; compose after the selector layout.",
+ "globals": [
+  {
+   "addr": "0x007ad844",
+   "type": "u32"
+  },
+  {
+   "addr": "0x007ad848",
+   "type": "u32"
+  }
+ ]
+}

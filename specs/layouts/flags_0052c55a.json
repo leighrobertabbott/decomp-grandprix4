@@ -1,0 +1,22 @@
+{
+ "_evidence": "0x0052c55a hops 10 links from the static menu header 0x84300a (menu_0084300a: item 10 = 0x8431a6), then for items 10..13 does 'cmp byte [ebx],4' with ebx = 0x7ab684 + k*0x34 (k = 0..3): or 0x20 when equal, and 0xdf otherwise, on the item's byte +0x1f. The four selector bytes mix 4 and other values. Compose after menu_0084300a, and with globals=layout only: fuzz:i32 overwrote the static header link [0x84300a].",
+ "globals": [
+  {
+   "addr": "0x007ab684",
+   "type": "u8",
+   "count": 4,
+   "stride": "0x34",
+   "values": [
+    4,
+    4,
+    4,
+    0,
+    1,
+    2,
+    3,
+    5,
+    "0xff"
+   ]
+  }
+ ]
+}

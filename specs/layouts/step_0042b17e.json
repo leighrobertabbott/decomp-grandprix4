@@ -1,0 +1,19 @@
+{
+ "_evidence": "Globals for the 0x0042b17e family: 0x42b17e stores eax into the record step [0x603e9c] (its only writer); its callers pass 0x160 (0x42d971, 0x42da77), 0 (0x42ecd2, 0x42ed92) or [0x603ea0], which 0x42beea sets to 0x160 or 0 (0x42bf4d/0x42bf62) and then raises by 0x2c0 (0x42c01c): so the step is one of 0, 0x160, 0x2c0, 0x420 (record multiples, never negative). [0x603e70] is the signed 16-bit gap word (0x42d96b: word difference of two cars' +0xe2), tested with 'test word,0xffff; jns' by 0x42b27b/0x42b318: any i16, both signs.",
+ "globals": [
+  {
+   "addr": "0x00603e9c",
+   "type": "u32",
+   "values": [
+    0,
+    "0x160",
+    "0x2c0",
+    "0x420"
+   ]
+  },
+  {
+   "addr": "0x00603e70",
+   "type": "i16"
+  }
+ ]
+}

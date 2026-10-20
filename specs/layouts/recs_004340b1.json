@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x004340b1 returns al = byte [0x0062ffac + eax*0x1c + edx] (eax 0..15 records, edx 0..27 bytes in the spec): the 0x1c-byte records at 0x0062ffac are run-time state (zero in the image, written by 0x00434090 and read by 0x00418100/0x00432719/0x00432799/0x00434557), so every byte of 22 records (616 bytes, a superset of the spec's 16) draws any value.",
+  "globals": [
+    {"addr": "0x0062ffac", "type": "u8", "count": 616, "stride": 1}
+  ]
+}

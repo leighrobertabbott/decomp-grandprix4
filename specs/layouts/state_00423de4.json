@@ -1,0 +1,14 @@
+{
+  "_evidence": "0x00423de4: 'test [0x00609864]; je' exits on 0, else a do-while over the 0x64-byte records at 0x00621aa0 until ecx == [0x609864] (a count beyond the 6 records - or a huge one - walks off the array, as in state_00423987), so the count is 0..6. Per record: dword +0x50 * [0x00607fa0] (shrd 11) is added to dword +0x3c, the average of old and new +0x3c times [0x607fa0] (shrd 16) goes to 0x608298; then the body pointer +0x40 (never null for a live record: dereferenced unconditionally) receives fild [0x0060829c] twice and fild [0x608298] at +0xb8/+0xc0/+0xc8, 0x401f02 multiplies by the transposed matrix +0x58..+0x98 (body_00609860: finite rotation entries) into +0xa0..+0xb0, which are fistp'd (masked invalid stores the indefinite, no fault) and added to the accumulators +0/+4/+8. All integers are plain i32.",
+  "globals": [
+    {"addr": "0x00609864", "type": "u32", "lo": 0, "hi": 6},
+    {"addr": "0x00621ae0", "type": "ptr", "size": 208, "fill": "layout=body_00609860", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621adc", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621af0", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621aa0", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621aa4", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621aa8", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00607fa0", "type": "i32"},
+    {"addr": "0x0060829c", "type": "i32"}
+  ]
+}

@@ -1,0 +1,20 @@
+{
+ "size": 64,
+ "fill": "bytes",
+ "_evidence": "Current menu item as used by 0x0053d2c1 (pushal; esi=[0xa69878]; al=[esi+0x1f]; 'cmp edx,2; jne' over 'or word [esi+0x1f],0x80'; ebx=[esi+0xe]; push ebx/esi; 'call [esi+0x1a]'; pop esi/ebx; call 0x53dbbc). Fields read: byte/word +0x1f (random background, both states of bit 7 and of the word's high byte), dword +0xe (only passed in ebx: random), dword +0x1a = the handler. The handler is drawn ONLY from mapped, already-verified routines that take register arguments and read no stack argument (the reconstruction calls the handler with call_regs and does not reproduce the original's pushed eax/ebx/esi, which no register-convention handler reads): 0x52bca4, 0x52bca5, 0x54e232 (each a bare 'ret', accepted), 0x52bebb (accepted; register-only bit mixer: dl = f(dl, al), so the handler CHANGES edx and the selector 0x53dbbc then sees differs from the mode) and 0x53dbbc itself (accepted; register-only switch on edx over [esi+0x1f]: it rewrites +0x1f, may clear [0x82fd88], and leaves edx = its jump-table cell 0x53dbd4+4k, so the following 0x53dbbc call clamps to case 9). The game's static items 0x843040.. carry handlers 0x538e1a/0x52c43d, which are not verified (0x52c43d mode 2 runs a dozen unverified callees), so they are not used here.",
+ "fields": [
+  {
+   "off": "0x1a",
+   "type": "u32",
+   "values": [
+    "0x52bca4",
+    "0x52bca5",
+    "0x54e232",
+    "0x52bebb",
+    "0x52bebb",
+    "0x53dbbc",
+    "0x53dbbc"
+   ]
+  }
+ ]
+}

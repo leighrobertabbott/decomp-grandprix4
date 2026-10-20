@@ -1,0 +1,19 @@
+{
+ "_evidence": "256-byte table read only by 0x52bd00 ('movzx eax,al; add eax,0x81dc63; cmp byte [eax],0xff; je' -> clc/stc): index al is any byte, the entry only decides CF (== 0xff -> CF=0, else CF=1). It is writable .data; every entry is drawn from {0xff (twice), 0, 1, 0x7f, 0xfe} so both CF outcomes occur for any setting value instead of depending on the image's pattern. Any byte is a valid entry for the reader.",
+ "globals": [
+  {
+   "addr": "0x0081dc63",
+   "type": "u8",
+   "count": 256,
+   "stride": 1,
+   "values": [
+    "0xff",
+    "0xff",
+    0,
+    1,
+    "0x7f",
+    "0xfe"
+   ]
+  }
+ ]
+}

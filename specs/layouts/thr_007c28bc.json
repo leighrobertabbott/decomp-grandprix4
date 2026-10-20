@@ -1,0 +1,7 @@
+{
+  "_evidence": "Per-car gear threshold rows at 0x007c28bc (22 rows of 8 i16, inside the 0x7c28bc..0x7c3ae4 state block that 0x40b264 saves and restores; static rows 0x4e20, 0xb1e0, 0x36b0 x6), read by 0x41aea9 at 0x41af52 as word [row*16 + |gear|*2 + 0x7c28bc] with row = (car byte +0x7c & 0x3f) - 1 clamped to <= 0x15 (row -1 for car byte 0) and |gear| up to 0x80 (car_0041aea9): the words 0x7c28ac..0x7c2b0d cover every address that index can form and are any i16 (cmp ax; jge both ways). Dword 0x00601320 (0x41af84: cmp product,[0x601320]; jge -> stc/clc) is a car-setup threshold written by 0x4112e3 (fistp), any i32. No value faults.",
+  "globals": [
+    {"addr": "0x007c28ac", "type": "i16", "count": 305, "stride": 2},
+    {"addr": "0x00601320", "type": "i32"}
+  ]
+}

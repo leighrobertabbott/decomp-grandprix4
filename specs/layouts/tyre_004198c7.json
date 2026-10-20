@@ -1,0 +1,21 @@
+{
+ "_evidence": "Tyre factors of the four 0x300-byte wheel records at 0x6380d8 for multi-pass runs of 0x004198c7 (compose after state_00417415, which draws records 0/1 as any i32 for 0x417415's single pass). 0x41724d (per wheel, from 0x417415/0x41743e) starts 'mov eax,[ebx+0x1d8]; imul dword [ebx+0xe8]; shrd 14; imul [0x62f880]; shrd 14' into +0x270, which scales the magic-formula forces fistp'd to +0x274/+0x34/+0xe0/+0x1a0. +0xe8 is the surface grip: its writers are 0x41e274 (0x41e192: A[s]*(0x4000-w)>>14 + B[s]*w>>14 from the Q14 tables 0x602d8c/0x602da4, image 0x4000/0x3e00, with w = +0xd4 <= 0x4000) and 0x41851e (copies [0x602d8c]); +0x1d8 is the tyre load factor 0x417b84 stores (a curve value times 0x4000 or [0x6020ac] (0x4400) >> 14, times car word +0x10e >> 14); neither writer runs inside 0x4198c7, so both enter as the previous frame's Q14 values. As any i32 (probe of the composed 0x4198c7 spec, case 1: wheel 0 +0xe8 = 0x76a6f112) the forces overflowed to the fistp indefinite 0x80000000 / -2^25 in +0x1a0, and 0x41c145's (+0x48 - +0x1a0)*K then #DE'd 0x41befb's 'idiv [0x623af4]' at 0x41bf50 in the next pass. Domain: both 0..0x8000 (up to twice the unit) for all four records; only imul/shrd and x87 read them.",
+ "globals": [
+  {
+   "addr": "0x006381c0",
+   "type": "i32",
+   "count": 4,
+   "stride": "0x300",
+   "lo": 0,
+   "hi": 32768
+  },
+  {
+   "addr": "0x006382b0",
+   "type": "i32",
+   "count": 4,
+   "stride": "0x300",
+   "lo": 0,
+   "hi": 32768
+  }
+ ]
+}

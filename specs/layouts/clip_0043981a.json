@@ -1,0 +1,159 @@
+{
+ "_evidence": "Globals of the 3D Cohen-Sutherland edge clipper 0x0043981a (use as globals=layout=clip_0043981a WITHOUT fuzz:i32: the 13-dword edge table 0x607ec8..0x607efb is constant .data - vertex indices 0,1,2,3,4,5,6,7,0,4,1,5,2 read only by 0x43981b/0x439822 as [0x607ec8+4*ecx] / [0x607ecc+4*ecx], ecx 0..11 - and must keep its image value). Vertex arrays (16 dword slots each; vertices 0..7, slots 12/13 are the working endpoints the routine copies in at 0x43984f..0x4398aa before reading them): x 0x607ca0, y 0x607ce0, z 0x607d20 drawn from 16 values in -0x2000..0x2000 (repeats make the clip axis delta zero, the 'mov ebp,1' guards 0x439ad9 / 0x439b7d / 0x439c21 / 0x439cc5 / 0x439d69 / 0x439e0d), and outcodes 0x607d60. The caller 0x438c98 builds each outcode from bits 1 (x >= max), 8 (x <= min), 2 / 0x10 (y) and 4 / 0x20 (z); the routine exits stc when either endpoint code is 0, clc when they share a bit, else dispatches on the largest |delta| axis whose bits are in code12|code13 and clips. Codes draw 0, single bits (weighted: two disjoint single-axis codes are what reach every axis order of the dispatch 0x439907..0x4399db) and a few two-bit combinations (same axis 9/0x12/0x24, mixed 0x11/0x22) of those six bits only. The six 'no axis bit' exits 0x439944/0x439961/0x43998a/0x4399a3/0x4399c8/0x4399dd need esi = code12|code13 nonzero with none of bits 0x3f while code12 & code13 == 0, i.e. two disjoint codes outside bits 0..5, which 0x438c98 (the only caller and the only writer of 0x607d60.., besides this routine's own recompute that ORs bits 0..5 only) never produces: they are left uncovered (exemption proposal), not forced with synthetic 0x40/0x80 codes. The codes are drawn independently of the coordinates (a code inconsistent with its point only makes the clip fraction clamp to 0 or 0x4000). Box: maxima 0x607a2c / 0x607a30 / 0x607a34 in 0x100..0x1000, minima 0x607a38 / 0x607a3c / 0x607a40 in -0x1000..-0x100, so clipped points land inside and the recomputed code (0x439e96..0x439f23) is 0 (stc), shared (clc) or another round (up to 6, 0x439f60). Clip offsets 0x607a10 (added to the max bound) -4..0 and 0x607a0c (added to the min bound) 0..4. 0x607da4 (running maximum of the round counter 0x607da0, 'cmp [0x607da4],eax; jge') -1..7. Division safety: each clip divides edx:eax = (bound - c_other) << 14 by ebp = c_this - c_other (1 when 0); |bound - c| <= 0x1000 + 0x2000 for every original or clipped coordinate (a clipped coordinate lies between the endpoints or at bound + offset), so |quotient| <= 0x3000 << 14 < 2^31: no #DE; the imul/shrd 14 products use t <= 0x4000.",
+ "globals": [
+  {
+   "addr": "0x00607ca0",
+   "type": "u32",
+   "count": 8,
+   "stride": 4,
+   "values": [
+    "0xffffe000",
+    "0xffffe5c9",
+    "0xfffff000",
+    "0xfffff7ff",
+    "0xffffff00",
+    "0xffffffff",
+    0,
+    1,
+    "0xff",
+    "0x7ff",
+    "0x1000",
+    "0x1234",
+    "0x1fff",
+    "0x2000",
+    "0x3e8",
+    "0xfffffc18"
+   ]
+  },
+  {
+   "addr": "0x00607ce0",
+   "type": "u32",
+   "count": 8,
+   "stride": 4,
+   "values": [
+    "0xffffe000",
+    "0xffffe5c9",
+    "0xfffff000",
+    "0xfffff7ff",
+    "0xffffff00",
+    "0xffffffff",
+    0,
+    1,
+    "0xff",
+    "0x7ff",
+    "0x1000",
+    "0x1234",
+    "0x1fff",
+    "0x2000",
+    "0x3e8",
+    "0xfffffc18"
+   ]
+  },
+  {
+   "addr": "0x00607d20",
+   "type": "u32",
+   "count": 8,
+   "stride": 4,
+   "values": [
+    "0xffffe000",
+    "0xffffe5c9",
+    "0xfffff000",
+    "0xfffff7ff",
+    "0xffffff00",
+    "0xffffffff",
+    0,
+    1,
+    "0xff",
+    "0x7ff",
+    "0x1000",
+    "0x1234",
+    "0x1fff",
+    "0x2000",
+    "0x3e8",
+    "0xfffffc18"
+   ]
+  },
+  {
+   "addr": "0x00607d60",
+   "type": "u32",
+   "count": 8,
+   "stride": 4,
+   "values": [
+    0,
+    1,
+    2,
+    4,
+    8,
+    "0x10",
+    "0x20",
+    1,
+    2,
+    4,
+    8,
+    "0x10",
+    "0x20",
+    1,
+    8,
+    "0x12",
+    "0x24",
+    9,
+    "0x11",
+    "0x22"
+   ]
+  },
+  {
+   "addr": "0x00607a2c",
+   "type": "i32",
+   "lo": 256,
+   "hi": 4096
+  },
+  {
+   "addr": "0x00607a30",
+   "type": "i32",
+   "lo": 256,
+   "hi": 4096
+  },
+  {
+   "addr": "0x00607a34",
+   "type": "i32",
+   "lo": 256,
+   "hi": 4096
+  },
+  {
+   "addr": "0x00607a38",
+   "type": "i32",
+   "lo": -4096,
+   "hi": -256
+  },
+  {
+   "addr": "0x00607a3c",
+   "type": "i32",
+   "lo": -4096,
+   "hi": -256
+  },
+  {
+   "addr": "0x00607a40",
+   "type": "i32",
+   "lo": -4096,
+   "hi": -256
+  },
+  {
+   "addr": "0x00607a10",
+   "type": "i32",
+   "lo": -4,
+   "hi": 0
+  },
+  {
+   "addr": "0x00607a0c",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4
+  },
+  {
+   "addr": "0x00607da4",
+   "type": "i32",
+   "lo": -1,
+   "hi": 7
+  }
+ ]
+}

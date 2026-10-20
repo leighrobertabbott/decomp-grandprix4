@@ -1,0 +1,21 @@
+{
+ "_evidence": "0x00531381 (compose after cb_00531648+bits_007ad844+sel_00531859+flag_007ab020): after 0x5313bd finds the selector in the three 0x3c-byte device records at 0x827160 (ebx = record, edx = column 0..6), 'mov ecx,edx; mov eax,1; shl eax,cl; test byte [ebx+6],al; jne 0x5313bb' tests the column's bit in byte +6 of the found record. Byte +6 is a per-record column mask: 0x5311fb writes the config file by walking it ('movzx edx,byte [ebx+6]; shr edx,1; jae' over 7 columns). The three bytes 0x827166/0x8271a2/0x8271de (records 0..2, stride 0x3c) were never varied (image zeros: the jne was never taken). They are drawn as random bytes (any mask is valid: only bit-tested; bit 7 is never selected, columns are 0..6), so a set and a clear column bit both occur. They overlap no field of the composed layouts (keys +0x14..+0x2c, results +0x30..+0x40, cb_00531648's +8 dwords 0x8271a4/0x8271e0). The first guard byte [0x7aafd3] ('cmp byte [0x7aafd3],0; je'; set by the menu code, only compared with 0) is drawn 0 in 3 cases of 4 (fuzz:i32 left it nonzero in about 85% of the cases, so the mask test ran only a handful of times); flag_007ab020 still varies the second guard.",
+ "globals": [
+  {
+   "addr": "0x007aafd3",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x00827166",
+   "type": "u8",
+   "count": 3,
+   "stride": "0x3c"
+  }
+ ]
+}

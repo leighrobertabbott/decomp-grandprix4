@@ -1,0 +1,51 @@
+{
+ "_evidence": "Globals of 0x00423160 beyond slots_0041891a (entry dwords +0/+4: free when both zero, compose that layout first). Pointer 0x609744 is dereferenced unconditionally (movzx edx,[edi+0x6d]; [edi+0x4c]) so it addresses a 0x70-byte obj_00423160 block. Entry ids +0x18/+0x1c (0x63dee4/0x63dee8, 16 entries stride 0x2c) draw from 0..7, 0x100 and 0xffffffff against keys 0..3, so an occupied entry matches (either order) about 1/50 of the time: scans end on a match at various depths and run all 16 entries in about three quarters of the cases, then reach both 0x41891a outcomes (free entry / stc). [0x626944] (imul gain after the 0x4010f3 sqrt, clamp at 0x4000) is any i32. Compares, imul/shrd and stores only: nothing faults.",
+ "globals": [
+  {
+   "addr": "0x00609744",
+   "type": "ptr",
+   "size": 112,
+   "fill": "layout=obj_00423160"
+  },
+  {
+   "addr": "0x0063dee4",
+   "type": "u32",
+   "count": 16,
+   "stride": "0x2c",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    "0x100",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x0063dee8",
+   "type": "u32",
+   "count": 16,
+   "stride": "0x2c",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    "0x100",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x00626944",
+   "type": "i32"
+  }
+ ]
+}

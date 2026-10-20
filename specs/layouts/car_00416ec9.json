@@ -1,0 +1,8 @@
+{
+  "_evidence": "esi of 0x00416ec9: car record prefix (0xf6 bytes), background random (fill bytes: only flag byte +0xe5 bit 2 and word +0xee are read). Word +0xee (0x416ed3 movzx; je 0x416fcd: a zero leaves the factor at 0x4000 and skips all work) draws zero in 3 of 8 picks, nonzero and the extremes otherwise; random words were never zero, so the early exit was untested.",
+  "size": 246,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0xee", "type": "u16", "values": [0, 0, 0, 1, "0x4000", "0x7fff", "0x8000", "0xffff"]}
+  ]
+}

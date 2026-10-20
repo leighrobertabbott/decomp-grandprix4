@@ -1,0 +1,73 @@
+{
+ "_evidence": "Axis dwords of 0x0051de03 (0x7ab134 / 0x7ab138 / centre 0x7ab13c / position 0x7ab158): pos - centre and (v - centre) << 14 must sometimes overflow 32 bits (six blocks are only reached through that wrap), so each is drawn from small values and full-range extremes; equal pairs (0x7ab138 == 0x7ab13c, 0x7ab134 == 0x7ab13c) occur by sharing the same value list.",
+ "globals": [
+  {
+   "addr": "0x007ab134",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    "0xffffffff",
+    "0x7fffffff",
+    "0x80000000",
+    "0x40000000",
+    "0xc0000000",
+    100,
+    "0xffffff9c",
+    "0x12345678",
+    "0x9abcdef0"
+   ]
+  },
+  {
+   "addr": "0x007ab138",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    "0xffffffff",
+    "0x7fffffff",
+    "0x80000000",
+    "0x40000000",
+    "0xc0000000",
+    100,
+    "0xffffff9c",
+    "0x12345678",
+    "0x9abcdef0"
+   ]
+  },
+  {
+   "addr": "0x007ab13c",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    "0xffffffff",
+    "0x7fffffff",
+    "0x80000000",
+    "0x40000000",
+    "0xc0000000",
+    100,
+    "0xffffff9c",
+    "0x12345678",
+    "0x9abcdef0"
+   ]
+  },
+  {
+   "addr": "0x007ab158",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    "0xffffffff",
+    "0x7fffffff",
+    "0x80000000",
+    "0x40000000",
+    "0xc0000000",
+    100,
+    "0xffffff9c",
+    "0x12345678",
+    "0x9abcdef0"
+   ]
+  }
+ ]
+}

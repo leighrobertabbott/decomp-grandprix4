@@ -1,0 +1,14 @@
+{
+  "_evidence": "0x00416fce reads the state blocks at ebx = 0x6380d8: averaged pairs +0x40/+0x340 (0x638118/0x638418) and +0x1c/+0x31c (0x6380f4/0x6383f4) whose xor sign exits, then the larger absolute value of +0x28/+0x328 (0x638100/0x638400) against the threshold 0x62fb70 and the slope 0x62fb74 (imul/shrd 14, clamped to 0..0x4000), plus the flag byte 0x622424 and esi+0xe5 (both only steer a branch that rejoins at once). These were stuck at their static values; every value is valid (wrapping add/sar/neg, imul/shrd, no division), so the dwords are full-range i32 and the byte any value.",
+  "globals": [
+    {"addr": "0x006380f4", "type": "i32"},
+    {"addr": "0x00638100", "type": "i32"},
+    {"addr": "0x00638118", "type": "i32"},
+    {"addr": "0x006383f4", "type": "i32"},
+    {"addr": "0x00638400", "type": "i32"},
+    {"addr": "0x00638418", "type": "i32"},
+    {"addr": "0x0062fb70", "type": "i32"},
+    {"addr": "0x0062fb74", "type": "i32"},
+    {"addr": "0x00622424", "type": "u8"}
+  ]
+}

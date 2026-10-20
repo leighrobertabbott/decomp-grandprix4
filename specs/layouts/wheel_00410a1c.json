@@ -1,0 +1,17 @@
+{
+  "_evidence": "Globals of the per-wheel chain 0x00410a1c (0x4100ff, 0x41011a, 0x4100d8, 0x410154/0x410242, 0x4105c7, 0x4108ac; ecx = wheel 0..3). Divisions only in 0x4105c7: 'div dword [ecx*4+0x601d9c]' on [0x601d7c+ecx*4]<<10 (shld/shl) and 'div dword [esi+ecx*4+0x2cc]' on the same dword <<6. 0x601d9c[i] are positive spring rates (0x4121c7 stores [0x601d8c+i]*[0x601d68]>>14; zero in the image, so only meaningful after setup): any value >= 0x400 keeps (v<<10)/D below 2^32 for every u32 v, so 0x601d7c[i] is full-range u32. [0x601d68] (image 0x1e0000) scales the setup byte into the second divisor; 0x100000..0x7fffffff with bytes 1..255 (setup_00410a1c) gives a divisor >= 64, so (v<<6)/D fits. Byte 0x601f1f selects 0x410154's full path (== 0xff) or 0x410242 and 0x41011a's zeroing (image 0): both picked. 0x601d5c, 0x601d6c, 0x601e50, 0x601e54, 0x601e60, the arrays 0x601e40/0x601df4 and the words 0x62ee28 only feed imul/shrd/cmp/sub/sar, so they are full-range.",
+  "globals": [
+    {"addr": "0x00601d68", "type": "i32", "lo": 1048576, "hi": 2147483647},
+    {"addr": "0x00601d5c", "type": "i32"},
+    {"addr": "0x00601d6c", "type": "i32"},
+    {"addr": "0x00601e50", "type": "i32"},
+    {"addr": "0x00601e54", "type": "i32"},
+    {"addr": "0x00601e60", "type": "i32"},
+    {"addr": "0x00601f1f", "type": "u8", "values": ["0xff", "0xff", 0, 1, "0x7f", "0xfe"]},
+    {"addr": "0x00601e40", "type": "i32", "count": 4, "stride": 4},
+    {"addr": "0x00601d7c", "type": "u32", "count": 4, "stride": 4},
+    {"addr": "0x00601d9c", "type": "u32", "count": 4, "stride": 4, "lo": 1024, "hi": 4294967295},
+    {"addr": "0x00601df4", "type": "i32", "count": 4, "stride": 4},
+    {"addr": "0x0062ee28", "type": "i16", "count": 4, "stride": 2}
+  ]
+}

@@ -1,0 +1,34 @@
+{
+ "_evidence": "Car-record overlay (esi and ebx of 0x0042dd4b; compose AFTER car_00431ffb+car_004035c3+pos_00405cf8+car_0042b17e+car_0043c677). Word +0xea: 'cmp word [esi+0xea],0x18; jne' then 'cmp word [ebx+0xea],0x20; je 0x42dedc' (0x42dda6/0x42ddb1): random words never hit the pair, so block 0x42ddb1 and both directions of 0x42ddba were untested; the values give 0x18 and 0x20 a quarter of the picks each, plus the 0/8/-8/0x10 states of the 0x42b84b/0x42dee4 family. Word +0xe is the heading 0x42b0d5 subtracts between the two cars (abs, 0x4000 - d, abs, shr 2 & 0xfffe: always inside the 0x2000-word cosine table 0x7c5c5c) to form [0x603e5e] = cos >> 6, the margin of the 0x42deb9/0x42decf clamps: headings drawn from a few near and far angles (0, +-0x100, 0x2000, 0x4000, 0x8000, 0xe000) make the margin large (near 256) as well as small or zero. Compares and a bounded table read only: nothing faults.",
+ "size": 668,
+ "fields": [
+  {
+   "off": "0xea",
+   "type": "u16",
+   "values": [
+    "0x18",
+    "0x18",
+    "0x20",
+    "0x20",
+    0,
+    8,
+    "0xfff8",
+    "0x10"
+   ]
+  },
+  {
+   "off": "0xe",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    "0x100",
+    "0xff00",
+    "0x2000",
+    "0x4000",
+    "0x8000",
+    "0xe000"
+   ]
+  }
+ ]
+}

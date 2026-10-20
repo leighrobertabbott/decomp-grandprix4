@@ -1,0 +1,7 @@
+{
+  "_evidence": "Overlay for 0x0043bd97 (and its twin 0x43bdf3): 'mov eax,[0x622798]; add eax,[0x62279c]; shr eax,1; mov [0x6227a0],eax' then 0x43ca8b. The two dwords have no writer in GP4 code (data readers 0x43bd97/0x43bdf3/0x43ca66 only; image tuning values 0x3800/0x1800), and every use is wrapping arithmetic: the add/shr here (carry lost) and 'sub; imul; shrd 14; add' in 0x43ca66, while the mean 0x6227a0 is only ever an imul factor (0x43c9c9/0x43c9e5/0x43ca01/0x43ca4a/0x43c953/0x43c31b, all accepted with 0x6227a0 fuzzed). So both are drawn as any u32 (image values inside), exercising the carry out of the add. Compose after the 0x43c083 chain layouts (ring_0040c0ae+lim_00937dd0+state_0040b99a+map_0040c43b+state_0040bb26).",
+  "globals": [
+    {"addr": "0x00622798", "type": "u32"},
+    {"addr": "0x0062279c", "type": "u32"}
+  ]
+}

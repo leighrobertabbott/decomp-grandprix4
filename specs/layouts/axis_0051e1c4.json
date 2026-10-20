@@ -1,0 +1,9 @@
+{
+ "_evidence": "0x0051e1c4 (compose after fuzz:i32; esi is the spec's random 0x78-byte record, so its +0x6f bit 4 is set in half the cases). The selector [0x7ab556] (byte +0xe of the control block 0x7ab548, cf. ctl_007ab548) is compared with 0x1c ('test byte [esi+0x6f],0x10' then +0x6d = 0x7f / 0: block 0x51e1de was never reached because a fuzzed selector is almost never 0x1c) and with the list 6,7,0x20,0x22,0x23,0x24,8,9,0x21,0x25,0x26,0x27 (axis path); it draws 0x1c often, every list member and non-members. Axis path: ecx = A - B with A = [0x7ab150], B = [0x7ab154] ('jns' picks the clamp order), the value V = [0x7ab164] is clamped into [A,B] (signed compares), ecx = 0 becomes 1, then ((V' - B) << 14) cdq idiv ecx, |q| capped at 0x3f80 on both signs, sar 7 into +0x6d. Mathematically q is in 0..0x4000; it is negative only when the 'shl 14' wraps, i.e. for a range of about 0x20000 (V' - B = 0x20000 gives -2^31 / 0x20000 = -0x4000: the negative cap 0x51e299, never reached with fuzzed dwords). So A and B are drawn from sets whose differences include exactly +-0x20000 (and 0x1ffff/0x20400 beside it, 0, small, and the signed extremes), and V equals A in about half the cases (alias: the clamped value then sits at the far end). The idiv cannot fault: a quotient overflow needs divisor -1 with dividend -2^31, but ecx = -1 means A = B - 1 and the clamp leaves V' - B in {-1, 0}; ecx = 0 is replaced by 1. Values are synthetic.",
+ "globals": [
+  {"addr": "0x007ab556", "type": "u8", "values": ["0x1c", "0x1c", "0x1c", 6, 7, 8, 9, "0x20", "0x21", "0x22", "0x23", "0x24", "0x25", "0x26", "0x27", 0, "0x1d", "0xff"]},
+  {"addr": "0x007ab150", "type": "u32", "values": ["0x20000", "0x20000", "0x40000", 0, "0x1ffff", "0x20400", "0xffffff00", "0x7fffffff"]},
+  {"addr": "0x007ab154", "type": "u32", "values": [0, 0, "0x20000", "0xfffe0000", "0x100", "0x80000000"]},
+  {"addr": "0x007ab164", "type": "i32", "alias": "0x007ab150"}
+ ]
+}

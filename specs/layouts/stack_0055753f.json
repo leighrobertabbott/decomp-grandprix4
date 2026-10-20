@@ -1,0 +1,29 @@
+{
+ "_evidence": "0x0055753f pushes a stack entry: 'inc [0x871c8c]; inc [0x871c80]; cmp [0x871c80],0x80; jb' (int3 otherwise) and 'mov edx,[0x871c80]; cmp edx,[0x871c8c]; je' (int3 otherwise): the two counters are kept equal by the game (every push/pop 0x557587/0x5575fe/0x557685/0x5576e8 moves both) and below 0x7f before the push, so 0x871c80 is drawn from 0..0x7e and 0x871c8c is its alias in every case (alias_always); the int3 guards are assertions the game never trips. Then the top-of-stack bytes [0x875b46] and [0x875c4a] are copied to slot edx of the same 0x80-byte arrays (0x875c4a - 0x875b46 = 0x104, so no overlap): the sources and all slots 1..0x7f of both arrays vary so each copy is visible.",
+ "globals": [
+  {
+   "addr": "0x00871c80",
+   "type": "u32",
+   "lo": 0,
+   "hi": 126
+  },
+  {
+   "addr": "0x00871c8c",
+   "type": "u32",
+   "alias": "0x00871c80",
+   "alias_always": true
+  },
+  {
+   "addr": "0x00875b46",
+   "type": "u8",
+   "count": 128,
+   "stride": 1
+  },
+  {
+   "addr": "0x00875c4a",
+   "type": "u8",
+   "count": 128,
+   "stride": 1
+  }
+ ]
+}

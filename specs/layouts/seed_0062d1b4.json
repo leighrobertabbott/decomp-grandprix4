@@ -1,0 +1,7 @@
+{
+  "_evidence": "PRNG state of 0x004014ba (same fields as state_0062d1b4: dword 0x0062d1b4 read as one dword and the two words 0x62d1b4/0x62d1b6, byte 0x0062d1b3 shifted in), for callers that RETRY on the draw (0x0055ad9b: 'call 0x4015dc; and ax,3/7; cmp ax,cx; jle' and the 'jne 0x55adfd; cmp cx,1; jge 0x55adaf' redraw loop). One step is linear over GF(2) on the 40 state bits: state' = (state << 8) | b, b' = ((lo >> 4) ^ (hi >> 1)) & 0xff. Its kernel is exactly {b = 0 and state & 0x01ffffff = 0} (rank 33, and rank(M^k) = 33 for every k, so no other state ever reaches it) and M^k - I has a trivial kernel for k < 300 (no short cycles; checked numerically). The all-zero fixed point emits ax = 0 forever, so a retry loop waiting for another draw never ends (the original hangs; state_0062d1b4's edge values give dword 0 and byte 0 together in about 1/64 of the cases). The byte is therefore drawn from 1..255, which keeps every state off that kernel; the dword stays fully free (0, 1, -1 and random patterns). This only removes the degenerate constant-output generator, never a branch.",
+  "globals": [
+    {"addr": "0x0062d1b4", "type": "u32"},
+    {"addr": "0x0062d1b3", "type": "u8", "lo": 1, "hi": 255}
+  ]
+}

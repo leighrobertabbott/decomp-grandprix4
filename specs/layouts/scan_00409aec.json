@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x00409aec scans the 22 car records at 0x0066fef0 (stride 0x41c, loop count 0x16) with test byte [esi+0x415],0xff and stops at the first zero byte (je 0x409b12) or falls out of the loop (esi reset to 0x66fef0, ecx=-1). Only byte +0x415 (0x00670305 + k*0x41c) is read; it is state (static zero, so the scan always stopped at record 0). Each byte draws from 15 nonzero values and 0 (1/16), so the first zero lands at every depth and about a quarter of the cases scan all 22 records. Any byte value is valid.",
+  "globals": [
+    {"addr": "0x00670305", "type": "u8", "count": 22, "stride": "0x41c",
+     "values": [0, 1, 2, 4, 8, "0x10", "0x20", "0x40", "0x80", "0xff", "0x7f", "0xfe", "0x55", "0xaa", "0x0f", "0xf0"]}
+  ]
+}

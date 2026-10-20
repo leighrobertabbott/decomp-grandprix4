@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x00408790 multiplies word +0x60 by dword 0x00602a4c (mul, shrd 6) into +0x19c: any u32 is valid.",
+  "globals": [
+    {"addr": "0x00602a4c", "type": "u32"}
+  ]
+}

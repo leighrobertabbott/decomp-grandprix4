@@ -1,0 +1,14 @@
+{
+  "_evidence": "0x0041a2ec has three idivs. (1) (0x4000 - min(ebp*[0x60377c]>>14, 0x4000)) * clamp(sx(esi+0x23c) - [0x638d20], +-0x4000) / D, ebp = min(max(|[0x638ce0]|,|[0x638cd8]|)>>8, 0x4000); (2) clamp(same difference, +-[0x603708]) * [0x60370c] / D; (3) ([0x603744] + [0x603778] + [0x603704]) * byte esi+0x173 / 100, where 0x603778 = ((q1*[0x603774])>>14 * min(max(esi+0x2f4 + esi+0x2f8, 0), 0x10000)/4) >> 14 and 0x603704 = q2. D is the rate dword 0x603854 (positive, below 2^17; see state_0041246e). With D in 0x100..0x20000, the gains 0x60377c/0x603774 and the offset 0x603744 in -0x10000..0x10000, the clamp limit 0x603708 in 0..0x7fff and 0x60370c in -0x7fff..0x7fff: the first product is below 0x14000*0x4000 < 2^31, the second below 2^30, |q1| <= 0x500000, |0x603778| < 2^25, |q2| <= 2^22, so the third dividend is below 2^31*100 and no idiv faults (fuzzed values #DE'd in 42 of 200 cases). 0x638ce0, 0x638cd8 and 0x638d20 are any i32 (abs/clamp paths with both signs); the esi block is random bytes (every pattern valid).",
+  "globals": [
+    {"addr": "0x00603854", "type": "i32", "lo": 256, "hi": 131072},
+    {"addr": "0x0060377c", "type": "i32", "lo": -65536, "hi": 65536},
+    {"addr": "0x00603774", "type": "i32", "lo": -65536, "hi": 65536},
+    {"addr": "0x00603744", "type": "i32", "lo": -65536, "hi": 65536},
+    {"addr": "0x00603708", "type": "i32", "lo": 0, "hi": 32767},
+    {"addr": "0x0060370c", "type": "i32", "lo": -32767, "hi": 32767},
+    {"addr": "0x00638ce0", "type": "i32"},
+    {"addr": "0x00638cd8", "type": "i32"},
+    {"addr": "0x00638d20", "type": "i32"}
+  ]
+}

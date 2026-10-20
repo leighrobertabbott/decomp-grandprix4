@@ -1,0 +1,7 @@
+{
+  "_evidence": "Track half-widths read by 0x00403800 (mov eax,[0x852c44] / [0x852c48]; add eax,0x50) and passed on through 0x429100/0x429131 and 0x403938 as operands of the 0x403bb6/0x403c4c band interpolators. Their only writer is 0x557a19 (DAT_00852c44 = (int)(short)esi[2]; DAT_00852c48 = (int)(short)esi[3]: movsx of track-file words), so both dwords are sign-extended i16 values. Full-range u32 values (state_00403800 alone) are impossible and push |ecx-edge|<<14 past the 'div [0x622354]' range at 0x403c19 (#DE in the original). Overlay this after state_00403800.",
+  "globals": [
+    {"addr": "0x00852c44", "type": "i32", "lo": -32768, "hi": 32767},
+    {"addr": "0x00852c48", "type": "i32", "lo": -32768, "hi": 32767}
+  ]
+}

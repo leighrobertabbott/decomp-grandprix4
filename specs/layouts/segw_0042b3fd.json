@@ -1,0 +1,10 @@
+{
+  "_evidence": "Segment words read by 0x0042b3fd from its final record edi (the spec record 0..25, or the 0x42b3c8 walk result, records 0..14) and by its callee 0x403d57: lane words +0x60/+0x62 (movzx, by the sign of 0x868582, +0x50) and the frame words +0 (heading, |a|>>2 into the constant sine table), +4 and +8 (subtracted from the shifted positions). Compose after ring_00405a12+links_0042b3c8. All are plain sub/shift/table operands, so any value is valid: +0/+0x60/+0x62 vary for records 0..25; +4/+8 vary for records 15..25 only, because ring_00405a12 already varies them on records 0..14 and pins records 2 and 3 for its walk proof (records 15..25 are never walked, only used as the start record when it lies at or past the pit start).",
+  "globals": [
+    {"addr": "0x008943a0", "type": "i16", "count": 26, "stride": "0x160"},
+    {"addr": "0x00894400", "type": "u16", "count": 26, "stride": "0x160"},
+    {"addr": "0x00894402", "type": "u16", "count": 26, "stride": "0x160"},
+    {"addr": "0x00895844", "type": "i16", "count": 11, "stride": "0x160"},
+    {"addr": "0x00895848", "type": "i16", "count": 11, "stride": "0x160"}
+  ]
+}

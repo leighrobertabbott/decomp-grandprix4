@@ -1,0 +1,20 @@
+{
+ "_evidence": "0x0054654a writes at [0x831568] + y*[0xb1bf40] + x: a 0x2000-byte surface with a pitch of 0x20/0x40/0x80.",
+ "globals": [
+  {
+   "addr": "0x00831568",
+   "type": "ptr",
+   "size": 8192,
+   "fill": "bytes"
+  },
+  {
+   "addr": "0x00b1bf40",
+   "type": "u32",
+   "values": [
+    "0x20",
+    "0x40",
+    "0x80"
+   ]
+  }
+ ]
+}

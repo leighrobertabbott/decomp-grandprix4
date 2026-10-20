@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x530162 tests 'cmp byte [0x7aafd3],0' and, when that is 0, 'cmp byte [0x7ab020],0'; either nonzero ORs 0xc into the render-state word. 0x7ab020 is not in 0x530162's referenced-globals list (fuzz:i32 left it at its image value), so it is varied here: 0 (both outcomes of the second compare need [0x7aafd3]==0, which fuzz:i32 hits), 1, 0xff. A plain byte compare, every value valid.",
+  "globals": [
+    {"addr": "0x007ab020", "type": "u8", "values": [0, 0, 1, "0xff"]}
+  ]
+}

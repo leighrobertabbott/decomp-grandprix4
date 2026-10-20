@@ -1,0 +1,38 @@
+{
+ "_evidence": "0x0054d31a reads two big-endian words from [esi] (ebx = first, eax = second, zero-extended) and calls 0x54cb7e, which stores ebx to 0x833cc5 and compares 'cmp eax,[0x822248]; jge' (signed) twice: on 'less' eax goes to 0x833cc9 and 0xff to 0x833f74. 0x822248 is the screen height limit written by 0x54e180/0x54e159 (0x258 = 600 for 800x600); drawn from real heights (480/600/768/1024) plus 0, 0xffff, 0x10000 and the sign extremes, with the packet bytes in the spec biased to 0..3/0x58/0x80/0xff so the words fall on both sides of it. The store targets are varied so every store is visible. Plain dword compares: every value is valid.",
+ "globals": [
+  {
+   "addr": "0x00822248",
+   "type": "u32",
+   "values": [
+    "0x258",
+    "0x258",
+    "0x1e0",
+    "0x300",
+    "0x400",
+    0,
+    "0xffff",
+    "0x10000",
+    "0x80000000",
+    "0x7fffffff"
+   ]
+  },
+  {
+   "addr": "0x00833cc5",
+   "type": "u32"
+  },
+  {
+   "addr": "0x00833cc9",
+   "type": "u32"
+  },
+  {
+   "addr": "0x00833f74",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    "0xff"
+   ]
+  }
+ ]
+}

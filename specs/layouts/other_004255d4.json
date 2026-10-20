@@ -1,0 +1,58 @@
+{
+ "_evidence": "Other-car record ebx for 0x004255d4 (0x228 bytes, random background as the earlier ':bytes' spec). The first guard squares d = word +0x100 - word +0x9a (imul ax: dx:ax = d^2, 32-bit negated when d < 0), requires sign(d) == sign(word +0xda) ('xor cx,[ebx+0xda]; js'), forms c = (movsx +0xda * [0x623df6]) >> 10 and compares dx with the rounded half of c ('sar cx,1; jns; add cx,1', sign-folded) before 'idiv cx' (it saturates to +-0x7fff otherwise, so the 16-bit idiv never overflows). The equality branches (0x425641/0x425646 and 0x425652/0x425657) need dx exactly equal to -+c/2 and then test ax == 0: random words never give that, so +0x9a and +0x100 draw round speeds (0, 0x10, 0x100, 0x200, ...) whose difference is 0, +-0x10, +-0xf0, +-0x100 (d = -0x100 gives dx = -1 with ax = 0, |d| < 0x100 gives dx = -1/0 with ax != 0) plus generic values, and +0xda draws small signed factors (+-1..3, 0) plus +-0x100 and the extremes, so that with [0x623df6] = 3072/4096 (+-) c/2 is exactly +-1. Values only feed sub/imul/cmp and the guarded idiv.",
+ "size": 552,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x9a",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    "0x100",
+    "0x100",
+    "0x200",
+    "0x200",
+    "0x10",
+    "0x1234",
+    "0x8000",
+    "0xffff"
+   ]
+  },
+  {
+   "off": "0x100",
+   "type": "u16",
+   "values": [
+    0,
+    "0x10",
+    "0x100",
+    "0x100",
+    "0x200",
+    "0x1f0",
+    "0x7fff",
+    "0xff00",
+    "0x4321"
+   ]
+  },
+  {
+   "off": "0xda",
+   "type": "u16",
+   "values": [
+    "0xffff",
+    "0xffff",
+    "0xffff",
+    "0xffff",
+    "0xfffd",
+    "0x1",
+    "0x1",
+    "0x1",
+    "0x3",
+    "0x0",
+    "0xff00",
+    "0x100",
+    "0x7fff",
+    "0x8000"
+   ]
+  }
+ ]
+}

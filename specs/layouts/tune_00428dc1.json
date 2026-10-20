@@ -1,0 +1,13 @@
+{
+ "_evidence": "Tuning constants of 0x00428dc1 (called by 0x428efb when segment byte +0x51 has bit 7): all are read only by 0x428dc1 and never written, so each draws its image value in about a third of the cases and otherwise other values. Dwords 0x603de8 (0x3000) and 0x603dec (0x3e00): signed 'cmp eax(car +0x1a0), [..]; jge'. Dwords 0x627b40 (-2) and 0x627b44 (2): the signed window for movsx byte edi+0x135 ('jg' above +0x44, 'jle' at or below +0x40: inside, outside and empty windows). Words 0x603de4 (0x50: added to |car +0x90| before 'cmp ax,[esi+0xb0]; jl'), 0x603de6 (0x180: |0x42b88b result - car +0x90| 'jl'), 0x603c2e (0x60) and 0x603c30 (0x30): floors stored to car word +0x174 when it is lower (signed jge). Only compares, adds and stores: nothing faults.",
+ "globals": [
+  {"addr": "0x603de4", "type": "u16", "values": ["0x50", "0x50", "0x50", 0, "0x10", "0x400", "0x7fff", "0x8000", "0xffb0"]},
+  {"addr": "0x603de6", "type": "u16", "values": ["0x180", "0x180", "0x180", 0, "0x40", "0x800", "0x7fff", "0x8000", "0xfe80"]},
+  {"addr": "0x603de8", "type": "u32", "values": ["0x3000", "0x3000", "0x3000", 0, "0x1000", "0x10000", "0x7fffffff", "0x80000000", "0xffffd000"]},
+  {"addr": "0x603dec", "type": "u32", "values": ["0x3e00", "0x3e00", "0x3e00", 0, "0x1000", "0x10000", "0x7fffffff", "0x80000000", "0xffffc200"]},
+  {"addr": "0x627b40", "type": "u32", "values": ["0xfffffffe", "0xfffffffe", "0xfffffffe", 0, 2, "0xffffff80", "0x7f", "0x80000000"]},
+  {"addr": "0x627b44", "type": "u32", "values": [2, 2, 2, 0, "0xfffffffe", "0x7f", "0xffffff80", "0x7fffffff"]},
+  {"addr": "0x603c2e", "type": "u16", "values": ["0x60", "0x60", "0x60", 0, "0x20", "0x7fff", "0x8000", "0xffa0"]},
+  {"addr": "0x603c30", "type": "u16", "values": ["0x30", "0x30", "0x30", 0, "0x10", "0x7fff", "0x8000", "0xffd0"]}
+ ]
+}

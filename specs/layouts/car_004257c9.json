@@ -1,0 +1,7 @@
+{
+ "_evidence": "Overlay for the car record at esi of 0x004257c9 (compose after rec_00426091+car_00425473+car_004149f4): word +0xd4 is compared with 0x4000 ('cmp word [esi+0xd4],0x4000; je' at 0x42582d: equal skips to the zero result) and later added to the linked car's word +0xda; it was zero in every case, so the je never went its taken way. Drawn 0x4000 in about a third of the cases and otherwise neighbours and other angles (0, 0x3fff, 0x4001, 0x8000, 0xc000, 0xffff). Only a compare and a 16-bit add: nothing faults.",
+ "size": 552,
+ "fields": [
+  {"off": "0xd4", "type": "u16", "values": ["0x4000", "0x4000", "0x4000", 0, "0x3fff", "0x4001", "0x8000", "0xc000", "0xffff"]}
+ ]
+}

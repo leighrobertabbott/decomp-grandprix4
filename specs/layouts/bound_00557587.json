@@ -1,0 +1,10 @@
+{
+ "_evidence": "0x00557587 (compose after stack_0055753f, which draws the top index [0x871c80] from 0..0x7e): 'mov edx,[0x871c7c]' is the bottom index of the downward walk 'dec esi; cmp esi,edx; jge' (signed) after the early exit 'cmp [0x871c80],[0x871c7c]; jge' (signed). Its only writer is the caller 0x553f72: 0 ('mov [0x871c7c],0' at 0x5540d1) or top+1 at the time ('mov eax,[0x871c80]; inc eax; mov [0x871c7c],eax' at 0x55462b) with the top < 0x7f (0x55753f's int3 guard), so the bottom is 0..0x7f; an unbounded random bottom walked esi far below the tables (the timeouts). Drawn mostly small (0 often, then 1..0x7f) so long runs, single-entry runs and bottom > top (early return, about 1/7 of the cases) all occur. The source stacks 0x875b46/0x875c4a (0x80 bytes each, 'mov al,[esi+0x875b46]; cmp bl,al; je') are redrawn from {0,1,2,3} so equal neighbours (je taken) and changes (bh/ch shift) both occur; the destination tables 0x875bc8/0x875ccc (0x80 bytes each, written at esi = bottom..top and at the top again when CF is set on entry) are varied so every store is visible.",
+ "globals": [
+  {"addr": "0x00871c7c", "type": "u32", "values": [0, 0, 0, 0, 1, 1, 2, 3, 5, 8, "0x10", "0x20", "0x40", "0x7e", "0x7f"]},
+  {"addr": "0x00875b46", "type": "u8", "count": 128, "values": [0, 1, 2, 3]},
+  {"addr": "0x00875c4a", "type": "u8", "count": 128, "values": [0, 1, 2, 3]},
+  {"addr": "0x00875bc8", "type": "u8", "count": 128},
+  {"addr": "0x00875ccc", "type": "u8", "count": 128}
+ ]
+}

@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00420bf9 runs the physics step 0x420d3f in a do-while: 'inc [0x6228a0]; cmp eax,[0x6228b4]; jl' (signed), so [0x6228b4] is the number of sub-steps per frame (at least one step is always taken); full-range fuzz made it up to 2^31 steps (6/8 timeouts). Drawn {-1,0,1,1,2,3}: one step for the values <= 1, two or three otherwise (both loop outcomes). The step count also divides the accumulated [0x6228a4] at 0x420c78 ('idiv ebp' with ebp = [0x6228a0] >= 1): no #DE for any count.",
+ "globals": [
+  {"addr": "0x006228b4", "type": "i32", "values": ["0xffffffff", 0, 1, 1, 2, 3]}
+ ]
+}

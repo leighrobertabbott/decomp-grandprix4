@@ -1,0 +1,11 @@
+{
+ "_evidence": "Loop count [0x934eac] of 0x00550178 (1..3; fuzzed counts run for ever).",
+ "globals": [
+  {
+   "addr": "0x00934eac",
+   "type": "u32",
+   "lo": 1,
+   "hi": 3
+  }
+ ]
+}

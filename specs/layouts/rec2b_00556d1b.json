@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x00556d1b: `mov al,[edi+0x2b]; cmp al,0xff; jne` with edi a ring record 0..29 (caller 0x556b44 steps edi by 0x160 per record): 0xff takes the remembered byte [0x871c78] (`mov al,[0x871c78]`), any other value is stored there; the byte is written back to +0x2b. Only an equality compare reads it, so every byte is valid; 0xff is weighted (random bytes hit it 1/256) so both branches occur, the rest are low, mid, sign-bit and 0xfe neighbours. Byte +0x2b of records 0..31 (0x8943cb + k*0x160) is not covered by the ring/flag layouts it composes with (their +0x2c dwords start one byte later).",
+  "globals": [
+    {"addr": "0x008943cb", "type": "u8", "count": 32, "stride": "0x160", "values": ["0xff", "0xff", "0xff", 0, 1, "0x40", "0x7f", "0x80", "0xfe"]}
+  ]
+}

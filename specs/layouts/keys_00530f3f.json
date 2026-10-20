@@ -1,0 +1,68 @@
+{
+ "_evidence": "0x00530f3f walks [0x7a97a4]+1 (1..3, count_007a97a4) device records 0x827160 + k*0x3c and calls 0x530f75 (ebx = record; it pushes/pops ecx/edx and reads no other register) for a record with byte +5 != 2 and byte +4 != 0. 0x530f75 scans 'cmp dword [ebx+ecx*4+0x14],0' for ecx 1..7 and 0..6 and the downward walk 'dec edx; cmp [ebx+edx*4+0x14],0; jne; cmp edx,0; jge' down to edx = -1 (dwords +0x10..+0x30), reads the values 'mov eax,[ebx+ecx*4+0x28]' / '[ebx+edx*4+0x28]' for indices 0..6 (dwords +0x28..+0x40) and compares them with 0xa3d / 0xccc / 0x1555 (ja/jbe, both sides), returning 'mov eax,[ebx+ecx*4+0x14]'. All are plain data compares (no index or divisor comes from them), so any dword is valid; they are drawn from the boundary set of 0x530f75's own accepted spec {0,0,0,1,0x800,0xa3d,0xa3e,0xccc,0xccd,0x1000,0x1555,0x1556,0x3000} so zero columns, every threshold side and the up/down walks occur. The 13 dwords +0x10..+0x40 of records 0..2 are listed; +0x3c/+0x40 of record k are bytes +0..+7 of record k+1, so compose this layout BEFORE rec_00530ae7/flag_00827164, whose gate bytes +4/+5 then win (exactly the overlapping memory the original reads).",
+ "globals": [
+  {
+   "addr": "0x00827170",
+   "type": "u32",
+   "count": 13,
+   "stride": 4,
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0x800",
+    "0xa3d",
+    "0xa3e",
+    "0xccc",
+    "0xccd",
+    "0x1000",
+    "0x1555",
+    "0x1556",
+    "0x3000"
+   ]
+  },
+  {
+   "addr": "0x008271ac",
+   "type": "u32",
+   "count": 13,
+   "stride": 4,
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0x800",
+    "0xa3d",
+    "0xa3e",
+    "0xccc",
+    "0xccd",
+    "0x1000",
+    "0x1555",
+    "0x1556",
+    "0x3000"
+   ]
+  },
+  {
+   "addr": "0x008271e8",
+   "type": "u32",
+   "count": 13,
+   "stride": 4,
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0x800",
+    "0xa3d",
+    "0xa3e",
+    "0xccc",
+    "0xccd",
+    "0x1000",
+    "0x1555",
+    "0x1556",
+    "0x3000"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,41 @@
+{
+ "_evidence": "Budget overlay for 0x0040cdc3 (compose after pitgeo_0040d644 and wrap_0040cdc3). The word 0x868558 (L) is also the pass count of the ring scans 0x406b6c/0x406c6d (L+2 fpatan classifications each, scan_00406d4b) that 0x40d4c4 -> 0x40d106 -> 0x40d01b runs six times per record for every step of its entry-to-exit walk: with pitgeo_0040d644's L = 0x700..0x800 that is ~10^8 instructions (the timeouts), so L is drawn 10..12 (inside scan_00406d4b's 0..40 budget ; every value is valid for the original, only the 300 s gate budget bounds it: at L = 32..40 one case took about 2 s). The 0x40d8a5 invariants of pitgeo_0040d644 are kept at this scale: the walked lap records 4, 5, 0, 1, 2 have non-decreasing positions (word +0x1a & 0x7ff) in [L/2, L) for every L: 6, 6-7, 7, 8, 8-9, so the zero rows past the pit end (L<<14 after the unwrap) still stop the cursor, and because the pit-start row is the entry position and positions ascend, the cursor keeps row0 <= pos < row1, so 0x40d8a5's idiv quotient stays in 0..2^14.",
+ "globals": [
+  {
+   "addr": "0x00868558",
+   "type": "u16",
+   "lo": 10,
+   "hi": 12
+  },
+  {
+   "addr": "0x89493a",
+   "type": "u16",
+   "lo": 6,
+   "hi": 6
+  },
+  {
+   "addr": "0x894a9a",
+   "type": "u16",
+   "lo": 6,
+   "hi": 7
+  },
+  {
+   "addr": "0x8943ba",
+   "type": "u16",
+   "lo": 7,
+   "hi": 7
+  },
+  {
+   "addr": "0x89451a",
+   "type": "u16",
+   "lo": 8,
+   "hi": 8
+  },
+  {
+   "addr": "0x89467a",
+   "type": "u16",
+   "lo": 8,
+   "hi": 9
+  }
+ ]
+}

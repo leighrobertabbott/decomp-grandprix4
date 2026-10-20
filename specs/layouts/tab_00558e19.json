@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x00558e19 appends the 0x60-byte record at esi to the table of 0x200 entries at 0x9559f8 (to 0x9619f8): count [0x9559f0] + 1 must stay below 0x200 ('cmp eax,0x200; jb', else int3 - the overflow assertion), then rep movsd 0x18 dwords to 0x9559f8 + count*0x60. The count is drawn 0..0x1fe: 0x1ff and above trap (int3) in the ORIGINAL, and only 0x553f72 (load of a saved count) and this function write it.",
+ "globals": [
+  {
+   "addr": "0x009559f0",
+   "type": "u32",
+   "lo": 0,
+   "hi": 510
+  }
+ ]
+}

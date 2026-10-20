@@ -1,0 +1,1047 @@
+{
+ "_doc": "Lead-proven unreachable blocks ('blocks') and branch directions ('branches', 'addr:taken|fallthrough'), excluded from the target-body coverage gate (gp4re/emu.py). Each entry needs a static proof in evidence; exemptions are listed in every verdict.",
+ "0x00416cc5": {
+  "blocks": [
+   "0x00416ce9"
+  ],
+  "evidence": "eax = |[ebx+0x40]| <= 0x80000000; shld edx,eax,0x12 with edx=0 gives edx = eax>>14 <= 0x20000; ebp = edx; inc ebp <= 0x20001 is never 0, so the jne at 0x416ce7 is always taken."
+ },
+ "0x00422056": {
+  "blocks": [
+   "0x0042218f",
+   "0x00422199",
+   "0x0042219e",
+   "0x004221c4",
+   "0x004221ce",
+   "0x004221d3",
+   "0x004221f9",
+   "0x00422203",
+   "0x00422208",
+   "0x0042222e",
+   "0x00422238",
+   "0x0042223d"
+  ],
+  "evidence": "Dwords 0x608140/0x608144/0x608148/0x60814c are each stored from eax after a 'cmp eax,0; jge; mov eax,0' clamp (0x422177, 0x422160, 0x422119, 0x422102) and reloaded without another write to them, so each 'test eax,-1; jns' takes the non-negative path; the neg/clamp blocks are dead."
+ },
+ "0x00418c68": {
+  "branches": [
+   "0x00418c9e:taken",
+   "0x00418cd3:taken"
+  ],
+  "evidence": "Both 'je' follow 'mov eax,0xffffffff' (0x418c90, 0x418cc5) and 'cmp eax,0' with only an 'and dword [edi],imm' between, which does not write eax: eax is -1, ZF=0, the jumps are never taken."
+ },
+ "0x0040113f": {
+  "blocks": [
+   "0x00401166",
+   "0x0040116a"
+  ],
+  "evidence": "The loop at 0x401152 is entered only with edx != 0 (jne at 0x401147) and iterates only while edx < 0x40000000; then shld edx,eax,2 shifts a nonzero edx < 2^30 left by 2 without losing bits, so edx stays nonzero and 'or edx,edx; jne 0x401152' is always taken: 0x401166/0x40116a never execute."
+ },
+ "0x00418c39": {
+  "branches": [
+   "0x00418c50:taken"
+  ],
+  "evidence": "'mov eax,0xffffffff' at 0x418c42 then 'and dword [edi],imm' (does not write eax) and 'cmp eax,0': eax is -1, ZF=0, the je at 0x418c50 is never taken (same idiom as 0x00418c68)."
+ },
+ "0x0043c16a": {
+  "blocks": [
+   "0x0043c1a7",
+   "0x0043c1b3"
+  ],
+  "evidence": "edi = eax clamped signed to 2..4 (0x43c16d-0x43c17c); the callee 0x43c0cd returns only 0xffffff00, 0x100, or a quotient clamped to [-0x100, 0x100] (0x43c141-0x43c161, neg 0x80000000 also clamps); so eax = r + (edi<<8) lies in [0x100, 0x500] and both 'jge 0x43c1ac' and 'jle 0x43c1b8' are always taken."
+ },
+ "0x0040af67": {
+  "blocks": [
+   "0x0040afb0"
+  ],
+  "branches": [
+   "0x0040af88:taken",
+   "0x0040afae:fallthrough"
+  ],
+  "evidence": "0x40afb0 is an int3 assertion trap, reached only when the walk passes [0x866ecc]-0x5800 (jae at 0x40af88) or exhausts its 24 groups (dec dx; jne at 0x40afae). Executing it is a fault in the original, so every case reaching it is invalid by the oracle's rules: no valid case can cover it. Not a claim of static deadness - an unreachable-for-valid-input assertion."
+ },
+ "0x0043d008": {
+  "blocks": [
+   "0x0043d056",
+   "0x0043d0e0"
+  ],
+  "branches": [
+   "0x0043d054:fallthrough",
+   "0x0043d0de:fallthrough"
+  ],
+  "evidence": "0x43d043 is reached only after signed 'cmp word [0x7ad8a2],0x2d; jge' and 'cmp word,0x37; jge 0x43d085' not taken, so 0x2d <= word < 0x37 and edx = movsx(word-0x2d) is 0..9: 'cmp edx,0; jge' always taken (only the accepted RNG 0x401462 runs between, writing 0x66d8bf/c0). ebp is set to 1, 2 or 3 (0x43d085/0x43d095/0x43d0a5); ecx starts at 1 and the loop leaves on 'cmp ecx,ebp; je' before ecx can reach 4, so 'cmp ecx,4; jne' never falls through."
+ },
+ "0x00427f3c": {
+  "blocks": [
+   "0x00428041",
+   "0x0042810e",
+   "0x00428117",
+   "0x0042811c",
+   "0x0042814a"
+  ],
+  "branches": [
+   "0x0042804b:taken",
+   "0x0042810c:fallthrough",
+   "0x00428115:taken",
+   "0x00428115:fallthrough",
+   "0x00428148:fallthrough"
+  ],
+  "evidence": "(1) 0x428003 is reached with [0x624810]!=0 only after a negative 0x427e7c result was stored in [0x624840] and the current result is >= 0 (jns 0x427f9e), so ebp = cur - prev >= 1 and the 'mov ebp,1' block and the negative-eax direction are dead. (2) cx = (word[edi]-word[esi+0x18]) sar 1 lies in -0x4000..0x3fff, so the cos table 0x7c5c5c is read at byte offset (|cx|>>2)&~1 <= 0x1000 (word 2048 = cos 90 deg = 0; negative entries start after it), i.e. ecx >= 0; [0x62483c] is the 0x4010f3 integer sqrt (>= 0), so eax = sqrt*cos>>14 >= 0 and the neg/clamp/neg path 0x42810e..0x42811c is dead. (3) |ebp| = |cos(...)| <= 0x4000 and ecx >= 0x100 after the clamp, so |(ebp<<10)/ecx| <= 0x10000 and the 0x10000 clamp at 0x42814a never fires."
+ },
+ "0x0042a533": {
+  "blocks": [
+   "0x0042a5ad",
+   "0x0042a5b5",
+   "0x0042a633",
+   "0x0042a63b",
+   "0x0042a64c",
+   "0x0042a653",
+   "0x0042a65b",
+   "0x0042a660",
+   "0x0042a665",
+   "0x0042a667",
+   "0x0042a66c",
+   "0x0042a671",
+   "0x0042a676"
+  ],
+  "evidence": "0x42a5a3: 'mov ax,cx; imul cx' gives dx:ax = cx*cx >= 0 (max 0x40000000), so 'test dx,0xffff; jns' at 0x42a5a6 is always taken and the not/neg correction 0x42a5ad..0x42a5b5 is dead. 0x42a611: 'imul ax' gives ax*ax >= 0, four 'sar dx,1; rcr ax,1' keep it non-negative, so 'test dx; jns' at 0x42a62c and 'or dx,dx; jns' at 0x42a647 are always taken: the negative-square branches 0x42a633..0x42a676 are dead."
+ },
+ "0x00410b09": {
+  "blocks": [
+   "0x00410b14"
+  ],
+  "evidence": "eax = movzx byte [esi+0x7f] is 0..255, so 'cmp eax,0; jge 0x410b19' at 0x410b0f/0x410b12 is always taken and 'mov eax,0' at 0x410b14 never runs."
+ },
+ "0x0042a792": {
+  "blocks": [
+   "0x0042a8d3",
+   "0x0042a8da",
+   "0x0042a8e2",
+   "0x0042a8e7",
+   "0x0042a8ec",
+   "0x0042a8ee",
+   "0x0042a8f3",
+   "0x0042a8f8",
+   "0x0042a8fd"
+  ],
+  "evidence": "dx:ax at 0x42a8b3 is a 32-bit value after four 'sar dx,1; rcr ax,1' (range -2^27..2^27-1, so never 0x80000000); the not/neg/inc at 0x42a8ba..0x42a8c2 make it |value| <= 2^27, i.e. dx in 0..0x800; 'push ecx; sar cx,1; add cx,1' do not touch dx, so 'or dx,dx; jns 0x42a8ff' at 0x42a8ce/0x42a8d1 is always taken and 0x42a8d3..0x42a8fd are dead."
+ },
+ "0x004255d4": {
+  "blocks": [
+   "0x00425734",
+   "0x0042573b",
+   "0x00425743",
+   "0x00425748",
+   "0x0042574d",
+   "0x0042574f",
+   "0x00425754",
+   "0x00425759",
+   "0x0042575e",
+   "0x004256a3",
+   "0x004256b2"
+  ],
+  "evidence": "0x42570a 'mov di,ax; imul ax' squares ax (>= 0, <= 0x40000000) and four 'sar dx,1; rcr ax,1' keep it non-negative, so 'or dx,dx; jns 0x425760' at 0x42572f is always taken: 0x425734..0x42575e are dead. At 0x42568d ax (+-0x7fff or the quotient) is shifted 'sar ax,4' and negated, so |ax| <= 0x800 < 0x4000: the two 0x4000 clamps (0x4256a3 and its mirror 0x4256b2) never fire."
+ },
+ "0x0040c566": {
+  "blocks": [
+   "0x0040c5b4",
+   "0x0040c5d4",
+   "0x0040c5dd",
+   "0x0040c5e2"
+  ],
+  "branches": [
+   "0x0040c5b2:fallthrough",
+   "0x0040c5d2:fallthrough",
+   "0x0040c5db:taken",
+   "0x0040c5db:fallthrough"
+  ],
+  "evidence": "0x40c59f 'and eax,0xff; shl eax,6' gives 0..0x3fc0 (upper bits zero), 'neg ax; add ax,0x4000' gives 0x40..0x4000, positive as a signed word, so 'jns' at 0x40c5b2 is always taken (0x40c5b4 dead). 'shr ax,2; and eax,0xfffe' then indexes words 8..0x800 of the constant Q14 table 0x7c5c5c (image data, never written by the core), whose values there are 0..16384 (checked: min 0, max 16384), so after 'movsx; shl eax,2' the value is >= 0 and 'jns' at 0x40c5d2 is always taken: 0x40c5d4/0x40c5dd/0x40c5e2 and both directions of 0x40c5db are dead."
+ },
+ "0x0040cd00": {
+  "branches": [
+   "0x0040cd74:taken"
+  ],
+  "evidence": "Both calls go to 0x40cceb, whose only exit is 'clc; ret' at 0x40ccfc (verified accepted), so CF is clear on return and 'jb 0x40cd89' at 0x40cd74 is never taken. (The jb at 0x40cd87 targets its own fallthrough.)"
+ },
+ "0x004314be": {
+  "blocks": [
+   "0x0043159f",
+   "0x004315af",
+   "0x004315b2",
+   "0x004315bb",
+   "0x004315c7",
+   "0x004315d0",
+   "0x004315d7"
+  ],
+  "evidence": "0x4314bf 'test byte [esi+0xe5],4; jne 0x4316f9' leaves the function when bit 2 is set. Up to the retest at 0x43158f the only memory writes are the words at 0x934df0/0x934df4/0x934df8 (fixed globals, not the car record) and the call 0x40dc8a, which only reads (push/pop ecx/edx, word loads from esi/ebx, no store, no call). So bit 2 of [esi+0xe5] is still clear and 'jne 0x43159f' at 0x431596 is never taken: 0x43159f..0x4315d7 are dead."
+ },
+ "0x00409cf2": {
+  "blocks": [
+   "0x00409d5e",
+   "0x00409d65",
+   "0x00409d6b"
+  ],
+  "branches": [
+   "0x00409d2c:fallthrough",
+   "0x00409d5c:fallthrough"
+  ],
+  "evidence": "'cmp bx,0; jae 0x409d70' at 0x409d27 is an unsigned compare with zero, always taken. The normalisation loop at 0x409d17 is entered only with cx:bx != 0 (0x409cf8..0x409d04 send cx = bx = 0 elsewhere), so V = cx:bx:dx:ax >= 2^32, and the shift pair at 0x409d38 runs only for cx < 0x4000, so V << 2 < 2^64 and >= 2^34: cx or bx is nonzero afterwards, 'test cx; jne' (0x409d55) or 'test bx; jne' (0x409d5c) is always taken and 0x409d5e/0x409d65/0x409d6b never run."
+ },
+ "0x0041062a": {
+  "blocks": [
+   "0x00410639",
+   "0x00410654",
+   "0x0041066f",
+   "0x0041068a"
+  ],
+  "evidence": "0x41062a first calls 0x405893 -> 0x4057cf, a do-while that always calls 0x404f99 at least once; 0x404f99 stores 0x60309c/0x6030a0/0x6030a4/0x6030a8 each followed by 'if (x < 0) x = 0'. The code that runs after those stores (0x411c26, 0x404bcf, which only reads them, 0x404e9c, then 0x4279ab) never references 0x60309c..0x6030ab (func_globals: only 0x404bcf/0x404f99/0x405254/0x405320/0x4053ff/0x41062a/0x418afe/0x418d9a do, and none of them runs in between). So each 'cmp eax,0; jge' at 0x410637/0x410652/0x41066d/0x410688 is always taken and the four 'mov eax,0' blocks are dead."
+ },
+ "0x00408998": {
+  "blocks": [
+   "0x004089f1",
+   "0x00408a3c"
+  ],
+  "evidence": "0x4089aa/0x4089b2 leave unless edx = [0x601fc4]-[0x601fb4] > 0; ebp is clamped to >= 1 (0x4089cd) and edx to <= ebp (0x4089d7), so 1 <= edx <= ebp. The dividend w = edx << 14 (wrapped) is either <= edx*2^14 <= ebp*2^14 (positive) or negative, so q = w/ebp <= 0x4000 and eax = 0x4000 - q >= 0: 'cmp eax,0; jge' at 0x4089ef is always taken (0x4089f1 dead). 0x408a3c is reached only after 'cmp ebp,A; jl' and 'cmp ebp,B; jge' both fell through, i.e. A <= v < B (signed), so B != A and the 32-bit difference B - A is nonzero: 'test ebp; jne' at 0x408a3a is always taken."
+ },
+ "0x004414a8": {
+  "blocks": [
+   "0x0044151d",
+   "0x0044153f",
+   "0x00441561",
+   "0x00441583"
+  ],
+  "evidence": "ebp is the unsigned maximum of the dwords +0x188/+0x18c/+0x190/+0x194 (jae chain 0x4414ce..0x4414f2), or 1 when that maximum is 0 (then every dword is 0). Each quotient x*0xf0 / ebp (mul, div) with x <= ebp is <= 0xf0, so every 'cmp eax,0xf0; jle' (0x44151b, 0x44153d, 0x44155f, 0x441581) is taken and the four 'mov eax,0xf0' blocks are dead."
+ },
+ "0x00430339": {
+  "blocks": [
+   "0x00430364",
+   "0x0043036d"
+  ],
+  "evidence": "0x430339 'test byte [esi+0x9c],2; je 0x4303b0' leaves unless bit 1 is set; the path to the retest at 0x43035b (0x430342..0x430359) only tests +0x203, loads +0x114 and moves it to ebx, with no store, so 'test byte [esi+0x9c],2; jne 0x43037d' at 0x430362 is always taken and 0x430364/0x43036d never run."
+ },
+ "0x0040b53b": {
+  "blocks": [
+   "0x0040b5a2",
+   "0x0040b5ac",
+   "0x0040b5e0"
+  ],
+  "evidence": "0x40b53f calls 0x51fbae, which is 'mov eax,0x1e; mov edx,5; ret', so ebx = 30 and edi = 5 always. Path 0x40b58a: eax = (((r & 0xff) << 6) * 5) >> 14 is 0..4, so 'cmp eax,0; jge' (0x40b5a0) and 'cmp eax,edi-1 (4); jle' (0x40b5aa) are always taken (0x40b5a2, 0x40b5ac dead). The paths into 0x40b5db give eax = (((r & 0xff) << 6) * 25 >> 14) + 5 (5..29) or byte * 30 / 100 (0..76), both >= 0, so 'jge' at 0x40b5de is always taken (0x40b5e0 dead)."
+ },
+ "0x0040c204": {
+  "blocks": [
+   "0x0040c256",
+   "0x0040c299"
+  ],
+  "evidence": "0x40c244..0x40c24f: ecx = (byte & 0xff) >> 4 is 0..15, so 'cmp ecx,0; jge' at 0x40c254 is always taken (0x40c256 dead); 0x40c28d: eax = movzx byte (0..255), so 'cmp eax,0; jge' at 0x40c297 is always taken (0x40c299 dead)."
+ },
+ "0x004413b7": {
+  "blocks": [
+   "0x0044142a",
+   "0x00441450",
+   "0x00441476",
+   "0x0044149c"
+  ],
+  "evidence": "Each of the four guards is 'mul ebp' (unsigned 32x32, so edx <= 0xfffffffe since (2^32-1)^2 = 0xfffffffe00000001), then 'cmp edi,edx; ja' and 'mov edi,edx; inc edi; jne': edi = edx + 1 <= 0xffffffff is never 0, so the jne is always taken and the 'dec edi; dec edx' fix-up blocks never run (checked at 0x44141f..0x44142c; the other three are the same sequence)."
+ },
+ "0x0040bb26": {
+  "blocks": [
+   "0x0040bc04",
+   "0x0040bc2c"
+  ],
+  "evidence": "Both idivs divide edx:eax with 'xor edx,edx' just before (a non-negative 64-bit dividend below 2^32) by ebp = 2n<<9 with n = ((x>>17)+1)>>1 <= 0x4000, i.e. 0x400..0x1000000, which 0x40b99a (pushal/popal), 0x40b955 (never writes ebp) and 0x40b8cd (push/pop ebp) preserve; the quotient is 0..2^22, so 'cmp eax,0; jge' at 0x40bc02 and 0x40bc2a is always taken (L17 proof, lead-checked)."
+ },
+ "0x00517318": {
+  "blocks": [
+   "0x00517328",
+   "0x0051733e"
+  ],
+  "branches": [
+   "0x00517342:taken"
+  ],
+  "evidence": "First char: 'shr al,4' gives 0..15, mapped to 0x20 (zero) or 0x30+n = 0x31..0x3f, never 0x2d, so 'cmp al,0x2d; jne' at 0x517326 is always taken (0x517328 dead). Second char: (al & 0xf) + 0x30 = 0x30..0x3f, never 0x2d (0x51733e dead) and never below 0x30 ('jb' at 0x517342 never taken)."
+ },
+ "0x0054a09f": {
+  "branches": [
+   "0x0054a0ce:taken"
+  ],
+  "evidence": "dl is set to 0 at 0x54a0a6 and no instruction of the routine writes dl (the swap path only moves eax/edi/esi/ebx), so 'or dl,dl; jne 0x54a0a6' at 0x54a0cc/0x54a0ce never loops: one bubble pass."
+ },
+ "0x00515d14": {
+  "blocks": [
+   "0x00515d41"
+  ],
+  "evidence": "eax is set to 0 (0x515d2d) or 1 (0x515d34) and masked with 0xf, so 'cmp eax,1; jle' at 0x515d3f is always taken and 'mov eax,1' at 0x515d41 never runs."
+ },
+ "0x00558e19": {
+  "blocks": [
+   "0x00558e29"
+  ],
+  "branches": [
+   "0x00558e27:fallthrough"
+  ],
+  "evidence": "'jb' at 0x558e27 falls through only when count+1 >= 0x200 (table full) into 0x558e29, a lone int3 overflow assertion that raises a breakpoint and never returns: no valid run can enter it (L23 evidence, lead-checked)."
+ },
+ "0x0053ede2": {
+  "branches": [
+   "0x0053ede9:taken"
+  ],
+  "evidence": "The loop body is only 'cmp byte [0x7a9469],0' (flags only); single-threaded, a nonzero byte never changes, so the taken back edge never terminates. The byte is the mouse-button state written by the window procedure 0x509250, outside the loop."
+ },
+ "0x00559186": {
+  "blocks": [
+   "0x005591a6"
+  ],
+  "evidence": "ax is clamped to <= 0x35b4 (signed, 0x55918c) and >= 0x800 (0x559196), so it is in 0x800..0x35b4, positive as a signed word: 'test ax; jns' at 0x5591a4 is always taken and 'neg ax' never runs."
+ },
+ "0x00559024": {
+  "blocks": [
+   "0x00559033"
+  ],
+  "branches": [
+   "0x00559031:fallthrough"
+  ],
+  "evidence": "0x559033 is a lone int3 (byte 0xcc) assertion: entering it raises a breakpoint and never returns, so no valid run reaches it."
+ },
+ "0x0055753f": {
+  "blocks": [
+   "0x00557558",
+   "0x00557567"
+  ],
+  "branches": [
+   "0x00557556:fallthrough",
+   "0x00557565:fallthrough"
+  ],
+  "evidence": "0x557558 and 0x557567 are lone int3 (0xcc) assertions guarding 'counter < 0x80' and 'the two counters 0x871c80/0x871c8c stay equal'; entering either raises a breakpoint and never returns, so no valid run reaches them."
+ },
+ "0x00428216": {
+  "blocks": [
+   "0x0042831b",
+   "0x00428437",
+   "0x00428440",
+   "0x00428445",
+   "0x00428473"
+  ],
+  "branches": [
+   "0x00428325:taken"
+  ],
+  "evidence": "Twin of 0x00427f3c (curved-segment variant) with the same three proofs, lead-checked against 0x428301..0x428478: (1) the 0x428306 block runs only after a negative result was stored in [0x624840] and the current one is >= 0, so eax=[0x624840] < 0 ('jns' at 0x428325 never taken) and ebp = cur - prev >= 1 (0x42831b dead). (2) cx is the halved angle difference (-0x4000..0x3fff), so the cos table 0x7c5c5c (a lead-proven constant, specs/constants.json) is read in its first quadrant (>= 0) and [0x62483c] is an integer sqrt (>= 0): eax >= 0 at 0x428430, so the neg/clamp/neg path 0x428437..0x428445 is dead. (3) |ebp| <= 0x4000 (a cos entry) and ecx >= 0x100 after the clamp, so |(ebp<<10)/ecx| <= 0x10000 and 'jle' at 0x428471 is always taken (0x428473 dead). 0x4283f1 (cx == -0x4000 exactly) is reachable and not exempt."
+ },
+ "0x00558d9b": {
+  "blocks": [
+   "0x00558dd8"
+  ],
+  "branches": [
+   "0x00558dd6:fallthrough"
+  ],
+  "evidence": "0x558dd8 is a lone int3 (0xcc) assertion (record count overflow): entering it raises a breakpoint and never returns, so no valid run reaches it."
+ },
+ "0x005579c9": {
+  "blocks": [
+   "0x005579e6"
+  ],
+  "branches": [
+   "0x005579e4:fallthrough"
+  ],
+  "evidence": "0x5579e6 is a lone int3 (0xcc) assertion (slot counter + 1 >= 0x80): entering it raises a breakpoint and never returns, so no valid run reaches it."
+ },
+ "0x005582a7": {
+  "blocks": [
+   "0x005582c0"
+  ],
+  "branches": [
+   "0x005582be:fallthrough"
+  ],
+  "evidence": "0x5582c0 is a lone int3 (0xcc) assertion (slot counter + 1 >= 0x10): entering it raises a breakpoint and never returns, so no valid run reaches it."
+ },
+ "0x00555c49": {
+  "blocks": [
+   "0x00555c5a"
+  ],
+  "branches": [
+   "0x00555c58:fallthrough"
+  ],
+  "evidence": "0x555c5a is a lone int3 (0xcc) assertion: entering it raises a breakpoint and never returns, so no valid run reaches it."
+ },
+ "0x00518f17": {
+  "blocks": [
+   "0x00518fe1",
+   "0x00519050",
+   "0x005190df",
+   "0x005190e4",
+   "0x00519141",
+   "0x0051914d"
+  ],
+  "evidence": "L25 proofs, lead-checked: 0x519050: 0x4000000/max(q,0x1000) <= 0x4000, so the jle is always taken. 0x5190e4: edx = hi(eax*1000) <= 999 so edx+1 never wraps (jne at 0x5190e2 always taken). 0x519141/0x51914d: the folded angle is in [-0x4000,0x4000], so 0xa0*f>>14 + 0xa0 is in [0,0x140] and neither clamp fires. 0x518fe1: taken only for a zero cosine (angle +-0x4000), but |dx|<|dz| is the same signed compare 0x401315 makes before returning an angle within 0x2000 of the z axis, and the Q14 table (specs/constants.json) is zero only at byte index 0x1000. 0x5190df: both divisors are cosines >= 0x2d41 in magnitude, so ecx is in [0,2^28.6) and edx = hi(eax*1000) <= 97 < 0x100 <= ebp (ja at 0x5190dd always taken). Holds for every valid run: dx or dz == 0x80000000 makes 0x401315 fault."
+ },
+ "0x0053de6f": {
+  "blocks": [
+   "0x0053debf"
+  ],
+  "branches": [
+   "0x0053debd:fallthrough"
+  ],
+  "evidence": "0x53deb7 'and eax,3' leaves eax in 0..3, so 0x53deba 'cmp eax,5; jb 0x53dec4' is always taken: the fallthrough block 0x53debf (mov eax,4) is unreachable for every input (m55, checked by the lead)."
+ },
+ "0x00420bf9": {
+  "blocks": [
+   "0x00420c6d"
+  ],
+  "branches": [
+   "0x00420c6b:fallthrough"
+  ],
+  "evidence": "[0x6228a0] is zeroed at 0x420bfe and only written by the 'inc' at 0x420c42 inside the do-while, which runs at least once and exits once the count reaches max(1,[0x6228b4]) <= 0x7fffffff (signed jl); no other function or accepted callee references 0x6228a0 (func_globals, src grep). So ebp = [0x6228a0] >= 1 at 0x420c65 and the jne at 0x420c6b is always taken (L22 proof, checked by the lead)."
+ },
+ "0x00559976": {
+  "blocks": [
+   "0x0055997f"
+  ],
+  "branches": [
+   "0x0055997d:fallthrough"
+  ],
+  "evidence": "int3 assertion guard: 'test dword [edi+0x44],-1; jne 0x559980; int3'. The block is the breakpoint itself: a case reaching it traps (#BP) in the original, so no valid case can cover it; the reconstruction keeps it as __debugbreak() (same idiom as the other int3 guards). m58, checked by the lead."
+ },
+ "0x00555ea4": {
+  "blocks": [
+   "0x00555ebe"
+  ],
+  "branches": [
+   "0x00555ebc:fallthrough"
+  ],
+  "evidence": "int3 assertion guard: 'cmp edi,0x967968; jb 0x555ec1; int3' (edi = [0x965a2c]*8 + 0x965a30, the end of the slot array). The block is the breakpoint itself: a case reaching it traps (#BP) in the original, so no valid case can cover it; the reconstruction keeps it as __debugbreak() (m65, checked by the lead)."
+ },
+ "0x00527787": {
+  "blocks": [
+   "0x005277f1"
+  ],
+  "branches": [
+   "0x005277ef:fallthrough"
+  ],
+  "evidence": "On the path to 0x5277e0, eax = byte[ecx+0x948b80] - 0x15 clamped to -0xf..0 (0x5277aa jle / 0x5277b4 jge) and dl = byte[ebx+0x948b80] < 0x28 (0x5277c6 jb), so eax+edx <= 0x27 and 'cmp eax,0x27; jle 0x5277f6' at 0x5277ec is always taken: block 0x5277f1 (mov eax,0x27) is unreachable (m62, checked by the lead)."
+ },
+ "0x0055844c": {
+  "blocks": [
+   "0x0055849c"
+  ],
+  "branches": [
+   "0x0055849a:fallthrough"
+  ],
+  "evidence": "ax is clamped to 0..0xff (0x558464/0x55846e); dx is raised to at least ax (0x55847e) and clamped to at most 0xff (0x558486), so dx is in ax..0xff and dx+1-ax is in 1..0x100: 'cmp dx,1; jge 0x5584a0' at 0x558496 is always taken and block 0x55849c (mov dx,1) is unreachable (m66, checked by the lead)."
+ },
+ "0x0053ddbb": {
+  "blocks": [
+   "0x0053de03",
+   "0x0053de3a",
+   "0x0053de5a"
+  ],
+  "branches": [
+   "0x0053de01:fallthrough"
+  ],
+  "evidence": "0x53ddfb 'and eax,3' leaves eax in 0..3, so 'cmp eax,5; jb 0x53de08' is always taken: block 0x53de03 (mov eax,4) is unreachable, and with it switch case 4 (0x53de3a -> 0x53de5a) (L27, lead check)."
+ },
+ "0x0053df39": {
+  "blocks": [
+   "0x0053df85",
+   "0x0053dfba",
+   "0x0053dfd6"
+  ],
+  "branches": [
+   "0x0053df83:fallthrough"
+  ],
+  "evidence": "0x53df7d 'and eax,3' leaves eax in 0..3, so 'cmp eax,5; jb 0x53df8a' is always taken: block 0x53df85 (mov eax,4) is unreachable, and with it switch case 4 (0x53dfba -> 0x53dfd6) (L27, lead check)."
+ },
+ "0x005585db": {
+  "blocks": [
+   "0x005585fb"
+  ],
+  "branches": [
+   "0x005585f9:fallthrough"
+  ],
+  "evidence": "int3 assertion guard: 'cmp eax,0x3ff; jl 0x5585fc; int3' on the counter [0x870598]. The block is the breakpoint itself: a case reaching it traps (#BP) in the original, so no valid case can cover it (m74, lead check)."
+ },
+ "0x005398c4": {
+  "blocks": [
+   "0x005398d0",
+   "0x00539922",
+   "0x00539936"
+  ],
+  "branches": [
+   "0x005398ce:fallthrough"
+  ],
+  "evidence": "'mov dl,[esi+0xd]; and edx,3' leaves edx in 0..3, so 'cmp edx,5; jb' at 0x005398ce is always taken: block 0x005398d0 (mov edx,4, the default table index) is unreachable (m77, lead check). With the index in 0..3, switch case 4 (0x00539922 -> 0x00539936) is never dispatched (lead, 2026-10-20, after the analyzer began following add-table switches)."
+ },
+ "0x00539944": {
+  "blocks": [
+   "0x00539950",
+   "0x00539989",
+   "0x0053999d"
+  ],
+  "branches": [
+   "0x0053994e:fallthrough"
+  ],
+  "evidence": "'mov dl,[esi+0xd]; and edx,3' leaves edx in 0..3, so 'cmp edx,5; jb' at 0x0053994e is always taken: block 0x00539950 (mov edx,4, the default table index) is unreachable (m77, lead check). With the index in 0..3, switch case 4 (0x00539989 -> 0x0053999d) is never dispatched (lead, 2026-10-20, after the analyzer began following add-table switches)."
+ },
+ "0x005399ab": {
+  "blocks": [
+   "0x005399b7",
+   "0x005399f1",
+   "0x00539a05"
+  ],
+  "branches": [
+   "0x005399b5:fallthrough"
+  ],
+  "evidence": "'mov dl,[esi+0xd]; and edx,3' leaves edx in 0..3, so 'cmp edx,5; jb' at 0x005399b5 is always taken: block 0x005399b7 (mov edx,4, the default table index) is unreachable (m77, lead check). With the index in 0..3, switch case 4 (0x005399f1 -> 0x00539a05) is never dispatched (lead, 2026-10-20, after the analyzer began following add-table switches)."
+ },
+ "0x00539a13": {
+  "blocks": [
+   "0x00539a1f",
+   "0x00539a6f",
+   "0x00539a83"
+  ],
+  "branches": [
+   "0x00539a1d:fallthrough"
+  ],
+  "evidence": "'mov dl,[esi+0xd]; and edx,3' leaves edx in 0..3, so 'cmp edx,5; jb' at 0x00539a1d is always taken: block 0x00539a1f (mov edx,4, the default table index) is unreachable (m77, lead check). With the index in 0..3, switch case 4 (0x00539a6f -> 0x00539a83) is never dispatched (lead, 2026-10-20, after the analyzer began following add-table switches)."
+ },
+ "0x00517e98": {
+  "blocks": [
+   "0x00517f43",
+   "0x00517f49",
+   "0x00517f4d",
+   "0x00517f59"
+  ],
+  "branches": [
+   "0x00517f41:fallthrough",
+   "0x00517f47:fallthrough",
+   "0x00517f4b:taken",
+   "0x00517f4b:fallthrough",
+   "0x00517f57:fallthrough",
+   "0x00517f5d:taken",
+   "0x00517f61:taken"
+  ],
+  "evidence": "Inlined digit tails: the first runs on the literal 'mov al,0x2e' (0x517f3d), so 'cmp al,0x2d; jne' and 'cmp al,0x30; jb' are always taken; the second runs on al = 0x30 + (BCD >> 8 & 0xf) where 0x51fd0c leaves value < 1000 after its 10000/1000 loops, so the hundreds nibble is 0..9 and al is 0x30..0x39: never 0x2d, never below 0x30, never above 0x39 (m94, lead check of 0x51fd0c)."
+ },
+ "0x0051771d": {
+  "blocks": [
+   "0x005177a8",
+   "0x005177ae",
+   "0x005177b2",
+   "0x005177bb",
+   "0x005177c1",
+   "0x005177c5"
+  ],
+  "branches": [
+   "0x005177a6:fallthrough",
+   "0x005177ac:fallthrough",
+   "0x005177b0:taken",
+   "0x005177b0:fallthrough",
+   "0x005177b9:fallthrough",
+   "0x005177bf:fallthrough",
+   "0x005177c3:taken",
+   "0x005177c3:fallthrough"
+  ],
+  "evidence": "Both inlined digit tails start with the literal 'mov al,0x20' (0x5177a2, 0x5177b5): 'cmp al,0x2d; jne' is always taken (0x20 != 0x2d) and 'cmp al,0x30; jb' is always taken (0x20 < 0x30), so the blocks after them never run (m94, lead check)."
+ },
+ "0x005584de": {
+  "blocks": [
+   "0x005584fe"
+  ],
+  "branches": [
+   "0x005584fc:fallthrough"
+  ],
+  "evidence": "int3 assertion guard 'cmp eax,0x3ff; jl 0x5584ff; int3' on the counter [0x870598] (bounded 0..0x3fe by cnt_00870598): the block is the breakpoint itself, so no valid case can cover it (m92, lead check; twin of 0x5585db)."
+ },
+ "0x0055659b": {
+  "blocks": [
+   "0x005565ad",
+   "0x005565bc"
+  ],
+  "branches": [
+   "0x005565ab:fallthrough",
+   "0x005565ba:fallthrough"
+  ],
+  "evidence": "int3 assertion guards on the ring record flags [edi+0x2c] ('bit 0x200 set implies 0x1000000 set', 'bit 0x100 set implies 0x800000 set'): each block is the breakpoint itself, so a case reaching it traps in the original and no valid case can cover it (m95, lead check)."
+ },
+ "0x0054d7c0": {
+  "blocks": [
+   "0x0054d7f4"
+  ],
+  "branches": [
+   "0x0054d7d8:taken",
+   "0x0054d805:taken"
+  ],
+  "evidence": "0x54d834 always returns eax = 0 (its digit loop jumps back onto its own 'mov eax,0' at 0x54d836 and it exits only from there), and pushfd/pushal..popal/popfd restore eax, so both 'cmp eax,5; jae' tests (0x54d7d8, 0x54d805) are never taken and block 0x54d7f4 is unreachable (m96, lead check)."
+ },
+ "0x005583cb": {
+  "blocks": [
+   "0x005583f7"
+  ],
+  "branches": [
+   "0x005583f5:fallthrough"
+  ],
+  "evidence": "int3 assertion guard: (word [esi] & 0xff) * 10 must be below 0x961b92-0x9619f8 (0x19a) ('cmp eax,edx; jb; int3'); the block is the breakpoint itself, so a case reaching it traps in the original and no valid case can cover it (m97, lead check)."
+ },
+ "0x00558557": {
+  "blocks": [
+   "0x00558577"
+  ],
+  "branches": [
+   "0x00558575:fallthrough"
+  ],
+  "evidence": "int3 assertion guard 'cmp eax,0x3ff; jl; int3' on the counter [0x870598] (bounded 0..0x3fe by cnt_00870598); the block is the breakpoint itself (m97, lead check; twin of 0x5585db)."
+ },
+ "0x0053e3e9": {
+  "blocks": [
+   "0x0053e4c9",
+   "0x0053e4d1"
+  ],
+  "branches": [
+   "0x0053e4c7:fallthrough",
+   "0x0053e4cf:taken",
+   "0x0053e4cf:fallthrough"
+  ],
+  "evidence": "eax = movzx byte [ebx] (<= 0xff) and both callees leave it unchanged (0x54cb71 is push/pop eax,esi,edi; 0x54d6f2 is a bare ret), so 'cmp eax,0x1f4; jbe 0x53e4d4' at 0x53e4c7 is always taken and the GP3 width-fit loop blocks 0x53e4c9/0x53e4d1 never run (m100, lead check)."
+ },
+ "0x00555226": {
+  "blocks": [
+   "0x00555258",
+   "0x00555298"
+  ],
+  "branches": [
+   "0x00555256:fallthrough",
+   "0x00555296:fallthrough"
+  ],
+  "evidence": "q = (w << 14) / max(d,1) with w = word +0x7e (+0x80), d = word +0x74 (+0x76); the 'cmp eax,0x4000; jle' path continues only when q > 0x4000, which needs w > max(d,1) >= d, so 'sub d,w' is negative and 'js' always skips the 'mov eax,-1' blocks (m102, lead check)."
+ },
+ "0x00557685": {
+  "blocks": [
+   "0x005576a5"
+  ],
+  "branches": [
+   "0x005576a3:fallthrough"
+  ],
+  "evidence": "int3 assertion guard on the incremented counter [0x871c80] ('cmp [0x871c80],0x80; jb; int3'): the block is the breakpoint itself, so a case reaching it traps in the original and no valid case can cover it (m99, lead check)."
+ },
+ "0x005576e8": {
+  "blocks": [
+   "0x00557708"
+  ],
+  "branches": [
+   "0x00557706:fallthrough"
+  ],
+  "evidence": "int3 assertion guard on the incremented counter [0x871c80] ('cmp [0x871c80],0x80; jb; int3'): the block is the breakpoint itself, so a case reaching it traps in the original and no valid case can cover it (m99, lead check)."
+ },
+ "0x005581dc": {
+  "blocks": [
+   "0x00558216"
+  ],
+  "branches": [
+   "0x00558214:fallthrough"
+  ],
+  "evidence": "int3 assertion guard 'inc edx; cmp edx,0x10; jb; int3' on the slot counter [0x874d28] (bounded 0..14 by slot_005581dc): the block is the breakpoint itself (m105, lead check)."
+ },
+ "0x0043981a": {
+  "blocks": [
+   "0x00439a28",
+   "0x00439a73",
+   "0x00439abe"
+  ],
+  "branches": [
+   "0x00439f42:taken"
+  ],
+  "evidence": "Cohen-Sutherland axis dispatch: each axis section is entered only when esi = code12|code13 has that axis' bits; it tests the bits on one code, then after 'xchg ecx,ebx' on the other, so one test always hits and the trailing 'jmp 0x439f6f' blocks 0x439a28/0x439a73/0x439abe never run; 0x439f42:taken is dead because both codes are nonzero on entry and a recompute giving 0 exits at 0x439f37 first (L31 proof; lead check of the dispatch pattern)."
+ },
+ "0x0042fb30": {
+  "blocks": [
+   "0x0042fc4d",
+   "0x0042fca4"
+  ],
+  "evidence": "the car-record pointers +0x130/+0x12c were just dereferenced by 0x42cd1e on this path and none of the 63 functions in that callee closure writes them, so the null tests guarding blocks 0x42fc4d/0x42fca4 never fail (L31 proof). Added for margin: the function passed at exactly 35/38 blocks."
+ },
+ "0x00558a65": {
+  "blocks": [
+   "0x00558a86"
+  ],
+  "branches": [
+   "0x00558a7c:taken"
+  ],
+  "evidence": "int3 assertion: in mode 2 the stream word must be 4 ('cmp ax,4; jne 0x558a86' -> int3); the block is the breakpoint itself, so a case reaching it traps in the original and no valid case can cover it (m104, lead check)."
+ },
+ "0x00548cec": {
+  "blocks": [
+   "0x00548d96",
+   "0x00548dfa"
+  ],
+  "branches": [
+   "0x00548d8c:taken",
+   "0x00548df0:taken"
+  ],
+  "evidence": "[0x831a5d] is written only at entry (0x548d01) with 0x14a0 or 0xcd1 (feet per mile / per km), and both 'cmp [0x831a5d],edx; jbe' tests run with edx = 0 just set, so they are never taken and blocks 0x548d96/0x548dfa never run (m115, lead check)."
+ },
+ "0x00553dbd": {
+  "blocks": [
+   "0x00553e1d",
+   "0x00553e6b",
+   "0x00553ea1"
+  ],
+  "branches": [
+   "0x00553e1b:fallthrough",
+   "0x00553e69:fallthrough",
+   "0x00553e9f:fallthrough"
+  ],
+  "evidence": "three int3 assertion guards (byte count < 0x30d40, record count <= 0x80, record word >= 0x8003): each block is the breakpoint itself, so a case reaching it traps in the original and no valid case can cover it (hdr_00553dbd keeps them unreachable; L41, lead check)."
+ },
+ "0x005426d3": {
+  "blocks": [
+   "0x005426df",
+   "0x00542726",
+   "0x0054276d",
+   "0x005427b4"
+  ],
+  "branches": [
+   "0x005426dd:fallthrough",
+   "0x00542724:fallthrough",
+   "0x0054276b:fallthrough",
+   "0x005427b2:fallthrough"
+  ],
+  "evidence": "each 'mov eax,K; push ebx; sub eax,C; jns' subtracts two constants with K >= C (0x64-0x64, 0x60-0x60, 0x2dc-0x64, 0x19c-0x60), so the result is never negative and the 'mov eax,0' clamp blocks never run (m117, lead check)."
+ },
+ "0x0051739a": {
+  "blocks": [
+   "0x00517446",
+   "0x0051744c",
+   "0x00517450",
+   "0x00517459",
+   "0x0051745f",
+   "0x00517463"
+  ],
+  "branches": [
+   "0x00517444:fallthrough",
+   "0x0051744a:fallthrough",
+   "0x0051744e:taken",
+   "0x0051744e:fallthrough",
+   "0x00517457:fallthrough",
+   "0x0051745d:fallthrough",
+   "0x00517461:taken",
+   "0x00517461:fallthrough"
+  ],
+  "evidence": "both inlined digit tails start with the literal 'mov al,0x20' (0x517440, 0x517453): 'cmp al,0x2d; jne' and 'cmp al,0x30; jb' are always taken, so the blocks after them never run (m128, lead check)."
+ },
+ "0x005575fe": {
+  "blocks": [
+   "0x0055761e"
+  ],
+  "branches": [
+   "0x0055761c:fallthrough"
+  ],
+  "evidence": "int3 assertion guard on the incremented counter [0x871c80] ('cmp [0x871c80],0x80; jb; int3', bounded by stack_0055753f): the block is the breakpoint itself (m125, lead check)."
+ },
+ "0x0055ac8a": {
+  "blocks": [
+   "0x0055ac96"
+  ],
+  "branches": [
+   "0x0055ac94:fallthrough"
+  ],
+  "evidence": "int3 assertion guard: eax bit 15 set without bit 14 traps ('test ax,0x4000; jne; test ax,0x8000; je; int3'); the block is the breakpoint itself, so no valid case can cover it (m136, lead check)."
+ },
+ "0x005552e9": {
+  "blocks": [
+   "0x0055535a",
+   "0x00555384",
+   "0x005553ff",
+   "0x00555429"
+  ],
+  "evidence": "Each clamp input is (T*b)>>14 with T = movsx word [idx+0x7c5c5c], idx = (|angle16|>>2)&0xfffe <= 0x2000, and b = movsx byte (-128..127). Words 0..4096 of the table are -16384..16384 in the image and no code stores to them (lead scan of all fixed-address refs 2026-10-20), so T*b >= -16384*128 and (T*b)>>14 >= -128: the jge at 0x555358/0x555382/0x5553fd/0x555427 is always taken."
+ },
+ "0x0055ab0e": {
+  "blocks": [
+   "0x0055ab90",
+   "0x0055ac77",
+   "0x0055ac82"
+  ],
+  "evidence": "int3 guards (third record within 0x840 of the pit end, more than 32 entries, empty stream): reaching one faults in the original, so every case that reaches them is invalid; the reconstruction keeps them as __debugbreak()."
+ },
+ "0x0051b645": {
+  "branches": [
+   "0x0051b681:taken"
+  ],
+  "evidence": "ecx = 0xfe from 'mov ecx,0xfe' (0x51b65c) on entry to the loop head 0x51b661, and nonzero on every repeat ('dec ecx; jne 0x51b661' at 0x51b6c5/0x51b6c6); no instruction in 0x51b661..0x51b681 writes ecx and the only branches into that range are the loop's own (0x51b668, 0x51b6c6; L47 scan of all sections), so 'cmp ecx,0; je' at 0x51b681 is never taken."
+ },
+ "0x005558c6": {
+  "blocks": [
+   "0x005558d3",
+   "0x005558f0"
+  ],
+  "evidence": "int3 assertions after 'cmp eax,0xf000; jbe' (distance/8 from 0x555636/0x55577e must be <= 0xf000): reaching one faults in the original, so every case that reaches them is invalid; the reconstruction keeps them as __debugbreak()."
+ },
+ "0x0052a919": {
+  "blocks": [
+   "0x0052a931",
+   "0x0052a949",
+   "0x0052a961"
+  ],
+  "branches": [
+   "0x0052a92b:taken",
+   "0x0052a943:taken",
+   "0x0052a95b:taken"
+  ],
+  "evidence": "'mov ecx,0x64' at 0x52a91a; up to 0x52a95b only movzx/imul eax, sub edx,edx, idiv ecx (reads ecx) and push eax run, none writes ecx, and the only jumps are the function's own je/jmp pairs, so each 'cmp ecx,0; je' (0x52a92b/0x52a943/0x52a95b) sees ecx = 0x64 and is never taken (m147, lead check)."
+ },
+ "0x00522e0e": {
+  "branches": [
+   "0x00522e1f:taken",
+   "0x00522e23:taken"
+  ],
+  "evidence": "Reached only when 0x522da0 counted exactly one of the 22 bytes at 0x7c2a48 with bit 7 set and bit 6 clear (eax==1); 0x522dca then scans the same unchanged bytes with the same predicate and returns that byte in al, so 'test al,0x40; jne' and 'test al,0xff; jns' are never taken (m139, lead check)."
+ },
+ "0x00522e31": {
+  "branches": [
+   "0x00522e42:taken",
+   "0x00522e46:taken"
+  ],
+  "evidence": "Reached only when 0x522da0 counted exactly one of the 22 bytes at 0x7c2a48 with bits 7 and 6 set (edx==1); 0x522dec then scans the same unchanged bytes with the same predicate and returns that byte in al, so 'test al,0x40; je' and 'test al,0xff; jns' are never taken (m139, lead check)."
+ },
+ "0x00518d01": {
+  "branches": [
+   "0x00518d10:taken"
+  ],
+  "evidence": "The callee 0x50a090 is 'mov al,1; ret 4': after it eax has al = 1, so 'cmp eax,0; je 0x518d17' is never taken (m152, lead check)."
+ },
+ "0x00548e66": {
+  "blocks": [
+   "0x00548e85"
+  ],
+  "branches": [
+   "0x00548e83:fallthrough"
+  ],
+  "evidence": "eax is the count 0x548ec5 returns: it starts at 0 and increments at most once for each of 0x16 bytes, so eax <= 0x16 and 'cmp eax,0x16; jbe' at 0x548e83 is always taken (m151, lead check)."
+ },
+ "0x00550d0b": {
+  "branches": [
+   "0x00550d39:taken"
+  ],
+  "evidence": "0x526f21 (called just before) always stores [0x875e92] = 0 or 0x8000 at 0x526f45 on both its paths and calls nothing; 0x550d0b reads the word right after it returns: 0 takes the jb at 0x550d33, 0x8000 <= 0xc000 so 'cmp ax,0xc000; ja' at 0x550d39 is never taken (L49 proof, lead check)."
+ },
+ "0x005280e2": {
+  "blocks": [
+   "0x005280f4"
+  ],
+  "branches": [
+   "0x005280f2:fallthrough",
+   "0x0052810a:taken",
+   "0x0052810a:fallthrough"
+  ],
+  "evidence": "The callee 0x527d03 is 'stc; ret', so 'jb 0x52810c' at 0x5280f2 is always taken and the refill loop 0x5280f4..0x52810a never runs (m154, lead check)."
+ },
+ "0x00518735": {
+  "blocks": [
+   "0x00518746"
+  ],
+  "branches": [
+   "0x00518744:fallthrough"
+  ],
+  "evidence": "0x518d01 calls 0x50a090 ('mov al,1; ret 4'), so its 'cmp eax,0; je' is never taken and it returns eax = 0xffffffff; 'cmp eax,-1; je 0x51874f' at 0x518744 is therefore always taken (m153, lead check)."
+ },
+ "0x00516ad6": {
+  "blocks": [
+   "0x00516af2",
+   "0x00516b05",
+   "0x00516b0f",
+   "0x00516b23",
+   "0x00516b40",
+   "0x00516b53",
+   "0x00516b59",
+   "0x00516b5d",
+   "0x00516b6d",
+   "0x00516b8a",
+   "0x00516ba4"
+  ],
+  "evidence": "An inlined glyph-map macro ('cmp al,0x2d; jne; mov al,0x15; cmp al,0x30; jb; cmp al,0x39; ja; sub al,0x1a') follows every character: for the digit characters al = (nibble & 0xf) + 0x30 is in 0x30..0x3f, never 0x2d, so each 'mov al,0x15' block is dead; for the literal ':' (0x3a) and '.' (0x2e) the tests are constant, so their 0x2d block, ':''s 'sub' block and '.''s 'cmp al,0x39'/'sub' blocks never run (m158, lead check: none of the listed blocks depends on the BCD digits being 0..9)."
+ },
+ "0x005280ac": {
+  "blocks": [
+   "0x005280d0"
+  ],
+  "branches": [
+   "0x005280ce:fallthrough"
+  ],
+  "evidence": "The callee 0x527d03 is 'stc; ret', so 'jb 0x5280da' at 0x5280ce is always taken (m157, lead check)."
+ },
+ "0x00518d18": {
+  "blocks": [
+   "0x00518d3d"
+  ],
+  "branches": [
+   "0x00518d3b:fallthrough"
+  ],
+  "evidence": "0x518d01 calls 0x50a090 ('mov al,1; ret 4'), so eax has al = 1, its 'cmp eax,0; je' is never taken and it returns 0xffffffff; 'cmp eax,0; jne 0x518d52' at 0x518d3b is therefore always taken (m157, lead check)."
+ },
+ "0x0051f1ff": {
+  "blocks": [
+   "0x0051f22d"
+  ],
+  "branches": [
+   "0x0051f22b:fallthrough"
+  ],
+  "evidence": "0x518735 calls 0x518d01, which always returns 0xffffffff (0x50a090 is 'mov al,1; ret 4', so al = 1 and its 'cmp eax,0; je' is never taken); 0x518735's 'cmp eax,-1; je 0x51874f' then always reaches 'stc; ret', and 'pop eax' keeps CF, so 'jb 0x51f25d' at 0x51f22b is always taken (m161, lead check)."
+ },
+ "0x00516967": {
+  "blocks": [
+   "0x00516981",
+   "0x00516994",
+   "0x0051699e",
+   "0x005169ae",
+   "0x005169cb",
+   "0x005169de",
+   "0x005169e4",
+   "0x005169e8",
+   "0x005169f8",
+   "0x00516a15",
+   "0x00516a2f"
+  ],
+  "evidence": "An inlined glyph-map macro ('cmp al,0x2d; jne; mov al,0x15; cmp al,0x30; jb; cmp al,0x39; ja; sub al,0x1a') follows every character: for the digit characters al = (nibble & 0xf) + 0x30 is in 0x30..0x3f, never 0x2d, so each 'mov al,0x15' block is dead; for the literal ':' (0x3a) and '.' (0x2e) the tests are constant, so their 0x2d block, ':''s 'sub' block and '.''s 'cmp al,0x39'/'sub' blocks never run (same macro as 0x516ad6; m149, lead check: none of the listed blocks depends on the BCD digits being 0..9)."
+ },
+ "0x00528450": {
+  "blocks": [
+   "0x00528457",
+   "0x00528460"
+  ],
+  "branches": [
+   "0x00528455:fallthrough",
+   "0x00528467:taken",
+   "0x00528467:fallthrough"
+  ],
+  "evidence": "The callee 0x527d03 is 'stc; ret', so 'jb 0x528469' at 0x528455 is always taken and the refill loop 0x528457..0x528467 never runs (m156, lead check)."
+ },
+ "0x0055218f": {
+  "blocks": [
+   "0x005522e9"
+  ],
+  "branches": [
+   "0x005522e7:fallthrough"
+  ],
+  "evidence": "Every path from the loop head 0x552194 to the test at 0x5522e2 passes 'call 0x552047' (0x5521c2; the only bypass 0x5521a8 jumps past the test), which stores [0x963240]=0x80 and [0x963244]=0; nothing in between writes them (the only call, 0x55200c, is a bare ret), so 0x55200e computes 0-0x80 < 0, takes 'js' to stc, and 'jb 0x5522ee' at 0x5522e7 is always taken (m170, lead check)."
+ },
+ "0x0051ace6": {
+  "blocks": [
+   "0x0051ad30"
+  ],
+  "branches": [
+   "0x0051ad2e:fallthrough",
+   "0x0051ad37:taken",
+   "0x0051ad37:fallthrough",
+   "0x0051ad53:taken"
+  ],
+  "evidence": "'push eax; mov al,0xff; cmp al,0; pop eax; jne 0x51ad39' (0x51ad28..0x51ad2e) always jumps (pop does not touch flags), so block 0x51ad30 and both directions of its je never run; 'mov al,0xff; mov [0x88f6e0],al; cmp al,0xff; jne 0x51ad80' (0x51ad4a..0x51ad53) never jumps (m174, lead check)."
+ },
+ "0x00519bb2": {
+  "blocks": [
+   "0x00519d1d"
+  ],
+  "branches": [
+   "0x00519d1b:fallthrough",
+   "0x00519d24:taken",
+   "0x00519d24:fallthrough",
+   "0x00519d40:taken"
+  ],
+  "evidence": "Same constant tests as its twin 0x51ace6: 'push eax; mov al,0xff; cmp al,0; pop eax; jne 0x519d26' (0x519d15..0x519d1b) always jumps, so block 0x519d1d and both directions of its je never run; 'mov al,0xff; mov [0x88f6e0],al; cmp al,0xff; jne 0x519d6a' (0x519d37..0x519d40) never jumps (m182, lead check)."
+ },
+ "0x005420a8": {
+  "blocks": [
+   "0x005420c1"
+  ],
+  "branches": [
+   "0x005420bf:fallthrough"
+  ],
+  "evidence": "'cmp ecx,0x28; jle 0x5420eb' falls through only when ecx > 0x28 (signed); 'pushfd; pushal' do not change the flags, so the following 'jg 0x5420d8' at 0x5420bf is always taken and block 0x5420c1 never runs (m163, lead check)."
+ },
+ "0x0054dd7a": {
+  "blocks": [
+   "0x0054ddca"
+  ],
+  "evidence": "'mov al,7; mov ah,0xe; int 0x10' is a DOS-heritage BIOS teletype beep: in a Win32 user-mode process 'int 0x10' raises an access violation, so reaching it faults the original (like an int3 guard) and every case that reaches it is invalid; the reconstruction keeps a __debugbreak() there (m163, lead check)."
+ },
+ "0x0051bef2": {
+  "blocks": [
+   "0x0051bf3e"
+  ],
+  "branches": [
+   "0x0051bf2a:taken",
+   "0x0051bf32:taken",
+   "0x0051bf3a:taken",
+   "0x0051bf57:taken"
+  ],
+  "evidence": "Colour round-trip self-test: al/bl/cl are stored to 0x933a0e/0f/10, then 0x51b03f/0x51b040 (bare ret) and 0x51b1f9/0x51b2ea (pushal..popal; neither references 0x933a0e..0x933a10) run, so al/bl/cl and the three bytes are unchanged and every 'cmp; jne 0x51bf3e' compares equal: block 0x51bf3e (call 0x51bf6a) never runs. 'add bx,5; cmp cx,0x100; jl' at 0x51bf57 tests cx, which is exactly 0x100 when the inner loop exits, so it is never taken (m180, lead check)."
+ },
+ "0x005175cc": {
+  "blocks": [
+   "0x0051765d",
+   "0x00517663",
+   "0x00517667"
+  ],
+  "branches": [
+   "0x0051765b:fallthrough",
+   "0x00517661:fallthrough",
+   "0x00517665:taken",
+   "0x00517665:fallthrough"
+  ],
+  "evidence": "The glyph-map macro at 0x517657 runs on the literal 'mov al,0x20': 0x20 != 0x2d so the jne at 0x51765b is always taken (0x51765d dead), and 0x20 < 0x30 so the jb at 0x517661 is always taken (0x517663/0x517667 dead) (m191, lead check)."
+ },
+ "0x00530e10": {
+  "blocks": [
+   "0x00530e6b"
+  ],
+  "branches": [
+   "0x00530e65:taken"
+  ],
+  "evidence": "ebx = |edx|, esi = ecx >> 1; the fall-through of 'cmp esi,ebx; jbe' (unsigned) means esi > ebx >= 0, so esi >= 1 and ecx >= 2: 'cmp ecx,0; je 0x530e6b' at 0x530e65 is never taken (m190, lead check)."
+ },
+ "0x00516a3d": {
+  "blocks": [
+   "0x00516a49",
+   "0x00516a4d",
+   "0x00516a56",
+   "0x00516a60",
+   "0x00516a6f",
+   "0x00516a73",
+   "0x00516a82",
+   "0x00516a86",
+   "0x00516a8f",
+   "0x00516a95",
+   "0x00516a99",
+   "0x00516aa8",
+   "0x00516aac",
+   "0x00516abb",
+   "0x00516abf",
+   "0x00516ace",
+   "0x00516ad2"
+  ],
+  "branches": [
+   "0x00516a41:taken",
+   "0x00516a47:fallthrough",
+   "0x00516a54:fallthrough",
+   "0x00516a5a:taken",
+   "0x00516a5e:fallthrough",
+   "0x00516a67:taken",
+   "0x00516a6d:fallthrough",
+   "0x00516a7a:taken",
+   "0x00516a80:fallthrough",
+   "0x00516a8d:fallthrough",
+   "0x00516a93:fallthrough",
+   "0x00516aa0:taken",
+   "0x00516aa6:fallthrough",
+   "0x00516ab3:taken",
+   "0x00516ab9:fallthrough",
+   "0x00516ac6:taken",
+   "0x00516acc:fallthrough"
+  ],
+  "evidence": "The routine writes the fixed string '-:--.--' (8 literals) through the inline glyph-map macro ('mov al,K; cmp al,0x2d; jne; mov al,0x15; cmp al,0x30; jb; cmp al,0x39; ja; sub al,0x1a; stosb'): every compare tests a literal (no data-dependent branch), so the listed blocks and directions are the macro arms the literals never take (computed from the literals by the lead; m187)."
+ },
+ "0x005376aa": {
+  "branches": [
+   "0x00537707:taken",
+   "0x00537707:fallthrough"
+  ],
+  "evidence": "'je 0x537709' at 0x537707 jumps to the next instruction: both directions continue at 0x537709 with identical state, so the coverage tracker cannot tell them apart (degenerate branch; m194, lead check)."
+ }
+}

@@ -1,0 +1,9 @@
+{
+ "_evidence": "Inputs of the effect chains 0x552d1e (object 3, state [0x866dc8]), 0x552e4f (object 6, state [0x866dcc]) and 0x552f7f (object 10, state [0x866dc4], budget [0x866e10]) beyond the spawner state of fx_00866248 (compose after it and the layouts of 0x552cfa's accepted spec). Each link passes edx = 0x865f58/0x865f68/0x865f78/0x865f88 ('mov edx,imm'), and 0x552cfa copies the source dwords [edx] and [edx+8] into the template +0/+8, the spawn offset that 0x55278a adds to the owner position before the ring walk. The only references to 0x865f58..0x865f9f in GP4.exe are those 'mov edx,imm' operands (immediate scan), so they are static offsets; fuzz:i32 would make them arbitrary (positions off the track ring), so they draw the synthetic +-0x400 of 0x552cfa's accepted edx domain (|offset| <= 0x400 keeps the particle x/z inside view_00443de9's +-2^21 with fxowner_0055278a's +-2^24 owner positions). The round-robin states draw 0..3 and values >= 4 ('cmp eax,4; jb' else 3: every jump-table entry) and the budget of 0x552f7f (0x552d1e/0x552e4f set it to 0x64 on entry) draws 0, small and -1 values so 'dec; js' goes both ways after the first spawn. The ZF=1 outcome every link tests comes from 0x55278a itself: it clears byte [0x866e45] on entry and sets it to 0xff only after a spawn, which fx_00866248's clocks (L >= N in part of the picks) and fxowner_0055278a's +0x7a bit 7 make happen in part of the cases.",
+ "globals": [
+  {"addr": "0x00865f58", "type": "i32", "count": 4, "stride": "0x10", "lo": -1024, "hi": 1024},
+  {"addr": "0x00865f60", "type": "i32", "count": 4, "stride": "0x10", "lo": -1024, "hi": 1024},
+  {"addr": "0x00866dc4", "type": "u32", "count": 3, "stride": 4, "values": [0, 1, 2, 3, 4, "0x80000000"]},
+  {"addr": "0x00866e10", "type": "u32", "values": [0, 1, 2, 5, "0x64", "0xffffffff"]}
+ ]
+}

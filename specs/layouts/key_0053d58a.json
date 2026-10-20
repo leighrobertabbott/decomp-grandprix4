@@ -1,0 +1,51 @@
+{
+ "_evidence": "Menu key dispatch 0x0053d58a (compose after menu_0084300a+state_0053d9a6+sel_0053d879, which pin [0x82fd34] = the static menu 0x84300a and [0x82fd45] in 1..12 so the 'mov esi,[esi]; dec ecx; jne' walk stays on the 13 chained items). 'movzx ebx, byte [[0x82fd34]+0x12]' reads the header byte 0x84301c (0 in the image): values 0 (skip), 1/2 (list = dword [0x82fe0a + 4*(b-1)], i.e. the static lists 0x82fe16 / 0x82fe4a, kept at their image pointers because this layout is used WITHOUT fuzz), 3 and 0xff (the 'cmp ebx,3; jae' exit). Each list is a dword count ('mov ecx,[ebx]; or ecx,ecx; je') then 6-byte entries (key word, handler dword): counts are drawn within the real entry counts (list 0x82fe16: 0..8 of its 8 entries, list 0x82fe4a: 0..1 of its 1) so the scan never runs into foreign bytes, and 0 reaches the empty-list exit. 'cmp ax, word [ebx]' compares the masked key ax = word [0x7ab00e] & 0x86ff with each entry's key word; the key words are synthetic: list keys and default-table (0x82fdbc, 13 entries) keys of entries 0..7 come from a small set {1,2,3,0x8004,0x405} that the key at 0x7ab00e also draws from (plus variants whose masked-off bits 0x100/0x800/0x7800 are set, which still match after the and, and non-matching 0, 6, 0x8005, 0xffff), so first matches at every position, list exhaustion into the default table and the full no-match exit all occur. The handler dwords are not touched: entries 0..7 call 0x53d799/7a4/7af/7ba (0x53dca6 on the item's static nav bytes 0xf9 -> 0x54e232), 0x53d7c5/0x53d81f/0x53d879/0x53d8c5 (bounded walks of the static menu), the lists call 0x53d90c..0x53d959 (0x53d964: [0x827fd4] = 0 returns) and 0x53d98b (ret) - all run inside the emulator. Default entries 8..12 (handlers 0x53d600, 0x53d636, 0x53d6c8, 0x53d6eb, 0x53d77a) lead into unmodelled Win32 (PostMessageA via 0x46ae90, the GetMessageA/DispatchMessageA pump 0x5086b0, file and GDI code): their key words get a bit outside the 0x86ff mask (0x101, 0x1002, 0x4803) so the masked key never selects them; the dispatch block 'call [ebx+2]' is the same instruction for every entry and is covered by entries 0..7 and the lists, and those five handlers are left to the T2 in-game check.",
+ "globals": [
+  {
+   "addr": "0x0084301c",
+   "type": "u8",
+   "values": [0, 0, 1, 1, 1, 2, 2, 2, 3, "0xff"]
+  },
+  {
+   "addr": "0x0082fe16",
+   "type": "u32",
+   "values": [8, 8, 8, 8, 5, 1, 0]
+  },
+  {
+   "addr": "0x0082fe1a",
+   "type": "u16",
+   "count": 8,
+   "stride": 6,
+   "values": [1, 2, 3, "0x8004", "0x405"]
+  },
+  {
+   "addr": "0x0082fe4a",
+   "type": "u32",
+   "values": [1, 1, 1, 0]
+  },
+  {
+   "addr": "0x0082fe4e",
+   "type": "u16",
+   "values": [1, 2, 3, "0x8004", "0x405"]
+  },
+  {
+   "addr": "0x0082fdbc",
+   "type": "u16",
+   "count": 8,
+   "stride": 6,
+   "values": [1, 2, 3, "0x8004", "0x405"]
+  },
+  {
+   "addr": "0x0082fdec",
+   "type": "u16",
+   "count": 5,
+   "stride": 6,
+   "values": ["0x101", "0x1002", "0x4803"]
+  },
+  {
+   "addr": "0x007ab00e",
+   "type": "u16",
+   "values": [1, 2, 3, "0x8004", "0x405", 1, 2, 3, "0x8004", "0x405", "0x101", "0x7802", "0x903", 0, 6, "0x8005", "0xffff"]
+  }
+ ]
+}

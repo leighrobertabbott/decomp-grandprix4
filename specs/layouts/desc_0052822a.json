@@ -1,0 +1,8 @@
+{
+ "_evidence": "Animation descriptor addressed by +4 of a 0x81cd91 slot (anim_0052822a), as read by 0x0052822a. Live-cell arm: 'mov edi,[edx+4]; mov ebx,[edi+0x20]; mov eax,[edi+0x24]; mov ebp,[edi+0x28]; mov ecx,[edi+0x2c]' feed 0x549db9 (stored into a pool node, eax compared unsigned with the list keys: any u32 is valid), 'test dword [edi+0x14],1/4/0x10/8/0x20' pick the placement (+0x18 replaces or is added to the frame record x, +0x1c to y; add wraps, nothing dereferenced: any u32). Flag-bit-0 arm: 'mov eax,[edx+4]; mov eax,[eax+4]; mov [edx+8],eax' copies +4 (restart delay, any u32). The block is 0x30 bytes (highest read +0x2c, 4 bytes); every other byte is random (fill bytes) and +0x14 draws the flag combinations explicitly (none, each bit alone, 4+0x10 / 8+0x20 where the replace arm wins, all, and all-ones). Values are synthetic.",
+ "size": 48,
+ "fill": "bytes",
+ "fields": [
+  {"off": "0x14", "type": "u32", "values": [0, 1, 4, 5, 8, "0x10", "0x11", "0x14", "0x20", "0x21", "0x28", "0x29", "0x30", "0x3d", "0x3f", "0x100", "0xffffffff"]}
+ ]
+}

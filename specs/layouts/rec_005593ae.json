@@ -1,0 +1,31 @@
+{
+ "_evidence": "0x5593ae: edi = [0x874b18], a 0x160-byte record of the ring 0x8943a0 (reads +0x2c; callee 0x559391 also reads edi-0x134 = previous record +0x2c, so edi is record 1..11); ebx = [0x874b1c], a record of the same ring (writers store ring record pointers), sometimes the same record (points_into overlap). Both are null in the image. The 12 records' bytes are random (bit masks tested and or'ed).",
+ "globals": [
+  {
+   "addr": "0x008943a0",
+   "type": "u8",
+   "count": "0x1080",
+   "stride": 1
+  },
+  {
+   "addr": "0x00874b18",
+   "type": "u32",
+   "points_into": {
+    "base": "0x8943a0",
+    "stride": "0x160",
+    "lo": 1,
+    "hi": 11
+   }
+  },
+  {
+   "addr": "0x00874b1c",
+   "type": "u32",
+   "points_into": {
+    "base": "0x8943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 11
+   }
+  }
+ ]
+}

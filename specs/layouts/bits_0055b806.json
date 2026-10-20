@@ -1,0 +1,58 @@
+{
+ "_evidence": "0x0055b806 walks the ring records (as in ring_00555b28: 0.. up to [0x866ecc], then [0x891500] up to [0x866ef8], records 0..32) and runs 0x55b763 on each (edi = record; it reads no other input register: ebx/esi/ecx are set, eax/edx computed). 0x55b763 reads byte +0x67 ('mov bl,[edi+0x67]; shr ebx,1; jae' per bit for ecx = 0..7: any byte, so all 256 masks are drawn), word +0x56 ('mov ax,[edi+0x56]; lea eax,[eax+eax*2]; shl eax,4; add eax, 0xb|0x14; add eax,ecx; mov dx,[eax*2+0x9559f8]'), word +0x1a ('mov ax,[edi+0x1a]; sub al,[edx+8]', any value) and writes dword +0xa0. Word +0x56 is an entry index of the 0x60-byte (48-word) table 0x9559f8, which 0x558e19 fills one entry at a time with an 'inc [0x9559f0]; cmp eax,0x200; jb / int3' bound and 0x558e4c stores the returned index into +0x56: so it is 0..0x1ff (0x9559f8 + 0x200*0x60 = 0x9619f8). Indices 0..3 and the last one 0x1ff are drawn; entries 0..3 and 0x1ff (0x961998) are varied (words 11..14 and 24..27 are the ones read). Each table word k selects the 10-byte record 0x961b9c + 10*k whose bytes +8 (sub al) and +9 (0x55b74b: 'mov dl,[edx+9]; shr dl,2') are read; any u16 stays inside .data (0x961b9c + 0x9fff6 < 0xb48ea5), here words 0..15 so that records 0..15 (bytes +8/+9 varied) are hit.",
+ "globals": [
+  {
+   "addr": "0x00894407",
+   "type": "u8",
+   "count": 33,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x008943f6",
+   "type": "u16",
+   "count": 33,
+   "stride": "0x160",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    "0x1ff"
+   ]
+  },
+  {
+   "addr": "0x008943ba",
+   "type": "u16",
+   "count": 33,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x009559f8",
+   "type": "u16",
+   "count": 192,
+   "stride": 2,
+   "lo": 0,
+   "hi": 15
+  },
+  {
+   "addr": "0x00961998",
+   "type": "u16",
+   "count": 48,
+   "stride": 2,
+   "lo": 0,
+   "hi": 15
+  },
+  {
+   "addr": "0x00961ba4",
+   "type": "u8",
+   "count": 16,
+   "stride": 10
+  },
+  {
+   "addr": "0x00961ba5",
+   "type": "u8",
+   "count": 16,
+   "stride": 10
+  }
+ ]
+}

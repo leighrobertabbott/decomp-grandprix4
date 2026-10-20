@@ -1,0 +1,46 @@
+{
+ "_evidence": "Scalars of 0x00413dd5 beyond state_00413d01: dword 0x602090 is the Q14 gain 0x413d49 multiplies the lane bounds by (imul, shrd 14: cannot fault); 0x4000/0x2000/0x10000 keep the bounds near the edi words so the record offsets fall on both sides, 0, negative and extreme gains invert or saturate them. Dword 0x66d814 (the clock, minus record +0x1f0 then js) and word 0x603bc0 (0x434d6b's cmp with record word +0x9a) take small and extreme values so both signs occur.",
+ "globals": [
+  {
+   "addr": "0x00602090",
+   "type": "u32",
+   "values": [
+    "0x4000",
+    "0x2000",
+    "0x10000",
+    "0x4000",
+    "0x0",
+    "0xffffc000",
+    "0x7fffffff",
+    "0x80000000"
+   ]
+  },
+  {
+   "addr": "0x0066d814",
+   "type": "u32",
+   "values": [
+    "0x0",
+    "0x1",
+    "0xffffffff",
+    "0x32",
+    "0xffffffce",
+    "0x7fffffff",
+    "0x80000000",
+    "0x1234567"
+   ]
+  },
+  {
+   "addr": "0x00603bc0",
+   "type": "u16",
+   "values": [
+    "0x0",
+    "0x1",
+    "0xffff",
+    "0x64",
+    "0xff9c",
+    "0x7fff",
+    "0x8000"
+   ]
+  }
+ ]
+}

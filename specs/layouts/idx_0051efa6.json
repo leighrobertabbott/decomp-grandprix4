@@ -1,0 +1,90 @@
+{
+ "_evidence": "0x0051efa6: esi = [0x96a3b4] (bank offset; its only writer 0x522f14 stores 0 or 0x700 ('cmp byte [0x7ad869],0; je' over 'mov eax,0x700'), so values {0,0x700}); 'movzx eax,word [esi*2+0x9e22c2]; cmp ax,-1; je' and 'movzx edx,word [esi*2+0x9e231a]; cmp dx,-1; je' (the four words for both banks drawn from {0xffff twice, 0, 1, 7, 0x1234} so both early exits and the fill run; they are zero .data in the image); ebp = movzx byte [0x66d88d] = the split of the fill: words [0x9e2310+2*(esi+k)] = ax for k < ebp, then = dx up to k = 4 (ebp >= 5 writes ebp words of ax; even 0xff stays inside .data, so every byte is valid: drawn from 0..8, 0x10, 0xff). The 16-word windows 0x9e2310/0x9e3110 (both banks) are varied first so every store is visible; the table words 0x9e231a/0x9e311a (= window word 5) are declared after them and win.",
+ "globals": [
+  {
+   "addr": "0x0096a3b4",
+   "type": "u32",
+   "values": [
+    0,
+    "0x700"
+   ]
+  },
+  {
+   "addr": "0x0066d88d",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    "0x10",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x009e2310",
+   "type": "u16",
+   "count": 16,
+   "stride": 2
+  },
+  {
+   "addr": "0x009e3110",
+   "type": "u16",
+   "count": 16,
+   "stride": 2
+  },
+  {
+   "addr": "0x009e22c2",
+   "type": "u16",
+   "values": [
+    "0xffff",
+    "0xffff",
+    0,
+    1,
+    7,
+    "0x1234"
+   ]
+  },
+  {
+   "addr": "0x009e30c2",
+   "type": "u16",
+   "values": [
+    "0xffff",
+    "0xffff",
+    0,
+    1,
+    7,
+    "0x1234"
+   ]
+  },
+  {
+   "addr": "0x009e231a",
+   "type": "u16",
+   "values": [
+    "0xffff",
+    "0xffff",
+    0,
+    1,
+    7,
+    "0x1234"
+   ]
+  },
+  {
+   "addr": "0x009e311a",
+   "type": "u16",
+   "values": [
+    "0xffff",
+    "0xffff",
+    0,
+    1,
+    7,
+    "0x1234"
+   ]
+  }
+ ]
+}

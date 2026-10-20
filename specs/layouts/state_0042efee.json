@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x0042efee: dword +0x20 of the 256 0x40-byte entries at 0x00626fb8 (indexed by a record byte, so fuzz of direct globals never varies it) is abs-ed, reduced by the dead zone [0x00603e80] and clamped at 0, scaled by the gain [0x00603e7c] (imul/shrd 14), clamped to 0x4000 and floored at [0x00603e78]. Entries -0x100000..0x100000 (both signs), dead zone 0..0x4000, gain 0..0x8000 and floor -0x1000..0x5000 (both sides of 0x4000) reach every clamp; all arithmetic is imul/shrd/compare, so no value faults.",
+  "globals": [
+    {"addr": "0x00626fd8", "type": "i32", "count": 256, "stride": "0x40", "lo": -1048576, "hi": 1048576},
+    {"addr": "0x00603e80", "type": "i32", "lo": 0, "hi": 16384},
+    {"addr": "0x00603e7c", "type": "i32", "lo": 0, "hi": 32768},
+    {"addr": "0x00603e78", "type": "i32", "lo": -4096, "hi": 20480}
+  ]
+}

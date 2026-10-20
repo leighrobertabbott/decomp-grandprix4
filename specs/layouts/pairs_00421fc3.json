@@ -1,0 +1,11 @@
+{
+  "_evidence": "Overlay for state_00421fc3 (compose after it): the three 64-bit dividends 0x608118:0x608114, 0x608120:0x60811c, 0x608128:0x608124 of 0x00421fc3 (idiv ebp with ebp = max(q,1), so ebp can be 1 and each pair must be an int32 sign-extended to 64 bits, as the game's cdq-built sums are) now draw the low dword over the full i32 range and the high dword as its sign extension (sign_of: 0 or 0xffffffff), so negative dividends are tested too; state_00421fc3 could only express the non-negative half with uncorrelated draws. Every quotient fits; no case faults.",
+  "globals": [
+    {"addr": "0x00608114", "type": "i32"},
+    {"addr": "0x00608118", "type": "u32", "sign_of": "0x00608114"},
+    {"addr": "0x0060811c", "type": "i32"},
+    {"addr": "0x00608120", "type": "u32", "sign_of": "0x0060811c"},
+    {"addr": "0x00608124", "type": "i32"},
+    {"addr": "0x00608128", "type": "u32", "sign_of": "0x00608124"}
+  ]
+}

@@ -1,0 +1,113 @@
+{
+ "_evidence": "Car fields read by the neighbour test 0x40ea7d (via 0x40eb1f) in 0x00514584 for the player car [0x679d30] and the cars found ahead/behind by 0x40eaf7/0x40eb0b (records of the 22-car array 0x66fef0, stride 0x41c): 'test byte [ebx+0x7a],0x80; jne' / 'test byte [esi+0x7a],0x80; jne' (a retired/out car is never a neighbour), and when the laps +0x70 differ 'mov edx,[ebx+0x1c]; cmp edx,[esi+0x1c]; jae' (segment pointers, compared unsigned only here); after an accepted neighbour 0x514584 itself does 'and byte [esi+0x89],0xf7'. These bytes kept their zero image value under the composed layouts (so bit 7 of +0x7a never blocked a neighbour and the +0x89 mask was invisible). Here +0x7a (0x66ff6a + k*0x41c) draws {0 (often), 0x40, 1, 0x80, 0xc0} so each car is blocked or not and the 'both neighbours accepted' path (0x514670 taken) as well as one/none occur; +0x1c (0x66ff0c + k*0x41c) holds ring record addresses 0x8943a0 + k*0x160 (k 0..25: valid segment pointers for any callee that follows them, both orders of the compare); +0x89 (0x66ff79 + k*0x41c) is any byte. The 'both neighbours accepted' path needs four independent pair-test passes at once (bit 7 of +0x7a and bit 1 of +0x8d clear on the player and both neighbours, laps ordered behind < player < ahead), so this layout also re-weights, within the same value sets the earlier layouts use, +0x7a (bit 7 in 2 of 14 picks), car byte +0x8d (0x66ff7d + k*0x41c, disp_005141b8's {0,0x10,0x1f,0xff} with 0 weighted: bit 1 set in 2 of 10), the gate byte 0x7c2ea9 (carno_0066ff6c's values, sign bit set in 7 of 8: 'test byte [0x7c2ea9],0xff; jns out') and the master byte 0x66d7a4 (player_0040f8d9's values, zero in 6 of 8: 'jne out'). (an experiment with all four bytes pinned clear reached 0x514670:taken, so the path is live; the weights only make it frequent). Compose LAST after the existing 0x514584 layouts.",
+ "globals": [
+  {
+   "addr": "0x0066ff6a",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    "0x40",
+    1,
+    "0x80",
+    "0xc0"
+   ]
+  },
+  {
+   "addr": "0x0066ff0c",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x8943a0",
+    "0x894500",
+    "0x894660",
+    "0x8947c0",
+    "0x894920",
+    "0x894a80",
+    "0x894be0",
+    "0x894d40",
+    "0x894ea0",
+    "0x895000",
+    "0x895160",
+    "0x8952c0",
+    "0x895420",
+    "0x895580",
+    "0x8956e0",
+    "0x895840",
+    "0x8959a0",
+    "0x895b00",
+    "0x895c60",
+    "0x895dc0",
+    "0x895f20",
+    "0x896080",
+    "0x8961e0",
+    "0x896340",
+    "0x8964a0",
+    "0x896600"
+   ]
+  },
+  {
+   "addr": "0x0066ff79",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x0066ff7d",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    "0x10",
+    "0x10",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x007c2ea9",
+   "type": "u8",
+   "values": [
+    "0x80",
+    "0x80",
+    "0x80",
+    "0x80",
+    "0x80",
+    "0x81",
+    "0xff",
+    0
+   ]
+  },
+  {
+   "addr": "0x0066d7a4",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  }
+ ]
+}

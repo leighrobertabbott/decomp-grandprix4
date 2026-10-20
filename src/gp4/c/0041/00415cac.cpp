@@ -50,4 +50,4 @@ void __cdecl FUN_00415cac(gp4::Regs* r) {
     r->eax = static_cast<uint32_t>(limit);
     r->eflags = (r->eflags & ~0x8d5u) | flags;
 }
-GP4_IMPL(0x00415cac, FUN_00415cac, "regs(esi:ptr[0x23a]:bytes) -> (eax, cf, pf, af, zf, sf, of); globals=fuzz:i32")
+GP4_IMPL(0x00415cac, FUN_00415cac, "regs(esi:ptr[0x23a]:bytes) -> (eax, cf, pf, af, zf, sf, of); globals=fuzz:i32+layout=state_0066d8c0")

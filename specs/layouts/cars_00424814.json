@@ -1,0 +1,9 @@
+{
+ "_evidence": "Car fields of the 22 car records at 0x66fef0 (stride 0x41c) for 0x00424814's debris loop (compose after carbg_0066fef0, the car family layouts and state_00437888). 0x424814 reads dwords +0x40/+0x44 (xor: the parts whose detached state changed; carbg/state_00437888 draw both as any u32, so the xor is a full 32-bit mask whose bits above 22 0x4447b2 never selects) and +0x48 (copied to 0x639638, any); 0x424d65 stores byte +0x202 (any u8: only stored) and compares i8 +0x70 with 2 (jl: both sides from the background). The groups then go through 0x424878 with esi = the car, i.e. the globals-form equivalent of the pointer layouts car_0041e500+rec_00420e1d+car_00424878 that 0x424878 was accepted with: +0x1c is a segment record 0..25 (cars_0066fef0), and the four dwords +0x2ec..+0x2f8 summed by 0x420e1d before 'idiv ebp' are bounded to +-0x3fff as rec_00420e1d proves (the random background would overflow that quotient). Everything else the chain reads from the car (flag bytes, i16 words, the +0x50/+0x2a0 clocks) is a plain draw of carbg_0066fef0, as car_0041e500's 'fill: bytes'.",
+ "globals": [
+  {"addr": "0x6701dc", "type": "i32", "count": 22, "stride": "0x41c", "lo": -16383, "hi": 16383},
+  {"addr": "0x6701e0", "type": "i32", "count": 22, "stride": "0x41c", "lo": -16383, "hi": 16383},
+  {"addr": "0x6701e4", "type": "i32", "count": 22, "stride": "0x41c", "lo": -16383, "hi": 16383},
+  {"addr": "0x6701e8", "type": "i32", "count": 22, "stride": "0x41c", "lo": -16383, "hi": 16383}
+ ]
+}

@@ -1,0 +1,22 @@
+{
+ "_evidence": "[0x639634] is the parts mask that 0x00424d65 passes to 0x424878 (-> 0x424625 record walk and 0x444517): a mask without any of the low parts 0..16 never terminates the walk. Drawn from masks with part bits in 0..16 set (single parts, groups, all parts), never above bit 22.",
+ "globals": [
+  {
+   "addr": "0x00639634",
+   "type": "u32",
+   "values": [
+    1,
+    2,
+    "0x80",
+    "0x200",
+    "0x4000",
+    "0x10000",
+    "0x1ffff",
+    "0x7fffff",
+    "0x400001",
+    "0x12345",
+    "0x30003"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x00538a24 (called by 0x54ef46/0x54ec64 to release [0x838e8c] bytes) compares the new total with '[0x829868+0x14] + [0x829868+0x10]' (edx = 0x829868 record), and on a carry its reset 0x53872f stores [0x829868+0x14] to 0x82fcac (0x53873a) and [+0x14]+[+0x10] to 0x82fcb0 (0x538771). Both dwords 0x829878/0x82987c are pool state (base/size) reached through edx, only added and compared: every u32 is valid.",
+ "globals": [
+  {"addr": "0x00829878", "type": "u32"},
+  {"addr": "0x0082987c", "type": "u32"}
+ ]
+}

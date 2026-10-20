@@ -1,0 +1,94 @@
+{
+ "_evidence": "0x0053d9a6: 'test byte [0x82fd6a],2' gates a jump table on dword [0x82fd9c] (>= 10 -> 9; cases 0..9 at 0x53d9dc: 0/1 nothing, 2 hit-test, 3/5/8 set and 4/6/7 clear byte 0x82fd84, 9 0x54e232). Case 2 calls 0x53dd5f with bx = [0x82fd94], ax = [0x82fd98]: it walks the items of the current menu [0x82fd34] ('mov esi,[0x82fd34]; mov esi,[esi]', no null test of the header: the callers 0x53ca14 etc. only run with a menu, so it is the static menu 0x84300a of menu_0084300a), skipping items whose +0x1f has 0x18, whose i16 rectangle +4/+6/+8/+0xa (signed word compares) does not contain (bx, ax), or (when [0x82fd44] = 0xff) whose id byte +0xc differs from [0x82fd40]; the hit item's +0x1f bits 0x10/0x20 give stc. Then 0x539944/0x5399ab read the value at the item's +0xe pointer by its +0xd type. Coordinates: x from values around the item column 488..503 (and 0), y in 195..440 (rows of items 6..13); ids 0..13; mode values cover every case and the >= 10 clamp.",
+ "globals": [
+  {
+   "addr": "0x0082fd6a",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0082fd9c",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    "0x7fffffff",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x0082fd94",
+   "type": "u32",
+   "values": [
+    0,
+    480,
+    487,
+    488,
+    489,
+    495,
+    500,
+    503,
+    503,
+    504,
+    510,
+    "0x123401f0"
+   ]
+  },
+  {
+   "addr": "0x0082fd98",
+   "type": "i32",
+   "lo": 195,
+   "hi": 440
+  },
+  {
+   "addr": "0x0082fd44",
+   "type": "u8",
+   "values": [
+    "0xff",
+    "0xff",
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x0082fd40",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13
+   ]
+  },
+  {
+   "addr": "0x0082fd34",
+   "type": "u32",
+   "values": [
+    "0x84300a"
+   ]
+  }
+ ]
+}

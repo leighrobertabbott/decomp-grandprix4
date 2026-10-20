@@ -1,0 +1,27 @@
+{
+ "_evidence": "Slot tables read by 0x00515a56/0x00515aa0: i32 slots 0x893ff0[256] and 0x894018[256] in -8..72 (unclamped indexes into the 0x891bb0 block of 80 dwords).",
+ "globals": [
+  {
+   "addr": "0x00893ff0",
+   "type": "i32",
+   "count": 256,
+   "stride": 4,
+   "lo": -8,
+   "hi": 72
+  },
+  {
+   "addr": "0x00894018",
+   "type": "i32",
+   "count": 256,
+   "stride": 4,
+   "lo": -8,
+   "hi": 72
+  },
+  {
+   "addr": "0x00891bb0",
+   "type": "u32",
+   "count": 80,
+   "stride": 4
+  }
+ ]
+}

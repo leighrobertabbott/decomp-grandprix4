@@ -1,0 +1,94 @@
+{
+ "_evidence": "Slot area [0x7a8e18] walked by 0x00520c5b: esi = base + [0x679ba4]*[0x6975c4] (imul), then per row 'mov eax,[esi]; cmp eax,1; je skip; mov edx,[esi+4]; cmp edx,[0x66d814]; je hit', 'add esi,[0x6975c4]; loop'. The rows k*pitch (k = 0..6, the furthest row the walk of rows_00520c5b can reach: start index <= 3 plus at most 3 more) carry a tag dword +0 from {0,1,2,3,5,-1} (1 skips the row, 3 loads it via 0x520b65, 2 saves via 0x520b1b, others end the walk) and a time dword +4 from {0,1,2,0x1234,-1} (equal to the clock [0x66d814] in about a fifth of the rows). Every pitch of slot_00520b1b (0x2d78/0x3000/0x3400) gets its own row fields (their offsets never overlap within 8 bytes except row 0). All other bytes are random state ('fill': 'bytes', as in slot_00520b1b) that the callees only copy. Size 0x20000: the furthest slot a callee touches is 6*0x3400 + 0x400 + 0x2978 = 0x16578 < 0x20000.",
+ "size": 131072,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": 0,
+   "type": "u32",
+   "count": 7,
+   "stride": "0x2d78",
+   "values": [
+    "0",
+    "1",
+    "1",
+    "2",
+    "3",
+    "3",
+    "5",
+    "0xffffffff"
+   ]
+  },
+  {
+   "off": 4,
+   "type": "u32",
+   "count": 7,
+   "stride": "0x2d78",
+   "values": [
+    "0",
+    "1",
+    "2",
+    "0x1234",
+    "0xffffffff"
+   ]
+  },
+  {
+   "off": 0,
+   "type": "u32",
+   "count": 7,
+   "stride": "0x3000",
+   "values": [
+    "0",
+    "1",
+    "1",
+    "2",
+    "3",
+    "3",
+    "5",
+    "0xffffffff"
+   ]
+  },
+  {
+   "off": 4,
+   "type": "u32",
+   "count": 7,
+   "stride": "0x3000",
+   "values": [
+    "0",
+    "1",
+    "2",
+    "0x1234",
+    "0xffffffff"
+   ]
+  },
+  {
+   "off": 0,
+   "type": "u32",
+   "count": 7,
+   "stride": "0x3400",
+   "values": [
+    "0",
+    "1",
+    "1",
+    "2",
+    "3",
+    "3",
+    "5",
+    "0xffffffff"
+   ]
+  },
+  {
+   "off": 4,
+   "type": "u32",
+   "count": 7,
+   "stride": "0x3400",
+   "values": [
+    "0",
+    "1",
+    "2",
+    "0x1234",
+    "0xffffffff"
+   ]
+  }
+ ]
+}

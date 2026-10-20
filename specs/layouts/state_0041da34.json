@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x0041da34 tests only byte [0x6246e4] (cmp 0, je at 0x41da3c; nonzero exits with clc). Zero in about three quarters of the cases so the body is exercised, nonzero otherwise.",
+  "globals": [
+    {"addr": "0x006246e4", "type": "u8", "values": [0, 0, 0, 1, 128, 255]}
+  ]
+}

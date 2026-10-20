@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x48-byte record behind pointer global 0x00609860. Integer dwords +0x00..+0x3c: 0x425321 reads x/y/z at +0/+4/+8 (sub from 0x607f28/2c/30) and writes +0x18/+0x1c/+0x20; 0x4251e7 writes +0/+4/+8, 0x425282 +0xc/+0x10/+0x14, 0x4253e3 +0x24/+0x28/+0x2c, 0x425395 +0x30/+0x34/+0x38 (fistp results); all plain i32, any pattern. +0x40 and +0x44 are pointers to 0xd0-byte orientation bodies (body_00609860): 0x402038/0x402051/0x425321/0x425395/0x4253e3 dereference +0x40, 0x4020d8 both (mov eax,[edi+0x40]; mov ecx,[edi+0x44] -> 0x4020ef reads/writes +0x58..+0x98). Never null in the game (the static image value 0 is pre-initialisation), so both are always real readable bodies.",
+  "size": 72,
+  "fields": [
+    {"off": 0, "type": "i32", "count": 16, "stride": 4},
+    {"off": "0x40", "type": "ptr", "size": 208, "fill": "layout=body_00609860"},
+    {"off": "0x44", "type": "ptr", "size": 208, "fill": "layout=body_00609860"}
+  ]
+}

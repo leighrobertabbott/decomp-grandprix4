@@ -1,0 +1,14 @@
+{
+ "_evidence": "Free node list [0x831d85] popped by 0x00549f22 ('mov edx,[0x831d85]; or edx,edx; ... mov eax,[edx]; mov [0x831d85],eax'): an acyclic chain of up to 4 fresh 0x14-byte nodes distinct from the band list (+0 next nullable; +4..+0x10 are all overwritten before they are read, random). Node 4.",
+ "size": 20,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": 0,
+   "type": "u32",
+   "values": [
+    "0"
+   ]
+  }
+ ]
+}

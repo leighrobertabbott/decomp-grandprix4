@@ -1,0 +1,11 @@
+{
+  "_evidence": "esi of 0x00434700: car record prefix (0x273 bytes), background random (fill bytes: heading +0xe (RMW), words +0x90/+0x9a/+0xb0, dword +0xac are plain operands). The four flag bytes that gate the steering-correction paths - +0x26b (bit 7: exit), +0x7b (bit 7: exit), +0xfe (bit 0: hold path, then cleared/set) and +0xe5 (bit 7: exit) - draw from short lists with each bit both set and clear, so the deep path (0x434794..0x434870) is reached in a sizeable share of the cases instead of 1 in 16; all flag combinations still occur.",
+  "size": 627,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x26b", "type": "u8", "values": [0, 1, "0x7f", "0x80"]},
+    {"off": "0x7b", "type": "u8", "values": [0, "0x7f", "0x80"]},
+    {"off": "0xfe", "type": "u8", "values": [0, 1, "0xfe", "0xff"]},
+    {"off": "0xe5", "type": "u8", "values": [0, "0x7f", "0x80"]}
+  ]
+}

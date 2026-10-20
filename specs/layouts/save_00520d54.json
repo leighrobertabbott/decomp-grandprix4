@@ -1,0 +1,14 @@
+{
+ "_evidence": "0x00520d54 serialises the game state into the save buffer [0x6975c8] ('test dword [0x6975c8],-1; je' skips when null: nullable, null in ~1/4 of the cases; 0x531261/0x5323a2 allocate it as [0x7a8e24]*([0x7a8e20]+1)+0x4c bytes or leave it 0). Written in order from edi = [0x6975c8]: [0x6975c0]>>2 dwords from 0x66d810 (rep movsd), the 0xa5e dwords (0x2978 bytes) of 0x40b511 (returns the advanced edi), then the do-while 'mov ecx,[0x6975c4]; shr ecx,2; rep movsd; inc edx; cmp edx,[0x7a8e20]; jne' that copies [0x7a8e20] blocks of [0x6975c4]>>2 dwords read CONTIGUOUSLY from esi = [0x7a8e18] (esi is not reloaded), then 0x20 bytes 0x679b24..0x679b44 and 0x2c bytes 0x7a9124..0x7a9150 (rep movsb). Block count [0x7a8e20] is 1..4: 0 wraps the 'jne' to 2^32 blocks and faults, and the game sets it to [0x7a8e1c]+4 (0x5374f0), never 0. Sizes [0x6975c0] and [0x6975c4] (record sizes of the 0x66d810 block and of the [0x7a8e18] array) draw small values, including 0 (empty rep) and non-multiples of 4 (the shr drops the remainder). Worst case written: 0x103+0x2978+4*0x80+0x20+0x2c = 0x2cc7 bytes < the 0x3000-byte buffer; [0x7a8e18] is a non-null 0x400-byte random buffer (at most 4*0x80 = 0x200 bytes read). The copied source bytes are varied so the copies are checked: dwords 0x66d810..0x66d817 and 0x66d830..0x66d90f (the [0x6975c0] <= 0x103 window, minus the six rebased pointers of ptrs_0066d818; word 0x66d8ba is overwritten from [0x7ad892] before the copy), bytes 0x679b24..0x679b43 and 0x7a9124..0x7a914f. Compose after links_0066fef0+ptrs_0066d818 (state rebased by 0x513982/0x5139ed) and copy_0063b814 (the 0x40b511 source).",
+ "globals": [
+  {"addr": "0x006975c8", "type": "ptr", "size": "0x3000", "fill": "bytes", "nullable": true},
+  {"addr": "0x006975c0", "type": "u32", "values": [0, 4, 6, "0x10", "0x40", "0x100", "0x103"]},
+  {"addr": "0x006975c4", "type": "u32", "values": [0, 4, 7, "0x20", "0x40", "0x80"]},
+  {"addr": "0x007a8e20", "type": "u32", "lo": 1, "hi": 4},
+  {"addr": "0x007a8e18", "type": "ptr", "size": "0x400", "fill": "bytes"},
+  {"addr": "0x0066d810", "type": "u32", "count": 2, "stride": 4},
+  {"addr": "0x0066d830", "type": "u32", "count": 56, "stride": 4},
+  {"addr": "0x00679b24", "type": "u8", "count": 32, "stride": 1},
+  {"addr": "0x007a9124", "type": "u8", "count": 44, "stride": 1}
+ ]
+}

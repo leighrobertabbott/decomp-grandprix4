@@ -1,0 +1,61 @@
+{
+ "_evidence": "0x005596fd reads, beyond its directly addressed globals: the 50 words 0x921ffc..0x922060 (ebx = 0x922060-0x87064c+0x8705e8; 'push word [ebx]; pop word [edi]; mov word [ebx],0' copies them to 0x8705e8..0x87064c and clears them; the copies at 0x870604/0x870608 are then read by the callee 0x559663); the ring record [0x866f00] (points_into records 0..24 by records_008943a0) dwords +0xf0/+0xf4/+0xf8 (copied to 0x870640/44/48, two of them masked 0xfffff800 when byte [0x852c38] == 0, then the 0x559663 products added/subtracted) and its heading word +0 (via 0x559663: hdg_00428216); the record [0x866f04] (records 5..26) words +0x60/+0x62 (copied to 0x870608/0x870604 before the second 0x559663 call) and byte +0x48 ('and 0xcf'); the callee's selector byte [0x86855c] ('test byte,dl' with dl = 2 then 8). All are plain data (no pointers, indices or divisors), so every pattern is valid: records 0..26 get random fields, the source words, [0x86855c] and [0x852c38] (zero often) are drawn too.",
+ "globals": [
+  {
+   "addr": "0x00921ffc",
+   "type": "u16",
+   "count": 50,
+   "stride": 2
+  },
+  {
+   "addr": "0x0086855c",
+   "type": "u8"
+  },
+  {
+   "addr": "0x00852c38",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x894490",
+   "type": "u32",
+   "count": 27,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894494",
+   "type": "u32",
+   "count": 27,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894498",
+   "type": "u32",
+   "count": 27,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894400",
+   "type": "u16",
+   "count": 27,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894402",
+   "type": "u16",
+   "count": 27,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8943e8",
+   "type": "u8",
+   "count": 27,
+   "stride": "0x160"
+  }
+ ]
+}

@@ -1,0 +1,8 @@
+{
+  "_evidence": "Car block (esi, 0x300 bytes) for 0x004132e5, the background of rec_004132e5+rec_0041325b+rec_00412b88: byte +0x162 ('test 8; je' at 0x4132e5) selects the 0x412b88 grid-slot path or the 0x41325b-style dword sum, so the background is random bytes (bit 3 both ways). The other fields are pinned by the overlays: rec_0041325b's four dwords +0x2ec..+0x2f8 in +-0x7fff (the sum is the divisor of 'idiv ebp' at 0x413352, replaced by 1 when zero; |dividend| < 2^30, no #DE) and u16 +0x1b6, rec_00412b88's +0x1c (car segment record 0..12), +0x7e kind, +0x96 word and +0xfd row 0..2. Every other read is none: 0x412b88 and its helpers 0x432c21/0x43207c/0x432c03 read only +0x1c/+0x7e/+0x96/+0xfd.",
+  "size": 768,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x162", "type": "u8"}
+  ]
+}

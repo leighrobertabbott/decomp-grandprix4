@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x005581ba ORs together the dwords [ebx*4+0x875dc8] selected by the set bits of ax ('shr ax,1; jb or; jne'), ebx = bit index 0..15, so it reads the 16-dword table 0x875dc8..0x875e07. fuzz:i32 varied only dword 0; all 16 are random here (plain OR operands: every value is valid), so a wrong index or a missed bit changes eax.",
+ "globals": [
+  {"addr": "0x00875dc8", "type": "u32", "count": 16, "stride": 4}
+ ]
+}

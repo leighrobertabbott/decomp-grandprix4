@@ -1,0 +1,14 @@
+{
+  "_evidence": "Overlay for 0x0041a2b2 (compose after state_0041104f, which draws the car pointers 0x66d820/0x66d82c from null or cars 0..5 and the byte 0x7c2e6c). 'test byte [esi+0xcf],8; je' on each non-null car gates the two hooks 0x51f1ee (pushal; 0x51e467; popal) and 0x51f1f6 (bare ret): car byte +0xcf (0x66ffbf, cars 0..5) is a flag byte, any u8 (bit 3 set in half; bit 2 is the 0x410cef test). 0x51e467 then reads car word +0x5e (0x66ff4e, movsx, abs-clamped to 10000 by 0x51e319: any i16), byte 0x7ab54a (0x51e319 'cmp bl,6/7/8/9; je', else stc: drawn 5..10 plus 0/0xff), and 0x51e405 the bytes 0x852d6a/0x88f63a/0x852d98 (test 0xff; jne) and 0x6f2c29 (cmp 0xff; je), then 0x51e380 the force-feedback enables 0x7a97a0/0x7a97a1 (cmp 0; je; 0x505dc0 stores 0xff). Every outcome is valid: the effect calls 0x5069d0 index the DirectInput effect table 0xae68b8 with the never-written constant ids 0x6f2d4c/0x6f2d5c (image 0/1, left unvaried) and return at once because the table is empty in the image (no device), so nothing faults or leaves the image.",
+  "globals": [
+    {"addr": "0x0066ffbf", "type": "u8", "count": 6, "stride": "0x41c"},
+    {"addr": "0x0066ff4e", "type": "i16", "count": 6, "stride": "0x41c"},
+    {"addr": "0x007ab54a", "type": "u8", "values": [5, 6, 7, 8, 9, 10, 0, "0xff"]},
+    {"addr": "0x00852d6a", "type": "u8", "values": [0, 0, 1, "0xff"]},
+    {"addr": "0x0088f63a", "type": "u8", "values": [0, 0, 1, "0xff"]},
+    {"addr": "0x00852d98", "type": "u8", "values": [0, 0, 1, "0xff"]},
+    {"addr": "0x006f2c29", "type": "u8", "values": [0, "0xff", 1]},
+    {"addr": "0x007a97a0", "type": "u8", "values": [0, "0xff"]},
+    {"addr": "0x007a97a1", "type": "u8", "values": [0, "0xff"]}
+  ]
+}

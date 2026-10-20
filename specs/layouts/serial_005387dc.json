@@ -1,0 +1,16 @@
+{
+ "_evidence": "0x5387dc: cmp dword [0x82fcb4], 0x3fffff; jne 0x538800 - the serial-wrap path (reset to 2, call 0x538991) runs only when the serial equals 0x3fffff. Composed after pool_005389b9 (which draws it from 1024..4096), so this field overrides that range with the wrap value in about 2/5 of the cases.",
+ "globals": [
+  {
+   "addr": "0x0082fcb4",
+   "type": "u32",
+   "values": [
+    "0x3fffff",
+    "0x3fffff",
+    1024,
+    2000,
+    4095
+   ]
+  }
+ ]
+}

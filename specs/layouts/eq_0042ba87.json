@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x0042ba87 compares esi with the remembered car pointer [0x006043dc] and 0x0042bae4 with [0x006043d8] (cmp esi,[..]; jne: equal clears it), so each equals the esi register in about half the cases (alias_reg).",
+  "globals": [
+    {"addr": "0x006043dc", "type": "u32", "alias_reg": "esi"},
+    {"addr": "0x006043d8", "type": "u32", "alias_reg": "esi"}
+  ]
+}

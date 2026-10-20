@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x0040def9 (pushal wrapper) loads edi from the segment-record pointers [0x866ed0] and [0x866ed4] and runs the accepted nearest-point walk 0x0040dde6 on each (storing eax to 0x62d2d4/0x62d2d8). 0x40dde6 was verified on edi = rec[0x8943a0,0x160,0..3] under ring_0040dde6, which gives exactly records 0..3 a coherent cursor +0x44 (0..149) on a fixed 120-record lap; so both pointers are record-aligned addresses of records 0..3 (0x403850 uses [0x866ed4] as a record pointer too). A random pointer makes 0x40dde6 read [edi+0x44] as a wild cursor and fault. Compose as globals=layout=ring_0040dde6+ends_0040def9.",
+  "globals": [
+    {"addr": "0x00866ed0", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 3}},
+    {"addr": "0x00866ed4", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 3}}
+  ]
+}

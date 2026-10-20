@@ -1,0 +1,11 @@
+{
+ "_evidence": "[0xa69878] is used by 0x005162fd as a byte index into 0x7c31dc (0..128); do not compose with ptr_00a69878/ptr2_00a69878, which treat it as a pointer.",
+ "globals": [
+  {
+   "addr": "0x00a69878",
+   "type": "u32",
+   "lo": 0,
+   "hi": 128
+  }
+ ]
+}

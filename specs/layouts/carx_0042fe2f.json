@@ -1,0 +1,102 @@
+{
+ "_evidence": "Car fields of the overtaking scan 0x0042fe2f and its callee 0x0040dc8a for all 22 car records at 0x66fef0 (stride 0x41c; compose after list_0066fe3c+cars_0066fef0+state_004059ef, which supply the order list, +0x68, +0x9a and the selector byte 0x7c2ea9). Word +0xea is the car state compared with 0x18 (je: the near path) and 0x20 (jne skip): drawn from 0x18/0x20 most of the time plus other states (the family list has neither, so 0x42fe72 never went the 0x18 way). Bytes +0x7b (bit 0x40), +0x9c (bit 2: selects 0x40dc8a), +0x26b (bit 8), +0x21d (bit 2, 0x40dc8a) are plain flag draws; +0x273 is OR-ed with 1. Word +0xe2 (lateral position, subtracted between cars and compared with [0x603b26] and with -(+0x9a >> 2 or >> 3)) is drawn -0x800..0x800, a lateral range in which car differences fall on both sides of those small windows (random i16 differences almost never landed inside the >> 3 window); the 0x40dc8a lane words +0x148/+0x14a/+0x14c/+0x14e are any i16 (sar/shl/sub only). Only fixed records are read; nothing faults. The mode byte 0x7c2ea9 (cmp 0x80 at 0x42fe90/0x42fef8: the >> 3 window and the +0x7b test) is drawn again with 0x80 in 30% of the cases (state_004059ef's list has it 1 in 9), the other compared values and misses otherwise.",
+ "globals": [
+  {
+   "addr": "0x0066ffda",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x18",
+    "0x18",
+    "0x18",
+    "0x20",
+    "0x20",
+    "0x20",
+    "0x10",
+    "0xfff0",
+    "0x8",
+    "0x0",
+    "0x7fff"
+   ]
+  },
+  {
+   "addr": "0x0066ff6b",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x0066ff8c",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x0067015b",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x00670163",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x0067010d",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x0066ffd2",
+   "type": "i16",
+   "count": 22,
+   "stride": "0x41c",
+   "lo": -2048,
+   "hi": 2048
+  },
+  {
+   "addr": "0x00670038",
+   "type": "i16",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x0067003a",
+   "type": "i16",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x0067003c",
+   "type": "i16",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x0067003e",
+   "type": "i16",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x007c2ea9",
+   "type": "u8",
+   "values": [
+    "0x80",
+    "0x80",
+    "0x80",
+    0,
+    1,
+    2,
+    3,
+    "0x44",
+    "0x7f",
+    "0xff"
+   ]
+  }
+ ]
+}

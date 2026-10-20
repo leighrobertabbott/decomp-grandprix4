@@ -1,0 +1,117 @@
+{
+ "_evidence": "0x00520ad0 (save-slot ring step; compose after slot_00520b1b, whose slot pitch [0x6975c4] 0x2d78/0x3000/0x3400 and state size [0x6975c0] <= 0x400 it keeps) reads ring i = [0x679b44] ('mov edx,[0x679b44]; mov eax,[edx*4+0x679b34]'): position P [0x679b34+4i], high water U [0x679b24+4i] ('cmp eax,U; jle' signed, U = P above it), wrap end W [0x679bac+4i] ('add eax,1; cmp eax,W; jle') and lower bound L [0x679b9c+4i] (P+1 > W restarts at L), and saves slot P through 0x520b1b (slot address [0x7a8e18] + P*pitch, P*pitch + size + 0x2978 bytes written). The callers store i right before the call: 0 (0x520505, 0x523060), 2 and 1 (0x5209e6); the ring initialiser 0x5376aa sets L = {0,1,3,3+N} and W = {0,2,2+N,3+N} with the row count N = [0x7a8e1c] >= 1, and this step keeps P in L..W. Index i is drawn from 0..3 (3 is the fourth ring of the same tables) and each ring follows the initialiser: ring 0 L=W=0, P=0; ring 1 L=1, W=2, P 1..2; ring 2 L=3, W 3..7 (N 1..5), P = W in about half the cases else L (so P stays in L..W and P+1 <= W / > W both occur); ring 3 L 4..8 with W = P = L (alias_always). An index or position outside these makes the original fault at 0x520adc (index) or in 0x520b1b's rep movsd (slot outside the area), the 57 invalid cases of the rerun. U draws -1..7 (0x520584 stores -1): both jle outcomes. The slot area is a fresh 0x1e000-byte buffer: row 8 at the largest pitch ends at 8*0x3400 + 0x400 + 0x2978 = 0x1cd78. Values are synthetic. The word [0x7ad892] that 0x520b1b copies to 0x66d8ba (plain move) is any u16.",
+ "globals": [
+  {
+   "addr": "0x00679b44",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    1,
+    1,
+    2,
+    2,
+    3
+   ]
+  },
+  {
+   "addr": "0x00679b9c",
+   "type": "i32",
+   "values": [
+    0
+   ]
+  },
+  {
+   "addr": "0x00679bac",
+   "type": "i32",
+   "values": [
+    0
+   ]
+  },
+  {
+   "addr": "0x00679b34",
+   "type": "i32",
+   "values": [
+    0
+   ]
+  },
+  {
+   "addr": "0x00679ba0",
+   "type": "i32",
+   "values": [
+    1
+   ]
+  },
+  {
+   "addr": "0x00679bb0",
+   "type": "i32",
+   "values": [
+    2
+   ]
+  },
+  {
+   "addr": "0x00679b38",
+   "type": "i32",
+   "values": [
+    1,
+    2
+   ]
+  },
+  {
+   "addr": "0x00679ba4",
+   "type": "i32",
+   "values": [
+    3
+   ]
+  },
+  {
+   "addr": "0x00679bb4",
+   "type": "i32",
+   "lo": 3,
+   "hi": 7
+  },
+  {
+   "addr": "0x00679b3c",
+   "type": "i32",
+   "lo": 3,
+   "hi": 3,
+   "alias": "0x00679bb4"
+  },
+  {
+   "addr": "0x00679ba8",
+   "type": "i32",
+   "lo": 4,
+   "hi": 8
+  },
+  {
+   "addr": "0x00679bb8",
+   "type": "i32",
+   "alias": "0x00679ba8",
+   "alias_always": true
+  },
+  {
+   "addr": "0x00679b40",
+   "type": "i32",
+   "alias": "0x00679bb8",
+   "alias_always": true
+  },
+  {
+   "addr": "0x00679b24",
+   "type": "i32",
+   "count": 4,
+   "stride": 4,
+   "lo": -1,
+   "hi": 7
+  },
+  {
+   "addr": "0x007a8e18",
+   "type": "ptr",
+   "size": "0x1e000",
+   "fill": "bytes"
+  },
+  {
+   "addr": "0x007ad892",
+   "type": "u16"
+  }
+ ]
+}

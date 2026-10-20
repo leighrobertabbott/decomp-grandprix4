@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x0041dbb0: edx = [0x62789c]; 'cmp edx,4; jge' skips; otherwise compares [0x62783c] with [0x891500] (jb, unsigned) and bts/btr dword [0x601eb0] with bit offset edx, which addresses dword 0x601eb0 + (edx>>5)*4 (signed). edx in -32..7 covers both sides of the 4 bound while keeping the bit-string access at 0x601eac/0x601eb0 (writable .data); a hugely negative index makes the original fault (11/200 with fuzz) and callers pass 0..3. The two compared dwords are full-range u32 (both jb outcomes); the target dword itself is varied too.",
+  "globals": [
+    {"addr": "0x0062789c", "type": "i32", "lo": -32, "hi": 7},
+    {"addr": "0x0062783c", "type": "u32"},
+    {"addr": "0x00891500", "type": "u32", "alias": "0x0062783c"},
+    {"addr": "0x00601eac", "type": "u32"},
+    {"addr": "0x00601eb0", "type": "u32"}
+  ]
+}

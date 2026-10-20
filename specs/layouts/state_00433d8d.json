@@ -1,0 +1,46 @@
+{
+ "_evidence": "Second overlay for 0x00433d8d (compose after cars_00433d8d), the state the first pass rested on: byte +0xfe (0x66ffee, 'test 4' selects the 0x433dd2 path or the +0x25f latch clear) for all 22 cars; word +0x64 (0x66ff54) and byte +0x80 (0x66ff70, bits 7/6) that 0x432719 copies into the 0x62ffac entry (plain data, any value); dword 0x62d2b0 (0x432c03 'test; je': 0 or nonzero adds 0x160 for kinds 2/3); and the bit-mask dwords 0x63b968..0x63b97b past the three zeroed ones, which the bts register forms read-modify-write when (+0x7c-1)&0x3f >= 32 or +0x73-1 >= 96 (BSS bit state, any value). Byte +0x230 (0x670120, bit 7: 'test; jne 0x433e22' after +0x26b bit 7 is clear) for all 22 cars (state_0041104f varies only cars 0..5).",
+ "globals": [
+  {
+   "addr": "0x66ffee",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x66ff54",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x66ff70",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x0062d2b0",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    1,
+    "0x80000000",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x0063b968",
+   "type": "u32",
+   "count": 5,
+   "stride": 4
+  },
+  {
+   "addr": "0x670120",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  }
+ ]
+}

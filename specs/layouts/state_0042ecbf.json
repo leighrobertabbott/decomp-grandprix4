@@ -1,0 +1,29 @@
+{
+ "_evidence": "Global overlay for 0x0042ecbf (compose LAST, after ...+state_0042fa52+state_0066d8c0+state_0042eee3). Bytes 0x604156/0x604157 are AI flags written as 0 or 0xff (0x42da35/0x42ff39 and 0x42a354/0x42ff39) and compared with 0xff at 0x42ede6/0x42edef and 0x42eeb9/0x42eec2: fuzzed dwords made both 0xff almost never (block 0x42ee0c and the 0x42eee3 call untested), so each is 0xff in about half the picks, else 0 or another byte. Compares only.",
+ "globals": [
+  {
+   "addr": "0x00604156",
+   "type": "u8",
+   "values": [
+    "0xff",
+    "0xff",
+    "0xff",
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x00604157",
+   "type": "u8",
+   "values": [
+    "0xff",
+    "0xff",
+    "0xff",
+    0,
+    0,
+    "0x80"
+   ]
+  }
+ ]
+}

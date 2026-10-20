@@ -1,0 +1,28 @@
+{
+ "_evidence": "0x005406bf (compose after blocks_0054045b+drv22_0052d402) counts the bytes of the 22-slot key table 0x7c2a1c equal to al ('cmp byte [ebx+0x7c2a1c],al'); more than one -> 0x540698 frees every match (byte = 0xff, 'and byte [0x7c2a48+i],0x3f') and the key is re-inserted, exactly one -> nothing, none -> the first 0xff (free) slot gets al ('cmp byte [ebx+0x7c2a1c],0xff; je'), or nothing when all 22 are used. blocks_0054045b drew the slots as random bytes, so duplicates of the key and free slots were rare. Domain: slots from {0xff (free), 1..5, 0x20..0x22, 0x40, 0x41, 0x80} (one free value in twelve: no free slot in ~15% of the cases, the all-used exit) so the key (the spec draws al mostly from {1,2,3,0xff,0x20,0x80}) occurs 0, 1 or several times and free slots are present or absent; the per-driver bytes 0x7c2a48.. stay random (drv22_0052d402). Byte compares/stores at fixed addresses with indices 0..21: every value is valid. The free-slot scan 'inc ebx; cmp byte [ebx+0x7c2a1c],0xff; je; cmp ebx,0x16; jb' reads the byte after the table (0x7c2a32, index 22) before its bound test when all 22 are used; it cannot change the result (both exits store nothing), varied as any byte.",
+ "globals": [
+  {
+   "addr": "0x007c2a1c",
+   "type": "u8",
+   "count": 22,
+   "values": [
+    "0xff",
+    1,
+    2,
+    3,
+    4,
+    5,
+    "0x20",
+    "0x21",
+    "0x22",
+    "0x40",
+    "0x41",
+    "0x80"
+   ]
+  },
+  {
+   "addr": "0x007c2a32",
+   "type": "u8"
+  }
+ ]
+}

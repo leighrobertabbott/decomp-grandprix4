@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x0041f613 walks the four 0x300-byte records at 0x006380d8: for each, two sums of four fild products of dwords +0x114..+0x130 and +0x134..+0x150 (extended precision) times the f64 0x006f29ec (2^-10) are fistp'd to +0x38 (negated sum) and, clamped in magnitude by dword 0x00601f14 (unsigned jb), to +0xc8; then +0x38 of records 0/1 and 2/3 are moved by (rec+0x114 difference)*[esi+0x40c/0x410]>>10 and clamped again. 0x6f29ec and 0x601f14 (0x01000000) are read only here and never written: constants, left at their image values. The 16 dwords per record are i32 in +-2^17, so the scaled sums (up to 2^26, no fistp overflow) fall on both sides of 0 and of the 2^24 limit.",
+  "globals": [
+    {"addr": "0x006381ec", "type": "i32", "lo": -131072, "hi": 131072, "count": 16, "stride": 4},
+    {"addr": "0x006384ec", "type": "i32", "lo": -131072, "hi": 131072, "count": 16, "stride": 4},
+    {"addr": "0x006387ec", "type": "i32", "lo": -131072, "hi": 131072, "count": 16, "stride": 4},
+    {"addr": "0x00638aec", "type": "i32", "lo": -131072, "hi": 131072, "count": 16, "stride": 4}
+  ]
+}

@@ -1,0 +1,9 @@
+{
+ "size": 131072,
+ "fill": "bytes",
+ "_evidence": "16-byte link records of the 0x829278 table for 0x00536db1 (variant of recs_00829278, whose +8 links were all negative, so the parent-child lookup block 0x536e02 never ran). +0 parent link and +4 first child stay random (any value maps to a record of the 0x2000-record table or to the sentinel 0x829700); +8 second child is -2 (none: 'cmp ecx,-2; je'), a negative value (below every base: the sentinel) or a child index >= every base [0x829710] (0x1000/0x1001/0x1005/0x2fff, 0x3000 = 0x1000 wrapped by 'and 0x1fff', 0x7fffffff), the same indices the spec draws for the node eax, so the parent's +8 child equals the node (store into +8) in a fair share of cases and differs otherwise.",
+ "fields": [
+  {"off": 8, "type": "u32", "count": 8192, "stride": 16,
+   "values": ["0xfffffffe", "0xfffffffe", "0xffffffff", "0x80000000", "0x1000", "0x1001", "0x1005", "0x2fff", "0x3000", "0x7fffffff"]}
+ ]
+}

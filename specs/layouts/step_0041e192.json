@@ -1,0 +1,11 @@
+{
+ "_evidence": "Frame-time overlay for 0x0041e192 (compose LAST; it narrows state_0041befb's [0x60384c] 1..0xffff). Per wheel, when the wheel's mask bit is unchanged (0x41e2ee..0x41e305), 0x41e31a..0x41e32f computes 'mov eax,[ebx+0x58]; sub eax,[esi+ecx*4+0x37c]; shl eax,7; cdq; shld edx,eax,9; shl eax,9; idiv dword [0x60384c]' (the wheel's vertical speed: height change << 16 over the frame time): the dividend is the sign-extended 32-bit (diff<<7) times 2^9, so |dividend| <= 2^40 and the quotient fits in 32 bits for every diff exactly when |S| >= 2^9; with S drawn 1..0xffff a small S #DE'd (4 of 547 cases, 0x41e32f). In the game [0x60384c] here is the frame period S = [0x603854] (0x41816f stores it before 0x41e192 at 0x41866b; S = (0x10000 + n/2)/n for the frame rate n clamped to 8..0x3c, or 0xa00: 0x444..0x2000, see steps_004198c7). Domain: 0x200..0x10000, which covers the game's periods and keeps every quotient in range; no branch tests S.",
+ "globals": [
+  {
+   "addr": "0x0060384c",
+   "type": "u32",
+   "lo": 512,
+   "hi": 65536
+  }
+ ]
+}

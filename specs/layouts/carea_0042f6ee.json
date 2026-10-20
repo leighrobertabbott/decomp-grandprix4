@@ -1,0 +1,9 @@
+{
+  "_evidence": "Car fields of 0x0042f6ee and its 0x42f9f8 branch, composed last (after state_00403800+pair_0042e8e6+cars_0066fef0 and the 0x4036ca family links_00405a12+div_00403bb6+ringw_004291f4+carf_004036ca, which 0x42f9f8 -> 0x42784b -> 0x4036ca needs: segment pointer +0x1c, lane words, flags). For all 22 cars: word +0xea is the car state compared with 0x18 (je, three places) and 0x20 (je/jne): drawn 0x18/0x20 most of the time plus other states (no family list had 0x18, so those exits were never taken); byte +0x135 (and/or 0x40, 4), +0x203 (and 0xf7) are RMW flag draws; dword +0x114 is the car pointer 0x42e314 hands to 0x42e2f1 (cmp ebx with 0x66fef0 + word +0x1bc, the latter 0xffff or a car offset in cars_0066fef0), drawn 0 or one of the first five car records so the clear of +0x1bc happens. Byte +0x8d (bit 2), +0x9c (bit 2), +0xfe (bit 0x40), word +0x90 and byte 0x868582 come from the composed layouts. Only fixed records are read; nothing faults.",
+  "globals": [
+    {"addr": "0x0066ffda", "type": "u16", "count": 22, "stride": "0x41c", "values": ["0x18", "0x18", "0x18", "0x20", "0x20", "0x20", "0x0", "0x10", "0xfff0", "0x28", "0xffff"]},
+    {"addr": "0x00670025", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x006700f3", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x00670004", "type": "u32", "count": 22, "stride": "0x41c", "values": [0, "0x66fef0", "0x67030c", "0x670728", "0x670b44", "0x670f60"]}
+  ]
+}

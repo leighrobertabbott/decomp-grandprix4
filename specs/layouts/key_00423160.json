@@ -1,0 +1,23 @@
+{
+ "size": 104,
+ "_evidence": "Source record (esi) of 0x00423160: dword +0x48 is the key compared (cmp eax,[ebx+0x18] / [ebx+0x1c]) with the two ids of each occupied entry at 0x63decc and stored into a new entry; it draws 0..3 like the other id (byte +0x6d of [0x609744], obj_00423160) so matches in either order occur. Dword +0x60 is a pointer (dereferenced unconditionally on the insert path for dwords +0/+4/+8/+0x30), so it addresses a random 0x38-byte block. Other bytes are random and unread.",
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x48",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3
+   ]
+  },
+  {
+   "off": "0x60",
+   "type": "ptr",
+   "size": 56,
+   "fill": "bytes"
+  }
+ ]
+}

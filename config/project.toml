@@ -15,12 +15,19 @@ sha256 = "2046f3902246b2aff48dca2e4f7e8c049d410166e60a5dc20fe3750f4a926b12"
 # `gp4re fpucw <value>` overrides this in the shared database if in-game logs disagree.
 fpu_cw = 0x037F
 # GP4's own initialisers, run once in the emulator before any test so the globals they
-# set hold their real values (0x527453 fills the two control-word variables 0x6f29a4/6).
-init_calls = [0x527453]
+# set hold their real values (0x527453 fills the two control-word variables 0x6f29a4/6;
+# 0x527476 - called first by the game's startup chains 0x5274de/0x52753b - computes the
+# six angle-scale doubles 0x6f2be4 (2^31/pi), 0x6f2bbc, 0x6f2bc4, 0x6f2bcc, 0x6f2bd4 and
+# 0x6f2bdc (pi/2^31) from pi; they are zero in the image). Both are pure x87 code.
+# 0x5da8f7 is the CRT's _cfltcvt_init (run by CRT startup before WinMain): it stores the six
+# float-format pointers 0x9ee0c8..0x9ee0dc that sprintf %f/%g/%e call through; without it
+# they point at _fptrap (R6002) and every float-printing case ends external (L51, 0x5297e4).
+init_calls = [0x527453, 0x527476, 0x5da8f7]
 cases = 200                  # phase 1: random cases from the spec
 max_cases = 1500             # phase 2: coverage-guided cases (budget)
 time_budget_s = 25           # phase 2 wall-clock budget per function
-max_insns = 20000000         # per run; the original hitting it makes the case invalid
+max_insns = 4000000          # informational: the per-run cap is the spec's maxinsn (default 4M)
+max_wall_s = 300             # whole emu gate wall clock; beyond it the verdict is INCONCLUSIVE
 min_block_coverage = 0.90    # share of the original's basic blocks the test set must execute
 min_branch_coverage = 0.70   # share of conditional-branch directions it must take
 ni_cases = 6                 # cases used for the input-completeness (non-interference) check

@@ -1,0 +1,364 @@
+{
+ "_evidence": "Inputs of the tyre-mark painter 0x0050c980 (called by 0x51f299 from 0x417fbe with edi = the car's ring record; compose after ring_008943a0, whose record-aligned lap/pit bounds keep every forward/backward step of the walk at 0x50ce41/0x50cebd inside records 0..31, and ring_00555b28). The caller stores the two points it paints between: 0x967988/0x96798c = the wheel's previous position (car +0x1e0/+0x1e4) and 0x967990/0x967994 = its current one (0x41e156 -> 0x623e30/0x623e38). Each goes through 0x50c8d2 -> 0x404815 (world -> record-local transform, accepted for coordinates in -0x100000..0x100000 with record words -3000..3000; it divides by max(0x40000 - x*[edi+0x14]>>14, 0x100), never zero) and is rejected ('cmp eax,0x100; jae stc') unless it lies across the record; the walk ('cmp eax,0x100; jl exit' on the remaining delta, then 'add edi,0x160' / 'sub edi,0x160' with the ring bounds) ends because every step consumes at least 0x100 of the remaining record-local distance or exits. So the points are drawn from one shared small window (-0x8000..0x8000, the distance one car covers in a frame, both points on the same handful of records) and the record geometry words +0..+0x3e of records 0..31 from -3000..3000 (as 0x404815's own domain). [0x64594c] (the pass count: 'inc [0x645950]; cmp eax,[0x64594c]; jle' repeats the whole walk) {1, 2}; [0xa53ad0] ('test; je' -> at most 2 passes) {0, 1}; [0x7ad869] ('cmp ..,0; je 0x50cc68/0x50cd55/0x50ce1c') is pinned 0: nonzero runs the per-segment flag clears and 0x4a6130 -> 0x4a61a0, which paints the mark into the track texture through the renderer's texture manager [0xa4dc28] (0x4514f0: 'call [vtbl+0x40]', the surface Lock of a COM texture - outside the game; the probe faulted at 0x4a63d8 on the image's null manager), so that arm is left to the in-game check (T2); [0x88fdd7] ('cmp ..,0xff; jne' skips the mark heads; written 0xff/0 by 0x512bb2/0x512bee) {0xff, 0}; record words +0x88/+0x8a/+0x9c/+0x138/+0x13e ('cmp word [edi+X],0xffff; je' = no texture, else the texture id copied to 0xa6987c for 0x4a6130) {0xffff, small ids}. The scale [0x73d198] (0x480) and the divisor [0x65e428] (0xa, written only by the loader 0x4ba955) keep their image values. Values are synthetic. Added after the first probes (the walk then ran 0x50c18a/0x50c30a/0x50c3ea/0x50c4dc/0x50c5e4 on 200/200 cases): record word +0x7a (the mark-list entry index, 0x675a82 + 10*w: 'movzx edi,[edi+0x7a]; imul edi,0xa') of records 0..32 in 0..30 as ring_0040c0ae; the 31 entries' list words +6 (head node) and +8 (tail node) and the node count [0x66d8d0] ('imul ebx,8; add 0x679d3c; cmp 0x68d5b4; jb' adds a node, else the compaction 0x50c1b5 rewrites every entry of records 0..lap end and pit start..pit end, moves the pool down by 0xfa00 bytes and subtracts 0x7d0 from all 0x1f40 node links). Heads are 0 (empty list) or >= 0x7d0 and tails >= 0x7d0: the compaction then only subtracts ('sub eax,0x7d0; js' not taken); a head below 0x7d0 follows the node chain ('movzx eax,[edx*8+0x679d42]; cmp ax,[ebx+8]; jle') which ends only on a well-formed list ending at the tail - random or zero nodes loop forever, so that sub-walk is not generated (the 0x2710-node pool holds no valid chains). Counts 0..0x270e add a node, 0x270f/0x2710 compact. The node pool part the compaction copies down ('rep movsb' of 0xfa00 bytes from node 0x7d0, 0x679d3c+0x3e80..0x68d5b4) is random dwords; inside the mark texture buffers 0x7572dc..0x7a88dc (bases 0x7572dc/0x7674dc/0x76b6dc/0x7738dc/0x783adc/0x787cdc/0x7900dc/0x7942dc/0x79c4dc/0x7a06dc chosen by 0x50f924, read-modify-written by the painters, whose pixel bytes index the 256-entry shade tables 0x948658/0x948758) the eight areas the walks of these points reach (from the read set of a probe over this domain) are random dwords - every byte value is a valid table index (filling all 0x51600 bytes per case made the run exceed the 300 s wall clock: the generator places each field element separately); the transform temporaries 0x934de8..0x934df4 (pushed and restored by 0x404815) any. Also the two 256-byte shade tables 0x948658/0x948758 (zero in the image, no instruction stores to them by displacement: filled at run time; read as [edx+table] with a pixel byte index, the result stored as pixels) and the low-detail mark rows 0x73d45c + 64*w (w = record word +0x7a, 0..30: 0x50c30a 'shl eax,6; add eax,0x73d45c', read-modify-written like the texture pixels): random dwords. The Q14 tables 0x7c5c5c.. and the scale [0x73d198] keep their image values (constants).",
+ "globals": [
+  {
+   "addr": "0x00967988",
+   "type": "i32",
+   "count": 4,
+   "stride": 4,
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x008943a0",
+   "type": "i16",
+   "count": 32,
+   "stride": "0x160",
+   "lo": -3000,
+   "hi": 3000
+  },
+  {
+   "addr": "0x008943a2",
+   "type": "i16",
+   "count": 32,
+   "stride": "0x160",
+   "lo": -3000,
+   "hi": 3000
+  },
+  {
+   "addr": "0x008943a4",
+   "type": "i16",
+   "count": 32,
+   "stride": "0x160",
+   "lo": -3000,
+   "hi": 3000
+  },
+  {
+   "addr": "0x008943a6",
+   "type": "i16",
+   "count": 32,
+   "stride": "0x160",
+   "lo": -3000,
+   "hi": 3000
+  },
+  {
+   "addr": "0x008943a8",
+   "type": "i16",
+   "count": 32,
+   "stride": "0x160",
+   "lo": -3000,
+   "hi": 3000
+  },
+  {
+   "addr": "0x008943aa",
+   "type": "i16",
+   "count": 32,
+   "stride": "0x160",
+   "lo": -3000,
+   "hi": 3000
+  },
+  {
+   "addr": "0x008943ac",
+   "type": "i16",
+   "count": 32,
+   "stride": "0x160",
+   "lo": -3000,
+   "hi": 3000
+  },
+  {
+   "addr": "0x008943ae",
+   "type": "i16",
+   "count": 32,
+   "stride": "0x160",
+   "lo": -3000,
+   "hi": 3000
+  },
+  {
+   "addr": "0x008943b0",
+   "type": "i16",
+   "count": 32,
+   "stride": "0x160",
+   "lo": -3000,
+   "hi": 3000
+  },
+  {
+   "addr": "0x008943b2",
+   "type": "i16",
+   "count": 32,
+   "stride": "0x160",
+   "lo": -3000,
+   "hi": 3000
+  },
+  {
+   "addr": "0x008943b4",
+   "type": "i16",
+   "count": 32,
+   "stride": "0x160",
+   "lo": -3000,
+   "hi": 3000
+  },
+  {
+   "addr": "0x008943b6",
+   "type": "i16",
+   "count": 32,
+   "stride": "0x160",
+   "lo": -3000,
+   "hi": 3000
+  },
+  {
+   "addr": "0x008943b8",
+   "type": "i16",
+   "count": 32,
+   "stride": "0x160",
+   "lo": -3000,
+   "hi": 3000
+  },
+  {
+   "addr": "0x008943ba",
+   "type": "i16",
+   "count": 32,
+   "stride": "0x160",
+   "lo": -3000,
+   "hi": 3000
+  },
+  {
+   "addr": "0x008943bc",
+   "type": "i16",
+   "count": 32,
+   "stride": "0x160",
+   "lo": -3000,
+   "hi": 3000
+  },
+  {
+   "addr": "0x008943be",
+   "type": "i16",
+   "count": 32,
+   "stride": "0x160",
+   "lo": -3000,
+   "hi": 3000
+  },
+  {
+   "addr": "0x00894428",
+   "type": "u16",
+   "count": 32,
+   "stride": "0x160",
+   "values": [
+    "0xffff",
+    "0xffff",
+    0,
+    1,
+    5,
+    "0x40"
+   ]
+  },
+  {
+   "addr": "0x0089442a",
+   "type": "u16",
+   "count": 32,
+   "stride": "0x160",
+   "values": [
+    "0xffff",
+    "0xffff",
+    0,
+    1,
+    5,
+    "0x40"
+   ]
+  },
+  {
+   "addr": "0x0089443c",
+   "type": "u16",
+   "count": 32,
+   "stride": "0x160",
+   "values": [
+    "0xffff",
+    "0xffff",
+    0,
+    1,
+    5,
+    "0x40"
+   ]
+  },
+  {
+   "addr": "0x008944d8",
+   "type": "u16",
+   "count": 32,
+   "stride": "0x160",
+   "values": [
+    "0xffff",
+    "0xffff",
+    0,
+    1,
+    5,
+    "0x40"
+   ]
+  },
+  {
+   "addr": "0x008944de",
+   "type": "u16",
+   "count": 32,
+   "stride": "0x160",
+   "values": [
+    "0xffff",
+    "0xffff",
+    0,
+    1,
+    5,
+    "0x40"
+   ]
+  },
+  {
+   "addr": "0x0064594c",
+   "type": "u32",
+   "values": [
+    1,
+    1,
+    2
+   ]
+  },
+  {
+   "addr": "0x00a53ad0",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x007ad869",
+   "type": "u8",
+   "values": [
+    0
+   ]
+  },
+  {
+   "addr": "0x0088fdd7",
+   "type": "u8",
+   "values": [
+    "0xff",
+    "0xff",
+    0
+   ]
+  },
+  {
+   "addr": "0x0089441a",
+   "type": "u16",
+   "count": 33,
+   "stride": "0x160",
+   "lo": 0,
+   "hi": 30
+  },
+  {
+   "addr": "0x00675a88",
+   "type": "u16",
+   "count": 31,
+   "stride": 10,
+   "values": [
+    0,
+    0,
+    0,
+    "0x7d0",
+    "0x1000",
+    "0x1f3f"
+   ]
+  },
+  {
+   "addr": "0x00675a8a",
+   "type": "u16",
+   "count": 31,
+   "stride": 10,
+   "values": [
+    "0x7d0",
+    "0x1000",
+    "0x1f3f"
+   ]
+  },
+  {
+   "addr": "0x0066d8d0",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    "0x1f40",
+    "0x2000",
+    "0x270e",
+    "0x270e",
+    "0x270f",
+    "0x2710"
+   ]
+  },
+  {
+   "addr": "0x00934de8",
+   "type": "u32",
+   "count": 4,
+   "stride": 4
+  },
+  {
+   "addr": "0x75b2dc",
+   "type": "u32",
+   "count": 2048,
+   "stride": 4
+  },
+  {
+   "addr": "0x7632dc",
+   "type": "u32",
+   "count": 4096,
+   "stride": 4
+  },
+  {
+   "addr": "0x767cdc",
+   "type": "u32",
+   "count": 256,
+   "stride": 4
+  },
+  {
+   "addr": "0x768cdc",
+   "type": "u32",
+   "count": 512,
+   "stride": 4
+  },
+  {
+   "addr": "0x76f0dc",
+   "type": "u32",
+   "count": 384,
+   "stride": 4
+  },
+  {
+   "addr": "0x7908dc",
+   "type": "u32",
+   "count": 256,
+   "stride": 4
+  },
+  {
+   "addr": "0x7918dc",
+   "type": "u32",
+   "count": 512,
+   "stride": 4
+  },
+  {
+   "addr": "0x797cdc",
+   "type": "u32",
+   "count": 384,
+   "stride": 4
+  },
+  {
+   "addr": "0x67dbbc",
+   "type": "u32",
+   "count": 15998,
+   "stride": 4
+  },
+  {
+   "addr": "0x00948658",
+   "type": "u32",
+   "count": 128,
+   "stride": 4
+  },
+  {
+   "addr": "0x0073d45c",
+   "type": "u32",
+   "count": 497,
+   "stride": 4
+  }
+ ]
+}

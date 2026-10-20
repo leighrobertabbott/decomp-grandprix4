@@ -1,0 +1,51 @@
+{
+ "_evidence": "0x0051c48d: 'cmp byte [0x9e1b1c],0xa; jne' (mode byte: 10 in half the cases, else 0/9/0xff); q = 0x51c45c() from [0x96a374] (rows: 0..15, so q <= 11; >= 0x40000000 divide-faults 0x51c45c); edi = [0x965900] + (q + q/4)*0x100 + 0x80 and every record writes 8 dwords there (+0x80 after every 4th record): the furthest store ends at 0xd80 + 8*0x20 + 2*0x80 = 0xf80, so [0x965900] is a 0x1000-byte buffer; records [0x965904] from texrec_0051c48d; [0x96a368] the record count of the do-while 'inc ebp; cmp ebp,[0x96a368]; jne' (1..8; 0 would mean 2^32 records); 0x9e1628[0..7] level offsets added to every pointer (any value: arithmetic only); [0x6975e0] the high-water mark compared unsigned with the final edi ('cmp edi,[0x6975e0]; jb'): a random dword lies above and below the buffer address in different cases. 0x9679e0..ec are written before they are read.",
+ "globals": [
+  {
+   "addr": "0x009e1b1c",
+   "type": "u8",
+   "values": [
+    "0x0a",
+    "0x0a",
+    "0x0a",
+    "0",
+    "9",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0096a374",
+   "type": "u32",
+   "lo": 0,
+   "hi": 15
+  },
+  {
+   "addr": "0x0096a368",
+   "type": "u32",
+   "lo": 1,
+   "hi": 8
+  },
+  {
+   "addr": "0x00965900",
+   "type": "ptr",
+   "size": 4096,
+   "fill": "bytes"
+  },
+  {
+   "addr": "0x00965904",
+   "type": "ptr",
+   "size": 256,
+   "fill": "layout=texrec_0051c48d"
+  },
+  {
+   "addr": "0x009e1628",
+   "type": "u32",
+   "count": 8,
+   "stride": 4
+  },
+  {
+   "addr": "0x006975e0",
+   "type": "u32"
+  }
+ ]
+}

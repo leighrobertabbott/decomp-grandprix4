@@ -1,0 +1,16 @@
+{
+ "_evidence": "0x00557f2e (compose after ring_008943a0+ring_0043d30c+bits_0055616f+flags2c_0055774b) loops ebx = 0..9 over ten channels: 'test word [ebx*2+0x874a98],0xffff; je next' (channel active), 'mov ax,[ebx*2+0x875d78]; or [edi+0x78],ax' (word masks, ring record word +0x78 RMW), the neighbour-flag OR of +0x2c (flags2c_0055774b) masked with the dword [ebx*4+0x875d50], then four countdown words 0x874a98/0x874aac/0x874ac0/0x874ae8 ('dec word; jne'; on reaching zero the result is ORed into +0x30..+0x3c and the counter reloaded from 0x874a34/0x874a48/0x874a5c/0x874a84). fuzz:i32 only varied the first dword of each table. The counters draw 0 (inactive / skipped), 1 (expires now), 2, 3 and large values; reloads, word masks and dword masks are random; word +0x78 of records 0..29 (edi = records 0..29) is random. Note: the second 'test word [ebx*2+0x874a98]' at 0x557f78 repeats the first one with nothing in between writing it, so its 'je' (0x557f82 taken) can never happen in the original: a dead direction (exemption candidate, not a domain gap).",
+ "globals": [
+  {"addr": "0x00874a98", "type": "u16", "count": 10, "stride": 2, "values": [0, 1, 1, 2, 3, "0x10", "0x8000", "0xffff"]},
+  {"addr": "0x00874aac", "type": "u16", "count": 10, "stride": 2, "values": [0, 1, 1, 2, 3, "0x10", "0x8000", "0xffff"]},
+  {"addr": "0x00874ac0", "type": "u16", "count": 10, "stride": 2, "values": [0, 1, 1, 2, 3, "0x10", "0x8000", "0xffff"]},
+  {"addr": "0x00874ae8", "type": "u16", "count": 10, "stride": 2, "values": [0, 1, 1, 2, 3, "0x10", "0x8000", "0xffff"]},
+  {"addr": "0x00874a34", "type": "u16", "count": 10, "stride": 2},
+  {"addr": "0x00874a48", "type": "u16", "count": 10, "stride": 2},
+  {"addr": "0x00874a5c", "type": "u16", "count": 10, "stride": 2},
+  {"addr": "0x00874a84", "type": "u16", "count": 10, "stride": 2},
+  {"addr": "0x00875d78", "type": "u16", "count": 10, "stride": 2},
+  {"addr": "0x00875d50", "type": "u32", "count": 10, "stride": 4},
+  {"addr": "0x00894418", "type": "u16", "count": 30, "stride": "0x160"}
+ ]
+}

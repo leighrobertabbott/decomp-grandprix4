@@ -1,0 +1,11 @@
+{
+ "_evidence": "Second surface pointer [0x822260] of the 0x54a12a blit family (zero in the image): a 2048-byte surface; compose after surf_0054a12a.",
+ "globals": [
+  {
+   "addr": "0x00822260",
+   "type": "ptr",
+   "size": 2048,
+   "fill": "bytes"
+  }
+ ]
+}

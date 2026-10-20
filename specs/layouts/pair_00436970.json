@@ -1,0 +1,16 @@
+{
+ "_evidence": "0x00436970 compares ebx with the selected car [0x679d30] (fallthrough at 0x436d61 needs equality: alias_reg ebx) and steps back up to [0x629e64] times (read only here, zero in the image; drawn 0..6 to exercise the step/refine blocks).",
+ "globals": [
+  {
+   "addr": "0x00679d30",
+   "type": "u32",
+   "alias_reg": "ebx"
+  },
+  {
+   "addr": "0x00629e64",
+   "type": "u32",
+   "lo": 0,
+   "hi": 6
+  }
+ ]
+}

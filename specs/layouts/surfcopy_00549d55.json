@@ -1,0 +1,17 @@
+{
+ "_evidence": "0x00549d55/0x00549d6b: rep movsd of ecx=0x3a980 dwords (960000 bytes, one 800x600x16-bit surface) between the dword pointers [0x822258] and [0x822260] (zero in the image; set by the surface setup to two distinct surfaces). Domain: two separate random 960000-byte buffers (the copy reads/writes exactly that many bytes from each; the buffers never overlap, as two distinct surfaces).",
+ "globals": [
+  {
+   "addr": "0x00822258",
+   "type": "ptr",
+   "size": 960000,
+   "fill": "bytes"
+  },
+  {
+   "addr": "0x00822260",
+   "type": "ptr",
+   "size": 960000,
+   "fill": "bytes"
+  }
+ ]
+}

@@ -1,0 +1,209 @@
+{
+ "_evidence": "Sound-channel ramp updater 0x005188f5. Enable byte [0x7ad868] ('cmp ..,0; je' at entry and again at 0x518a7d: zero -> pushal; movzx eax,word [0x679b4e]; 'cmp eax,0; jne' over call 0x509fa0, which tests dword [0xb1d3e4] and calls through [0xb1d3dc] only when that COM pointer is nonzero - it is left at its zero image value, not a field here; 0xb1d3e4 is varied so its store shows). Master level [0x88fba4]: 'cmp 0x4000; je' (0x4000 drawn often), else += [0x88fba8] and 'cmp eax,0x4000; jle' clamp (both sides, incl. signed overflow). Channel mask [0x88f704]: 'shr eax,1; jb' per bit k with 'btr [0x88f704],ebx' when a channel ends. The channel arrays are 16 dwords each (0x88f708/748/788/7c8/808/848/888/8c8/908/948 are 0x40 apart, and the channel scanners 0x518d18/0x518ba7 loop k < 0x10), so the mask's bits 16..31 are never set by the game: u16 range. Per channel k: status [0x88f948+4k] 'test ..,-1; js' (negative = free; else a sample index: 0x518758 stores it and indexes the 100-entry map 0x88f998 / byte array 0x88fb28 with it, and the callee 0x518cbe reads [idx*0x1c+0xb1c8e8+0xc], mapped for 0..99), three ramps (cur 0x88f708/target 0x88f7c8/step 0x88f888, cur 0x88f788/target 0x88f848/step 0x88f908, cur 0x88f748/target 0x88f808/step 0x88f8c8): 'or edx,edx; je/jns' on the step (zero drawn often so channels with all three steps zero reach the btr), cur+step clamped to target with jge/jle (both sides). edx>>8 goes to 0x518c3e (clamps 0..0x80 before its table read) / 0x518cbe / 0x518cfe, whose re-entry guards [0x88fbb4]/[0x88fbb5] ('cmp ..,0xff; je') are mixed; their callee 0x509ec0 is a bare 'ret 8'.",
+ "globals": [
+  {
+   "addr": "0x007ad868",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x00679b4e",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    1,
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x00b1d3e4",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    5
+   ]
+  },
+  {
+   "addr": "0x0088fba4",
+   "type": "u32",
+   "values": [
+    "0x4000",
+    "0x4000",
+    "0x4000",
+    "0x3fff",
+    "0x3f00",
+    0,
+    "0xffffffff",
+    "0x7fffffff",
+    "0x80000000"
+   ]
+  },
+  {
+   "addr": "0x0088fba8",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    "0x100",
+    "0xffffff00",
+    "0x4000",
+    "0x7fffffff",
+    "0x80000000"
+   ]
+  },
+  {
+   "addr": "0x0088f704",
+   "type": "u32",
+   "lo": 0,
+   "hi": 65535
+  },
+  {
+   "addr": "0x0088fbb4",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0088fbb5",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0088f948",
+   "type": "u32",
+   "count": 16,
+   "stride": 4,
+   "values": [
+    "0xffffffff",
+    "0xffffffff",
+    "0x80000000",
+    0,
+    1,
+    7,
+    50,
+    99
+   ]
+  },
+  {
+   "addr": "0x0088f708",
+   "type": "i32",
+   "count": 16,
+   "stride": 4,
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x0088f7c8",
+   "type": "i32",
+   "count": 16,
+   "stride": 4,
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x0088f788",
+   "type": "i32",
+   "count": 16,
+   "stride": 4,
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x0088f848",
+   "type": "i32",
+   "count": 16,
+   "stride": 4,
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x0088f748",
+   "type": "i32",
+   "count": 16,
+   "stride": 4,
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x0088f808",
+   "type": "i32",
+   "count": 16,
+   "stride": 4,
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x0088f888",
+   "type": "u32",
+   "count": 16,
+   "stride": 4,
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    4294967295,
+    "0x100",
+    "0xffffff00",
+    "0x7fffffff",
+    "0x80000000",
+    "0x12345"
+   ]
+  },
+  {
+   "addr": "0x0088f908",
+   "type": "u32",
+   "count": 16,
+   "stride": 4,
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    4294967295,
+    "0x100",
+    "0xffffff00",
+    "0x7fffffff",
+    "0x80000000",
+    "0x12345"
+   ]
+  },
+  {
+   "addr": "0x0088f8c8",
+   "type": "u32",
+   "count": 16,
+   "stride": 4,
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    4294967295,
+    "0x100",
+    "0xffffff00",
+    "0x7fffffff",
+    "0x80000000",
+    "0x12345"
+   ]
+  }
+ ]
+}

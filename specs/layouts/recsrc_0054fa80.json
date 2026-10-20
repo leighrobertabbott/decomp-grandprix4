@@ -1,0 +1,39 @@
+{
+ "size": 3952,
+ "fill": "bytes",
+ "_evidence": "0x0054fa80 merges 17 records of 0xe8 bytes (loop, ecx = 0x11) from the buffer [0x83e49c+0x38] = [0x83e4d4] (the loaded RECORDS.REC data) into the driver table 0x7ab760: per record 'cmp [esi+0x28],[edi+0x28]; jae' guards a 0x2e-byte rep movsb and 'cmp [esi+0x54],[edi+0x54]; jae' a 0xba-byte one from +0x2e, so only those two dwords per side are compared (unsigned) and the source bytes are copied. The source is a 0xf70-byte random buffer (17*0xe8+8, as the file block), both sides' +0x28/+0x54 dwords drawn from one small set so below, equal and above all occur. Under fuzz:i32 the source pointer was wild.",
+ "fields": [
+  {
+   "off": "0x28",
+   "type": "u32",
+   "count": 17,
+   "stride": "0xe8",
+   "values": [
+    0,
+    1,
+    2,
+    "0x100",
+    "0x7fffffff",
+    "0x80000000",
+    "0xfffffffe",
+    "0xffffffff"
+   ]
+  },
+  {
+   "off": "0x54",
+   "type": "u32",
+   "count": 17,
+   "stride": "0xe8",
+   "values": [
+    0,
+    1,
+    2,
+    "0x100",
+    "0x7fffffff",
+    "0x80000000",
+    "0xfffffffe",
+    "0xffffffff"
+   ]
+  }
+ ]
+}

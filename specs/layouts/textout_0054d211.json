@@ -1,0 +1,10 @@
+{
+ "_evidence": "Text-output state behind 0x54d211 ('pushal; push [0x833cc9]; push [0x833cc5]; push esi; call 0x4fd820; inc dword [0x833cc5]') and the colour setter 0x54cc96 used by the menu item drawers 0x53a393/0x53a620. [0x833cc5]/[0x833cc9] are the text cursor x/y (written by 0x54cb7e, any dword; x is incremented, y is compared with [0xaa2d48]). Byte [0xae6740] selects the 15/16-bit colour repack in 0x54cc96 ('cmp byte [0xae6740],0; jne'): 0 or 1. [0xabc07c] is the session flag tested first by 0x4fd820 ('cmp eax,ebx; je ret'): 0 returns at once, 1 runs the text-capture path with the capture index [0x669ed8]: -1 (off; then [0xaa357c], zero in the image, returns) or an index whose newline + copied string + NUL stay inside the 0x100-byte capture buffer 0xaa2e50: the drawn string at 0x823100 is at most ~0x52 bytes (<= 13 number characters from 0x54dad5/0x54db64 plus <= 0x45 from a script_0054d798 script), so the index is at most 0x9f. [0xaa357c] keeps its image value 0 (1..0xffff would reach the unmodelled session layer, as tbox_0054fe80 notes). Plain data otherwise: every drawn value is valid.",
+ "globals": [
+  {"addr": "0x00833cc5", "type": "u32"},
+  {"addr": "0x00833cc9", "type": "u32"},
+  {"addr": "0x00ae6740", "type": "u8", "values": [0, 1]},
+  {"addr": "0x00abc07c", "type": "u32", "values": [0, 0, 1]},
+  {"addr": "0x00669ed8", "type": "u32", "values": ["0xffffffff", "0xffffffff", "0xffffffff", 0, 0, 1, 2, 7, "0x40", "0x9f"]}
+ ]
+}

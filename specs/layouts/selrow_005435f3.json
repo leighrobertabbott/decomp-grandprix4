@@ -1,0 +1,6 @@
+{
+ "_evidence": "Selection byte for the two static datalog channel items that use the draw handler 0x5435f3 (image items 0x8460da and 0x846100, +0x16 = 0x5435f3, ids +0xc = 0x1b and 0x1c, cells +0xe = 0x8312cc / 0x8312d0). 0x5435f3 first calls 0x543794, which after the 0x549db9 insert does 'mov dl,[0x82fd45]; cmp dl,[esi+0xc]; jne' (highlight colour 0x4210 for the selected item, else 0x2108/0x2529). The selection is the 1-based id of the highlighted item (0xff in the image = none), so it is drawn from the two item ids (equal in about half the cases), another id and the 0xff none value. A plain compared byte: every value is valid.",
+ "globals": [
+  {"addr": "0x0082fd45", "type": "u8", "values": ["0x1b", "0x1c", "0x1b", "0x1c", 1, "0xff"]}
+ ]
+}

@@ -1,0 +1,7 @@
+{
+ "_evidence": "Synthetic method table of the force-feedback effect object used by 0x005069d0 ('mov eax,[esi]; push 0x20000140; push 0xae696c; push esi; call [eax+0x18]': a stdcall method taking 3 dwords). The slot +0x18 holds 0x5a9d40, a GP4 routine that is exactly 'xor eax,eax; ret 0xc' (returns 0 = success and pops the three arguments), so the call returns cleanly in both runs; the other slots are never read.",
+ "size": 32,
+ "fields": [
+  {"off": "0x18", "type": "u32", "values": ["0x5a9d40"]}
+ ]
+}

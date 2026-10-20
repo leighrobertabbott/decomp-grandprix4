@@ -1,0 +1,69 @@
+{
+ "size": 684,
+ "_evidence": "Car record (esi) for 0x0041e500 and its callee 0x0041e49e. Dword +0x1c is the current track-segment pointer (never null in the game, dereferenced unconditionally at 0x41e55a for byte +0x51 bits 4/2 and bytes +0x68/+0x69), so it points at a random 0x70-byte block. The bit tests on +0xe5 (bit 2: exit), +0x21c (0x20, RMW 0x20/8), +0x1ce (bit 0), +0x81 (bit 4, RMW), +0x7b (bit 1), +0x71 (bit 2, callee) and the RMW bytes +0x162/+0xfe/+0xca/+0x232/+0x273 take both states from the random background; +0xe5 draws bit 2 set in 2/6 so the body runs often. Words +0x90/+0xb0 (-x-0x300 / x-0x300 vs +0xb0, jl) and +0x9a (vs (byte*[0x601d58])>>14 and movsx vs [0x6039f0]) are any i16. Dwords +0x50 and +0x2a0 (test/je, then [0x66d814]-v js) draw zero, small values of both signs and the extremes, against the small/extreme clock values of state_0041e500, so zero, past and future all occur. Only compares, wrapping imul/shrd and stores: nothing faults.",
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x1c",
+   "type": "ptr",
+   "size": 112,
+   "fill": "bytes"
+  },
+  {
+   "off": "0xe5",
+   "type": "u8",
+   "values": [
+    "0x0",
+    "0xfb",
+    "0x1",
+    "0x10",
+    "0x4",
+    "0xff"
+   ]
+  },
+  {
+   "off": "0x90",
+   "type": "i16"
+  },
+  {
+   "off": "0xb0",
+   "type": "i16"
+  },
+  {
+   "off": "0x9a",
+   "type": "i16"
+  },
+  {
+   "off": "0x50",
+   "type": "u32",
+   "values": [
+    "0x0",
+    "0x0",
+    "0x1",
+    "0x32",
+    "0xffffffce",
+    "0x96",
+    "0x3e8",
+    "0x7fffffff",
+    "0x80000000",
+    "0x12345"
+   ]
+  },
+  {
+   "off": "0x2a0",
+   "type": "u32",
+   "values": [
+    "0x0",
+    "0x0",
+    "0x1",
+    "0x32",
+    "0xffffffce",
+    "0x96",
+    "0x3e8",
+    "0x7fffffff",
+    "0x80000000",
+    "0x12345"
+   ]
+  }
+ ]
+}

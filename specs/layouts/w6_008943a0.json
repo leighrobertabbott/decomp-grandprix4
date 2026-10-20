@@ -1,0 +1,6 @@
+{
+ "_evidence": "Word +6 of the 0x160-byte track records 0..26 at 0x8943a0 (compose after ring_00405a12): 0x443de9 takes the record 0x4061ed's walk ends on (edx, inside records 0..14 for ring_00405a12's coherent geometry) and stores movsx word [rec+6] << 3 to the view record +0x88. A record attribute set by the track loader (zero in the image): any i16, drawn uniformly. Nothing faults.",
+ "globals": [
+  {"addr": "0x8943a6", "type": "i16", "count": 27, "stride": "0x160", "lo": -32768, "hi": 32767}
+ ]
+}

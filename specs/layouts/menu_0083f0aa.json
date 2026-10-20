@@ -1,0 +1,497 @@
+{
+ "_evidence": "Static settings menu behind the header 0x83f0aa, as used by 0x00529ad4 (compose after vals_00529148, which varies the mode byte 0x81d1fb; globals=layout only so the static links keep their image values): the header's +0 chain links 102 items (0x83f0fa .. 0x84050c, sizes 38..58 bytes, the last links to 0), never written by code. 0x53e5b1 walks them (null / sentinel 0x838c94 ends) and sets or clears bit 4 of each item's run-time flag byte +0x1f from a 128-bit mask ('and byte [esi+0x1f],0xef' / 'or byte [esi+0x1f],0x10'): the 102 flag bytes are any value here (the other bits must survive). 0x53d1f4 walks the 0xc-byte sub-records from [0x83f0aa+0x18] (0x840536: 42 records with word +0 < 0x15, then the terminator word, all static) and stores 0/0xff into byte +2: those 42 bytes are random beforehand so a missed or misplaced store shows. 0x529b54 then applies the triplet table 0x81d342 or 0x81d34f (mode bit 7): {count, offset, value} triplets until a zero count, each hopping 'mov esi,[esi]' count times from the header without a null test and storing value at node+offset. Both 13-byte tables are .data that no instruction writes (only this function reads them), so the game sees their image triplets; here they are synthetic: 0..4 triplets (prefix: the count byte after the last triplet is the terminator, byte 12 is always 0), counts 1..102 (103 would hop through the last item's null link and fault), offsets 4..37 (inside the smallest item and past its +0 link, so no later hop follows a clobbered link), values any byte.",
+ "globals": [
+  {
+   "addr": "0x83f119",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f13f",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f165",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f18b",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f1b1",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f1d7",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f209",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f243",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f275",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f2a7",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f2e1",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f313",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f345",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f37f",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f3b1",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f3e3",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f41d",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f44f",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f481",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f4bb",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f4ed",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f51f",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f559",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f58b",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f5bd",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f5f7",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f629",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f65b",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f695",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f6c7",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f6f9",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f733",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f765",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f797",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f7d1",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f803",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f835",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f86f",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f8a1",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f8d3",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f90d",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f93f",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f971",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f9ab",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83f9dd",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83fa0f",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83fa49",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83fa7b",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83faad",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83fae7",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83fb19",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83fb4b",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83fb85",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83fbb7",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83fbe9",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83fc23",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83fc55",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83fc87",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83fcc1",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83fcf3",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83fd25",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83fd5f",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83fd91",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83fdc3",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83fdfd",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83fe2f",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83fe61",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83fe9b",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83fecd",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83feff",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83ff39",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83ff6b",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83ff9d",
+   "type": "u8"
+  },
+  {
+   "addr": "0x83ffd7",
+   "type": "u8"
+  },
+  {
+   "addr": "0x840009",
+   "type": "u8"
+  },
+  {
+   "addr": "0x84003b",
+   "type": "u8"
+  },
+  {
+   "addr": "0x840075",
+   "type": "u8"
+  },
+  {
+   "addr": "0x8400a7",
+   "type": "u8"
+  },
+  {
+   "addr": "0x8400d9",
+   "type": "u8"
+  },
+  {
+   "addr": "0x840113",
+   "type": "u8"
+  },
+  {
+   "addr": "0x840145",
+   "type": "u8"
+  },
+  {
+   "addr": "0x840177",
+   "type": "u8"
+  },
+  {
+   "addr": "0x8401b1",
+   "type": "u8"
+  },
+  {
+   "addr": "0x8401e3",
+   "type": "u8"
+  },
+  {
+   "addr": "0x840215",
+   "type": "u8"
+  },
+  {
+   "addr": "0x84024f",
+   "type": "u8"
+  },
+  {
+   "addr": "0x840281",
+   "type": "u8"
+  },
+  {
+   "addr": "0x8402b3",
+   "type": "u8"
+  },
+  {
+   "addr": "0x8402ed",
+   "type": "u8"
+  },
+  {
+   "addr": "0x84031f",
+   "type": "u8"
+  },
+  {
+   "addr": "0x84034d",
+   "type": "u8"
+  },
+  {
+   "addr": "0x84037f",
+   "type": "u8"
+  },
+  {
+   "addr": "0x8403ad",
+   "type": "u8"
+  },
+  {
+   "addr": "0x8403db",
+   "type": "u8"
+  },
+  {
+   "addr": "0x84040d",
+   "type": "u8"
+  },
+  {
+   "addr": "0x84043b",
+   "type": "u8"
+  },
+  {
+   "addr": "0x840465",
+   "type": "u8"
+  },
+  {
+   "addr": "0x84048f",
+   "type": "u8"
+  },
+  {
+   "addr": "0x8404b9",
+   "type": "u8"
+  },
+  {
+   "addr": "0x8404df",
+   "type": "u8"
+  },
+  {
+   "addr": "0x840505",
+   "type": "u8"
+  },
+  {
+   "addr": "0x84052b",
+   "type": "u8"
+  },
+  {
+   "addr": "0x00840538",
+   "type": "u8",
+   "count": 42,
+   "stride": "0xc"
+  },
+  {
+   "addr": "0x81d342",
+   "type": "u8",
+   "count": 5,
+   "stride": 3,
+   "prefix": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    4
+   ],
+   "values": [
+    1,
+    2,
+    3,
+    7,
+    20,
+    51,
+    90,
+    101,
+    102
+   ]
+  },
+  {
+   "addr": "0x81d343",
+   "type": "u8",
+   "count": 4,
+   "stride": 3,
+   "lo": 4,
+   "hi": 37
+  },
+  {
+   "addr": "0x81d344",
+   "type": "u8",
+   "count": 4,
+   "stride": 3
+  },
+  {
+   "addr": "0x81d34f",
+   "type": "u8",
+   "count": 5,
+   "stride": 3,
+   "prefix": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    4
+   ],
+   "values": [
+    1,
+    2,
+    3,
+    7,
+    20,
+    51,
+    90,
+    101,
+    102
+   ]
+  },
+  {
+   "addr": "0x81d350",
+   "type": "u8",
+   "count": 4,
+   "stride": 3,
+   "lo": 4,
+   "hi": 37
+  },
+  {
+   "addr": "0x81d351",
+   "type": "u8",
+   "count": 4,
+   "stride": 3
+  }
+ ]
+}

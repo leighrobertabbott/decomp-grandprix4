@@ -1,0 +1,8 @@
+{
+  "_evidence": "ebx of 0x0042b6c2: the other car's record prefix (0x1c0 bytes), background random (fill bytes; word +0x90 is returned in ax). Dword +0x1b8 is that car's segment pointer, loaded into edi when 0x406123 returns CF=1 (0x42b6cd) and then compared with the pit start, advanced and dereferenced at +0x44 like the car's own +0x1c, so it draws record addresses 0..14 (the coherent track of ring_00405a12, whose links links_00405a12 varies) instead of a random dword.",
+  "size": 448,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x1b8", "type": "u32", "values": ["0x8943a0", "0x894500", "0x894660", "0x8947c0", "0x894920", "0x894a80", "0x894be0", "0x894d40", "0x894ea0", "0x895000", "0x895160", "0x8952c0", "0x895420", "0x895580", "0x8956e0"]}
+  ]
+}

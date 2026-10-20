@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x0055748e and its byte-identical twin 0x00559008: 'mov esi,0x9619f8; mov edi,0x961b9c' then 'mov ecx,0xa; rep movsb; cmp esi,0x961b92; jb' copies the 410 bytes 0x9619f8..0x961b91 to 0x961b9c..0x961d35 (the 0x60-byte record table tab_00558e19 ends at 0x9619f8; 0x961b9c is the 10-byte key table of keys_0055906c). Both areas are zero in the image, so the copy was invisible: the source, the 10-byte gap 0x961b92..0x961b9b and the destination plus a few trailing bytes (0x9619f8..0x961d3f, 840 bytes) are drawn at random, so the copied bytes change and the untouched gap/tail must survive. A plain memory copy: every pattern is valid.",
+ "globals": [
+  {"addr": "0x009619f8", "type": "u8", "count": 840, "stride": 1}
+ ]
+}

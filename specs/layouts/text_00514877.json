@@ -1,0 +1,142 @@
+{
+ "_evidence": "esi text record of the HUD/option file parsed by 0x0051488e (one line per record) and dispatched by 0x00514877: 'cmp byte [esi],0x6c; je' / 'cmp byte [esi],0x68; je' sends 'h' to 0x514848 and 'l' or anything else to 0x514821. 0x514848: 'mov ebx,0x89167c; call 0x5147f6' matches the text against the 'h' keyword list (hlight_TYRE, hlight_RACETYRE, hlight_ACCTIME, hlight_AUTOMATIC_IN_SECONDS, hlight_CONTROL_IN_SECONDS, hlight_VDU_TIME_DIGITS, hlight_PREFERENCES, then an empty string at 0x891707 that matches anything as index 7), 'mov edi,[eax*4+0x891708]' takes the destination from the constant pointer table 0x891708 (only read by code: k 0..6 -> 0x894126, 0x8940ea, 0x89421c, 0x89422c, 0x894230, 0x894234, 0x894238, all writable .data; k=7 reads the text 'JACK' at 0x891724 = 0x4b43414a and the stosb at 0x514870 faults), then 4x {skip blanks/tabs (0x5146e8) and commas, dec esi, parse a number (0x514748: optional sign, every byte up to the next ',', CR, LF, space or tab counts as a digit), stosb}. So an 'h' record must start with one of the seven keywords - the game's own data file never holds another (it would crash): this layout uses 'hlight_TYRE' (k=0; a layout field cannot correlate a multi-byte choice, so the keyword is fixed). The first byte varies over 'h' (half the cases), 'l', 'c', ',' and ' ' (0x514821: the 'l' list 0x8915ac matches none of these texts, index 10 is stored, then six numbers). After the 11-byte keyword come eight 4-byte number blocks [separator ' ' ',' TAB][sign or digit][digit][terminator ',' ' ' TAB CR LF]: every number ends inside its block (a CR/LF terminator is consumed as a one-byte number ended by the next separator), so the 'h' arm's four and the other arm's six numbers (the first one being the unmatched word itself) end by byte 43 and the random tail of the 0x100-byte buffer is never reached.",
+ "size": 256,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": 0,
+   "type": "u8",
+   "values": [
+    "0x68",
+    "0x68",
+    "0x68",
+    "0x68",
+    "0x6c",
+    "0x6c",
+    "0x63",
+    "0x2c",
+    "0x20"
+   ]
+  },
+  {
+   "off": 1,
+   "type": "u8",
+   "values": [
+    "0x6c"
+   ]
+  },
+  {
+   "off": 2,
+   "type": "u8",
+   "values": [
+    "0x69"
+   ]
+  },
+  {
+   "off": 3,
+   "type": "u8",
+   "values": [
+    "0x67"
+   ]
+  },
+  {
+   "off": 4,
+   "type": "u8",
+   "values": [
+    "0x68"
+   ]
+  },
+  {
+   "off": 5,
+   "type": "u8",
+   "values": [
+    "0x74"
+   ]
+  },
+  {
+   "off": 6,
+   "type": "u8",
+   "values": [
+    "0x5f"
+   ]
+  },
+  {
+   "off": 7,
+   "type": "u8",
+   "values": [
+    "0x54"
+   ]
+  },
+  {
+   "off": 8,
+   "type": "u8",
+   "values": [
+    "0x59"
+   ]
+  },
+  {
+   "off": 9,
+   "type": "u8",
+   "values": [
+    "0x52"
+   ]
+  },
+  {
+   "off": 10,
+   "type": "u8",
+   "values": [
+    "0x45"
+   ]
+  },
+  {
+   "off": "0xb",
+   "type": "u8",
+   "count": 8,
+   "stride": 4,
+   "values": [
+    "0x20",
+    "0x2c",
+    "0x09"
+   ]
+  },
+  {
+   "off": "0xc",
+   "type": "u8",
+   "count": 8,
+   "stride": 4,
+   "values": [
+    "0x2d",
+    "0x2b",
+    "0x30",
+    "0x31",
+    "0x35",
+    "0x39"
+   ]
+  },
+  {
+   "off": "0xd",
+   "type": "u8",
+   "count": 8,
+   "stride": 4,
+   "values": [
+    "0x30",
+    "0x33",
+    "0x37",
+    "0x39"
+   ]
+  },
+  {
+   "off": "0xe",
+   "type": "u8",
+   "count": 8,
+   "stride": 4,
+   "values": [
+    "0x2c",
+    "0x20",
+    "0x09",
+    "0x0d",
+    "0x0a"
+   ]
+  }
+ ]
+}

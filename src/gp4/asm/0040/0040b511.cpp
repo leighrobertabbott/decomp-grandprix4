@@ -11,4 +11,4 @@ void __cdecl FUN_0040b511(gp4::Regs* r) {
     }
     r->eax = r->edi + 0xa5eu * 4u;
 }
-GP4_IMPL(0x0040b511, FUN_0040b511, "regs(edi:ptr[0x2980]:bytes) -> (eax)")
+GP4_IMPL(0x0040b511, FUN_0040b511, "regs(edi:ptr[0x2980]:bytes) -> (eax); globals=layout=copy_0063b814")

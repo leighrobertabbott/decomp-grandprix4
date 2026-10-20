@@ -1,0 +1,9 @@
+{
+ "_evidence": "0x005341a9: 'mov esi,0x82829b; mov ecx,0xc; cmp al,[esi]; je; add esi,4; loop' searches the 12 four-byte entries (+0 key) for al; found: [0x82816c] = movzx byte +1, eax = 1 << byte +3 ('mov cl,[esi+3]; shl eax,cl': the CPU masks the count to 5 bits), clc; not found: stc. The table is .data that no instruction writes (read only by 0x5341a9/0x5341d4, which also uses +2), so the game sees its image bytes; fuzz:i32 varied only entry 0. Here every entry is synthetic: key from a small set {1,2,3,4,5,6,0x10,0x20,0x80,0xff} (duplicates: the first match wins; the spec draws al mostly from the same set plus 0x7f, never a key, so found-at-k and miss both occur), +1 and +2 any byte, +3 a shift 0..40 (counts >= 32 wrap). Plain byte loads, every value is valid.",
+ "globals": [
+  {"addr": "0x0082829b", "type": "u8", "count": 12, "stride": 4, "values": [1, 2, 3, 4, 5, 6, "0x10", "0x20", "0x80", "0xff"]},
+  {"addr": "0x0082829c", "type": "u8", "count": 12, "stride": 4},
+  {"addr": "0x0082829d", "type": "u8", "count": 12, "stride": 4},
+  {"addr": "0x0082829e", "type": "u8", "count": 12, "stride": 4, "lo": 0, "hi": 40}
+ ]
+}

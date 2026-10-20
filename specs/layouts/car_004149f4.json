@@ -1,0 +1,49 @@
+{
+ "_evidence": "Car overlay for 0x004149f4 (compose after rec_00413dd5+rec_00414562, which pin the positions +0/+4 and the selector bytes of 0x413dd5/0x414562): dword +0x110 is the car ahead (0x4257c9, via 0x4147d6) - a nullable pointer to a car block (link_004149f4, whose own +0x110 is nullable too); dword +0x128 is the target car of 0x414439/0x4147d6 (reads its positions +0/+4 and byte +0xff), a nullable pointer to a 0x108-byte block with pos_00405cf8 positions (random +0x128 faulted). Byte +0x7d is the car-order list offset 2*i (0..42) that 0x413ea0 (via 0x41464c / 0x413f28) starts its walk from (car_00413fb0: a random byte starts it inside the car array). Byte +0x235 (0x414548: cmp 2; jb) keeps rec_00414562's 0..5/0xff.",
+ "size": 860,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x110",
+   "type": "ptr",
+   "size": 552,
+   "fill": "layout=link_004149f4",
+   "nullable": true
+  },
+  {
+   "off": "0x128",
+   "type": "ptr",
+   "size": 264,
+   "fill": "layout=pos_00405cf8",
+   "nullable": true
+  },
+  {
+   "off": "0x7d",
+   "type": "u8",
+   "values": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42
+   ]
+  }
+ ]
+}

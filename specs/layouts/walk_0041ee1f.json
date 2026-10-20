@@ -1,0 +1,8 @@
+{
+  "_evidence": "Overlay for 0x0041ee1f, composed after ring_008943a0+ptr_00603d24. The lap-side backward walk (0x41eecb loop, entered with edi < ebx = [0x603d24] < pit start [0x891500]) only reaches 0x41eed3/0x41eee1 when a step below the lap start [0x891504] wraps by [0x866ec4] (0x41eef7) to a record at or above the pit start: e < b <= S and P in [b+1, b-1+D] (record indices). Independent uniform draws give that in ~1e-4 of the cases, so in about half the cases each of the three positions is tied to edi (alias_reg + alias_offset): [0x603d24] = edi + 1 record (b = e+1), lap start = edi + 1 record (S = b: the first step wraps), pit start = edi + 2 records (P = e+2: with D = 2 records the second step clamps at 0x41eee1, with D >= 3 it stays above (0x41eedf taken), with D = 1 it never reaches the pit side). Otherwise each keeps its family draw (ptr_00603d24: edi or records 0..31; ring_008943a0: lap start 0..4, pit start 0..30). These are record-aligned pointers, so 0x41ed6b only ever sees records (ebx <= edi + 5 records). Lap start above edi does not occur in the game ([0x891504] is never written, image 0x8943a0) but the original handles it without fault, as ring_008943a0 already draws it.",
+  "globals": [
+    {"addr": "0x00603d24", "type": "u32", "alias_reg": "edi", "alias_offset": "0x160", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 31}},
+    {"addr": "0x00891504", "type": "u32", "alias_reg": "edi", "alias_offset": "0x160", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 4}},
+    {"addr": "0x00891500", "type": "u32", "alias_reg": "edi", "alias_offset": "0x2c0", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 30}}
+  ]
+}

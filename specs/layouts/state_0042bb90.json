@@ -1,0 +1,19 @@
+{
+  "_evidence": "0x0042bb90. State words/bytes (shared with other AI functions): i16 0x00603e70 and 0x00603ba0 (cx = difference, js at 0x0042bb9e; e70 sign/abs at 0x0042bc98 and 0x0042bd18), i16 0x00604404 (abs compared with 0x00603e68 at 0x0042bcb2/0x0042bd8f), u8 0x006077c9 (bits 0x20/8 at 0x0042bba4/0x0042bbb1); all unconstrained. The rest are tuning dwords/words referenced by no other function; they are varied around their static values so the clamps reach both outcomes (e.g. 0x0042bcf1 needs e64 large enough to exceed c20). Faults: the idiv ecx at 0x0042bc42 is safe (|i16*i16| <= 2^30, ecx = max(cx*16, 0x40) with cx >= 0 on that path). The idiv ebp at 0x0042bd8b divides A*diff by ebp != 0 (forced 1 if zero), where diff = [esi+0x9a]-[ebx+0x9a] in 0..65535 (js returns otherwise) and A = ((0 + [0x00603e00]) * [0x00603dfc] >> 14) + [0x00603e04] (the movzx/neg/jge always yields 0). With e00 in +-0x1000, dfc in +-0x10000 and e04 in +-0x4000, |A| <= 0x8000 and |A*diff| <= 0x8000*0xffff < 2^31, so the quotient fits for every ebp; the static values (e00 0x755, dfc 0x10000, e04 0x4000: A = 0x5d54) lie inside. Unbounded fuzz:i32 values overflowed this idiv in the original. Static: c14 0x20, c20 0x1ff, db8 0x40, e08 0x80, e64 0x1000, e68 0x360, 622420 0x80.",
+  "globals": [
+    {"addr": "0x00603e70", "type": "i16"},
+    {"addr": "0x00603ba0", "type": "i16"},
+    {"addr": "0x00604404", "type": "i16"},
+    {"addr": "0x006077c9", "type": "u8"},
+    {"addr": "0x00622420", "type": "i16"},
+    {"addr": "0x00603db8", "type": "i16"},
+    {"addr": "0x00603e68", "type": "i16"},
+    {"addr": "0x00603c14", "type": "i32", "lo": -256, "hi": 1024},
+    {"addr": "0x00603c20", "type": "i32", "lo": -256, "hi": 4096},
+    {"addr": "0x00603e08", "type": "i32", "lo": -65536, "hi": 65536},
+    {"addr": "0x00603e64", "type": "i32", "lo": -65536, "hi": 65536},
+    {"addr": "0x00603dfc", "type": "i32", "lo": -65536, "hi": 65536},
+    {"addr": "0x00603e00", "type": "i32", "lo": -4096, "hi": 4096},
+    {"addr": "0x00603e04", "type": "i32", "lo": -16384, "hi": 16384}
+  ]
+}

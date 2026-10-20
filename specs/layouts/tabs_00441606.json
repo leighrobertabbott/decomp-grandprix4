@@ -1,0 +1,7 @@
+{
+  "_evidence": "Overlay for 0x00441606 on top of counter_0040f0dd+tabs_004413b7 (same 22x44 tables, same row/column indexing). ebp = dword 0x66ec60[row*44+col] sar 8 (0x441648) multiplies a table byte (mul ebp) and the product is divided by edi = 0xf0 (0x441666/0x441691/0x4416bc/0x4416e7): a negative dword gives ebp >= 0xff800000, so a byte >= 0xf1 makes edx >= 0xf0 and the original's div faults. The table's writers keep it an unsigned accumulator clamped at 0x7fffffff (0x4350da 'add; jae' -> 0x7fffffff) or a scaled maximum (0x4415be), so the domain is 0..0x7fffffff (values include 0, small, mid and the 0x7fffffff clamp; 255*0x7fffff/0xf0*0x18 >> 14 > 0xd70, so both sides of every 'cmp eax,0xd70; jle' clamp occur). 0x601d54 is never written (only read by the four imul at 0x441668..0x4416e9): image value 0x18 most of the time, plus a few other patterns (imul cannot fault).",
+  "globals": [
+    {"addr": "0x0066ec60", "type": "u32", "count": 968, "values": [0, 1, "0x100", "0x4000", "0x10000", "0x3fffff", "0x400000", "0x1000000", "0x10000000", "0x3fffffff", "0x7ffffff0", "0x7fffffff", 12345, "0x12345678"]},
+    {"addr": "0x00601d54", "type": "u32", "values": ["0x18", "0x18", "0x18", "0x18", 0, 1, "0x4000", "0x7fffffff", "0xffffffe8"]}
+  ]
+}

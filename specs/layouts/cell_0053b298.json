@@ -1,0 +1,9 @@
+{
+  "_evidence": "Value cells of the menu items (menu_0084300a: item +0xe -> 0x81e4f8 for items 1-5, 0x7ab544 for items 6-13) as read by the item draw handlers 0x0053b298 / 0x0053b330 (entries of the handler list 0x53ea4a, called through `call [esi+0x16]` by 0x53eb36): `mov edi,[esi+0xe]; cmp dword [edi+4],0; je` (no range: skip), then `mov eax,[edi]; mul ecx` (ecx/ebp = item height/width + 1 from the static rectangle words: 1 or 16) and `cmp [edi+4],edx; jbe` divides by +4 only when it is above the product's high dword (no input faults), else takes +4 itself; the same for `mov eax,[edi+8]; mul`. menu_0084300a varies the cells' +0 dwords; their +4 (0x81e4fc, 0x7ab548) kept static image values (0xff00 and 0), so the divisor-at-or-below-high-dword blocks 0x53b2e1/0x53b2fb and 0x53b377/0x53b392 were never reached. +4 is drawn from 0 (skip), small ranges 1..0x64 that the high dword (0..15) reaches or exceeds, and large ones (0x1000, 0xff00, 0xffffffff) that it never does; +8 (0x7ab54c, 0x81e500, only multiplied) is any u32. These handlers only read the cells, so their other meanings elsewhere (0x81e4fc is also a flag byte) do not constrain the draw-time domain. Compose after menu_0084300a.",
+  "globals": [
+    {"addr": "0x0081e4fc", "type": "u32", "values": [0, 1, 2, 3, 5, 8, 13, "0x40", "0x64", "0x1000", "0xff00", "0xffffffff"]},
+    {"addr": "0x007ab548", "type": "u32", "values": [0, 1, 2, 3, 5, 8, 13, "0x40", "0x64", "0x1000", "0xff00", "0xffffffff"]},
+    {"addr": "0x0081e500", "type": "u32"},
+    {"addr": "0x007ab54c", "type": "u32"}
+  ]
+}

@@ -78,7 +78,7 @@ summary and fix anything systemic before scaling up.
 4. Add verified codegen/x87 observations to `prompts/worker.md` (only verified).
 5. `python -m gp4re regress` - every accepted function must still pass after this
    batch's header/layout changes; requeue any that broke.
-6. `python -m gp4re export`; if `GP4RE_AUTOCOMMIT=1`:
+6. `python -m gp4re export`, then `python tools/readme_status.py` (README status from the ledger); if `GP4RE_AUTOCOMMIT=1`:
    `git add src include specs progress prompts && git commit -m "checkpoint: <goal> <n> accepted"`.
 
 ## 5. In-game milestones (optional; the only steps that run the real game)

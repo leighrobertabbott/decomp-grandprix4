@@ -1,0 +1,12 @@
+{
+  "_evidence": "0x0040c0ae (branch-free) reads word +0x7a of five segment records of the 0x160-stride array at 0x008943a0 - record 0, [0x866ecc]-0x160 (last lap record), [0x891500] (pit start), [0x866f00]-0x160 (before the pit entry), [0x866ef8]-0x160 (last pit record), [0x866f04] (pit exit) - and copies five words between the 10-byte entries 0x675a82 + 10*index, writing the entry before (-0xa..-2) or after (+0xa..+0x12) another. Unvaried pointers (0x866ef8 = 0) faulted. Domain: record-aligned pointers (end, entry and pit end 1..26 since 0x160 is subtracted, pit start and exit 0..25), words +0x7a of records 0..25 in 1..30 (so every touched entry is one of entries 0..31), and the entry words 0x675a78..0x675bcb varied (u16, any value). Indices drawn from 30 values coincide or neighbour often, so overlapping copies occur.",
+  "globals": [
+    {"addr": "0x00866ecc", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 1, "hi": 26}},
+    {"addr": "0x00866f00", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 1, "hi": 26}},
+    {"addr": "0x00866ef8", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 1, "hi": 26}},
+    {"addr": "0x00866f04", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 25}},
+    {"addr": "0x00891500", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 25}},
+    {"addr": "0x0089441a", "type": "u16", "count": 26, "stride": "0x160", "lo": 1, "hi": 30},
+    {"addr": "0x00675a78", "type": "u16", "count": 170, "stride": 2}
+  ]
+}

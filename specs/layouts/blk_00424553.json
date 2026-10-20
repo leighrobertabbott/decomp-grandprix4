@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x00424553 (esi = object record, byte +0x6d = object index 0..21 as rec_0042453d) reads dword +0x1c of the 0x5d8-byte block 0x006099c0 + idx*0x5d8 (22 blocks, header written by 0x004227e5 at run time), shifts it left 5 and stores it to esi+0x68. The header dword is state (any i32: shl only), varied for all 22 blocks; nothing else of the blocks is read.",
+  "globals": [
+    {"addr": "0x006099dc", "type": "i32", "count": 22, "stride": "0x5d8"}
+  ]
+}

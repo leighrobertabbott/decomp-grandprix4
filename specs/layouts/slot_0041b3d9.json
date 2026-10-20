@@ -1,0 +1,7 @@
+{
+  "_evidence": "Overlay for the car record of 0x0041b3d9 (compose after car_0042ba87): byte +0x202 is the car's slot in the 22-slot integrator table (rec_00418c68: 0..21; 0x41b3ef movzx, imul 0x60, fld qword [eax+0x6020d8]), so it is drawn 0..21; random bytes read 234 'slots' past the table end.",
+  "size": 1056,
+  "fields": [
+    {"off": "0x202", "type": "u8", "lo": 0, "hi": 21}
+  ]
+}

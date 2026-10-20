@@ -1,0 +1,29 @@
+{
+ "_evidence": "0x00556e7c (cl = 0x11 path): 'add ebx,edx; cmp ebx,[0x866eb8]; jb' keeps the record ebx + ax*0x160 when it lies below the ring end [0x866eb8], else wraps it back by [0x866ebc]. With ebx = records 0..29 and the word offset ax = 0..31 (spec), the sum spans records 0..60, while ring_008943a0 draws the end only from records 4..26, so the in-range (jb taken) side was rare. The end is drawn here as a record-aligned pointer over records 4..64 (compose after ring_008943a0+ring_0043d30c), so the sum lies below and at/above it about equally often. Every resulting record stays inside the 432-record array (at most record 60 before, record 60 - 8 after the wrap), so the byte store +0x17 never leaves .data. The mode byte [0x86857c] ('cmp byte [0x86857c],2; je') is 2 in most cases (0/1/3/0xff otherwise) so the record paths run often.",
+ "globals": [
+  {
+   "addr": "0x00866eb8",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 4,
+    "hi": 64
+   }
+  },
+  {
+   "addr": "0x0086857c",
+   "type": "u8",
+   "values": [
+    2,
+    2,
+    2,
+    2,
+    0,
+    1,
+    3,
+    "0xff"
+   ]
+  }
+ ]
+}

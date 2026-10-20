@@ -1,0 +1,111 @@
+{
+ "_evidence": "0x0052822a walks the 8 animation slots of 0x1c bytes at 0x81cd91..0x81ce71 (zero in the image, unaligned; same table as anim_005282fb). 'cmp dword [edx],2; je / cmp dword [edx],3; jne' selects running/finished slots (states 0..3; 2 and 3 frequent). 'test dword [edx+0x18],1; jne' / 'cmp byte [0x81ce79],0' (al of the caller) pick the slots that redraw; +0x18 draws bit 0 set and clear (other bits never tested, and 'and [edx+0x18],0xfffffffe' keeps them). 'mov eax,[edx+0xc]; call 0x5280ac': the frame number; 0x5280ac -> 0x527eae indexes the frame record 0x8174f8+18h*f and the cell 0x81c0b8+4*f unchecked, and the game bounds f by the frame count [0x8174f4] <= 808 (0x527dee: 'cmp eax,[0x8174f4]; jb'), so 0..807. 0x5280ac returns CF=1 at once when the animation-system byte [0x81cd90] is 0 ('cmp byte [0x81cd90],0; jne; stc'); 0x527cd9 sets it to 0xff, any nonzero byte enables the live-cell check (cells_00527eae + slots_005388ed decide live/dead). +4 is the descriptor (desc_0052822a, 0x30 bytes): for state 2/3 slots it is dereferenced unchecked both here ('mov eax,[edx+4]; mov eax,[eax+4]') and in 0x5282fb, so it is never null in the game. +8 (countdown) is only written here: any u32. +0x10/+0x14 are not read by this function. Values are synthetic. Live-cell arm: 0x527eae leaves esi = frame record 0x8174f8+0x18*f; 'mov ebx,[esi]; mov eax,[esi+4]; mov ebp,[esi+8]; mov ecx,[esi+0xc]' (plain loads, combined with the descriptor offsets, handed to the empty 0x531b3b and then discarded by popal): any i32, varied for all 808 records. Dead-cell arm: 0x5280ac -> 0x53646a closes the frame file [0x81ea28] (CloseHandle through 0x5a48ee) when the open flag [0x81ea2c] is nonzero (0x536679 sets it to 0xff after CreateFileA): both drawn; handles 0x3000/0x3ffc are files opened earlier for the stub file system, the others invalid (CloseHandle fails as Windows does).",
+ "globals": [
+  {
+   "addr": "0x0081cd90",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    "0xff",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0081cd91",
+   "type": "u32",
+   "count": 8,
+   "stride": "0x1c",
+   "values": [
+    0,
+    1,
+    2,
+    2,
+    3,
+    3
+   ]
+  },
+  {
+   "addr": "0x0081cd95",
+   "type": "ptr",
+   "count": 8,
+   "stride": "0x1c",
+   "size": 48,
+   "fill": "layout=desc_0052822a"
+  },
+  {
+   "addr": "0x0081cd99",
+   "type": "u32",
+   "count": 8,
+   "stride": "0x1c"
+  },
+  {
+   "addr": "0x0081cd9d",
+   "type": "u32",
+   "count": 8,
+   "stride": "0x1c",
+   "lo": 0,
+   "hi": 807
+  },
+  {
+   "addr": "0x0081cda9",
+   "type": "u32",
+   "count": 8,
+   "stride": "0x1c",
+   "values": [
+    0,
+    1,
+    1,
+    2,
+    3,
+    "0xfffffffe",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x008174f8",
+   "type": "i32",
+   "count": 808,
+   "stride": "0x18"
+  },
+  {
+   "addr": "0x008174fc",
+   "type": "i32",
+   "count": 808,
+   "stride": "0x18"
+  },
+  {
+   "addr": "0x00817500",
+   "type": "i32",
+   "count": 808,
+   "stride": "0x18"
+  },
+  {
+   "addr": "0x00817504",
+   "type": "i32",
+   "count": 808,
+   "stride": "0x18"
+  },
+  {
+   "addr": "0x0081ea2c",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0081ea28",
+   "type": "u32",
+   "values": [
+    "0x3000",
+    "0x3ffc",
+    3,
+    "0x1234",
+    "0xffffffff"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,31 @@
+{
+ "_evidence": "0x0044182d takes its interpolation scale ebp from the 22x44 dword table 0x66ec60 (row = car, column picked through 0x66d936[car] in 0..0x2b); the table is zero in the image (zero-span block 0x4418ea needs both zero and nonzero entries). Signed +-2^22 keeps the products in range.",
+ "globals": [
+  {
+   "addr": "0x0066ec60",
+   "type": "u32",
+   "count": 968,
+   "stride": 4,
+   "values": [
+    0,
+    0,
+    1,
+    4294967295,
+    "0x4000",
+    "0x10000",
+    "0x3fffff",
+    "0xffc00000",
+    12345,
+    4294966519
+   ]
+  },
+  {
+   "addr": "0x0066d936",
+   "type": "u8",
+   "count": 22,
+   "stride": 1,
+   "lo": 0,
+   "hi": 43
+  }
+ ]
+}

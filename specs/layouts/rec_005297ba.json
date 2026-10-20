@@ -1,0 +1,13 @@
+{
+ "_evidence": "esi record of the menu item handlers 0x005297ba (code 0x2d) and its twin 0x005297cf (code 0x2e). Both run 'mov ebx,[esi+0xe]; call 0x539944' then push eax and call the stdcall routine 0x503230. 0x539944 reads the width selector byte +0xd ('mov dl,[esi+0xd]; and edx,3') and loads eax from [ebx] as byte (0), word (1), dword (2) or returns 0 (3) through its 5-entry jump table 0x539960 (index <= 3 after the and). 0x503230 then indexes an 11-entry dword table with that value: code 0x2d 'mov edx,[ecx*4+0x7ad8e8]', code 0x2e 'mov ecx,[eax*4+0x7ad8bc]' (0x7ad8e8 = 0,500,...,12500 and 0x7ad8bc = 0,50,...,1250, 11 entries each), formats it with '%d%s' (0x66a0c8; the %s argument [0x836036] is never written by code) into a 0x20-byte stack buffer via CRT sprintf 0x5db088 and passes it to 0x5b4b50 (returns at once while the renderer object [0xb2dd0c] is null). So +0xe must be a real pointer to the value cell (8-byte buffer, at most a dword is read) whose value is a table index: the static items that own these handlers (0x84032e: +0x16 = 0x5297ba, +0xd = 0 byte, +0xe = 0x81d21e; 0x8403bc: +0x16 = 0x5297cf, +0xd = 0, +0xe = 0x81d21c) both carry the limit 0x0a at +0x24/+0x2c, i.e. values 0..10. A first dword in 0..10 keeps the byte, word and dword reads all <= 10 (an index > 10 reads past the table and a random dword faults). The rest of the record (+0xd any byte: all four widths) and of the cell is random.",
+ "size": 64,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0xe",
+   "type": "ptr",
+   "size": 8,
+   "fill": "layout=cell_005297ba"
+  }
+ ]
+}

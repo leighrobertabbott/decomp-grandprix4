@@ -1,0 +1,15 @@
+{
+ "_evidence": "0x00520815 (replay event read; compose after state_00437888+fill_005204d0+event_005207a9+evbuf_00520735+cache_0053832b, on globals=fuzz:i32): 'mov eax,[0x66d820]; or eax,eax; je' (car pointer, event_005207a9: record 0..21 or null), 'mov esi,[0x66d834]; cmp esi,[0x6975bc]; jge' (signed), then edi = [0x7a8e30], ecx = 8, edx = 0 and 0x510fa3 -> dispatcher command 0x4f = cached temp-file read 0x538440 of 8 bytes at offset esi into the event slot. The offset [0x66d834] advances by 8 (here and in 0x5208f8): it draws 8-aligned offsets 0..0x400 (cache_0053832b's reload copies capacity <= 0x400 bytes from its 0x800-byte backing block at B + offset: in bounds; hits copy from A + (offset - s) <= A + 0x380), the limit [0x6975bc] (end of the last access, stored by the 0x510fad/0x510fa3 commands) draws values around them plus 0x7fffffff and -1, so both outcomes of the signed jge occur. The slot [0x7a8e30] (in the game ring base - 8, set by 0x5376aa) is the fixed address 0xa06078, inside the unreferenced zero-initialised .data stretch 0xa06000..0xa0607f that fill_005204d0/evbuf_00520735 use for the ring (the routine reads slot bytes +0..+6 and writes nothing there itself). A failed read (capacity 0 < 8) or a cache miss in file mode 0 returns without copying, so the slot keeps these bytes: words +0/+2/+4 any u16 (bit 15 of +2 both ways: marker path 0x52085f vs the copy path), bytes +6/+7 any; a successful read overwrites them with cache bytes. The marker path compares (word [slot+4] << 16) | word [slot] with the clock [0x66d814]: its low and high words alias the two slot words (each in about half the cases), so the equal exit (0x520895, add [0x66d834],8) and the unequal one both occur.",
+ "globals": [
+  {"addr": "0x007a8e30", "type": "u32", "values": ["0xa06078"]},
+  {"addr": "0x0066d834", "type": "u32", "values": [0, 8, "0x100", "0x108", "0x1f8", "0x200", "0x2f8", "0x300", "0x378", "0x380", "0x3f8", "0x400"]},
+  {"addr": "0x006975bc", "type": "u32", "values": [0, 8, "0x100", "0x200", "0x300", "0x380", "0x400", "0x7fffffff", "0x7fffffff", "0xffffffff"]},
+  {"addr": "0x00a06078", "type": "u16"},
+  {"addr": "0x00a0607a", "type": "u16"},
+  {"addr": "0x00a0607c", "type": "u16"},
+  {"addr": "0x00a0607e", "type": "u8"},
+  {"addr": "0x00a0607f", "type": "u8"},
+  {"addr": "0x0066d814", "type": "u16", "alias": "0x00a06078"},
+  {"addr": "0x0066d816", "type": "u16", "alias": "0x00a0607c"}
+ ]
+}

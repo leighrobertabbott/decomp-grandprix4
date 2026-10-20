@@ -1,0 +1,11 @@
+{
+  "_evidence": "edi of 0x00402db6: a track-segment record (0x160 bytes) plus the first 0x2e bytes of the next one (+0x160..+0x18d), all background bytes random (fill bytes; every word is a plain lerp endpoint or flag). 0x402df0/0x402df4 lerp words +0x26 and +0x186 (movsx, ((b-a)*t>>14)+a; je 0x402e4c skips the gain block on a zero result): both draw zero in about half the cases (with t = esi+0x66 random the result is then zero when both are), else spread over both signs, so both outcomes of 0x402e05 occur. Byte +0x2c bits 8/4 (0x402e5e/0x402e66) stay random. Words +0xaa and +0x132 are the row index of the threshold tables 0x868598/0x86c598 used by 0x403497 -> 0x403263/0x4031ed (imul esi,0x10): the loader numbers rows from 0 up (counter 0x870598, at most 0x400 rows before the second table), so they are bounded to 0..31, the rows tbl_00868598 varies.",
+  "size": 398,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x26", "type": "u16", "values": [0, 0, 0, 0, 0, 1, "0xffff", "0x7fff", "0x8000", "0x1234", "0xc350", "0x0400"]},
+    {"off": "0x186", "type": "u16", "values": [0, 0, 0, 0, 0, 1, "0xffff", "0x7fff", "0x8000", "0x2345", "0xb1e0", "0x0400"]},
+    {"off": "0xaa", "type": "u16", "lo": 0, "hi": 31},
+    {"off": "0x132", "type": "u16", "lo": 0, "hi": 31}
+  ]
+}

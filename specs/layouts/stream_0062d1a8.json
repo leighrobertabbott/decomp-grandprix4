@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x0062d1a8 is the opcode-stream read cursor paired with the write cursor 0x0062d1a0 (stream_0062d1a0): 0x004450a7 loads it into ebx and reads +1/+5/+9 (byte +9 tested for zero). Fuzzed it is a wild pointer, so it is drawn as a pointer to a fresh 64-byte stream of random bytes.",
+ "globals": [
+  {"addr": "0x0062d1a8", "type": "ptr", "size": 64, "fill": "bytes"}
+ ]
+}

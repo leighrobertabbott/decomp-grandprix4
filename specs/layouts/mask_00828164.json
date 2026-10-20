@@ -1,0 +1,9 @@
+{
+ "_evidence": "Slot-enable mask [0x828164] (zero in the image; menu state): 0x534de4 tests 'mov edx,1; cmp dword [ebx+4],1; jne; shl edx,6; shl edx,cl; test [0x828164],edx; je' for the six slots cl = 0..5 of page [ebx+4] (0: bits 0..5, 1: bits 6..11; 0x534b79 / 0x534b9a test the same halves with 0x3f / 0xfc0). Only tested, never used as an index or pointer, so any dword is valid; random dwords give every slot bit both ways.",
+ "globals": [
+  {
+   "addr": "0x00828164",
+   "type": "u32"
+  }
+ ]
+}

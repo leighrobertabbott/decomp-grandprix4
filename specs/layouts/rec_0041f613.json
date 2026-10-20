@@ -1,0 +1,8 @@
+{
+  "size": 1048,
+  "_evidence": "0x0041f613 reads only dwords [esi+0x40c] and [esi+0x410], each the imul factor of a record difference (shrd 10) that is subtracted from / added to the +0x38 results before the final clamps. The generic i32 draw (mostly small, sometimes full 32-bit) keeps both clamp outcomes reachable; imul/shrd cannot fault.",
+  "fields": [
+    {"off": 1036, "type": "i32"},
+    {"off": 1040, "type": "i32"}
+  ]
+}

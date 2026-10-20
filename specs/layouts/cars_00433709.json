@@ -1,0 +1,111 @@
+{
+ "_evidence": "The 22 array car records (0x66fef0, stride 0x41c) as ebx of 0x00433709 (compose LAST, after search_0066d82c / flags_00430449 / state_00432330, whose +0x7c / +0x26b / +0xea / +0x68 / +0x1c of car 0 it overrides). 0x43b974 scans the records for +0x7c & 0x3f equal to ((esi +0x7c - 1) & 0x3f ^ 1) + 1 and returns ebx = the first match (or 0x675958 after the array; the carry is ignored here): +0x7c draws car numbers 1..6 so a match exists for car_00433709's 1..6. Then (0x4338b3..0x433905) 'test byte [ebx+0x26b],0x80; je 0x43399a' (+0x26b bit 7 set in 6/8), 'cmp word [ebx+0xea],0x20; jne exit' (0x20 in 6/8), 'mov ax,[ebx+0x68]; sub ax,[esi+0x68]; js exit' (+0x68 -8..8 against esi's -8..0), 0x432c21 on ebx: index = ((byte +0xfd*0x420 + [0x866f08] + 0x160 (+0x160 when [0x62d2b0] != 0 and kind +0x7e is 2/3)) - dword +0x1c) idiv 0x160 (+1/+2 for kind 2/3), compared 'je exit' with 0 and 'jne exit' with -1: +0xfd draws 0/1, +0x7e 0..3/0xff, +0x1c record and mid-record addresses 0.5..10 records into 0x8943a0 (with state_00433709's mostly-record-1 [0x866f08] the index is -1 or 0 in most cases, else 1, -2 or -8); finally 'cmp word [ebx+0x66],0x3000; jl exit' with +0x66 -0x1000..0x7000 (both sides). Compares and a divide by the constant 0x160 only: nothing faults.",
+ "globals": [
+  {
+   "addr": "0x0066ff6c",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ]
+  },
+  {
+   "addr": "0x0067015b",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x80",
+    "0x80",
+    "0x80",
+    "0x88",
+    "0xff",
+    "0xc0",
+    0,
+    "0x7f"
+   ]
+  },
+  {
+   "addr": "0x0066ffda",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x20",
+    "0x20",
+    "0x20",
+    "0x20",
+    "0x20",
+    "0x20",
+    0,
+    "0x18"
+   ]
+  },
+  {
+   "addr": "0x0066ff58",
+   "type": "i16",
+   "count": 22,
+   "stride": "0x41c",
+   "lo": -8,
+   "hi": 8
+  },
+  {
+   "addr": "0x0066ff56",
+   "type": "i16",
+   "count": 22,
+   "stride": "0x41c",
+   "lo": -4096,
+   "hi": 28672
+  },
+  {
+   "addr": "0x0066ff0c",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x8945b0",
+    "0x894660",
+    "0x8947c0",
+    "0x894870",
+    "0x8947c0",
+    "0x894870",
+    "0x894710",
+    "0x894450",
+    "0x894920",
+    "0x895160"
+   ]
+  },
+  {
+   "addr": "0x0066ffed",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x0066ff6e",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    "0xff"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x004190d7 checks the four 0x300-byte wheel records at 0x6380d8 (ebx = 0x6380d8, +0/+0x300/+0x600/+0x900): byte +0x2e 'test 0x20; jne' and byte +0x2d 'cmp 0; jne' gate each wheel, then |dword +0x20| (test sign / neg; 0x80000000 stays negative) is compared signed (jge) with [0x626934] and |dword +0x28| (jl) with [0x626938]. Overlay after telem_00418942 (which draws +0x2e full-range): +0x2d is zero in 3/5 picks so the dword tests run, +0x20/+0x28 draw zero, +-1, +-0x100, +-0x10000, +-0x1000000 and 0x7fffffff/0x80000000 (both neg blocks and both compare sides), and the two thresholds draw 0..0x7fffffff steps and -1. Compares, neg and byte ORs only: nothing faults.",
+  "globals": [
+    {"addr": "0x00638105", "type": "u8", "count": 4, "stride": "0x300", "values": [0, 0, 0, 1, 255]},
+    {"addr": "0x006380f8", "type": "u32", "count": 4, "stride": "0x300", "values": ["0x0", "0x1", "0xffffffff", "0x100", "0xffffff00", "0x10000", "0xffff0000", "0x1000000", "0xff000000", "0x7fffffff", "0x80000000"]},
+    {"addr": "0x00638100", "type": "u32", "count": 4, "stride": "0x300", "values": ["0x0", "0x1", "0xffffffff", "0x100", "0xffffff00", "0x10000", "0xffff0000", "0x1000000", "0xff000000", "0x7fffffff", "0x80000000"]},
+    {"addr": "0x00626934", "type": "u32", "values": ["0x0", "0x80", "0x100", "0x8000", "0x10000", "0x1000000", "0x7fffffff", "0xffffffff"]},
+    {"addr": "0x00626938", "type": "u32", "values": ["0x0", "0x80", "0x100", "0x8000", "0x10000", "0x1000000", "0x7fffffff", "0xffffffff"]}
+  ]
+}

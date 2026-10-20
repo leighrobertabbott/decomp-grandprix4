@@ -1,0 +1,32 @@
+{
+  "_evidence": "Inputs of the drivetrain chain behind 0x00413606's bit-3 path: 0x413170 -> 0x4058cf (3-pass loop) -> 0x404f99 (0x404aa3, 0x404ed0, 0x404f33, 0x411c26 x4, 0x404bcf, 0x404e9c) and 0x413139 -> 0x413090. The only faulting instruction is 0x405968 'idiv dword [0x601334]' on edx:eax = (fistp result << 14, 32-bit) * [0x6f2bec] (imul): with |[0x6f2bec]| < [0x601334] the quotient magnitude stays below 2^31 for every fistp value (also the indefinite 0x80000000), so the divisor (a positive car dimension, filled by 0x4112e3; zero in the image) is 0x8000..131071 and the multiplier (image 0x6488) is -0x7fff..0x7fff; a zero divisor or a wild multiplier makes the original #DE, which the game's state never does. Everything else only feeds imul/shrd/sar/cmp or masked x87 (fdiv by zero gives inf, fistp the indefinite integer): the torque-table index [0x6030b4]>>14 of 0x404aa3 is max(|[0x638ce0]|,0x80000)>>14 <= 131071, so 0x639654+4*index stays inside .data (ends 0xb48ea5) for any [0x638ce0]; 0x404bcf clamps its 0x603140 index to 0..0x100; 0x404ed0/0x404f33/0x413090 dereference edi (stored to 0x602d84/0x602d88 by 0x413170), a ring record (spec rec[0x8943a0,0x160,0..29] with ring_008943a0+words_00413090). The selector 0x6030d0 (zero / negative / positive vs 0x624790) and all other dword state are full-range i32; the f64 scale constants (0x6f2bxx, set by the 0x527476 initialiser, 0x601440/0x601460) stay as in the image.",
+  "globals": [
+    {"addr": "0x00601334", "type": "i32", "lo": 32768, "hi": 131071},
+    {"addr": "0x006f2bec", "type": "i32", "lo": -32767, "hi": 32767},
+    {"addr": "0x00638ce0", "type": "i32"},
+    {"addr": "0x006013a0", "type": "i32"},
+    {"addr": "0x006013a4", "type": "i32"},
+    {"addr": "0x006013ac", "type": "i32"},
+    {"addr": "0x006013b4", "type": "i32"},
+    {"addr": "0x006013b8", "type": "i32"},
+    {"addr": "0x00602d68", "type": "i32"},
+    {"addr": "0x00602d6c", "type": "i32"},
+    {"addr": "0x00602d70", "type": "i32"},
+    {"addr": "0x006030d0", "type": "i32"},
+    {"addr": "0x0060311c", "type": "i32"},
+    {"addr": "0x00603120", "type": "i32"},
+    {"addr": "0x0060312c", "type": "i32"},
+    {"addr": "0x00603130", "type": "i32"},
+    {"addr": "0x0060313c", "type": "i32"},
+    {"addr": "0x006224c1", "type": "i32"},
+    {"addr": "0x006224c5", "type": "i32"},
+    {"addr": "0x006224c9", "type": "i32"},
+    {"addr": "0x00624790", "type": "i32"},
+    {"addr": "0x0062d298", "type": "i32"},
+    {"addr": "0x0062ec10", "type": "i32"},
+    {"addr": "0x0062ec14", "type": "i32"},
+    {"addr": "0x0062ec18", "type": "i32"},
+    {"addr": "0x0062f23c", "type": "i32"},
+    {"addr": "0x00638d20", "type": "i32"}
+  ]
+}

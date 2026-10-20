@@ -1,0 +1,9 @@
+{
+  "_evidence": "esi record for 0x0040882a (and its callees 0x408790/0x4087aa via 0x408783). 0x40885c cmp byte [esi+0x198],0; jne: zero loads word [0x7c2e96], nonzero takes byte [esi+0x199] - values give zero in about 40% of the cases so both outcomes are reached. The rest of the 0x1a4-byte record is random (fill bytes): 0x408790 reads word +0x60 (written here first), 0x4087aa reads +0x19c/+0x168/+0x8d (overlay rec_004087aa for the zero word +0x168); no byte is a pointer, index or divisor, so every pattern is valid.",
+  "size": 420,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x198", "type": "u8", "values": [0, 0, 1, "0x80", "0xff"]},
+    {"off": "0x199", "type": "u8"}
+  ]
+}

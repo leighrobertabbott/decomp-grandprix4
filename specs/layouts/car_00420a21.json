@@ -1,0 +1,61 @@
+{
+ "size": 936,
+ "_evidence": "Car record for esi of 0x00420a21 (0x3a8 bytes). Background: every dword in -0x4000..0x4000, the typed fill the worker spec used (ptr:i32[-16384..16384]) because 0x41f489/0x41f353 sum and clamp record dwords (+0x2fc..+0x308, +0x38c..+0x398) into divisions that must not overflow. Overlay for the 'all corners idle' early exit 0x420a84..0x420ae7: byte +0xe4 is the car state compared with 3 (drawn 3 in 3/8, else 0/1/2/4/0xff); the four corner dwords +0x2ec..+0x2f8 must all be zero ('test; jne') and the four +0x32c..+0x338 all negative ('test; jns') for the loop to complete: they draw zero in 2/3 (else 1/-1/0x4000) and negative in 5/8 (else 0/1/0x4000), all inside the background range, so the loop completes, exits at every corner and is skipped.",
+ "fields": [
+  {
+   "off": 0,
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384,
+   "count": 234,
+   "stride": 4
+  },
+  {
+   "off": "0xe4",
+   "type": "u8",
+   "values": [
+    "0x3",
+    "0x3",
+    "0x3",
+    "0x0",
+    "0x1",
+    "0x2",
+    "0x4",
+    "0xff"
+   ]
+  },
+  {
+   "off": "0x2ec",
+   "type": "i32",
+   "count": 4,
+   "stride": 4,
+   "values": [
+    "0x0",
+    "0x0",
+    "0x0",
+    "0x0",
+    "0x0",
+    "0x0",
+    "0x1",
+    "0xffffffff",
+    "0x4000"
+   ]
+  },
+  {
+   "off": "0x32c",
+   "type": "i32",
+   "count": 4,
+   "stride": 4,
+   "values": [
+    "0xffffffff",
+    "0xfffffffe",
+    "0xffffff9c",
+    "0xffffc000",
+    "0xffffc000",
+    "0x0",
+    "0x1",
+    "0x4000"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,6 @@
+{
+  "_evidence": "[0x7ad894] is the current circuit number (106 readers): 0x0040cc58 and 0x0040c6d8 index the per-circuit byte table 0x62eade with it unclamped (movzx eax,byte [eax+0x62eade]), and 0x410901/0x410934 clamp anything outside 0..16 to zero before the same lookup, so the game's value is 0..16 (17 circuits; scale_0062eade varies those 17 entries). A wild index makes the original read outside .data and fault.",
+  "globals": [
+    {"addr": "0x007ad894", "type": "u32", "lo": 0, "hi": 16}
+  ]
+}

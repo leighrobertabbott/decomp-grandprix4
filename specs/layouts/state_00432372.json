@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x00432372: P = |eax| * [0x602a4c] ('mul', unsigned 64-bit; |INT_MIN| = 2^31), P >> 6 (shrd/shr), 'div [0x602a40]' D: the quotient fits 32 bits iff D > P >> 38. With the multiplier in 0..0xffff, P < 2^47 and P >> 38 <= 511, so every D in 513..0xffffffff is valid (0 or a small D is the original's own #DE, 29/200 with fuzz). The quotient q is multiplied by 1000 into edx:eax (edx <= 999); ecx = [0x62ee04] when it is above edx (ja), else edx+1 (never 0), so the second div never faults; E draws 0/small (ecx = edx+1 path) and large values, so the 20000 clamp is reached both ways. Block 0x4323a7 is dead (edx+1 <= 1000 is never 0, the jne at 0x4323a5 is always taken) and stays uncovered.",
+  "globals": [
+    {"addr": "0x00602a4c", "type": "u32", "lo": 0, "hi": 65535},
+    {"addr": "0x00602a40", "type": "u32", "lo": 513, "hi": 4294967295},
+    {"addr": "0x0062ee04", "type": "u32", "values": [0, 0, 1, 2, 7, 100, 999, 1000, "0x10000", "0x12345678", "0xffffffff"]}
+  ]
+}

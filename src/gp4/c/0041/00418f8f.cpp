@@ -25,4 +25,4 @@ void __cdecl FUN_00418f8f(gp4::Regs* r) {
         return;
     }
 }
-GP4_IMPL(0x00418f8f, FUN_00418f8f, "regs(eax:u32) -> (eax, cf, pf, af, zf, sf, of); globals=layout=state_00418f8f")
+GP4_IMPL(0x00418f8f, FUN_00418f8f, "regs(eax:u32) -> (eax, cf, pf, af, zf, sf, of); globals=layout=list_0066fe3c+order_00418f8f")

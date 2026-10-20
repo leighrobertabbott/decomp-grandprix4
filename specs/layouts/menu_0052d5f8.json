@@ -1,0 +1,64 @@
+{
+ "_evidence": "NOT SUFFICIENT ON ITS OWN (L51, 2026-10-20): every edx==2 run of 0x52d5f8 calls user32!PostMessageA through 0x46ae90 (0x53d4f9 reaches it on both arms: 0x549d12->0x52cbb3 msg 0x404 when [0x81e4fc]!=0, else 0x549e2c msg 0x407 + Sleep(4)), and 0x46ae90 then pumps messages (0x5086b0: PeekMessageA/GetMessageA/TranslateMessage/DispatchMessageA). The oracle models none of these, so every case is 'external' until the lead adds models; this family was checked only with a probe-local model (PostMessageA -> 1, PeekMessageA -> 0). Globals of the 0x52d5f8 chain (edx==2): [0x82fd34] -> mhdr_0052d5f8; u8 0x82fd60 {0,0xff} ('cmp [0x82fd60],0xff; jne' around the header handler call), u8 0x81e4fc {0,1} (0x53d4fe 'cmp ..,0; je': the 0x549d12 short path or the item loop), u8 0x81e4fb {0,0xff} (0x53d54b: 0xff selects every item), u8 0x7aafd3/0x7aafd9 {0,0xff} (0x52d67a/0x52d68a select 0x54032a, 0x54ac83 or 0x54a894; 0x54a894 is the interactive menu loop 0x53c394 that only ends when the timer word [0x7a9476] reaches 0, decremented asynchronously - with both bytes 0xff the probe timed out in that loop: still open), u32 0xb1c8c8 = 1 (the app-active flag set by the window procedure 0x509313; 0x509b50 waits in a Sleep(250) message loop while it is 0, i.e. only when the game is inactive), and the 800x600x2 surface [0x822258] (0x549d26 clears 0x3a980 dwords there via 0x52d6d0->0x54fbfb->0x527f81 when [0x81cd90]==0).",
+ "globals": [
+  {
+   "addr": "0x0082fd34",
+   "type": "ptr",
+   "size": 48,
+   "fill": "layout=mhdr_0052d5f8"
+  },
+  {
+   "addr": "0x0082fd60",
+   "type": "u8",
+   "values": [
+    0,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0081e4fc",
+   "type": "u8",
+   "values": [
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x0081e4fb",
+   "type": "u8",
+   "values": [
+    0,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x007aafd3",
+   "type": "u8",
+   "values": [
+    0,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x007aafd9",
+   "type": "u8",
+   "values": [
+    0,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x00b1c8c8",
+   "type": "u32",
+   "values": [
+    1
+   ]
+  },
+  {
+   "addr": "0x00822258",
+   "type": "ptr",
+   "size": "0xea600",
+   "fill": "zero"
+  }
+ ]
+}

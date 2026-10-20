@@ -1,0 +1,327 @@
+{
+ "_evidence": "Track-segment ring at 0x008943a0 (0x160-byte records) walked by 0x00405a12/0x00405c9a (step helpers 0x406051 forward, 0x406077 back), 0x00405a70/0x00405d05 (0x4060b0/0x4060e6, which also enter the pit at [0x866f00] forward and at [0x866f04] backward) and 0x00406262 (one step). The side test is 0x405ad0 (0x405a12/0x405a70: words +4,+8 plus +0xb8/+0xc0 or +0xba/+0xc2 >>3 chosen by byte 0x603c78, angle +0xd0 or +0xd2 through the cos table 0x7c5c5c: sign(sin(a)*(x-X) + cos(a)*(z-Z))) or 0x405e19 (0x405c9a/0x405d05/0x406262: sign((+0xc>>6)*(z - +8) + (+0xe>>6)*(x - +4))), x = ecx>>11, z = ebx>>11. Forward loops run while CF=0, backward loops while CF=1, and cross boundaries only through bit 3 of byte +0x92: stepping onto the lap-end sentinel [0x866ecc] (wrap to 0x8943a0 only while edi < pit start [0x891500]), back from 0x8943a0 (to end-0x160), onto the pit end [0x866ef8] (to [0x866f04]), back from the pit start (to [0x866f00]-0x160), and for 0x4060b0/0x4060e6 onto [0x866f00] (into the pit) or back from [0x866f04] (to pit end-0x160). A boundary record without bit 3, a lap end at or above the pit start, or a cycle (lap ring, or pit loop through the pit) whose records all give the same CF runs the walk off the varied records or forever (fuzzed/random geometry faulted or timed out, 3/200 with an entry before the pins), which a closed track never does. Domain: one coherent geometry - lap records 0..E-1 with E = 6..8, pit start record 9..10 (> lap end, as 0x405f9e needs for the wrap), pit end 12..14, pit entry [0x866f00] 4..6 and pit exit [0x866f04] 0..1 (lap records, exit before entry as on a real pit straight); bit 3 is set on every record that can be a boundary (0, 6..10, 12..14) and free (half) on 1..5 and 11 (bit 3 elsewhere only calls a helper that changes nothing or steps back normally; on 4..6 and 1 it decides whether the pit is taken). Record 2 always gives CF=1 and record 3 always CF=0, and both lie in the lap ring and in both pit loops (lap records f04..f00-1 contain 1..3): record 2 has angle words +0xd0 = +0xd2 = 0, +8 = +0xc0 = +0xc2 = 0x7fff, +0xc = 0x7fff, +0xe = 0 (0x405ad0: z - 36862 < 0; 0x405e19: 511*(z - 32767) < 0); record 3 has angles 0, +8 = +0xc0 = +0xc2 = -0x8000, +0xc = +0xe = 0 (0x405ad0: z + 36864 > 0; 0x405e19: 0 -> jns). That holds because the positions passed (car dwords [esi]/[esi+4] from 0x405b8c/0x405c30) are coordinates of the i16 record frame <<11: the specs use ecx, ebx in -0x4000000..0x3fff7ff (z <= 32766), and 0x406262 reads the already shifted 0x623e30/0x623e38 (0x43831a stores eax>>11) as -32768..32766. Every walk then stays inside records 0..14 (start records 0..11 cover lap, sentinel/gap and pit records, all of which lead into the lap ring), so words +4,+8,+0xc,+0xe,+0xb8,+0xba,+0xc0,+0xc2 (i16) and +0xd0,+0xd2 (u16) of records 0..14 are unconstrained except the pinned ones, and byte 0x603c78 is any value. Both first-call outcomes, both bit-3 outcomes in every loop and multi-step walks with wraps and pit transitions all occur.",
+ "globals": [
+  {
+   "addr": "0x00603c78",
+   "type": "u8"
+  },
+  {
+   "addr": "0x00623e30",
+   "type": "i32",
+   "lo": -32768,
+   "hi": 32766
+  },
+  {
+   "addr": "0x00623e38",
+   "type": "i32",
+   "lo": -32768,
+   "hi": 32766
+  },
+  {
+   "addr": "0x00866ecc",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 6,
+    "hi": 8
+   }
+  },
+  {
+   "addr": "0x00891500",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 9,
+    "hi": 10
+   }
+  },
+  {
+   "addr": "0x00866ef8",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 12,
+    "hi": 14
+   }
+  },
+  {
+   "addr": "0x00866f00",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 4,
+    "hi": 6
+   }
+  },
+  {
+   "addr": "0x00866f04",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 1
+   }
+  },
+  {
+   "addr": "0x8943a4",
+   "type": "i16",
+   "count": 15,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894458",
+   "type": "i16",
+   "count": 15,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x89445a",
+   "type": "i16",
+   "count": 15,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8943a8",
+   "type": "i16",
+   "count": 2,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894928",
+   "type": "i16",
+   "count": 11,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8943ac",
+   "type": "i16",
+   "count": 2,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x89492c",
+   "type": "i16",
+   "count": 11,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8943ae",
+   "type": "i16",
+   "count": 2,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x89492e",
+   "type": "i16",
+   "count": 11,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894460",
+   "type": "i16",
+   "count": 2,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8949e0",
+   "type": "i16",
+   "count": 11,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894462",
+   "type": "i16",
+   "count": 2,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8949e2",
+   "type": "i16",
+   "count": 11,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894470",
+   "type": "u16",
+   "count": 2,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8949f0",
+   "type": "u16",
+   "count": 11,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894472",
+   "type": "u16",
+   "count": 2,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8949f2",
+   "type": "u16",
+   "count": 11,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894432",
+   "type": "u8",
+   "values": [
+    "0x08",
+    "0x0f",
+    "0x88",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x894c72",
+   "type": "u8",
+   "count": 5,
+   "stride": "0x160",
+   "values": [
+    "0x08",
+    "0x0f",
+    "0x88",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x8954b2",
+   "type": "u8",
+   "count": 3,
+   "stride": "0x160",
+   "values": [
+    "0x08",
+    "0x0f",
+    "0x88",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x894592",
+   "type": "u8",
+   "count": 5,
+   "stride": "0x160",
+   "values": [
+    0,
+    "0x08",
+    "0xf7",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x895352",
+   "type": "u8",
+   "values": [
+    0,
+    "0x08",
+    "0xf7",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x894668",
+   "type": "u16",
+   "values": [
+    "0x7fff"
+   ]
+  },
+  {
+   "addr": "0x89466c",
+   "type": "u16",
+   "values": [
+    "0x7fff"
+   ]
+  },
+  {
+   "addr": "0x89466e",
+   "type": "u16",
+   "values": [
+    "0x0"
+   ]
+  },
+  {
+   "addr": "0x894720",
+   "type": "u16",
+   "values": [
+    "0x7fff"
+   ]
+  },
+  {
+   "addr": "0x894722",
+   "type": "u16",
+   "values": [
+    "0x7fff"
+   ]
+  },
+  {
+   "addr": "0x894730",
+   "type": "u16",
+   "values": [
+    "0x0"
+   ]
+  },
+  {
+   "addr": "0x894732",
+   "type": "u16",
+   "values": [
+    "0x0"
+   ]
+  },
+  {
+   "addr": "0x8947c8",
+   "type": "u16",
+   "values": [
+    "0x8000"
+   ]
+  },
+  {
+   "addr": "0x8947cc",
+   "type": "u16",
+   "values": [
+    "0x0"
+   ]
+  },
+  {
+   "addr": "0x8947ce",
+   "type": "u16",
+   "values": [
+    "0x0"
+   ]
+  },
+  {
+   "addr": "0x894880",
+   "type": "u16",
+   "values": [
+    "0x8000"
+   ]
+  },
+  {
+   "addr": "0x894882",
+   "type": "u16",
+   "values": [
+    "0x8000"
+   ]
+  },
+  {
+   "addr": "0x894890",
+   "type": "u16",
+   "values": [
+    "0x0"
+   ]
+  },
+  {
+   "addr": "0x894892",
+   "type": "u16",
+   "values": [
+    "0x0"
+   ]
+  }
+ ]
+}

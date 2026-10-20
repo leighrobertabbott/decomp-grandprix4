@@ -1,0 +1,64 @@
+{
+ "_evidence": "0x0040ee7b runs only when byte 0x7c2ea9 == 0x44 (about half here) and dword 0x66fd6c >= 2; it then loops 0x66fd6c times over the dwords 0x675970[i] counting those != 0x20000000, so the count is a car count 0..22 (the 22-entry table; fuzzed counts scanned millions of bytes) and the entries draw 0x20000000 in two thirds of the cases, else 0 or 1, so the used count lands on both sides of count>>2. The car byte esi+0x7c is compared with bytes 0x675958..0x67595b (0..8, as the esi byte) after the count >= 3 / >= 5 gates, giving tag 6/7/8 for 0x418fd0 unless byte 0x7c2e75 != 0; 0x418fd0 also reads the 0x401462 state 0x66d8c0/0x66d8bf and dword 0x66d814 (any). Nothing faults.",
+ "globals": [
+  {
+   "addr": "0x007c2ea9",
+   "type": "u8",
+   "values": [
+    "0x44",
+    "0x44",
+    "0x80",
+    0,
+    "0x45"
+   ]
+  },
+  {
+   "addr": "0x0066fd6c",
+   "type": "i32",
+   "lo": 0,
+   "hi": 22
+  },
+  {
+   "addr": "0x00675970",
+   "type": "u32",
+   "count": 22,
+   "stride": 4,
+   "values": [
+    "0x20000000",
+    "0x20000000",
+    "0x20000000",
+    "0x20000000",
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x00675958",
+   "type": "u8",
+   "count": 4,
+   "stride": 1,
+   "lo": 0,
+   "hi": 8
+  },
+  {
+   "addr": "0x007c2e75",
+   "type": "u8",
+   "values": [
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x0066d8c0",
+   "type": "u32"
+  },
+  {
+   "addr": "0x0066d8bf",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0066d814",
+   "type": "u32"
+  }
+ ]
+}

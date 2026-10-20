@@ -1,0 +1,12 @@
+{
+  "_evidence": "0x0040fa3b calls 0x0040fa51 when byte [0x0095404e] == 0xff, then clears it; 0x0040fa51 calls 0x0040fa6f for each of the 22 car records (0x0066fef0 + k*0x41c). 0x0040fa6f tests record byte +0x7c (sign bit, then bit 0x40 when byte [0x007aafd4] is nonzero), picks the word [0x0066d8b6] or [0x0066d8b4], merges its low 7 bits into byte +0x78 and, unless +0xe6 bit 3 is set, sets +0x78 bit 5. The record bytes +0x78, +0x7c, +0xe6 (zero in the image, game state) vary over the full u8 range (each tested bit set in half of the records); the selector bytes take both sides of their tests. Nothing forms a pointer, so nothing can fault.",
+  "globals": [
+    {"addr": "0x0095404e", "type": "u8", "values": ["0xff", "0xff", 0, 1, "0xfe"]},
+    {"addr": "0x007aafd4", "type": "u8", "values": [0, 1, "0x80", "0xff"]},
+    {"addr": "0x0066d8b4", "type": "u16"},
+    {"addr": "0x0066d8b6", "type": "u16"},
+    {"addr": "0x0066ff68", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ff6c", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ffd6", "type": "u8", "count": 22, "stride": "0x41c"}
+  ]
+}

@@ -1,0 +1,9 @@
+{
+ "_evidence": "0x0051c746: 'mov ebx,0x350; movzx ebx, word [ebx*2 + 0x9e1b20]' (= word 0x9e21c0), 'cmp bx,-1; je 0x51c76e' skips; otherwise 'add ebx,0x6975ec; mov esi,[ebx]; mov edi,0x9bf394; mov ecx,0x10000; rep movsb' copies 64 KiB from the map the entry points to into 0x9bf394. As in tex_0051c690, the word is the byte offset of a 0x20-byte entry of the texture table 0x6975ec (0x51c058 copies 0x20-byte entries with rep movsb and stores edi-0x6975ec in 0x9e1b20[]; 0x51bfb6 resets every word to 0xffff), so it is 0xffff or k*0x20; entries 0..2 are drawn. Entry +0 is the pointer to the 64 KiB map (0 in the image), so each is supplied as a distinct 0x10000-byte random buffer: rep movsb reads exactly 0x10000 bytes from it.",
+ "globals": [
+  {"addr": "0x009e21c0", "type": "u16", "values": ["0xffff", 0, 0, "0x20", "0x40"]},
+  {"addr": "0x006975ec", "type": "ptr", "size": "0x10000", "fill": "bytes"},
+  {"addr": "0x0069760c", "type": "ptr", "size": "0x10000", "fill": "bytes"},
+  {"addr": "0x0069762c", "type": "ptr", "size": "0x10000", "fill": "bytes"}
+ ]
+}

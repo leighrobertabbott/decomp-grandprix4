@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x00527329 (compose after ring_008943a0+box_00550798, on globals=fuzz:i32): edi = ring record pointer [0x679d20], eax = [0x8755f0] * 0x160 (imul: records to step), direction = sign of word [0x875e92] (fuzzed, both signs). Backward: at/after the pit start [0x891500] 'sub edi,eax' clamped at the pit start; before it 'sub edi,eax' plus the wrap [0x866ec4] when below the lap start [0x891504]. Forward: before the pit start 'add edi,eax' minus the wrap when >= the lap end [0x866ecc]; after it 'add edi,eax' clamped to pit end - 0x160 when >= [0x866ef8]. Then 'movsx eax,word [edi+6]' - the only dereference (fault at 0x5273a1 when a fuzzed step count sends edi off the map). [0x8755f0] is read only here (a block field, no writer in code): it draws -8..8 records, [0x679d20] is a record 0..29 (points_into), and ring_008943a0 keeps lap start 0..4, lap end 4..26, pit start 0..30, pit end 1..32 and the wrap 1..4 records, so the record reached is always -8..37 (backward wrap: >= 0-8+1; forward: <= 29+8, minus the wrap past the lap end; clamps land on records 0..31) - the word +6 of records -8..37 (0x8938a6 + k*0x160) is varied as any i16 (shl 3, sub [0x7a8dd8], then fild/fdivp by [0x679b68]: masked x87 exceptions, no fault for any value; a zero divisor gives inf/indefinite, the same in both runs). The other inputs (0x8755e0/e4 clamp, 0x8755f4, 0x875278, 0x875244) are plain i32 from fuzz; the qwords 0x6f2b9c/0x6f2ae4/0x6f2b7c are image constants.",
+ "globals": [
+  {"addr": "0x008755f0", "type": "i32", "lo": -8, "hi": 8},
+  {"addr": "0x00679d20", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 29}},
+  {"addr": "0x008938a6", "type": "i16", "count": 46, "stride": "0x160"}
+ ]
+}

@@ -1,0 +1,22 @@
+{
+ "size": 64,
+ "fill": "bytes",
+ "_evidence": "Token buffer at esi for 0x0054c4c3, which looks it up in the keyword table 0x833a2c (entries name ptr, value: 0x833af1 'true' -> -1, 0x833aeb 'false' -> 0, then a zero name ends the table) through the matcher 0x54c4d3: repe cmpsb (ecx = 0xff) against each name, a match needs the first mismatch to fall on the name's NUL (cmp byte [edi-1],0) with the token byte there <= 0x20 unsigned (cmp byte [esi-1],0x20; ja), so 'true' or 'false' followed by a space/control byte. Random or printable bytes never match. The first dword is a keyword prefix or a non-keyword, byte +4 completes 'false' ('e') or ends 'true' (space, tab, 0x01 = match; 'x', 0x21 = name ended but token goes on; NUL = token ends with the name so the compare runs on into the table's next string and fails), byte +5 ends 'false' likewise; the other bytes stay random (the compare stops at the first mismatch, well inside the 0x40-byte buffer).",
+ "fields": [
+  {
+   "off": 0,
+   "type": "u32",
+   "values": ["0x65757274", "0x65757274", "0x736c6166", "0x736c6166", "0x45555254", "0x20757274", "0x41414141", "0x00000000"]
+  },
+  {
+   "off": 4,
+   "type": "u8",
+   "values": ["0x20", "0x09", "0x01", "0x65", "0x65", "0x00", "0x78", "0x21"]
+  },
+  {
+   "off": 5,
+   "type": "u8",
+   "values": ["0x20", "0x0a", "0x00", "0x78", "0x21"]
+  }
+ ]
+}

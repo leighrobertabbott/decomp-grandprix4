@@ -1,0 +1,13 @@
+{
+ "_evidence": "Car overlay for 0x00418756 (compose after car_0042ba87+rec_00418c68): dword +0x2a8 is the filtered value 0x435a4e keeps, new = (c*sx(word +0xda) + (0x4000-c)*old) >> 14 with c = min(gain*[0x603858]>>14, 0x4000), a blend of 16-bit values, so it stays in -0x8000..0x7fff; 0x418756 divides (v << 24) (cdq; shld 0x18; shl 0x18) by the rate [0x603854] with idiv, which overflows (#DE) unless |v| < rate*2^7. Dword +0xac only gives a sign (both signs from the random background).",
+ "size": 1056,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x2a8",
+   "type": "i32",
+   "lo": -32768,
+   "hi": 32767
+  }
+ ]
+}

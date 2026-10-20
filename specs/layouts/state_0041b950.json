@@ -1,0 +1,23 @@
+{
+  "_evidence": "0x0041b950 state: bytes 0x00622424 (nonzero -> 0x4000 exit) and 0x0062fb4a (selects the hysteresis path), dword 0x006258bc (cmp 0 only) are zero/nonzero selectors drawn mostly zero. iVar = [0x00623c34] sar 8 is compared (signed) with 0x0062fb88, 0x0062fb84, 0x0062476c, 0x00624770, 0x00638dc8, and |iVar-[0x638dc8]| with 0x00624768, so 0x623c34 spans +-0x400000 and the thresholds +-0x4000 (0x624768 0..0x6000); 0x00624760 is compared with the movsx word +0x9a. The loaded values 0x00624754/58/5c/64 and the stale 0x00638d34 (read at 0x41baa6 when the 0xe6/0x6258bc shortcuts skip its stores) are compared with 0x1000 and clamped to 0x1000..0x3000, and 0x0062fb78 is compared with the resulting 0..0x4000, so all use 0..0x4000. 0x006258b8 is the full-range imul/shrd multiplier. Nothing can fault.",
+  "globals": [
+    {"addr": "0x00622424", "type": "u8", "values": [0, 0, 0, 0, 0, 1, "0xff"]},
+    {"addr": "0x0062fb4a", "type": "u8", "values": [0, 0, 1, "0xff"]},
+    {"addr": "0x006258bc", "type": "u32", "values": [0, 0, 0, 1, "0xffffffff"]},
+    {"addr": "0x00623c34", "type": "i32", "lo": -4194304, "hi": 4194304},
+    {"addr": "0x0062fb88", "type": "i32", "lo": -16384, "hi": 16384},
+    {"addr": "0x0062fb84", "type": "i32", "lo": -16384, "hi": 16384},
+    {"addr": "0x0062476c", "type": "i32", "lo": -16384, "hi": 16384},
+    {"addr": "0x00624770", "type": "i32", "lo": -16384, "hi": 16384},
+    {"addr": "0x00638dc8", "type": "i32", "lo": -16384, "hi": 16384},
+    {"addr": "0x00624760", "type": "i32", "lo": -16384, "hi": 16384},
+    {"addr": "0x00624768", "type": "i32", "lo": 0, "hi": 24576},
+    {"addr": "0x00624754", "type": "i32", "lo": 0, "hi": 16384},
+    {"addr": "0x00624758", "type": "i32", "lo": 0, "hi": 16384},
+    {"addr": "0x0062475c", "type": "i32", "lo": 0, "hi": 16384},
+    {"addr": "0x00624764", "type": "i32", "lo": 0, "hi": 16384},
+    {"addr": "0x00638d34", "type": "i32", "lo": 0, "hi": 16384},
+    {"addr": "0x0062fb78", "type": "i32", "lo": 0, "hi": 16384},
+    {"addr": "0x006258b8", "type": "i32"}
+  ]
+}

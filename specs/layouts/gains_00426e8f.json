@@ -1,0 +1,39 @@
+{
+ "_evidence": "Gains of the 0x425eca -> 0x425e19 torque path and 0x426a66 for 0x00426e8f (compose LAST, after state_00426947, which bounds the 0x639654/0x63acd4 tables to 0..4096 because 0x426947 divides by them - this overlay leaves the tables alone). 0x425eca: car byte +0xfe bit 5 clear and +0x25f bit 1 set gives [0x62786c]*[0x603854] (imul/shrd 2: any i32), bit 1 clear gives movsx word [0x6039bc] << 14 (any i16); 0x425e19 scales the table entries by [0x624794]/[0x624798] (0x4123c6 stores 0x10000000/(0x4000-x) and 0x10000000/x for the split x = [0x624790] in 1..0x3fff, so 0x4000..0x10000000) and by [0x6039d8] (+0x78 bit 6) / [0x604164] (+0x122 bit 4) (imul/shrd 14: any i32, as torque_00425e19); 0x426a66 multiplies by the gain [0x62d28c] (imul/shrd 14, -0x8000..0x8000 as state_00426091). No division by any of them.",
+ "globals": [
+  {
+   "addr": "0x006039bc",
+   "type": "i16"
+  },
+  {
+   "addr": "0x0062786c",
+   "type": "i32"
+  },
+  {
+   "addr": "0x00624794",
+   "type": "i32",
+   "lo": 16384,
+   "hi": 268435456
+  },
+  {
+   "addr": "0x00624798",
+   "type": "i32",
+   "lo": 16384,
+   "hi": 268435456
+  },
+  {
+   "addr": "0x006039d8",
+   "type": "i32"
+  },
+  {
+   "addr": "0x00604164",
+   "type": "i32"
+  },
+  {
+   "addr": "0x0062d28c",
+   "type": "i32",
+   "lo": -32768,
+   "hi": 32768
+  }
+ ]
+}

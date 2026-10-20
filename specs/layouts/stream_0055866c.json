@@ -1,0 +1,15 @@
+{
+  "_evidence": "0x0055866c (mode byte 0x86857c == 2) reads three words of the stream at esi: 'mov ax,[esi]' the 16-bit cell mask ('shr ax,1; jae' per bit k = 0..15, every pattern valid), 'movzx ebp,word [esi+2]' the row count ('or ebp,ebp; je' then 'dec ebp; jne': 0 stops at once, else count rows) and 'mov dx,[esi+4]' the colour (only its low nibble is used). Buffer part (esi, 8 bytes): mask full u16, count 0..24 (more rows only revisit records; a ring wraps after at most 26), colour full u16. Each row rewrites the nibbles of bytes +0x58..+0x5f ('and byte [ebx+edi+0x58],0xf0|0x0f; or ..,dl|dh', ebx = k >> 1) of the record edi, which starts at the rec[0x8943a0,0x160,0..29] register and advances by 0x160 with the ring_008943a0 wrap ('cmp edi,[0x866eb8]; jb; sub edi,[0x866ebc]': end records 4..26, wrap 1..4 records), so every visited record is 0..29. Global part: those eight bytes of ring records 0..31 (two dwords at +0x58/+0x5c) are random so the preserved nibbles are observable (the ring is zero in the image). Use as the esi layout and, after ring_008943a0+mode_0086857c, as a globals layout.",
+  "size": 8,
+  "fill": "zero",
+  "fields": [
+    {"off": 0, "type": "u16"},
+    {"off": 2, "type": "u16", "lo": 0, "hi": 24},
+    {"off": 4, "type": "u16"},
+    {"off": 6, "type": "u16"}
+  ],
+  "globals": [
+    {"addr": "0x008943f8", "type": "u32", "count": 32, "stride": "0x160"},
+    {"addr": "0x008943fc", "type": "u32", "count": 32, "stride": "0x160"}
+  ]
+}

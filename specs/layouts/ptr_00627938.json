@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x0040cfc9 loads dword 0x00627938 straight into edi for 0x406ebc (a ring-record routine: its accepted spec takes edi as a record of the 0x160-byte array at 0x008943a0) and then stores the new record pointer [0x629f0c] back, so 0x627938 holds the previous record pointer of the ring walk. Records 0..11 as in the accepted callers' ring layouts.",
+ "globals": [
+  {"addr": "0x00627938", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 11}}
+ ]
+}

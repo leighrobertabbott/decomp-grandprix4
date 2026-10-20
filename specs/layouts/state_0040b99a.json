@@ -1,0 +1,11 @@
+{
+  "_evidence": "0x0040b99a: edi = [0x622820]*[0x622778] / [0x6227b0] (imul, idiv), then table products (dwords 0x6225c0[3..5], byte pairs 0x6225f8/0x6225d8, bytes 0x6227fc/0x62280d: constant tables, only ever read), then ebp = [0x62d238]*[0x6227b0] (low dword) and ([0x622778]*1000) * ([0x62278c]<<8) / ebp (idiv), and ebx = [0x622790]>>4 clamped to 11 (index of 0x62280d). Fuzzed divisors were 0 or overflowed (#DE). Domain: 0x6227b0 and 0x62d238 in 0x100..0x1000 (ebp in 2^16..2^24, never 0), 0x622820 and 0x622778 in -0x8000..0x8000 (|first quotient| <= 2^30/0x100), 0x62278c in -0x1000..0x1000 (|dividend| <= 2^25*2^20, second quotient < 2^29), so neither idiv faults; 0x622790 is any u32 (shr 4 then signed clamp: both sides of 0xb).",
+  "globals": [
+    {"addr": "0x00622820", "type": "i32", "lo": -32768, "hi": 32768},
+    {"addr": "0x00622778", "type": "i32", "lo": -32768, "hi": 32768},
+    {"addr": "0x006227b0", "type": "i32", "lo": 256, "hi": 4096},
+    {"addr": "0x0062d238", "type": "i32", "lo": 256, "hi": 4096},
+    {"addr": "0x0062278c", "type": "i32", "lo": -4096, "hi": 4096},
+    {"addr": "0x00622790", "type": "u32"}
+  ]
+}

@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00550d0b: 'cmp byte [0x66d7a4],0x80; je 0x550d51' - the whole routine is skipped for mode byte 0x80. fuzz:i32 makes that byte 0x80 in about 1 case of 256 (the accepted run needed the phase-2 constants to see it). Drawn here from 0x80 (1 in 4) and the neighbours/other values 0, 1, 0x7f, 0x81, 0xff; a plain byte compare, every value valid.",
+ "globals": [
+  {"addr": "0x0066d7a4", "type": "u8", "values": ["0x80", "0x80", 0, 1, "0x7f", "0x81", "0xff", 2]}
+ ]
+}

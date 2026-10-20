@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00545efe = 'call 0x54d1ad; call 0x545f09': 0x54d1ad does 'shl esi,2; add esi,0x835846; mov esi,[esi]', loading the string pointer for text id esi from the runtime string table 0x835846 (zero in the image, filled by the text loaders 0x54cd69/0x54cfbd/0x54cfec/0x54d04c/0x54e426; tab_00835846 varies it as plain dwords, which only suits functions that never dereference it), then the script interpreter 0x545f09 walks the string (the original faulted reading [0] on every case). The text ids are bounded to 0..7 by the spec (the callers pass constant ids such as 0x360/0x361/0x362/0xb40/0xc5 and 0xb8f+k; the routine treats every id alike), so entries 0..7 (0x835846..0x835865) each point to a separate 0x40-byte script whose bytes come from the domain 0x545f09 itself was accepted with ({0,1,2,3,4,5,0x41,0x20}: terminator, the skip/register-load opcodes 1..5 and literal text through handler 0x54611f, which cursor_00545f09+surf_0054654a keep inside modelled code and the surface). Compose after cursor_00545f09+surf_0054654a (disjoint addresses).",
+ "globals": [
+  {"addr": "0x00835846", "type": "ptr", "count": 8, "stride": 4, "size": 64, "fill": "u8{=0,1,2,3,4,5,0x41,0x20}"}
+ ]
+}

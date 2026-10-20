@@ -1,0 +1,59 @@
+{
+ "_evidence": "0x0053e6d0 (called by 0x53e632 with edi = 0x822300 + k*0x20 for k < [0x82fefb], after a jbe guard on [0x82fefb] > 0) scans the [0x82fefb] records of 0x20 bytes from 0x822300 with a do-while 'inc ecx; cmp ecx,[0x82fefb]; jne' (0 runs 2^32 times off the array: excluded; the count is 1..16, the edi records of the spec are k = 0..15). Per scanned record it reads i32 +8/+0x10 and +0xc/+0x14 (two spans, compared signed with the edi record's, overlap lengths stored to 0x82feff/0x82ff03), i32 +0x18/+0x1c (position deltas against +-0x10 and the running bests, initially 800 (0x320) and 600 (0x258), ties broken by an unsigned overlap compare at 0x53e86a/0x53e89e/0x53e8de/0x53e912) and +4 (the id copied out). The result globals 0x82fecb..0x82fef7 and 0x82feff/0x82ff03 are written before being read. Span ends come from a small set so equal ends (the jg/jle/jge boundaries) are frequent and both orders occur; positions from a set whose differences hit >0x10, <-0x10, the dead zone, exactly 800/600 and each other.",
+ "globals": [
+  {
+   "addr": "0x0082fefb",
+   "type": "u32",
+   "lo": 1,
+   "hi": 16
+  },
+  {
+   "addr": "0x00822304",
+   "type": "u32",
+   "count": 16,
+   "stride": "0x20"
+  },
+  {
+   "addr": "0x00822308",
+   "type": "u32",
+   "count": 16,
+   "stride": "0x20",
+   "values": [0, 8, 16, 24, 32, 40, 48]
+  },
+  {
+   "addr": "0x0082230c",
+   "type": "u32",
+   "count": 16,
+   "stride": "0x20",
+   "values": [0, 8, 16, 24, 32, 40, 48]
+  },
+  {
+   "addr": "0x00822310",
+   "type": "u32",
+   "count": 16,
+   "stride": "0x20",
+   "values": [0, 8, 16, 24, 32, 40, 48]
+  },
+  {
+   "addr": "0x00822314",
+   "type": "u32",
+   "count": 16,
+   "stride": "0x20",
+   "values": [0, 8, 16, 24, 32, 40, 48]
+  },
+  {
+   "addr": "0x00822318",
+   "type": "u32",
+   "count": 16,
+   "stride": "0x20",
+   "values": [0, "0x8", "0x10", "0x11", "0x20", "0x40", "0x258", "0x320", "0xfffffff8", "0xffffffef", "0xffffffe0", "0xfffffda8", "0xfffffce0"]
+  },
+  {
+   "addr": "0x0082231c",
+   "type": "u32",
+   "count": 16,
+   "stride": "0x20",
+   "values": [0, "0x8", "0x10", "0x11", "0x20", "0x40", "0x258", "0x320", "0xfffffff8", "0xffffffef", "0xffffffe0", "0xfffffda8", "0xfffffce0"]
+  }
+ ]
+}

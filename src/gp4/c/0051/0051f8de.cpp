@@ -1,0 +1,24 @@
+#include <gp4/gp4.h>
+#include <gp4/flags.h>
+
+// pushal/popal routine: al = byte [0x00a69878 + 0x007c2a48] (a car number of the slot table), then
+// 0x00408359 searches the 22 car records for it. The dword 0x00a6987c receives the record address
+// when one is found (CF set) and 0 otherwise. Every GPR is restored; the flags are those 0x00408359
+// leaves.
+// FUNCTION: GP4 0x0051f8de
+void __cdecl FUN_0051f8de(gp4::Regs* r) {
+    const uint32_t index = GP4_GLOBAL(uint32_t, 0x00a69878);
+    gp4::Regs c = *r;
+    c.st_in = 0;
+    c.st_out = 0;
+    c.ebx = index;
+    c.eax = (r->eax & 0xffffff00u) | GP4_ARRAY(uint8_t, 0x007c2a48)[index];
+    gp4::call_regs(0x00408359, c);
+    if ((c.eflags & gp4::flags::CF) != 0u) {
+        GP4_GLOBAL(uint32_t, 0x00a6987c) = c.eax;
+    } else {
+        GP4_GLOBAL(uint32_t, 0x00a6987c) = 0u;
+    }
+    r->eflags = gp4::flags::merge(r->eflags, c.eflags);
+}
+GP4_IMPL(0x0051f8de, FUN_0051f8de, "regs(eax:u32) -> (cf, pf, af, zf, sf, of); globals=layout=carbg_0066fef0+carno_0066ff6c+idx_005162fd")

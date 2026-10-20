@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00424814's debris chain (0x4447b2 groups -> 0x424d65 -> 0x424878 -> 0x42453d/0x42458b -> 0x42257b/0x424625). Compose after state_0042458b: it replaces only the entry-table pointer [0x62a048] with a 64-byte table built from tab_0042453d overlaid with tab_00424814 (entry 0 covers every part bit 0..22, because the group masks of this path can lack parts 0..16 and an entry-less block makes 0x424625 loop until ecx wraps; see tab_00424814). Every other field of state_0042458b (count 0x62a04c, position table 0x62a044, resolution 0x608318, 0x6080c8/cc) is unchanged.",
+ "globals": [
+  {"addr": "0x0062a048", "type": "ptr", "size": 64, "fill": "layout=tab_0042453d+tab_00424814"}
+ ]
+}

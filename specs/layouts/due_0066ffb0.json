@@ -1,0 +1,6 @@
+{
+ "_evidence": "Car dword +0xc0 (0x66ffb0 + k*0x41c, the 22 car records) for 0x0044330d (compose after clock_0066d814): 'mov eax,[0x66d814]; sub eax,[esi+0xc0]; cmp eax,0x1770; jl' - a due time compared with the race clock (clock_0066d814 draws 0..0x10000). Run-time state (zero in the image), only subtracted and compared, so any value is valid; drawn in -0x2000..0x12000 so clock - due falls on both sides of 0x1770 (and negative), without the 0xc0000000 'unset' sentinel of state_0044334d being needed here (that value is a plain large difference for this test).",
+ "globals": [
+  {"addr": "0x0066ffb0", "type": "i32", "count": 22, "stride": "0x41c", "lo": -8192, "hi": 73728}
+ ]
+}

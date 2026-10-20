@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x0043a295 rotates eight corner points (edi - ebx + edx[k], i32 sums) through the fixed body 0x006232a8 with 0x401f02 (matrix qwords +0x58..+0x98 = 0x623300..0x623347; the vector +0xb8.. is stored first) and lets 0x43a148 update the bounding box: byte 0x6097fc (cmp 0; je) selects max (jge) or min (jle) tracking, the rotated x/y signs (js) select which pair, and the dwords 0x609800..0x60981c (x/y at the extreme, extreme z for the four sides) are running state compared signed with the rotated z. The matrix is varied as finite rotation entries in [-1,1] (as the other bodies in view_00609860; a zero matrix only ever gave non-negative results, so the negative sides were never read), the mode byte draws zero, small, sign-bit and 0xff, and the eight box dwords are any i32 so every compare goes both ways. fistp of an out-of-range sum gives the indefinite integer on both sides; nothing faults.",
+  "globals": [
+    {"addr": "0x006097fc", "type": "u8", "values": [0, 0, 1, "0x80", "0xff"]},
+    {"addr": "0x00609800", "type": "i32", "count": 8, "stride": 4},
+    {"addr": "0x00623300", "type": "f64", "count": 9, "stride": 8, "lo": -1, "hi": 1}
+  ]
+}

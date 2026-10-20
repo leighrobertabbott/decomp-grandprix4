@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x004279ab (edi = segment record 0..25 below the pit start [0x891500], esi = car): movsx bytes +0x8c of the record, of the previous one (edi-0xd4 = prev+0x8c) and of the next one (edi+0x1ec = next+0x8c) are smoothed into (cur + (prev+next)/2)/2 * 256, so bytes +0x8c of records -1..26 (0x8942cc + k*0x160, 28 records) are full-range i8: zero (je exit), negative (neg path), below and above 0x2000 all occur. The car's Q14 factor +0x284 (0x670174 + k*0x41c, 22 cars) is a plain i32 (imul/shrd, written back). Compose after cars_0066fef0 (its points_into [0x891500] 0..26 puts the pit start on both sides of edi); the gains 0x6247f0/f4/f8 come from fuzz:i32.",
+  "globals": [
+    {"addr": "0x008942cc", "type": "i8", "count": 28, "stride": "0x160"},
+    {"addr": "0x00670174", "type": "i32", "count": 22, "stride": "0x41c"}
+  ]
+}

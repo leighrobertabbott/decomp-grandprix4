@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x005270d0 (compose after ring_00405a12, the coherent track-ring geometry of records 0..14): 'mov edi,[0x679b78]; mov eax,[0x7a8dd4]; shl eax,5; mov edx,[0x7a8ddc]; shl edx,5; call 0x405da9; mov [0x679b78],eax' - it re-locates the ring record [0x679b78] for the position (x, z) = ([0x7a8dd4], [0x7a8ddc]). 0x405da9 does 'sar 11' on both, so x = [0x7a8dd4] >> 6 must lie in the i16 record frame like every caller's coordinate (0x405da9's own domain: eax/edx in -0x4000000..0x3fff7ff, i.e. these dwords in -0x200000..0x1fffbf), and its walks are only defined from start records 0..11 of that geometry (ring_00405a12: records 0..11 lead into the lap ring; ptr_00679b78's 0..25 started some cases on records the geometry leaves at zero, and fuzz:i32 put the positions far outside the frame, so the pass never exercised a real multi-step walk). Domain: [0x679b78] record-aligned 0..11, both positions -0x200000..0x1fffbf.",
+ "globals": [
+  {"addr": "0x00679b78", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 11}},
+  {"addr": "0x007a8dd4", "type": "i32", "lo": -2097152, "hi": 2097087},
+  {"addr": "0x007a8ddc", "type": "i32", "lo": -2097152, "hi": 2097087}
+ ]
+}

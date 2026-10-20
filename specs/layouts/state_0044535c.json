@@ -1,0 +1,33 @@
+{
+ "_evidence": "0x0044535c tests byte [0x7aafd8] (0xff/0/1/0x80) and runs the 0x4452a0 dispatcher, which returns clc when the stream holds opcode 7 at 0x62c19a with [0x62d1a4] in {0,2}.",
+ "globals": [
+  {
+   "addr": "0x007aafd8",
+   "type": "u8",
+   "values": [
+    "0xff",
+    0,
+    1,
+    "0x80"
+   ]
+  },
+  {
+   "addr": "0x0062d1a4",
+   "type": "u32",
+   "values": [
+    0,
+    2
+   ]
+  },
+  {
+   "addr": "0x0062c19a",
+   "type": "u8",
+   "values": [
+    7,
+    7,
+    0,
+    "0xb"
+   ]
+  }
+ ]
+}

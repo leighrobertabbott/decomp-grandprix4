@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00520116 (ring distance with pit-side folding; compose after lap_0040cf8c, whose lap end [0x866ecc] = 0x894ea0 (record 8), lap length [0x866ec4] = 0xb00 and half-lap threshold [0x866ed8] 0..0x2400): after the range checks against 0x8943a0 and the lap end, 'cmp eax,[0x866f10]; jb' / 'cmp edx,[0x866f10]; jae|jb' compare both positions (record addresses 0..9 from the spec's value sets) with the pit position [0x866f10]. Fuzzed, that dword is far outside the ring, so the mixed cases (eax >= pit > edx: 'sub eax,edx; cmp eax,[0x866ed8]; jl 0x52018c' and edx >= pit > eax: 0x520177) with their threshold folds were rarely or never reached. The pit position is a record address like the others: records 0 (no position below it), 1, 2, 3, 5, 6 (mixed cases on both sides), 8 (= lap end, every inside position below it) and 9 (beyond). Plain unsigned/signed compares and subtractions, every value valid.",
+ "globals": [
+  {"addr": "0x00866f10", "type": "u32", "values": ["0x8943a0", "0x894500", "0x894660", "0x8947c0", "0x894a80", "0x894be0", "0x894ea0", "0x895000"]}
+ ]
+}

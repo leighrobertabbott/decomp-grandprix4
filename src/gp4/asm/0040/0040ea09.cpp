@@ -62,4 +62,4 @@ void __cdecl FUN_0040ea09(gp4::Regs* r) {
     r->ebx = result;
     r->eflags = (r->eflags & ~0x8d5u) | flags;
 }
-GP4_IMPL(0x0040ea09, FUN_0040ea09, "regs(esi:ptr[0x41d]:bytes) -> (ebx, cf, pf, af, zf, sf, of); globals=fuzz:i32")
+GP4_IMPL(0x0040ea09, FUN_0040ea09, "regs(esi:ptr[0x41d]:layout=car_0040ea09) -> (ebx, cf, pf, af, zf, sf, of); globals=layout=carno_0066ff6c")

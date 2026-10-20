@@ -1,0 +1,7 @@
+{
+  "_evidence": "Mip-level pointer array of a texture entry (0x0051c59a 'mov esi,[esi]' then 'mov edi,[esi+ebx*4]' for ebx = 0..7): eight distinct level buffers. Level L is rewritten in place as H_L rows of W_L bytes with row stride 0x100 ('add edi,0x100'), touching (H_L - 1) * 0x100 + W_L bytes; with tex_0051c59a's W <= 0x100 and H <= 0x10 (and W_L, H_L only halving) that is at most 0x1000 bytes, so each level is a separate 0x1000-byte buffer of random texels (every byte is a valid index of the 0x948858 map).",
+  "size": 32,
+  "fields": [
+    {"off": 0, "type": "ptr", "count": 8, "stride": 4, "size": 4096, "fill": "bytes"}
+  ]
+}

@@ -1,0 +1,13 @@
+{
+ "_evidence": "0x0055616f walks the 0x160-byte ring records at 0x8943a0 from the start [0x866ec0] + 1 record ('mov edi,[0x866ec0]; add edi,0x160'): per record eax = dword +0x2c of the previous record ('[edi-0x134]') xor its own +0x2c; when nonzero, each of the dwords +0x30/+0x34/+0x38/+0x40/+0x3c that lacks some of those bits ('and edx,eax; cmp edx,eax; je') gets them ORed in; then 'add edi,0x160; cmp edi,[0x866eb8]; jne' - a do-while that stops only on equality, so the end lies at least two records above the start (end = start + 1 record would be passed and never met). Start records 0..3 (as segs_00558d9b) and end records 5..26 (segs_00558d9b's end 4 with start 3 walks off the array). Records 0..26: +0x2c from small bit sets {0,1,2,4,6,0x10,0x30,0x44,0x80,0xff} so neighbours are equal (je skip) or differ in a few bits, and the five target dwords from {0,1,2,3,6,7,0x10,0x30,0x44,0xc4,0xffffffff} so 'already has every changed bit' is true for some and false for other records (random dwords would make it true with probability ~2^-16). The ring records are zero in the image.",
+ "globals": [
+  {"addr": "0x00866ec0", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 3}},
+  {"addr": "0x00866eb8", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 5, "hi": 26}},
+  {"addr": "0x008943cc", "type": "u32", "count": 27, "stride": "0x160", "values": [0, 0, 1, 2, 4, 6, 16, "0x30", "0x44", "0x80", "0xff"]},
+  {"addr": "0x008943d0", "type": "u32", "count": 27, "stride": "0x160", "values": [0, 1, 2, 3, 6, 7, 16, "0x30", "0x44", "0xc4", "0xffffffff"]},
+  {"addr": "0x008943d4", "type": "u32", "count": 27, "stride": "0x160", "values": [0, 1, 2, 3, 6, 7, 16, "0x30", "0x44", "0xc4", "0xffffffff"]},
+  {"addr": "0x008943d8", "type": "u32", "count": 27, "stride": "0x160", "values": [0, 1, 2, 3, 6, 7, 16, "0x30", "0x44", "0xc4", "0xffffffff"]},
+  {"addr": "0x008943dc", "type": "u32", "count": 27, "stride": "0x160", "values": [0, 1, 2, 3, 6, 7, 16, "0x30", "0x44", "0xc4", "0xffffffff"]},
+  {"addr": "0x008943e0", "type": "u32", "count": 27, "stride": "0x160", "values": [0, 1, 2, 3, 6, 7, 16, "0x30", "0x44", "0xc4", "0xffffffff"]}
+ ]
+}

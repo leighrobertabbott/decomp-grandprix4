@@ -1,0 +1,14 @@
+{
+ "_evidence": "0x0054eaf7 walks the static list whose head node is 0x838c94 ('mov esi,0x838c94; cmp esi,0; jne'; 'rcr eax,1; jae; or byte [esi+0x1f],0x40; mov esi,[esi]'): one bit of eax per node. Image list: 0x838c94 -> 0x838cba -> 0x838ce0 -> 0x838d06 -> 0x838d2c -> 0x838d52 -> 0x838d78 -> null. The flag bytes +0x1f of all seven nodes are varied, and the links of nodes 0 and 3 (cells 0x838c94, 0x838d06) are drawn from their image successor, a later node of the same list or null, so the walk length (and with it the final eax shift) and the node a given bit lands on vary. Every choice is an acyclic sublist of the image list ending on a null link.",
+ "globals": [
+  {"addr": "0x00838c94", "type": "u32", "values": ["0x838cba", "0x838cba", "0x838cba", "0x838ce0", "0x838d2c", 0]},
+  {"addr": "0x00838d06", "type": "u32", "values": ["0x838d2c", "0x838d2c", "0x838d52", "0x838d78", 0]},
+  {"addr": "0x00838cb3", "type": "u8"},
+  {"addr": "0x00838cd9", "type": "u8"},
+  {"addr": "0x00838cff", "type": "u8"},
+  {"addr": "0x00838d25", "type": "u8"},
+  {"addr": "0x00838d4b", "type": "u8"},
+  {"addr": "0x00838d71", "type": "u8"},
+  {"addr": "0x00838d97", "type": "u8"}
+ ]
+}

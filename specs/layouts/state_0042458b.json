@@ -1,0 +1,37 @@
+{
+ "_evidence": "Globals of the per-object bounding routine 0x0042458b (called by 0x42453d) and its callees. 0x62a048 -> tab_0042453d (entry table), 0x62a04c is the entry count copied as max(v,1) into 0x62a05c, drawn -2..16 (the 16-entry tables and the 0x60932c byte table it clears with rep stosb), 0x62a044 is the 16-byte position record table copied to 0x62a058 (pointer, 0 in the image: 1024 random bytes cover 64 records; 0x422327/0x4224be/0x422397 read x/y/z of records 0..15). 0x4226ae divides 2^32 (edx=1, eax=0) by [0x608318] and by max(|sin|*[0x608318]>>14, 12): a divisor 0 or 1 is #DE in the original, and its loops run [0x608318]>>1 times (0 wraps to 2^32) with an inner 12..[0x608318]-count loop each, so the angular resolution 0x608318 is drawn 2..16. 0x6080c8/0x6080cc are copied into entries. The 22 blocks at 0x6099c0 + k*0x5d8 are fully written (header by 0x4227e5, entries by 0x422397/0x4223ed, extents by 0x424625) before being read, so they need no layout; the half-extent table 0x607da8.. is constant.",
+ "globals": [
+  {
+   "addr": "0x0062a048",
+   "type": "ptr",
+   "size": 64,
+   "fill": "layout=tab_0042453d"
+  },
+  {
+   "addr": "0x0062a04c",
+   "type": "i32",
+   "lo": -2,
+   "hi": 16
+  },
+  {
+   "addr": "0x0062a044",
+   "type": "ptr",
+   "size": 1024,
+   "fill": "bytes"
+  },
+  {
+   "addr": "0x00608318",
+   "type": "u32",
+   "lo": 2,
+   "hi": 16
+  },
+  {
+   "addr": "0x006080c8",
+   "type": "u32"
+  },
+  {
+   "addr": "0x006080cc",
+   "type": "u32"
+  }
+ ]
+}

@@ -1,0 +1,13 @@
+{
+ "_evidence": "0x0052ec6c: esi = 0xb8f + ([0x7c31dc] & 0x3f) is an index into the runtime string-pointer table 0x835846 (0x54d1ad loads [0x835846 + 4*esi]), i.e. the 64 entries 0x838682..0x838781 (zero in the image, filled when the text resources load); the string is then copied to edi (at most 0x12 bytes, NUL-terminated by 'or al,al; loopne'). Each entry is a fresh 0x40-byte buffer of NUL/space/letters.",
+ "globals": [
+  {
+   "addr": "0x00838682",
+   "type": "ptr",
+   "count": 64,
+   "stride": 4,
+   "size": 64,
+   "fill": "u8{=0,0x20,0x20,0x41,0x42}"
+  }
+ ]
+}

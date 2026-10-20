@@ -1,0 +1,10 @@
+{
+  "_evidence": "esi record of 0x00541949, the receiving side of the chunked block transfer whose sender is 0x541830/0x541864/0x541914: 0x541830 stores the block base [0x83082c] (0 = default) and total size, the chunk count ceil(size/0x300) in [0x830838] and chunk index 0; 0x541864 sets the chunk byte count [0x830830] = min(remaining, 0x300) and increments the index; 0x541914 writes the record {+0 base, +4 count, +8 index, +0xc chunk count, +0x10 the count bytes}. 0x541949 reads `mov eax,[esi]; call 0x5418cd` (0 -> the default pointer [0x8298f4], from state_00541914), `mov ecx,[esi+4]`, `mov eax,[esi+8]; imul eax,eax,0x300`, `mov eax,[esi+0xc]; mov [0x830824],eax`, then `add esi,0x10; rep movsb` to base + index*0x300. So +0 is a pointer to a block (0x1000 random bytes, null in about a quarter of the cases), +4 a count 0..0x300 (the sender never exceeds 0x300; 0 copies nothing), +8 an index 0..3 (index*0x300 + count <= 0xc00 stays inside the 0x1000-byte blocks), +0xc any dword (random background), and the record holds the 0x10-byte header plus up to 0x300 data bytes.",
+  "size": 784,
+  "fill": "bytes",
+  "fields": [
+    {"off": 0, "type": "ptr", "size": 4096, "fill": "bytes", "nullable": true},
+    {"off": 4, "type": "u32", "lo": 0, "hi": 768},
+    {"off": 8, "type": "u32", "lo": 0, "hi": 3}
+  ]
+}

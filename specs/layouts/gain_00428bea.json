@@ -1,0 +1,23 @@
+{
+  "_evidence": "Tuning dwords of 0x00428bea, read only here (xref: no other reader or writer; static 0x600/0x180/0x80/0x3800 and 0x6000/0x1000): the gains 0x603cc0/0x603cc4/0x603cc8/0x603ccc (imul; shrd 14 of 0x4000-|angle| on the four grip paths) are any i32; the scale 0x622374 (imul of ((byte+0x10 & 0x7f)+1)<<7, shrd 14) and the floor 0x622378 (cmp; jge) are drawn around their static values (0..0x8000 and -0x1000..0x5000) so the floor, the 0x4000 cap and the unclamped middle of 0x62237c all occur. Varied rather than trusted at their static values; no value faults (no divisor, no index).",
+  "globals": [
+    {
+      "addr": "0x00603cc0",
+      "type": "i32",
+      "count": 4,
+      "stride": 4
+    },
+    {
+      "addr": "0x00622374",
+      "type": "i32",
+      "lo": 0,
+      "hi": 32768
+    },
+    {
+      "addr": "0x00622378",
+      "type": "i32",
+      "lo": -4096,
+      "hi": 20480
+    }
+  ]
+}

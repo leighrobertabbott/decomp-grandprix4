@@ -1,0 +1,19 @@
+{
+ "_evidence": "String table of 0x0054e456/0x0054e491: count [0x838b91] 0..4 and four string pointers at 0x838b99 (only the first was fuzzed, so later entries faulted at 0x54e4b8).",
+ "globals": [
+  {
+   "addr": "0x00838b91",
+   "type": "u32",
+   "lo": 0,
+   "hi": 4
+  },
+  {
+   "addr": "0x00838b99",
+   "type": "ptr",
+   "size": 16,
+   "fill": "layout=str16",
+   "count": 4,
+   "stride": 4
+  }
+ ]
+}

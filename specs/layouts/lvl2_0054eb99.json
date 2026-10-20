@@ -1,0 +1,19 @@
+{
+ "_evidence": "Menu level record for 0x0054eb99 (see hdr_0054eb99): +0 = parent level (hopped by the node depth), +0x12 = dword index for 0x54d1ad (0..0x3ff), words +4/+6/+8/+0xa/+0x2e any.",
+ "size": 64,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": 0,
+   "type": "ptr",
+   "size": 64,
+   "fill": "layout=lvl3_0054eb99"
+  },
+  {
+   "off": "0x12",
+   "type": "u32",
+   "lo": 0,
+   "hi": 1023
+  }
+ ]
+}

@@ -1,0 +1,8 @@
+{
+ "size": 154,
+ "fill": "bytes",
+ "_evidence": "edi buffer of 0x00429dca (segment-side record): only byte +0x51 is read, by test bits 0x20/0x80 (0x429e12/0x429e18), bit 0 (0x429e94) and bit 3 (0x429eba). Plain flag bits, any value valid; the set holds every combination the four tests split on (bit0 set more often so the 0x429e9e.. path behind it is reached), the rest of the 0x9a bytes stay random as before.",
+ "fields": [
+  {"off": "0x51", "type": "u8", "values": [1, 1, 9, 9, "0x21", "0xa1", "0x29", "0x89", 0, 8, "0x20", "0x80", "0xff", "0xfe"]}
+ ]
+}

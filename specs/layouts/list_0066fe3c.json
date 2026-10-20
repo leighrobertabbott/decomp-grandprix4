@@ -1,0 +1,17 @@
+{
+  "_evidence": "The car-order list at 0x0066fe3c (zero in the image) is built by 0x004091b5: 22 words k*0x41c (byte offsets of the 22 car records at 0x0066fef0), a 0xffff word before it (0x0066fe3a) and one after it (0x0066fe68, [0x00679b00]=0x2c). Entries vary as any record offset or a 0xffff terminator (shorter lists); the two guard words stay 0xffff as 0x004091b5 leaves them. 0x00408f42 searches it forward for esi-0x0066fef0 (stops at a negative word) and stores 2*i (or 0) in record bytes +0x7d/+0x415, so every record's +0x7d is even 0..42. 0x004083ac walks backwards from list+[+0x7d]-2 to the 0x0066fe3a guard, skipping records with +0x7a bit 7, else returns the +0x68 difference. 0x00413ea0 walks forward from list+[+0x7d]+2 to the 0x0066fe68 guard, testing record +0x7a (0x80, 0x40), +0x231 (0x40), +0x203 (2), comparing word +0x68 differences with the constant [0x00603b0c] and scaling words +0x9a/+0xd8; its callee 0x00414548 tests byte +0x235 < 2 (values 0..3, 0xff give both sides). Every walk stays between the guards and every list word is a record offset, so all reads stay inside the 22 records.",
+  "globals": [
+    {"addr": "0x0066fe3a", "type": "u16", "values": ["0xffff"]},
+    {"addr": "0x0066fe3c", "type": "u16", "count": 22, "stride": 2,
+     "values": ["0xffff", "0xffff", "0x0", "0x41c", "0x838", "0xc54", "0x1070", "0x148c", "0x18a8", "0x1cc4", "0x20e0", "0x24fc", "0x2918", "0x2d34", "0x3150", "0x356c", "0x3988", "0x3da4", "0x41c0", "0x45dc", "0x49f8", "0x4e14", "0x5230", "0x564c"]},
+    {"addr": "0x0066fe68", "type": "u16", "values": ["0xffff"]},
+    {"addr": "0x0066ff58", "type": "i16", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ff6a", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ff6d", "type": "u8", "count": 22, "stride": "0x41c", "values": [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42]},
+    {"addr": "0x0066ff8a", "type": "u16", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ffc8", "type": "u16", "count": 22, "stride": "0x41c"},
+    {"addr": "0x006700f3", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x00670121", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x00670125", "type": "u8", "count": 22, "stride": "0x41c", "values": [0, 1, 2, 3, "0xff"]}
+  ]
+}

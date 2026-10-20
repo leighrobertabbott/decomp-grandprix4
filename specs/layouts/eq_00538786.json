@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x00538786: 'mov eax,0x829868; mov eax,[eax+0x14]; cmp eax,[0x82fcac]; je skip' compares the record dword 0x82987c with 0x82fcac and calls 0x54e232 only when they differ. fuzz:i32 varies only the record base 0x829868 and 0x82fcac, so the read dword +0x14 kept its image value; here it is random and 0x82fcac equals it in about half the cases (alias), so both outcomes of the je occur. Plain compared data: every value is valid.",
+ "globals": [
+  {"addr": "0x0082987c", "type": "u32"},
+  {"addr": "0x0082fcac", "type": "u32", "alias": "0x0082987c"}
+ ]
+}

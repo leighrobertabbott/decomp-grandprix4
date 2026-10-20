@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x0052068a: 'mov edx,1; mov eax,[edx*4+0x679b9c]' reads the dword 0x679ba0 (slot 1 of the 0x679b9c table, not the base the fuzzer covers) and stores it to 0x679b38 and returns it in eax; it is copied unchanged, never compared or dereferenced, so any value is valid: drawn nonzero random (zero in the image, which would hide a wrong slot).",
+ "globals": [
+  {"addr": "0x00679ba0", "type": "u32", "lo": 1, "hi": "0xffffffff"}
+ ]
+}

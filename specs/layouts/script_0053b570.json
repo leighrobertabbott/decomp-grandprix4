@@ -1,0 +1,19 @@
+{
+ "_evidence": "Text-script entries [0x835846 + 4*id] (zero in the image: filled when the text resources load, never null-tested) for the constant ids 0x53b570 passes to the interpreter 0x54d798: 'mov esi,0xc1' (0x835b4a), 'mov esi,0xc4' (0x835b56), 'mov esi,0xc2' (0x835b4e). Each points at its own 0x20-byte script with the script_0054d798 byte set (no opcode 4). Sized 0x20 so the whole line 0x53b570 builds at 0x823100 (2 + four scripts of at most ~0x25 bytes + digits + separators) stays short like the game's texts for the strcpy capture of 0x4fd820 (textout_0054d211).",
+ "globals": [
+  {
+   "addr": "0x00835b4a",
+   "type": "ptr",
+   "count": 2,
+   "stride": 4,
+   "size": 32,
+   "fill": "u8{=0,1,2,3,5,6,7,8,9,0xa,0xb,0xc,0xd,0xe,0xf,0x10,0x11,0x12,0x13,0x14,0x20,0x41,0x7f,0x80,0xff}"
+  },
+  {
+   "addr": "0x00835b56",
+   "type": "ptr",
+   "size": 32,
+   "fill": "u8{=0,1,2,3,5,6,7,8,9,0xa,0xb,0xc,0xd,0xe,0xf,0x10,0x11,0x12,0x13,0x14,0x20,0x41,0x7f,0x80,0xff}"
+  }
+ ]
+}

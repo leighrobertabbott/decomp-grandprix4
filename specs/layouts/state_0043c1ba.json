@@ -1,0 +1,12 @@
+{
+  "_evidence": "0x0043c1ba: position = clamp(0..0xb0, (max(0, [0x0063b8a0]-[0x0063b8a8]) * [0x006227a4] >> 14) + (max(0, [0x0063b8a4]-[0x0063b8ac]) * [0x006227a8] >> 14)), then for ecx = 0..5 calls the accepted 0x0041efb5 with edx = position and ebx = dword [0x0062d1d8 + ecx*4], an index into the 8-record (0x30-byte) curve table 0x00602dec (records 8+ are other data; 0x0040c6d8 fills entries 0/1 from setup characters minus '4' and stores the constants 4..7 in entries 2..5), and stores the six results at 0x006227c4. Indices are therefore 0..7 (0x0041efb5 is safe for 0..21; random fuzz indices faulted). 0x0040bb26 clamps 0x0063b8a0/a4 to 0..0xb0 and 0x0063b8a8/ac to 0..0x70, so those use their caller ranges. With the static scales 0x2800/0x1800 the sum can never be negative nor exceed 0xb0, which leaves the two clamp blocks (0x0043c202, 0x0043c20e) unreachable; the scales are tuning constants read by no other function, so they are varied over -0x8000..0x8000 (static values inside). Nothing can fault: imul/shrd wrap and the position passed on is always 0..0xb0.",
+  "globals": [
+    {"addr": "0x0062d1d8", "type": "u32", "count": 6, "stride": 4, "lo": 0, "hi": 7},
+    {"addr": "0x0063b8a0", "type": "i32", "lo": 0, "hi": 176},
+    {"addr": "0x0063b8a4", "type": "i32", "lo": 0, "hi": 176},
+    {"addr": "0x0063b8a8", "type": "i32", "lo": 0, "hi": 112},
+    {"addr": "0x0063b8ac", "type": "i32", "lo": 0, "hi": 112},
+    {"addr": "0x006227a4", "type": "i32", "lo": -32768, "hi": 32768},
+    {"addr": "0x006227a8", "type": "i32", "lo": -32768, "hi": 32768}
+  ]
+}

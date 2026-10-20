@@ -1,0 +1,110 @@
+{
+ "_evidence": "Current file record [0x826d11] (unaligned pointer global; its +0 name is the path the caller 0x535d14 passes to CreateFileA) as read by 0x00536031: 'mov edx,[esi+0x4c]; test edx,0x40000; jne' - the dword +0x4c is a mask over the 20 four-byte extension entries at 0x826dbe (nam rec con cs? tsu qr? up? ra? ch? lq? lp? lg? lc? pa? hl? lh? pho txt xxx ql?, read-only image data), bit 18 = entry 'xxx' = any extension (clc at once). Otherwise 'lodsb; cmp al,0x2e; je / or al,al; jne' scans the name to its first '.' (NUL first: stc). Then 'shr edx,1; jae' walks the mask from bit 0, edi += 4 per bit; for a set bit the 3 table bytes and the 3 bytes after the '.' are folded through 0x833d18 (0x54d747) and compared ('cmp ah,0x3f': a '?' entry accepts a char 0x52f208 classifies as a-z/0-5 after 0x833e18, else 'cmp al,ah; jne'); 3 matches clc, mask exhausted stc. Domain: masks use bits 0..19 only (there are 20 entries; higher bits would index the unrelated 'com1..' strings after the table), drawn mostly as all entries but 'xxx' (0xbffff) so an extension built from table letters often matches some entry, plus single entries (nam, cs?, txt, ql?, rec), pairs, 0 (stc at once), and three masks with bit 18. Name: +0 'a'/'S' (scan continues), '.' (empty stem: the extension starts at +1) or NUL (no dot); +1 mostly '.', else 'b' or NUL; +2..+4 the extension letters drawn from the table's own first/second letters in both cases (n/c/l/t x a/s/h/q/x: matching and mismatching prefixes) and a last char from m/t/3/z (matches nam/txt/'?' entries) and 8/_/q/NUL (rejected by a '?' entry or mismatched); +5.. are NUL so every scan (incl. a name without '.') ends inside the 0x58-byte buffer, as a real NUL-terminated name does.",
+ "size": 88,
+ "fields": [
+  {
+   "off": 0,
+   "type": "u8",
+   "values": [
+    "0x61",
+    "0x61",
+    "0x61",
+    "0x53",
+    "0x2e",
+    "0x00"
+   ]
+  },
+  {
+   "off": 1,
+   "type": "u8",
+   "values": [
+    "0x2e",
+    "0x2e",
+    "0x2e",
+    "0x2e",
+    "0x2e",
+    "0x2e",
+    "0x62",
+    "0x00"
+   ]
+  },
+  {
+   "off": 2,
+   "type": "u8",
+   "values": [
+    "0x6e",
+    "0x4e",
+    "0x63",
+    "0x43",
+    "0x6c",
+    "0x4c",
+    "0x74",
+    "0x54"
+   ]
+  },
+  {
+   "off": 3,
+   "type": "u8",
+   "values": [
+    "0x61",
+    "0x41",
+    "0x73",
+    "0x53",
+    "0x68",
+    "0x48",
+    "0x71",
+    "0x51",
+    "0x78",
+    "0x58"
+   ]
+  },
+  {
+   "off": 4,
+   "type": "u8",
+   "values": [
+    "0x6d",
+    "0x4d",
+    "0x74",
+    "0x54",
+    "0x33",
+    "0x7a",
+    "0x38",
+    "0x5f",
+    "0x71",
+    "0x00"
+   ]
+  },
+  {
+   "off": "0x4c",
+   "type": "u32",
+   "values": [
+    "0x40000",
+    "0x40001",
+    "0xfffff",
+    "0",
+    "1",
+    "8",
+    "0x20000",
+    "0x80000",
+    "0x200",
+    "0x8000",
+    "0x3fffe",
+    "0x20009",
+    "2",
+    "0x6000",
+    "0x80200",
+    "0x8100",
+    "0xbffff",
+    "0xbffff",
+    "0xbffff",
+    "0xbffff",
+    "0xbffff",
+    "0xbffff",
+    "0xbffff",
+    "0xbffff",
+    "0xbffff",
+    "0xbffff"
+   ]
+  }
+ ]
+}

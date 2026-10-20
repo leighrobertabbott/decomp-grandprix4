@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x0066d81c holds the current car record pointer (null or one of the 22 records of 0x66fef0, stride 0x41c): 0x00442416 tests it for null and walks the ring from the car's fields. Fuzzed it is wild.",
+ "globals": [
+  {"addr": "0x0066d81c", "type": "u32", "nullable": true, "points_into": {"base": "0x0066fef0", "stride": "0x41c", "lo": 0, "hi": 21}}
+ ]
+}

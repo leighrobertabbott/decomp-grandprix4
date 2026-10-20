@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x005388ba (compose after slots_005388ed, which varies slot dwords +4/+0xc/+0x14 of the 0x400 slots of 0x18 bytes at 0x829cac): 'and eax,0x3ff; imul 0x18; add 0x829cac' selects a slot, stores the running counter [0x82fcb4] to +0x14, increments it and returns 'mov eax,[eax+8]': the returned dword +8 (0x829cb4 + k*0x18) was never varied, so the result was the image's zero for every slot. It is varied for all 1024 slots here; it is only returned (never dereferenced by this function), so any u32 is valid.",
+ "globals": [
+  {"addr": "0x00829cb4", "type": "u32", "count": 1024, "stride": "0x18"}
+ ]
+}

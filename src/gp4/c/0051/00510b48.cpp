@@ -6,5 +6,5 @@ void __stdcall Record8943a0_SetFlag02(int index) {
     uint8_t* rec = GP4_ARRAY(uint8_t, 0x008943a0) + index * 0x160;
     rec[0x70] |= 0x02;
 }
-GP4_IMPL(0x00510b48, Record8943a0_SetFlag02, "stdcall(i32[0..21]) -> void")
+GP4_IMPL(0x00510b48, Record8943a0_SetFlag02, "stdcall(i32[0..21]) -> void; globals=layout=segflag_00510b48")
 // shape fix retest

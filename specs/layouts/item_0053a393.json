@@ -1,0 +1,11 @@
+{
+ "size": 64,
+ "_evidence": "Menu value item (esi) drawn by 0x53a393 (tail of 0x52974c) and its x5 fixed-point twin 0x53a620 (tail of 0x5297b4); compose after rec_005297ba (random 0x40-byte record, +0xe = pointer to an 8-byte value cell). The static items that own these handlers (e.g. 0x83f288 / 0x83f59e: +0x16 = 0x52974c / 0x5297b4) carry a text id at +0x12, a byte-width selector +0xd, rectangle words +4..+0xa and two small slider ranges at dwords +0x22/+0x26 and +0x2a/+0x2e. Text id: 'mov esi,[esi+0x12]; call 0x54d798' -> 0x54d1ad 'shl esi,2; add esi,0x835846; mov esi,[esi]' -> 0x54d7c0 interprets that string, so the id must select a loaded string-table entry; script_0054d798 provides ids 0..7 (the table is runtime data, zero in the image, so a random id faults at 0x54d1b6/0x54d7c4): +0x12 draws 0..7. Ranges: with +0x1f bits 0x10 and 8 clear, 0x53a805 calls 0x53a978, which clamps the cell value between [+0x22] and [+0x26] (either order), multiplies (value - [+0x2a]) by (word +8 - word +4) and 'idiv ecx' with ecx = [+0x2e] - [+0x2a] (skipped when zero); random dwords overflow the quotient (#DE). Each is drawn 0..255 (static items: 0..8, 30..100), independently so min > max, equal (ecx = 0) and both signs of ecx occur, and |product| <= 255*65535 keeps every quotient in range. Flags byte +0x1f (0x10 skip / 0x20 colour / 8 path bits) and the width byte +0xd stay random from rec_005297ba, so every branch of 0x53a393/0x53a805 is reachable; words +4/+8 (averaged into the pushed ebx) are any value. Downstream: 0x54dad5/0x54db64 format the cell value into 0x823100 (bh = 0 / 0x40: at most ~13 bytes), 0x54d7c0 appends at most ~0x45 script bytes, 0x4fd640 converts in place, and 0x54d211 -> 0x4fd820 returns at once while the renderer pointer [0xabc07c] is zero (bss), so no import is reached.",
+ "fields": [
+  {"off": "0x12", "type": "u32", "values": [0, 1, 2, 3, 4, 5, 6, 7]},
+  {"off": "0x22", "type": "i32", "lo": 0, "hi": 255},
+  {"off": "0x26", "type": "i32", "lo": 0, "hi": 255},
+  {"off": "0x2a", "type": "i32", "lo": 0, "hi": 255},
+  {"off": "0x2e", "type": "i32", "lo": 0, "hi": 255}
+ ]
+}

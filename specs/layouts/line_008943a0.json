@@ -1,0 +1,11 @@
+{
+ "_evidence": "Racing-line word +0xc8 of the 0x160-byte segment records at 0x8943a0 (records 0..33, written by 0x43ebc2 with +0x52/+0x54; 0x427cd1 movsx-reads it and blends it with +0x52/+0x54 by sub/sar/add/neg and an imul/shrd gain): any i16. Compose after segw_00427bc1, which varies +0x52/+0x54 (and the lane words) for the 0x427bc1 divisions.",
+ "globals": [
+  {
+   "addr": "0x00894468",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  }
+ ]
+}

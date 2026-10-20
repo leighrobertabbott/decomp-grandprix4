@@ -1,0 +1,7 @@
+{
+ "_evidence": "Order-list cursors read by the 0x42e97e neighbour scan (reached from 0x42ff39 through 0x42a354): 'mov edi,[0x6043fc]' ... 'movsx ebx,word [edi]; add ebx,0x66fef0; add edi,2' ... 'cmp edi,[0x6043f8]; jne' walks the car-order words of list_0066fe3c (0x66fe3c, 22 words) from the cursor to the end pointer. Their only writer 0x430ddd sets the cursor to the order-list slot after the current car ('add edi,2; mov [0x6043fc],edi', so 0x66fe3e..0x66fe68) and uses [0x6043f8] as the list end (0x4362a9/0x43123e walk the list up to it). Domain: end = 0x66fe68 (all 22 slots), cursor = 0x66fe3c + 2*k, k = 1..22 (k = 22: the empty walk), so cursor <= end always (the static zero cursor faulted at 0x42ea94 reading word [0]).",
+ "globals": [
+  {"addr": "0x006043f8", "type": "u32", "values": ["0x66fe68"]},
+  {"addr": "0x006043fc", "type": "u32", "points_into": {"base": "0x0066fe3c", "stride": 2, "lo": 1, "hi": 22}}
+ ]
+}

@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x0041a236 (ebx = 0x006380d8) negates the sum of dwords +0x34 of records 2 and 3 of the four 0x300-byte records, scales it by [0x006013b0] (imul, shrd 14) and adds dwords +0x274 of records 2 and 3 (0x874/0xb74 from the base), storing the total to 0x006035e4. +0x34 and +0x274 are per-record run-time state used only in add/neg/imul, so any i32 is valid; all four records are varied.",
+  "globals": [
+    {"addr": "0x0063810c", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x0063834c", "type": "i32", "count": 4, "stride": "0x300"}
+  ]
+}

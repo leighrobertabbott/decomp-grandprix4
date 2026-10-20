@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x0041da34 reads movsx word [edi+0xfc] (edx==3) or [edi+0xfe] (otherwise): 0 selects the second word, negative exits via js 0x41da5e, positive is subtracted from eax and gives ebp = 0x4000-w (0 at w=0x4000 -> 'mov ebp,1' at 0x41da99; negative above 0x4000). When it is 0 it reads movsx word [edi+0x25c]/[edi+0x25e]: non-negative takes the jns exit, negative gives ebp = w+0x4000 (0 at -0x4000). The dividend is clamp(eax,0..0x4000)<<14 <= 2^28 and ebp is never 0, so idiv never faults for any word value; the value lists only make the zero/0x4000/-0x4000 equalities reachable (random words almost never hit them).",
+  "size": 624,
+  "fields": [
+    {"off": "0xfc", "type": "u16", "values": [0, 0, 0, 1, 100, "0x2000", "0x4000", "0x4001", "0x7fff", "0xffff", "0xff9c", "0x8000"]},
+    {"off": "0xfe", "type": "u16", "values": [0, 0, 0, 1, 100, "0x2000", "0x4000", "0x4001", "0x7fff", "0xffff", "0xff9c", "0x8000"]},
+    {"off": "0x25c", "type": "u16", "values": ["0xc000", "0xe000", "0xff9c", "0xffff", "0x8000", 0, 5, "0x7fff", "0xc001"]},
+    {"off": "0x25e", "type": "u16", "values": ["0xc000", "0xe000", "0xff9c", "0xffff", "0x8000", 0, 5, "0x7fff", "0xc001"]}
+  ]
+}

@@ -1,0 +1,13 @@
+{
+ "_evidence": "Circuit-name text entries [0x835846 + 4*id] for ids 0xa7c..0xa8c = 0xa7c + circuit (dwords 0x838236 + 4k, k = 0..16; 0x835846 + 4*0xa7c = 0x838236), zero in the image (filled when the text resources load, never null-tested). Readers: 0x53b570 'mov esi,[0x7ad894]; add esi,0xa7c; call 0x54d798' (the text interpreter: lodsb codes, opcode 4 dereferences the never-written [0x833f1c] so it is excluded as in script_0054d798) and 0x4ff7a0 'mov ecx,[eax*4+0x838236]' as a '%s' argument of sprintf '%s - %s' (copied up to the NUL into a 0x100-byte stack buffer). The circuit [0x7ad894] is 0..16 (trk_007ad894), so all 17 entries can be read. Each points at its own 0x20-byte buffer of script_0054d798 bytes (valid as interpreter input and as a C string; the guard gap after an allocation is zero, so every string ends within 0x21 bytes and two of them plus ' - ' fit the sprintf buffer). Compose after trk_007ad894.",
+ "globals": [
+  {
+   "addr": "0x00838236",
+   "type": "ptr",
+   "count": 17,
+   "stride": 4,
+   "size": 32,
+   "fill": "u8{=0,1,2,3,5,6,7,8,9,0xa,0xb,0xc,0xd,0xe,0xf,0x10,0x11,0x12,0x13,0x14,0x20,0x41,0x7f,0x80,0xff}"
+  }
+ ]
+}

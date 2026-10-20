@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x0052eb52 builds a network message at 0x826d2a by the code al & 0x7f (jump table 0x52eb98). Case 0 (0x52ebe8): for up to 0x28 slots of the driver-name table 0x7c2b3c (stride 0x18, run-time editable, in the 0x7c28bc..0x7c3ae4 save block) 'lodsb; cmp al,0x20; jb end; stosb; loop' copies the name while the 0x1b-byte budget ecx lasts, then 'cmp ecx,8; jb exit' or a ',' and the next slot. Each slot costs at least one budget byte, so at most 21 slots (0..20) are read: the 22 slots (0x210 bytes) draw name bytes from letters / space / 0x80 / 0xff (>= 0x20: copied) and 0 / 0x1f (< 0x20: end), i.e. random name lengths, so the budget-exhausted 'loop' exit, the 'ecx < 8' exit and the comma path all occur. Cases 5..8, 0x13 (0x52ec1a) and 9..0xc (0x52ec3d): after 0x52ecce, 'mov al,[0x8293fc]; stosb; cmp al,0xff; jne' - the flag byte is written only as 0 or 0xff (0x532379/0x532424/0x532431), drawn 0 / 0xff half each; on 0xff 0x52ecdc stores [0x7c2ea9] (any byte), 0x52ecb0 stores min of the signed words [0x7c2e9c] and [0x7c2e96] ('cmp ax,[0x7c2e96]; jle'; alias: equal in about half the cases) and [0x7c2e96], and 0x52ec6c copies string 0xb8f + ([0x7c31dc] & 0x3f) of the text table (strs_0052ec6c makes all 64 of those entries valid buffers), so [0x7c31dc] is any byte. Compose after drv_005117d3 + strs_0052ec6c. Plain stores and compares: every value is valid.",
+ "globals": [
+  {"addr": "0x008293fc", "type": "u8", "values": [0, "0xff"]},
+  {"addr": "0x007c2b3c", "type": "u8", "count": 528, "stride": 1, "values": [0, "0x1f", "0x20", "0x41", "0x61", "0x62", "0x6d", "0x72", "0x7a", "0x80", "0xff"]},
+  {"addr": "0x007c2e96", "type": "u16"},
+  {"addr": "0x007c2e9c", "type": "u16", "alias": "0x007c2e96"},
+  {"addr": "0x007c2ea9", "type": "u8"},
+  {"addr": "0x007c31dc", "type": "u8"}
+ ]
+}

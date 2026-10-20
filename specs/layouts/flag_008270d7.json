@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00530022 (compose after sel_00531859+rsrec_007ad638): 'cmp byte [ebx+0x24],0; je 0x53006c' falls back to eax = 0x8270d7 when the render record's +0x24 byte is 0, then 'cmp byte [eax],0; je 0x530082' picks 0x8270d8 or ebx+0x20. 0x8270d7/0x8270d8 are referenced only as addresses (0x530022/0x530051 store them into the menu items' +0xe value pointers), so the menu code reads and toggles them through those pointers: the byte is state, zero or nonzero. Only read here (a compare), so every value is valid.",
+ "globals": [
+  {"addr": "0x008270d7", "type": "u8", "values": [0, 0, 1, "0xff", "0x80"]}
+ ]
+}

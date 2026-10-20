@@ -1,0 +1,8 @@
+{
+ "_evidence": "Callee state of 0x0052046a -> 0x005202a4 -> 0x0043b689 (compose LAST, after the car / carno layouts). (1) [0x8914f8] is the order-list pointer: 0x43b689 stores the 22 car offsets through it ('mov edi,[0x8914f8] ... mov word [edi],ax'), then bubble-sorts the list at the FIXED address 0x71f9a4 ('mov edi,0x71f9a4; movsx ebx,word [edi]; add ebx,0x66fef0') and reads [0x8914f8] again. The image holds 0x71f9a4 in 0x8914f8 and no instruction stores to 0x8914f8 (all 16 references are loads), so the two are the same list in the game; cars_0066fef0's separate 48-byte buffer left the sort walking stale image zeros at 0x71f9a4. Here it is the image pointer, so the sort sorts the offsets just written (each k*0x41c, inside the car array). (2) The per-car-number time dwords 0x7c3208 + 4*((b & 0x3f) - 1): 0x5202a4 reads/adds/writes them for car byte +0x7c (carno_0066ff6c draws 0..23, 0x41/0x81/0xc1 and 0xff: index -1 is skipped by 'js' in loops 1/3 but read in the sort loop via the order bytes, index up to 62 for 0xff), so the 64 dwords 0x7c3204..0x7c3303 vary (run-time data in the 0x7ad890..0x7c3ae4 state block, zero in the image; as time_0040ed93). They are signed times compared with 'jle' after the 0x8000-high-word sentinel map: any i32 is valid. (3) 0x43b482 does 'push dword [0x934df0] ... pop dword [0x934df0]' around its scratch use: any u32.",
+ "globals": [
+  {"addr": "0x008914f8", "type": "u32", "values": ["0x0071f9a4"]},
+  {"addr": "0x007c3204", "type": "i32", "count": 64, "stride": 4},
+  {"addr": "0x00934df0", "type": "u32"}
+ ]
+}

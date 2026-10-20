@@ -1,0 +1,17 @@
+{
+ "_evidence": "Text-cursor state of the glyph writer 0x0051d329 (reached through 0x51f3bd -> 0x51d2ec when [0x89152b] != 1 and 0x7ad844 == 0xff) and of the readout callers. Compose AFTER readout_00515187 (this layout replaces its surface). (1) [0x88fe14] selects the cursor advance in 0x51435d/0x51446b ('cmp dword [0x88fe14],-1; je inc byte [0x88fd94]' else 'add byte [0x88fd96],5'); its writers 0x514e5d/0x514fb3/0x5150e4/0x515187/0x515322/0x51547e/0x515581/0x5155fb store only -1 and 0..12, so it draws -1 or one of those. (2) Cursor bytes: column [0x88fd94], line [0x88fd95], pixel offsets [0x88fd96]/[0x88fd97] - set from the 6-byte HUD entries at 0x891570 by 0x514def, zeroed by the panel dispatchers, advanced by inc/add (byte wrap) - any byte. The software path writes 8 rows of 7 bytes at [0x874ee4] + ((line*8 + yoff) & 0xff) * pitch + col*7 + xoff + 1 ('and eax,0xff; mul dword [0x875414]'; the 'and edx,0xff'/'and ecx,0xff' keep col*7 + xoff <= 2040), so with readout's pitch 64..128 the largest offset is 262*128 + 2048 = 35584 < the 0x8c00-byte surface here: every byte value of the four cursor bytes is valid. (3) Escape state: 'test byte [0x88fd9b],0xff; je' - only 0x51d329 writes it (0x1f on the escape char, with [0x88fd9c] = 0; cleared after the second coordinate), so it is 0 or 0x1f with [0x88fd9c] 0 or 1 (mid-escape: the next char becomes the column, or the line and the escape ends). (4) [0x88fd9e] (bl: 'test bl,0xff; js' skips background pixels), [0x88fd9f]/[0x88fda0] (ah/al pixel colours) are plain bytes written by 0x516bb2/0x51d48e/0x51d494/0x51fbb9: any value. The font 0x7a8ac0 + (ch-0x20)*8 is a constant image table (its only reference is this read), left as is.",
+ "globals": [
+  {"addr": "0x0088fe14", "type": "u32", "values": ["0xffffffff", "0xffffffff", "0xffffffff", 0, 1, 2, 4, 5, 6, 12]},
+  {"addr": "0x0088fd94", "type": "u8"},
+  {"addr": "0x0088fd95", "type": "u8"},
+  {"addr": "0x0088fd96", "type": "u8"},
+  {"addr": "0x0088fd97", "type": "u8"},
+  {"addr": "0x0088fd9b", "type": "u8", "values": [0, 0, 0, "0x1f"]},
+  {"addr": "0x0088fd9c", "type": "u8", "values": [0, 1]},
+  {"addr": "0x0088fd9e", "type": "u8"},
+  {"addr": "0x0088fd9f", "type": "u8"},
+  {"addr": "0x0088fda0", "type": "u8"},
+  {"addr": "0x00874ee4", "type": "ptr", "size": 35840, "fill": "bytes"},
+  {"addr": "0x00875254", "type": "u32", "lo": 64, "hi": 128}
+ ]
+}

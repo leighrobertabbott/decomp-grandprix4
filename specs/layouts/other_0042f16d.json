@@ -1,0 +1,13 @@
+{
+  "_evidence": "The linked car [esi+0x124] (ebx) of 0x0042f16d, background random (fill bytes: flag bits +0x9c bit 1, +0x21d bit 2 (0x40dc8a), +0xfe bits 0x40/0x10 (0x42a278), the +0x68 gap word and the +0x9a speed word take every pattern). The along-track position words that form ax are drawn near each other so ax = X - [esi+0xe2] lands inside AND outside the constant windows [0x603b3c]=-100 .. [0x603b34]=90, -160 (0x603b36) and -220 (0x603b38) (random words hit the 190-wide window 0.3% of the time): X is +0xe2 (0x42f1f1 / 0x40dcbe / 0x40dce9) or (+0x14e sar 8) + (+0x14c shl 6) (0x40dcce) or (+0x14a sar 8) + (+0x148 shl 6) (0x40dcf9), i.e. segment*64 + fraction/256; segment words 0, +-1, 2 and the extreme 0x7fff, fraction words with high bytes 0, 1, 0x20, 0x40, -0x40, -1, -0x80, positions +0xe2 from 0, +-32, +-64, 89/90, +-100/-101, 160, +-200/230 and the i16 extremes. Word +0x1bc (0x42f2f2: 0xffff skips, else movzx + 0x66fef0 compared with esi) is 0xffff in about two fifths, otherwise a car byte offset. Only 16-bit sub/sar/shl/cmp on these: nothing faults.",
+  "size": 1056,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0xe2", "type": "u16", "values": [0, 0, "0x20", "0xffe0", "0x40", "0xffc0", "0x59", "0x5a", "0x64", "0xff9c", "0xff9b", "0xa0", "0xc8", "0xff38", "0xe6", "0xff1a", "0x7fff", "0x8000"]},
+    {"off": "0x14c", "type": "u16", "values": [0, 0, 1, "0xffff", 2, "0x7fff"]},
+    {"off": "0x148", "type": "u16", "values": [0, 0, 1, "0xffff", 2, "0x7fff"]},
+    {"off": "0x14e", "type": "u16", "values": [0, "0x100", "0x2000", "0x4000", "0xc000", "0xff00", "0x8000", "0x12ab"]},
+    {"off": "0x14a", "type": "u16", "values": [0, "0x100", "0x2000", "0x4000", "0xc000", "0xff00", "0x8000", "0x12ab"]},
+    {"off": "0x1bc", "type": "u16", "values": ["0xffff", "0xffff", "0x0", "0x41c", "0x5230"]}
+  ]
+}

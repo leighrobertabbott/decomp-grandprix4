@@ -1,0 +1,27 @@
+{
+ "_evidence": "Overlay for 0x00418d9a (compose after state_00418c68). The loop at 0x418e72..0x418ea2 copies the four dwords 0x60309c + ecx*4 (ecx 0..3) into the telemetry slot: they are the per-wheel values the 0x404f99 chain stores (0x60309c/a0/a4/a8, clamped >= 0 there; plain copies here), so entries 1..3 vary like entry 0 (any i32). The slot (0x418901: 0x625abc + car byte +0x202 * 0xa8, car 0..21 by slot_00418942) has dword +0 read-modify-written by 0x4188a5 (state_00418c68 varies it) and dword +4 read-modify-written bit by bit by 0x418ef6 (and/or of bits 0..6: the untouched bits pass through), so +4 of all 22 slots is any u32. Byte 0x625aba (0x4188b2 cmp 0; je: sets bit 2 of slot +0) is a flag: zero in half the picks. Copies and bit operations only: nothing faults.",
+ "globals": [
+  {
+   "addr": "0x006030a0",
+   "type": "i32",
+   "count": 3,
+   "stride": 4
+  },
+  {
+   "addr": "0x00625ac0",
+   "type": "u32",
+   "count": 22,
+   "stride": "0xa8"
+  },
+  {
+   "addr": "0x00625aba",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  }
+ ]
+}

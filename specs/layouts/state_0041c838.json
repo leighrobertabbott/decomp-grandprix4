@@ -1,0 +1,15 @@
+{
+  "_evidence": "0x0041c838 loads record pointers [0x60203c] and [0x602050] (rec_0041c838; reads up to +0xe3) and three-way-selects on [0x602038] / [0x60204c] (cmp 0: je, jg, else at 0x41c843/0x41c8c2 and 0x41c9bf/0x41ca3e), so those take 0, 1, -1 or a random value. [0x60202c]/[0x602040] are full-range i32 (edges include INT_MIN, whose neg stays negative and reaches the quotient<0 clamp, and 0/+-1 below the 0x4000 clamp); the idiv divisors are clamped to >= 0x8000 so |x|<<14 / ebp never faults. [0x602030]-[0x602044] is clamped to >= 0x8000 before 'idiv ebp' of [0x602030]<<14 (|quotient| <= 2^30). [0x602010]/[0x602014] are the clamp bounds of that quotient (both sides).",
+  "globals": [
+    {"addr": "0x0060203c", "type": "ptr", "size": 236, "fill": "layout=rec_0041c838"},
+    {"addr": "0x00602050", "type": "ptr", "size": 236, "fill": "layout=rec_0041c838"},
+    {"addr": "0x00602038", "type": "u32", "values": [0, 1, "0xffffffff", "0x7fffffff", "0x80000000", "0x1234", "0xffff0000"]},
+    {"addr": "0x0060204c", "type": "u32", "values": [0, 1, "0xffffffff", "0x7fffffff", "0x80000000", "0x1234", "0xffff0000"]},
+    {"addr": "0x0060202c", "type": "i32", "lo": -2147483648, "hi": 2147483647},
+    {"addr": "0x00602040", "type": "i32", "lo": -2147483648, "hi": 2147483647},
+    {"addr": "0x00602030", "type": "i32"},
+    {"addr": "0x00602044", "type": "i32"},
+    {"addr": "0x00602010", "type": "i32", "lo": -32768, "hi": 16384},
+    {"addr": "0x00602014", "type": "i32", "lo": -16384, "hi": 32768}
+  ]
+}

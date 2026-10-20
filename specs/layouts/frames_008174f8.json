@@ -1,0 +1,37 @@
+{
+ "_evidence": "Frame rectangle table 0x8174f8 (0x18-byte records {x, y, width, height, +0x10 id, +0x14 file offset}, filled at run time from the frame file by 0x527d63 ([0x8174f4] records, zero in the image; capacity up to 0x81c0b8). 0x528379 reads +0/+4/+8/+0xc of records first..last (obj_00528379 keeps them in 0..16): x/y -100..1000 straddle the 800/600 start minima, width/height 0..900 make x+w-1 straddle the 0 start maxima. Only add/cmp read them, so any value is valid.",
+ "globals": [
+  {
+   "addr": "0x8174f8",
+   "type": "i32",
+   "lo": -100,
+   "hi": 1000,
+   "count": 17,
+   "stride": "0x18"
+  },
+  {
+   "addr": "0x8174fc",
+   "type": "i32",
+   "lo": -100,
+   "hi": 1000,
+   "count": 17,
+   "stride": "0x18"
+  },
+  {
+   "addr": "0x817500",
+   "type": "i32",
+   "lo": 0,
+   "hi": 900,
+   "count": 17,
+   "stride": "0x18"
+  },
+  {
+   "addr": "0x817504",
+   "type": "i32",
+   "lo": 0,
+   "hi": 900,
+   "count": 17,
+   "stride": "0x18"
+  }
+ ]
+}

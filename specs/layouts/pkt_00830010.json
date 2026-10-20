@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x00540471: esi = [0x830010], ecx = [0x830014], rep movsb to edi. The pair is a packet built by 0x005401a2: edi = [0x830010], 4 + 0x10 + 0x16 bytes, 0x18 per 0x80-flagged slot of the 22 at 0x7c2a48, 8 trailer bytes, then [0x830014] = edi - [0x830010], so the length is 50 + 24n (n = 0..22) = 50..578 bytes and [0x830010] points at a buffer at least that long. Domain: a 578-byte random source buffer and a length 0..578 (0 = empty copy, also valid for rep movsb); the spec's edi buffer is 578 bytes so no copy overruns it.",
+ "globals": [
+  {"addr": "0x00830010", "type": "ptr", "size": 578, "fill": "bytes"},
+  {"addr": "0x00830014", "type": "u32", "lo": 0, "hi": 578}
+ ]
+}

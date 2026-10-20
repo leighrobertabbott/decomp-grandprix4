@@ -1,0 +1,11 @@
+{
+  "_evidence": "0x004087aa reads dword +0x19c (imul by [0x602b4c], shrd 28: any value), word +0x168 (test 0xffff; je: zero adds [0x601388], nonzero adds the word itself - values give zero in about a third of the cases), byte +0x8d (test 1: adds [0x62eca8] or not, plain draw) and writes words +0xb2 and +0xd6. No field is a pointer or divisor (the divisor is max(sum, [0x62a0a0]), see state_004087aa).",
+  "size": 420,
+  "fields": [
+    {"off": "0x19c", "type": "i32"},
+    {"off": "0x168", "type": "u16", "values": [0, 0, 0, 1, "0x80", "0x1234", "0x7fff", "0x8000", "0xffff"]},
+    {"off": "0x8d", "type": "u8"},
+    {"off": "0xb2", "type": "u16"},
+    {"off": "0xd6", "type": "u16"}
+  ]
+}

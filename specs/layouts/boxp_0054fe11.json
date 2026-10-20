@@ -1,0 +1,6 @@
+{
+  "_evidence": "Pointer global [0x83e69e] (unaligned) of 0x54fe11: the 16-byte box record box_0054fe11 (callers never pass null: 0x54fdde skips the call on null, 0x54fdfd stores its own esi argument).",
+  "globals": [
+    {"addr": "0x0083e69e", "type": "ptr", "size": 16, "fill": "layout=box_0054fe11"}
+  ]
+}

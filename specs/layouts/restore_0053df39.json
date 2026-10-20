@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x0053df39 (compose as menu_0084300a+mitems_0053ddbb+restore_0053df39): esi = [0x82fd38] is the saved stream, read by rep movsb into the header table buffers ([ebx+2], no end test) and then per selected item by movsb/movsw/movsd/lodsb-stosb into [item+0xe] while 'cmp esi,[0x82fd4e]; jb' holds (unsigned). In the game both point into one heap block: 0x538d70 sets [0x82fd38] = [0x8298a4] and the end [0x82fd4e] = [0x8298a4] + [0x8298a0] (size), and the save routine 0x53ddbb writes the stream there. A generated pointer buffer cannot tie two globals together, so the stream lives at a fixed unreferenced .data (bss) block 0xa10000 (no function addresses 0xa05c3c..0xa48cd8 directly; it is zero in the image): start = 0xa10000 + 0..0x20, end = 0xa10000 + 0..0x600, so end <= start (immediate exit), an end reached after the table or among the items, and an end beyond the chain all occur. The 0x640 stream bytes come from {0,1,2,0x41} (a string ends at the next zero byte; the block behind it is zero), and the longest read (0x20 + 3 x 0x100 table bytes + 13 items) stays inside the varied block. Writes go only to the 0x100-byte table buffers (counts <= 0x100) and the static item values 0x81e4f8/0x7ab544 (strings of a few bytes).",
+ "globals": [
+  {"addr": "0x0082fd38", "type": "u32", "points_into": {"base": "0xa10000", "stride": 1, "lo": 0, "hi": 32}},
+  {"addr": "0x0082fd4e", "type": "u32", "points_into": {"base": "0xa10000", "stride": 1, "lo": 0, "hi": 1536}},
+  {"addr": "0x00a10000", "type": "u8", "count": 1600, "stride": 1, "values": [0, 1, 2, "0x41"]}
+ ]
+}

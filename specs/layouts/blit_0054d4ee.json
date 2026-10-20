@@ -1,0 +1,26 @@
+{
+ "_evidence": "0x0054d4ee (2-bit mask to byte blit): ecx = rows [0x833f7c] ('or ecx,ecx; je' skips 0, then the row loop is 'dec ecx; jne'), the inner do-while 'dec ecx; jne 0x54d50b' runs [0x833f78] pixels per row (0 would be 2^32: excluded, 1..32), edi advances by the pitch [0x822244] minus the width after each row, and al = [0x833cd5] is the colour stored where the shifted-out bit is set. A source dword is read first and after every 16 pixels (dh), so 4 rows x 32 pixels read at most 9 dwords (0x24 bytes of the 0x100-byte esi buffer) and write at most 3*0x100+32 = 0x320 bytes of the 0x400-byte edi buffer. Rows 0..4 (0 covers the early exit), pitch from {0x20,0x40,0x80,0x100} (>= the width as for a real surface), colour any byte. Under fuzz:i32 the 32-bit counts ran billions of iterations.",
+ "globals": [
+  {
+   "addr": "0x00833f7c",
+   "type": "u32",
+   "lo": 0,
+   "hi": 4
+  },
+  {
+   "addr": "0x00833f78",
+   "type": "u32",
+   "lo": 1,
+   "hi": 32
+  },
+  {
+   "addr": "0x00822244",
+   "type": "u32",
+   "values": ["0x20", "0x40", "0x80", "0x100"]
+  },
+  {
+   "addr": "0x00833cd5",
+   "type": "u8"
+  }
+ ]
+}

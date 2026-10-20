@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x00526f21: `mov edx,[0x679d28]; cmp edx,[0x891500]; jb; cmp edx,[0x866ef8]; jae` then `mov ax,[edx]; sub ax,[0x679b90]` - the second heading is the word +0 of the record [0x679d28] when it lies inside the pit part [pit start, pit end) of the 0x160-byte ring 0x8943a0. Its only writer 0x527095 stores [0x679b78] (a ring record at or above the pit start) or the ring link 0x405d74 returns for it (the record's +0x44 link or a record displacement): a record pointer. Drawn as a record-aligned pointer to records 0..32 (null in about a quarter of the cases, below every pit start), so with ring_00555b28's pit start 0..15 / pit end 16..32 it falls below, inside and at/above the pit range. The word +0 of records 0..32 is a heading compared only arithmetically: full u16 range (both sides of the 0x4000 half-distance and both signs of the difference).",
+  "globals": [
+    {"addr": "0x00679d28", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 32}, "nullable": true},
+    {"addr": "0x008943a0", "type": "u16", "count": 33, "stride": "0x160"}
+  ]
+}

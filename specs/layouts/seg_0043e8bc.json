@@ -1,0 +1,53 @@
+{
+ "_evidence": "Segment-record words of 0x0043e8bc (compose after ring_008943a0+segw_0043c608+segflag_00510b48). Its first pass over records 0..[0x866ecc] (ring_008943a0: lap end 4..26) reads movsx word +0xcc (bank: |x| clamped to 0x4000, *6 >> 14 into level 0..6) and movsx word +0xce ('cmp edx,-0x1000; jge' then, with word +0xca < 0x2800, its negation scaled the same way can raise the level and set +0x70 bit 0); the third pass XORs neighbouring +0xcc words ('jns': a sign change resets the level). These words are zero in the image and no family layout varies them, so the level was always 0 (bank, sign-flip and |level difference| > 1 branches unreached). Both draw for 32 records from 0, +-1, +-0x1000 and -0x1001 (the -0x1000 boundary), +-0x2000, +-0x4000 and +-0x4001 (the clamp), 0x7fff/0x8000 and two odd values: signed words, only compared/negated/scaled (no fault).",
+ "globals": [
+  {
+   "addr": "0x0089446c",
+   "type": "u16",
+   "count": 32,
+   "stride": "0x160",
+   "values": [
+    0,
+    1,
+    "0xffff",
+    "0x1000",
+    "0xf000",
+    "0xefff",
+    "0x4000",
+    "0xc000",
+    "0x4001",
+    "0xbfff",
+    "0x7fff",
+    "0x8000",
+    "0x2000",
+    "0xe000",
+    "0x123",
+    "0xfedc"
+   ]
+  },
+  {
+   "addr": "0x0089446e",
+   "type": "u16",
+   "count": 32,
+   "stride": "0x160",
+   "values": [
+    0,
+    1,
+    "0xffff",
+    "0x1000",
+    "0xf000",
+    "0xefff",
+    "0x4000",
+    "0xc000",
+    "0x4001",
+    "0xbfff",
+    "0x7fff",
+    "0x8000",
+    "0x2000",
+    "0xe000",
+    "0x123",
+    "0xfedc"
+   ]
+  }
+ ]
+}

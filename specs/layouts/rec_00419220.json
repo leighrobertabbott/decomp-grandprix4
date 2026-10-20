@@ -1,0 +1,8 @@
+{
+  "size": 764,
+  "_evidence": "0x00419220 reads dwords a=[esi+0x2f4], b=[esi+0x2f8] and divides a*X + b*Y (64-bit, imul/add/adc) by a+b (32-bit; zero becomes 1) with X, Y the absolute fistp products of state_00419220 (|X|,|Y| <= 60000). With |a|,|b| <= 1000 the dividend is below 1.2e8 in magnitude, so every quotient fits (no #DE) - including a = -b, which divides by 1; unbounded weights can #DE. The edge-weighted range draws a+b = 0 in a few percent of the cases.",
+  "fields": [
+    {"off": 756, "type": "i32", "lo": -1000, "hi": 1000},
+    {"off": 760, "type": "i32", "lo": -1000, "hi": 1000}
+  ]
+}

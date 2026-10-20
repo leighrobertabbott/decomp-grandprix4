@@ -1,0 +1,9 @@
+{
+  "_evidence": "Car record for 0x0042a9cf: dword +0x1c is the current segment record pointer (never null in the game; dereferenced for byte +0x12 bit 4 and byte +0x51 bits 0x20/0x80), so it points to a 0x58-byte random block; dword +0x29c (test; je, then neg + [0x66d814]; js) takes zero in about a third of the picks; the flag bytes +0x8d (bit 1), +0x1ce (bit 0x10), +0xce (bit 7) come from the random background.",
+  "size": 676,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x1c", "type": "ptr", "size": 88, "fill": "bytes"},
+    {"off": "0x29c", "type": "u32", "values": [0, 0, 0, 1, "0x1000", "0x7fffffff", "0x80000000", "0xffffffff"]}
+  ]
+}

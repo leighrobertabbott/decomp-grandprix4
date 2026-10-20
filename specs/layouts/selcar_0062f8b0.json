@@ -1,0 +1,6 @@
+{
+ "_evidence": "Selected-car pointer [0x62f8b0] compared by 0x00445fb4 ('cmp esi,[0x62f8b0]; je') when it is reached from 0x00445f75, where esi is the car record 0x4459e5 returns from the 22-record array 0x66fef0 (stride 0x41c) - no esi input register exists for sel_0062f8b0's alias_reg. Only compared, never dereferenced here: it draws a car record of the array (so equality with the processed car occurs) or null in about a quarter of the cases.",
+ "globals": [
+  {"addr": "0x0062f8b0", "type": "u32", "points_into": {"base": "0x0066fef0", "stride": "0x41c", "lo": 0, "hi": 21}, "nullable": true}
+ ]
+}

@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x0054e56b: 'mov esi,[0x7ab4b0]; add esi,0xbc4; call 0x54d1ad' and 0x0054d1ad does 'shl esi,2; add esi,0x835846; mov esi,[esi]' (no clamp), so [0x7ab4b0] is a dword index into the string-pointer table 0x835846 starting at entry 0xbc4 (the caller 0x00507000 strlen's the returned pointer). Random dwords fault (29/200 at 0x54d1b6). The index is drawn from 0..0x3ff, the domain 0x54d1ad was accepted with, so the read stays at 0x838756..0x839752 inside .data. The table is filled at runtime (zero from 0x835846 up to 0x838756 in the image; the bytes read here are partly other initialised data), so its 0x400 dwords at 0x838756 + 4k are drawn as random u32: the result is copied, never dereferenced here, and a wrong index or width shows.",
+  "globals": [
+    {"addr": "0x007ab4b0", "type": "u32", "lo": 0, "hi": "0x3ff"},
+    {"addr": "0x00838756", "type": "u32", "count": 1024, "stride": 4}
+  ]
+}

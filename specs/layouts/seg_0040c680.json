@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x0040c680 and 0x0040c69b read word +0x7a of segment record 0 (0x0089441a, zero in the image), form 0x00675a82 + 10*w and compare it with EDI (spec range 0x00675a82..0x00675aac, i.e. w 0..4 can match). The word is varied over small values (equality reachable) and large/extreme ones (always unequal); movzx/imul by 10 cannot fault for any value.",
+  "globals": [
+    {"addr": "0x0089441a", "type": "u16", "values": [0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, "0x10", "0x100", "0x1999", "0x7fff", "0x8000", "0xffff"]}
+  ]
+}

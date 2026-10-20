@@ -1,0 +1,14 @@
+{
+ "_evidence": "Word 0x00868556 is the group count looped over by 0x00441de4/0x00441df7 (and read by 0x00441a4f/0x00441a5c); group numbers above the table fault, the game uses small counts.",
+ "globals": [
+  {
+   "addr": "0x00868556",
+   "type": "u16",
+   "values": [
+    0,
+    1,
+    2
+   ]
+  }
+ ]
+}

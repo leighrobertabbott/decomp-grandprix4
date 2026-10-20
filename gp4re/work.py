@@ -102,7 +102,7 @@ _md = Cs(CS_ARCH_X86, CS_MODE_32)
 
 def _analyzer(con, b) -> Analyzer:
     a = Analyzer(b, log=lambda *x: None)
-    a.starts = {r[0] for r in con.execute("SELECT addr FROM functions")}
+    a.starts = {r[0] for r in con.execute("SELECT addr FROM functions WHERE kind!='data'")}
     return a
 
 
@@ -264,13 +264,17 @@ def _cand_path(addr: int, file: str) -> Path:
     return p if p.is_absolute() else (REPO / p)
 
 
-def try_candidate(con, addr: int, file: str, agent: str, cap: int, record: bool = True) -> dict:
+def try_candidate(con, addr: int, file: str, agent: str, cap: int, record: bool = True,
+                  rerun: bool = False) -> dict:
+    """rerun (lead only): re-verify an unchanged file after a tooling/exemption/layout change."""
     cand = _cand_path(addr, file)
     if not cand.exists():
         return {"overall": "error", "why": f"{file} does not exist"}
+    if rerun and agent != "lead":
+        return {"overall": "refused", "why": "--rerun is for the lead (tooling or exemption changes)"}
     src_sha = hashlib.sha1(cand.read_bytes()).hexdigest()[:16]
     prev = con.execute("SELECT id, file FROM attempts WHERE addr=? AND src_sha=?", (addr, src_sha)).fetchone()
-    if prev and record:
+    if prev and record and not rerun:
         return {"overall": "refused", "why": f"byte-identical to an earlier attempt ({prev['file']}); change something"}
     res = verify.run(addr, candidate=cand, agent=agent)
     counted = not any(g["gate"] == "build" and g["status"] == "fail" for g in res["gates"])
@@ -367,8 +371,10 @@ def _why(res: dict) -> str:
     if e.get("status") == "inconclusive":
         if e.get("reason"):
             return "emu inconclusive: " + e["reason"]
+        sites = sorted((e.get("invalid_sites") or {}).items(), key=lambda kv: -kv[1])[:4]
+        where = (" at " + ", ".join(f"{k} x{v}" for k, v in sites)) if sites else ""
         return f"emu inconclusive: {e.get('invalid')} of {e.get('cases')} cases invalid for the ORIGINAL " \
-               f"({e.get('invalid_reasons')}) - improve the spec (pointer sizes/fills, ranges)"
+               f"({e.get('invalid_reasons')}{where}) - improve the spec (pointer sizes/fills, ranges)"
     return ""
 
 

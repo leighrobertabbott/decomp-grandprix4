@@ -1,0 +1,6 @@
+{
+ "_evidence": "The four dwords 0x934de8..0x934df4 that 0x00404796 saves on entry ('push dword [0x934de8..0x934df4]') and restores on exit ('pop'), using them as scratch for 0x4046d1 in between (cos/sin and the two shifted operands); they are run-time state (zero in the image; seg_00441af6 varies them too), so any value is valid and the restore is visible only when they differ from zero. Compose with any layout whose callee chain reaches 0x404796 (e.g. 0x51f87e -> 0x433c4c).",
+ "globals": [
+  {"addr": "0x00934de8", "type": "i32", "count": 4, "stride": 4}
+ ]
+}

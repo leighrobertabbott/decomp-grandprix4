@@ -1,0 +1,7 @@
+{
+  "_evidence": "Overlay for the esi car record of 0x00429c7f (compose after rec_004275d1+car_0043c677): dword +0x1b8 is, like +0x1c, a track-segment record pointer here - 0x429c7f advances it by 0x160 with the same lap-end wrap / pit-start / pit-end clamp as +0x1c (0x429cd0..0x429cfc) and 0x427760 then reads its words +0x18 and +0x178 (the next record's +0x18) - so it draws record addresses 0..25 of the array at 0x8943a0 (rec_004275d1's random 0x17c-byte block never met the ring compares and was stepped past its end). Record words come from ringw_00429c7f.",
+  "size": 1054,
+  "fields": [
+    {"off": "0x1b8", "type": "u32", "values": ["0x8943a0", "0x894500", "0x894660", "0x8947c0", "0x894920", "0x894a80", "0x894be0", "0x894d40", "0x894ea0", "0x895000", "0x895160", "0x8952c0", "0x895420", "0x895580", "0x8956e0", "0x895840", "0x8959a0", "0x895b00", "0x895c60", "0x895dc0", "0x895f20", "0x896080", "0x8961e0", "0x896340", "0x8964a0", "0x896600"]}
+  ]
+}

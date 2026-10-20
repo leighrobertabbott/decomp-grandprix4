@@ -1,0 +1,567 @@
+{
+ "_evidence": "State read by the sound frame chain of 0x0051a78d (0x51915c, 0x51935b, 0x519d72, 0x51a7e0, 0x51a87e, 0x51a729/0x51a6c7) beyond the guard bytes (sndgate_0051a78d); compose after carbg_0066fef0+full_00518b09+chan_005188f5+chan_00518654+snd_00518758+player_0040f8d9+state_00418d27+box_00550798. (1) The 22 per-car sound snapshots 0x625abc + k*0xa8 (selected by 0x418901 from car byte +0x202, state_00418d27 keeps it 0..21), written by the telemetry copy 0x418942/0x418afe: +4 flag dword ('test [ebx+4],2/4/8/0x10/0x20': any u32); +8 = max([car+0x98],0) >> 8 ('shr eax,8; cmp 0x10; jge; cmp 0x200; jle' and 'shr edi,0xc; add 0x7d0; cmp 0xfa0') -> 0..0x7fffff; +0x28..+0x34 = the four bytes of [car+0x240] ('cmp [ebx+ecx*4+0x28],0x20; jl') -> 0..0xff drawn around 0x20; +0x38..+0x44 = [car+0x2ec+4k], summed in pairs and used as the divisor of 'mov eax,0x140; imul edx; idiv ecx' (0x519fcd, zero replaced by 1): bounded to -0x40000..0x40000 so every quotient (|0x140*b| < 2^27) fits; +0x48..+0x54 / +0x58..+0x64 = |fistp(clamp(x,..0x7000) * gain)| (gain within +-4, telem_00418942) -> 0..0x1c000, so the per-wheel terms ((w*[0x88fc6c])>>14 * [+0x38])>>18 summed into 0x88fbcc..0x88fbd8 stay far below 2^30 and the idivs 0x51a2a0/0x51a321 (dividend 0x140*part, divisor the sum of two non-negative parts) cannot overflow; +0x68..+0x74 = wheel byte +0x2d ('cmp ..,1' / 'cmp ..,0'): {0,1,2,0xff}; +0x78..+0x84 = 0 or 1 ('or eax,1' from a bit test); +0x88 = car byte +0x237 (0..0xff); +0x8c = sum of four wheel dwords >> 2 ('imul edx' after clamp(+8>>8)<<4, then clamped <= 0x2d00 and scaled by the 0..0x4000 volume; it becomes a ramp target for 0x518654's 'shl eax,2; cdq; idiv [0x88f6dc]'): bounded -0x100000..0x100000 so that target never reaches 0x80000000/4; +0x90 / +0x94 = car words +0xee / +0x62 (movzx: 0..0xffff; +0x94 feeds 'mul edx; div 0x3a98' with a product < 2^32 * 0x3a98). (2) The 16 sound emitters 0x63decc + k*0x2c (part of the save block 0x630224..0x63e18c): +0 'test [ebx],1' (any u32); +0xc/+0x10/+0x14 positions ('sar 5; sub [0x7a8dd4+4i]; imul eax; shrd 0xe', squared distance into the integer square root 0x4010f3, which ends for every input) any i32; +0x28 level ('cdq; shld edx,eax,7; shl eax,7; idiv ebp' with ebp = max(sqrt, 0x80) >= 0x80, so |q| <= |x|): any i32. The listener position 0x7a8dd4/d8/dc (written by 0x51006c) any i32. (3) Scalars: master volumes 0x88f6e8/0x88f6ec/0x88f6f0 = 0x5183e6(0..100) = 0..0x4000; 0x88fbbe (set 0/0xff by 0x518e48/5b/8f) {0,0xff}; 0x88f6b0 (word, 0xffff by 0x4328e4 or the frame delta) any u16; 0x88fd00 (the 2-slot cursor: 0x519bf0 'inc edi; cmp edi,1; jle' then [edi*4+0x88fc98], only 0/1 stored at 0x519ccd) {0,1}; 0x88fd04/0x88fd08 (car pointers stored by 0x519ca0 or 0) {0, car records}; 0x88fc78 (threshold stored by 0x5190f4, 'test; je' and 'cmp eax,[..]; jl') any i32 drawn small; 0x875274 / 0x7ad894 (copied to 0xb1d3fc/0xb1d400 by 0x51a6c7) and 0x7c2ea9 ('cmp ..,0; je' and copied) - 0x7ad894 kept to track ids 0..16; the volume table 0x7a8eec (0x81 dwords built by 0x518a9a, read at 0x518c26/0x518c65 with the index clamped to 0..0x80 and only pushed to the back-end stub 0x509ec0 'ret 8') any i32. The ring record behind [0x679d20] (box_00550798: records 2..29) byte +0x70 ('test byte [eax+0x70],2') any u8. The tuning dwords 0x88fc28..0x88fcdc / 0x88fd10..0x88fd38, 0x88fbf4/0x88fbf8, 0x88f6b2/0x88f6b4 and 0x603a64 have no writer anywhere in the image (constant tables: left at their image values). Values are synthetic. Added after the first probe (the chain then reached 0x518f17 and 0x418f8f): record +0xc = movsx of car word +0x18 (-0x8000..0x7fff), +0x10/+0x14/+0x18 = car position dwords [car]/[car+8]/[car+4]; +0x10/+0x18 and the listener x/z 0x7a8dd4/0x7a8ddc take the value sets of obj_00518f17/cam_00518f17 (no pair differs by exactly 0x80000000, the only input on which the angle routine 0x401315's div faults; +8 >> 8 <= 0x7fff keeps the first idiv's divisor [0x88fcf0] + (cos*(+8>>8))>>14 above half of the constant 0x12c00), 0x7a8dd8 any; +0xa0 ('test [ebx+0xa0],1' in 0x51ace6) any u32; 0x88fc1c (the smoothed level stored by 0x518e96) and 0x6f2e90 (written by 0x51fc6c/0x51fcd0, 'imul [0x88fc00]; shrd') any i32; 0x679b5c (camera word, 'sub dx,[0x679b5c]') any i16. The order walk 0x418f8f (from [0x679d30] byte +0x7d) uses list_0066fe3c+order_00418f8f (compose them). Also: 0x88fc3c (the 3-slot cursor of 0x519ae4 'inc; cmp eax,2; jle' else 0, indexing [edi*4+0x88fc40]) {0,1,2}; 0x7ad8b8 (the positive frame period stored by 0x53001c/0x54b2ad, a 'div' divisor at 0x4813eb) {1, 0xa3d, 0x1000, 0x10000} and 0x6f2c00 (a tick count from 0x54e6af) any u32: 0x519c57 divides x*[0x7ad8b8] by the signed max of the two (>= [0x7ad8b8] > 0), so the quotient fits; 0x7ab185 ('cmp ..,0xff; je') {0xff, 0, 1} as snd_0051ace6. Left at image values: 0x603a64, 0x88f6b2/0x88f6b4, 0x88fbec..0x88fc30, 0x88fc40.., the tuning block (no writer: constant) and the Q14 tables 0x7c5c5c.. (specs/constants.json); the DirectSound pointer 0xb1d3dc stays 0 (non-null calls through it, chan_005188f5).",
+ "globals": [
+  {
+   "addr": "0x00625ac0",
+   "type": "u32",
+   "count": 22,
+   "stride": "0xa8"
+  },
+  {
+   "addr": "0x00625ac4",
+   "type": "u32",
+   "count": 22,
+   "stride": "0xa8",
+   "values": [
+    0,
+    5,
+    "0xf00",
+    "0x1000",
+    "0x10ff",
+    "0x1fff",
+    "0x20000",
+    "0x7fffff",
+    "0x12345"
+   ]
+  },
+  {
+   "addr": "0x00625ae4",
+   "type": "u32",
+   "count": 22,
+   "stride": "0xa8",
+   "values": [
+    0,
+    1,
+    "0x1f",
+    "0x20",
+    "0x21",
+    "0x40",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x00625ae8",
+   "type": "u32",
+   "count": 22,
+   "stride": "0xa8",
+   "values": [
+    0,
+    1,
+    "0x1f",
+    "0x20",
+    "0x21",
+    "0x40",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x00625aec",
+   "type": "u32",
+   "count": 22,
+   "stride": "0xa8",
+   "values": [
+    0,
+    1,
+    "0x1f",
+    "0x20",
+    "0x21",
+    "0x40",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x00625af0",
+   "type": "u32",
+   "count": 22,
+   "stride": "0xa8",
+   "values": [
+    0,
+    1,
+    "0x1f",
+    "0x20",
+    "0x21",
+    "0x40",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x00625af4",
+   "type": "i32",
+   "count": 22,
+   "stride": "0xa8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x00625af8",
+   "type": "i32",
+   "count": 22,
+   "stride": "0xa8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x00625afc",
+   "type": "i32",
+   "count": 22,
+   "stride": "0xa8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x00625b00",
+   "type": "i32",
+   "count": 22,
+   "stride": "0xa8",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x00625b04",
+   "type": "i32",
+   "count": 22,
+   "stride": "0xa8",
+   "lo": 0,
+   "hi": 114688
+  },
+  {
+   "addr": "0x00625b08",
+   "type": "i32",
+   "count": 22,
+   "stride": "0xa8",
+   "lo": 0,
+   "hi": 114688
+  },
+  {
+   "addr": "0x00625b0c",
+   "type": "i32",
+   "count": 22,
+   "stride": "0xa8",
+   "lo": 0,
+   "hi": 114688
+  },
+  {
+   "addr": "0x00625b10",
+   "type": "i32",
+   "count": 22,
+   "stride": "0xa8",
+   "lo": 0,
+   "hi": 114688
+  },
+  {
+   "addr": "0x00625b14",
+   "type": "i32",
+   "count": 22,
+   "stride": "0xa8",
+   "lo": 0,
+   "hi": 114688
+  },
+  {
+   "addr": "0x00625b18",
+   "type": "i32",
+   "count": 22,
+   "stride": "0xa8",
+   "lo": 0,
+   "hi": 114688
+  },
+  {
+   "addr": "0x00625b1c",
+   "type": "i32",
+   "count": 22,
+   "stride": "0xa8",
+   "lo": 0,
+   "hi": 114688
+  },
+  {
+   "addr": "0x00625b20",
+   "type": "i32",
+   "count": 22,
+   "stride": "0xa8",
+   "lo": 0,
+   "hi": 114688
+  },
+  {
+   "addr": "0x00625b24",
+   "type": "u32",
+   "count": 22,
+   "stride": "0xa8",
+   "values": [
+    0,
+    0,
+    1,
+    1,
+    2,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x00625b28",
+   "type": "u32",
+   "count": 22,
+   "stride": "0xa8",
+   "values": [
+    0,
+    0,
+    1,
+    1,
+    2,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x00625b2c",
+   "type": "u32",
+   "count": 22,
+   "stride": "0xa8",
+   "values": [
+    0,
+    0,
+    1,
+    1,
+    2,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x00625b30",
+   "type": "u32",
+   "count": 22,
+   "stride": "0xa8",
+   "values": [
+    0,
+    0,
+    1,
+    1,
+    2,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x00625b34",
+   "type": "u32",
+   "count": 22,
+   "stride": "0xa8",
+   "values": [
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x00625b38",
+   "type": "u32",
+   "count": 22,
+   "stride": "0xa8",
+   "values": [
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x00625b3c",
+   "type": "u32",
+   "count": 22,
+   "stride": "0xa8",
+   "values": [
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x00625b40",
+   "type": "u32",
+   "count": 22,
+   "stride": "0xa8",
+   "values": [
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x00625b44",
+   "type": "u32",
+   "count": 22,
+   "stride": "0xa8",
+   "lo": 0,
+   "hi": 255
+  },
+  {
+   "addr": "0x00625b48",
+   "type": "i32",
+   "count": 22,
+   "stride": "0xa8",
+   "lo": -1048576,
+   "hi": 1048576
+  },
+  {
+   "addr": "0x00625b4c",
+   "type": "u32",
+   "count": 22,
+   "stride": "0xa8",
+   "lo": 0,
+   "hi": 65535
+  },
+  {
+   "addr": "0x00625b50",
+   "type": "u32",
+   "count": 22,
+   "stride": "0xa8",
+   "lo": 0,
+   "hi": 65535
+  },
+  {
+   "addr": "0x0063decc",
+   "type": "u32",
+   "count": 16,
+   "stride": "0x2c"
+  },
+  {
+   "addr": "0x0063ded8",
+   "type": "i32",
+   "count": 16,
+   "stride": "0x2c"
+  },
+  {
+   "addr": "0x0063dedc",
+   "type": "i32",
+   "count": 16,
+   "stride": "0x2c"
+  },
+  {
+   "addr": "0x0063dee0",
+   "type": "i32",
+   "count": 16,
+   "stride": "0x2c"
+  },
+  {
+   "addr": "0x0063def4",
+   "type": "i32",
+   "count": 16,
+   "stride": "0x2c"
+  },
+  {
+   "addr": "0x0088f6e8",
+   "type": "u32",
+   "count": 3,
+   "stride": 4,
+   "lo": 0,
+   "hi": 16384
+  },
+  {
+   "addr": "0x0088fbbe",
+   "type": "u8",
+   "values": [
+    0,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0088f6b0",
+   "type": "u16"
+  },
+  {
+   "addr": "0x0088fd00",
+   "type": "u32",
+   "values": [
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x0088fd04",
+   "type": "u32",
+   "count": 2,
+   "stride": 4,
+   "values": [
+    0,
+    0,
+    "0x66fef0",
+    "0x67030c",
+    "0x671bb4",
+    "0x67553c"
+   ]
+  },
+  {
+   "addr": "0x0088fc78",
+   "type": "i32",
+   "values": [
+    0,
+    0,
+    1,
+    "0x100",
+    "0x4000",
+    "0x7fffffff",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x00875274",
+   "type": "u32"
+  },
+  {
+   "addr": "0x007ad894",
+   "type": "u32",
+   "lo": 0,
+   "hi": 16
+  },
+  {
+   "addr": "0x007c2ea9",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0x80"
+   ]
+  },
+  {
+   "addr": "0x007a8eec",
+   "type": "i32",
+   "count": 129,
+   "stride": 4
+  },
+  {
+   "addr": "0x00894410",
+   "type": "u8",
+   "count": 30,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x007a8dd4",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    1,
+    "0x80",
+    "0xffffffff",
+    "0x7fff0000",
+    "0x80010000",
+    "0x40000000",
+    "0xc0000000",
+    "0x03ffffff",
+    "0x60000000",
+    "0xa0000000"
+   ]
+  },
+  {
+   "addr": "0x007a8dd8",
+   "type": "i32"
+  },
+  {
+   "addr": "0x007a8ddc",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    1,
+    "0x80",
+    "0xffffffff",
+    "0x7fff0000",
+    "0x80010000",
+    "0x40000000",
+    "0xc0000000",
+    "0x03ffffff",
+    "0x60000000",
+    "0xa0000000"
+   ]
+  },
+  {
+   "addr": "0x00625ac8",
+   "type": "i32",
+   "count": 22,
+   "stride": "0xa8",
+   "lo": -32768,
+   "hi": 32767
+  },
+  {
+   "addr": "0x00625acc",
+   "type": "u32",
+   "count": 22,
+   "stride": "0xa8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x1000",
+    "0x7fffffe0",
+    "0x80000000",
+    "0x12345678",
+    "0xffffffe0"
+   ]
+  },
+  {
+   "addr": "0x00625ad0",
+   "type": "i32",
+   "count": 22,
+   "stride": "0xa8"
+  },
+  {
+   "addr": "0x00625ad4",
+   "type": "u32",
+   "count": 22,
+   "stride": "0xa8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x1000",
+    "0x7fffffe0",
+    "0x80000000",
+    "0x12345678",
+    "0xffffffe0"
+   ]
+  },
+  {
+   "addr": "0x00625b5c",
+   "type": "u32",
+   "count": 22,
+   "stride": "0xa8"
+  },
+  {
+   "addr": "0x0088fc1c",
+   "type": "i32"
+  },
+  {
+   "addr": "0x006f2e90",
+   "type": "i32"
+  },
+  {
+   "addr": "0x00679b5c",
+   "type": "i16"
+  },
+  {
+   "addr": "0x0088fc3c",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2
+   ]
+  },
+  {
+   "addr": "0x007ad8b8",
+   "type": "u32",
+   "values": [
+    1,
+    "0xa3d",
+    "0xa3d",
+    "0x1000",
+    "0x10000"
+   ]
+  },
+  {
+   "addr": "0x006f2c00",
+   "type": "u32"
+  },
+  {
+   "addr": "0x007ab185",
+   "type": "u8",
+   "values": [
+    "0xff",
+    "0xff",
+    0,
+    1
+   ]
+  }
+ ]
+}

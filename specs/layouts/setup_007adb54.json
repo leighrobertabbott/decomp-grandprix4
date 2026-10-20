@@ -1,0 +1,9067 @@
+{
+"_evidence": "Setup sub-records behind [0x601f24] (compose FIRST, before circ_007adb50/codes_0043ba12/state_0040fbf3, which pin the header bytes and sub-record bytes +0, +8, +0x32 on top). 0x40fb09 -> 0x43bb15 stores [0x601f24] = 0x7adb4c + 4 + driver*0xf28 + circuit*0xe4 + 4 + k*0x38 (driver (car +0x7c - 1) & 0x3f clamped to 21, circuit [0x7ad894] 0..16, k = header byte 0..3), or the template row 0x7ad9f4 (car +0x7c >= 0 and [0x601f20] != 0); the 0x410a65 callees then read the 0x38-byte sub-record: bytes +0/+1 (0x40fbf3), +9 (0x4102df), +0xa..+0xe and +0x33..+0x36 (0x4109aa -> 0x410967), +0xb (0x410a40), +0x10..+0x2b per wheel (0x410a1c chain, setup_00410a1c), words +0x2c/+0x2e (0x4108c0, 0x410515), +0x32 (0x4104b1). They are game data parsed from the setup files (the image holds one default record copied into every entry), so every dword of all 22x17x4 sub-records and of the 4 template rows is drawn at random, with two constraints: bytes +0x24..+0x27 (wheel ecx = 0..3) are 1..255 because 0x4100ff turns them into the divisor [esi+ecx*4+0x2cc] of 0x4105c7's 'div' (zero is #DE, which the setup tables never hold; setup_00410a1c), and the low bytes of words +0x2c/+0x2e are 0..10: 0x4108c0 uses them unclamped as indices into the 11-entry option tables 0x7ad8bc/0x7ad8e8 (the setup editor's choices 0..10; 0x410515 decodes the high bytes as nibbles clamped to 0..10 itself). Only stores, compares, clamps, imul/shrd and the bounded divisions above: nothing faults.",
+"globals": [
+{
+"addr": "0x7adb54",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adb58",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adb5c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adb60",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adb64",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adb68",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adb6c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adb70",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adb74",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adb78",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adb7c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adb80",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adb84",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adb88",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adb8c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adb90",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adb94",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adb98",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adb9c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adba0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adba4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adba8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adbac",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adbb0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adbb4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adbb8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adbbc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adbc0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adbc4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adbc8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adbcc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adbd0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adbd4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adbd8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adbdc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adbe0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adbe4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adbe8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adbec",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adbf0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adbf4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adbf8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adbfc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc00",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc04",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc08",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc0c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc10",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc14",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc18",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc1c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc20",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc24",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc28",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc2c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc30",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc38",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc3c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc40",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc44",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc48",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc4c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc50",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc54",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc58",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc5c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc60",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc64",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc68",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc6c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc70",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc74",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc78",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc7c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc80",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc84",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc88",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc8c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc90",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc94",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc98",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adc9c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adca0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adca4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adca8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adcac",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adcb0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adcb4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adcb8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adcbc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adcc0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adcc4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adcc8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adccc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adcd0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adcd4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adcd8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adcdc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adce0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adce4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adce8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adcec",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adcf0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adcf4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adcf8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adcfc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add00",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add04",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add08",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add0c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add10",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add14",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add1c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add20",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add24",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add28",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add2c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add30",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add34",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add38",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add3c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add40",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add44",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add48",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add4c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add50",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add54",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add58",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add5c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add60",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add64",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add68",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add6c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add70",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add74",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add78",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add7c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add80",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add84",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add88",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add8c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add90",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add94",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add98",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7add9c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adda0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adda4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adda8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7addac",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7addb0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7addb4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7addb8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7addbc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7addc0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7addc4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7addc8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7addcc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7addd0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7addd4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7addd8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adddc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adde0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adde4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adde8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7addec",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7addf0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7addf4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7addf8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade00",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade04",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade08",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade0c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade10",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade14",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade18",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade1c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade20",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade24",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade28",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade2c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade30",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade34",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade38",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade3c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade40",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade44",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade48",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade4c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade50",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade54",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade58",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade5c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade60",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade64",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade68",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade6c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade70",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade74",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade78",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade7c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade80",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade84",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade88",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade8c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade90",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade94",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade98",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ade9c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adea0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adea4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adea8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adeac",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adeb0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adeb4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adeb8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adebc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adec0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adec4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adec8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adecc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aded0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aded4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aded8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adedc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adee4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adee8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adeec",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adef0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adef4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adef8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adefc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf00",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf04",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf08",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf0c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf10",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf14",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf18",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf1c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf20",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf24",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf28",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf2c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf30",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf34",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf38",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf3c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf40",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf44",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf48",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf4c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf50",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf54",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf58",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf5c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf60",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf64",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf68",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf6c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf70",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf74",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf78",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf7c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf80",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf84",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf88",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf8c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf90",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf94",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf98",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adf9c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adfa0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adfa4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adfa8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adfac",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adfb0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adfb4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adfb8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adfbc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adfc0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adfc8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adfcc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adfd0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adfd4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adfd8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adfdc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adfe0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adfe4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adfe8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adfec",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adff0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adff4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adff8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7adffc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae000",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae004",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae008",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae00c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae010",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae014",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae018",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae01c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae020",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae024",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae028",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae02c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae030",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae034",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae038",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae03c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae040",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae044",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae048",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae04c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae050",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae054",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae058",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae05c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae060",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae064",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae068",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae06c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae070",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae074",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae078",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae07c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae080",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae084",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae088",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae08c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae090",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae094",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae098",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae09c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae0a0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae0a4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae0ac",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae0b0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae0b4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae0b8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae0bc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae0c0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae0c4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae0c8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae0cc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae0d0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae0d4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae0d8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae0dc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae0e0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae0e4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae0e8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae0ec",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae0f0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae0f4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae0f8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae0fc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae100",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae104",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae108",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae10c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae110",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae114",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae118",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae11c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae120",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae124",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae128",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae12c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae130",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae134",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae138",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae13c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae140",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae144",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae148",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae14c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae150",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae154",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae158",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae15c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae160",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae164",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae168",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae16c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae170",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae174",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae178",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae17c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae180",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae184",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae188",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae190",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae194",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae198",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae19c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1a0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1a4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1a8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1ac",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1b0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1b4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1b8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1bc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1c0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1c4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1c8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1cc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1d0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1d4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1d8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1dc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1e0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1e4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1e8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1ec",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1f0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1f4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1f8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae1fc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae200",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae204",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae208",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae20c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae210",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae214",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae218",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae21c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae220",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae224",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae228",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae22c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae230",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae234",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae238",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae23c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae240",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae244",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae248",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae24c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae250",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae254",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae258",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae25c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae260",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae264",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae268",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae26c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae274",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae278",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae27c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae280",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae284",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae288",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae28c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae290",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae294",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae298",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae29c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2a0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2a4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2a8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2ac",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2b0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2b4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2b8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2bc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2c0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2c4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2c8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2cc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2d0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2d4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2d8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2dc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2e0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2e4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2e8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2ec",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2f0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2f4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2f8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae2fc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae300",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae304",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae308",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae30c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae310",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae314",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae318",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae31c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae320",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae324",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae328",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae32c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae330",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae334",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae338",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae33c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae340",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae344",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae348",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae34c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae350",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae358",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae35c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae360",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae364",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae368",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae36c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae370",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae374",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae378",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae37c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae380",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae384",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae388",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae38c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae390",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae394",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae398",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae39c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3a0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3a4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3a8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3ac",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3b0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3b4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3b8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3bc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3c0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3c4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3c8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3cc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3d0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3d4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3d8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3dc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3e0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3e4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3e8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3ec",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3f0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3f4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3f8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae3fc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae400",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae404",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae408",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae40c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae410",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae414",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae418",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae41c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae420",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae424",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae428",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae42c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae430",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae434",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae43c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae440",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae444",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae448",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae44c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae450",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae454",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae458",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae45c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae460",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae464",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae468",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae46c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae470",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae474",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae478",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae47c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae480",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae484",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae488",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae48c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae490",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae494",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae498",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae49c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4a0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4a4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4a8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4ac",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4b0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4b4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4b8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4bc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4c0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4c4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4c8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4cc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4d0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4d4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4d8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4dc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4e0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4e4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4e8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4ec",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4f0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4f4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4f8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae4fc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae500",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae504",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae508",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae50c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae510",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae514",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae518",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae520",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae524",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae528",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae52c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae530",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae534",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae538",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae53c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae540",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae544",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae548",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae54c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae550",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae554",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae558",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae55c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae560",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae564",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae568",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae56c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae570",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae574",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae578",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae57c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae580",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae584",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae588",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae58c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae590",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae594",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae598",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae59c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5a0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5a4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5a8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5ac",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5b0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5b4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5b8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5bc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5c0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5c4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5c8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5cc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5d0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5d4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5d8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5dc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5e0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5e4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5e8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5ec",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5f0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5f4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5f8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae5fc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae604",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae608",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae60c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae610",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae614",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae618",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae61c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae620",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae624",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae628",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae62c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae630",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae634",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae638",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae63c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae640",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae644",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae648",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae64c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae650",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae654",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae658",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae65c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae660",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae664",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae668",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae66c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae670",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae674",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae678",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae67c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae680",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae684",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae688",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae68c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae690",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae694",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae698",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae69c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae6a0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae6a4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae6a8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae6ac",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae6b0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae6b4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae6b8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae6bc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae6c0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae6c4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae6c8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae6cc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae6d0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae6d4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae6d8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae6dc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae6e0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae6e8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae6ec",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae6f0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae6f4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae6f8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae6fc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae700",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae704",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae708",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae70c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae710",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae714",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae718",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae71c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae720",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae724",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae728",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae72c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae730",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae734",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae738",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae73c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae740",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae744",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae748",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae74c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae750",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae754",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae758",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae75c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae760",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae764",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae768",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae76c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae770",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae774",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae778",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae77c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae780",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae784",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae788",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae78c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae790",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae794",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae798",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae79c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae7a0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae7a4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae7a8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae7ac",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae7b0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae7b4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae7b8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae7bc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae7c0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae7c4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae7cc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae7d0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae7d4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae7d8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae7dc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae7e0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae7e4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae7e8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae7ec",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae7f0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae7f4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae7f8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae7fc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae800",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae804",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae808",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae80c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae810",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae814",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae818",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae81c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae820",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae824",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae828",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae82c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae830",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae834",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae838",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae83c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae840",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae844",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae848",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae84c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae850",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae854",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae858",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae85c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae860",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae864",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae868",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae86c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae870",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae874",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae878",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae87c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae880",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae884",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae888",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae88c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae890",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae894",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae898",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae89c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae8a0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae8a4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae8a8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae8b0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae8b4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae8b8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae8bc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae8c0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae8c4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae8c8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae8cc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae8d0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae8d4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae8d8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae8dc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae8e0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae8e4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae8e8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae8ec",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae8f0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae8f4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae8f8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae8fc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae900",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae904",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae908",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae90c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae910",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae914",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae918",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae91c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae920",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae924",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae928",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae92c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae930",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae934",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae938",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae93c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae940",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae944",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae948",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae94c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae950",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae954",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae958",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae95c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae960",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae964",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae968",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae96c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae970",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae974",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae978",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae97c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae980",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae984",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae988",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae98c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae994",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae998",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae99c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9a0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9a4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9a8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9ac",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9b0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9b4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9b8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9bc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9c0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9c4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9c8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9cc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9d0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9d4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9d8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9dc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9e0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9e4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9e8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9ec",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9f0",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9f4",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9f8",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ae9fc",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea00",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea04",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea08",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea0c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea10",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea14",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea18",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea1c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea20",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea24",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea28",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea2c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea30",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea34",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea38",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea3c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea40",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea44",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea48",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea4c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea50",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea54",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea58",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea5c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea60",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea64",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea68",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea6c",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7aea70",
+"type": "u32",
+"count": 22,
+"stride": "0xf28"
+},
+{
+"addr": "0x7ad9f4",
+"type": "u32",
+"count": 56,
+"stride": 4
+},
+{
+"addr": "0x7adb78",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adb79",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adb7a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adb7b",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adb80",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adb82",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adbb0",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adbb1",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adbb2",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adbb3",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adbb8",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adbba",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adbe8",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adbe9",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adbea",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adbeb",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adbf0",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adbf2",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adc20",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adc21",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adc22",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adc23",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adc28",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adc2a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adc5c",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adc5d",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adc5e",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adc5f",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adc64",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adc66",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adc94",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adc95",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adc96",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adc97",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adc9c",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adc9e",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adccc",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adccd",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adcce",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adccf",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adcd4",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adcd6",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7add04",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7add05",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7add06",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7add07",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7add0c",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7add0e",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7add40",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7add41",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7add42",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7add43",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7add48",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7add4a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7add78",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7add79",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7add7a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7add7b",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7add80",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7add82",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7addb0",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7addb1",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7addb2",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7addb3",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7addb8",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7addba",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adde8",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adde9",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7addea",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7addeb",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7addf0",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7addf2",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ade24",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ade25",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ade26",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ade27",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ade2c",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ade2e",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ade5c",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ade5d",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ade5e",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ade5f",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ade64",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ade66",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ade94",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ade95",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ade96",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ade97",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ade9c",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ade9e",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adecc",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adecd",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adece",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adecf",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7aded4",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7aded6",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adf08",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adf09",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adf0a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adf0b",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adf10",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adf12",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adf40",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adf41",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adf42",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adf43",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adf48",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adf4a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adf78",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adf79",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adf7a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adf7b",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adf80",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adf82",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adfb0",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adfb1",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adfb2",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adfb3",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adfb8",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adfba",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adfec",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adfed",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adfee",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adfef",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adff4",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adff6",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae024",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae025",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae026",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae027",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae02c",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae02e",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae05c",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae05d",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae05e",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae05f",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae064",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae066",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae094",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae095",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae096",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae097",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae09c",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae09e",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae0d0",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae0d1",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae0d2",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae0d3",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae0d8",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae0da",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae108",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae109",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae10a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae10b",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae110",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae112",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae140",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae141",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae142",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae143",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae148",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae14a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae178",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae179",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae17a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae17b",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae180",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae182",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae1b4",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae1b5",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae1b6",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae1b7",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae1bc",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae1be",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae1ec",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae1ed",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae1ee",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae1ef",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae1f4",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae1f6",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae224",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae225",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae226",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae227",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae22c",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae22e",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae25c",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae25d",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae25e",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae25f",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae264",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae266",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae298",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae299",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae29a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae29b",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae2a0",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae2a2",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae2d0",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae2d1",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae2d2",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae2d3",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae2d8",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae2da",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae308",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae309",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae30a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae30b",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae310",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae312",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae340",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae341",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae342",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae343",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae348",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae34a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae37c",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae37d",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae37e",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae37f",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae384",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae386",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae3b4",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae3b5",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae3b6",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae3b7",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae3bc",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae3be",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae3ec",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae3ed",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae3ee",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae3ef",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae3f4",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae3f6",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae424",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae425",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae426",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae427",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae42c",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae42e",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae460",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae461",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae462",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae463",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae468",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae46a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae498",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae499",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae49a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae49b",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae4a0",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae4a2",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae4d0",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae4d1",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae4d2",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae4d3",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae4d8",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae4da",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae508",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae509",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae50a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae50b",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae510",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae512",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae544",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae545",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae546",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae547",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae54c",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae54e",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae57c",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae57d",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae57e",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae57f",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae584",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae586",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae5b4",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae5b5",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae5b6",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae5b7",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae5bc",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae5be",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae5ec",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae5ed",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae5ee",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae5ef",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae5f4",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae5f6",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae628",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae629",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae62a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae62b",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae630",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae632",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae660",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae661",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae662",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae663",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae668",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae66a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae698",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae699",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae69a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae69b",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae6a0",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae6a2",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae6d0",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae6d1",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae6d2",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae6d3",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae6d8",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae6da",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae70c",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae70d",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae70e",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae70f",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae714",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae716",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae744",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae745",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae746",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae747",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae74c",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae74e",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae77c",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae77d",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae77e",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae77f",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae784",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae786",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae7b4",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae7b5",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae7b6",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae7b7",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae7bc",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae7be",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae7f0",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae7f1",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae7f2",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae7f3",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae7f8",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae7fa",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae828",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae829",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae82a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae82b",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae830",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae832",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae860",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae861",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae862",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae863",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae868",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae86a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae898",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae899",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae89a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae89b",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae8a0",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae8a2",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae8d4",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae8d5",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae8d6",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae8d7",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae8dc",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae8de",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae90c",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae90d",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae90e",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae90f",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae914",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae916",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae944",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae945",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae946",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae947",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae94c",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae94e",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae97c",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae97d",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae97e",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae97f",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae984",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae986",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae9b8",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae9b9",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae9ba",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae9bb",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae9c0",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae9c2",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae9f0",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae9f1",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae9f2",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae9f3",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ae9f8",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ae9fa",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7aea28",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7aea29",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7aea2a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7aea2b",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7aea30",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7aea32",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7aea60",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7aea61",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7aea62",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7aea63",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7aea68",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7aea6a",
+"type": "u8",
+"count": 22,
+"stride": "0xf28",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ada18",
+"type": "u8",
+"count": 4,
+"stride": 1,
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ada20",
+"type": "u8",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ada22",
+"type": "u8",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ada50",
+"type": "u8",
+"count": 4,
+"stride": 1,
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ada58",
+"type": "u8",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ada5a",
+"type": "u8",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ada88",
+"type": "u8",
+"count": 4,
+"stride": 1,
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7ada90",
+"type": "u8",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7ada92",
+"type": "u8",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adac0",
+"type": "u8",
+"count": 4,
+"stride": 1,
+"lo": 1,
+"hi": 255
+},
+{
+"addr": "0x7adac8",
+"type": "u8",
+"lo": 0,
+"hi": 10
+},
+{
+"addr": "0x7adaca",
+"type": "u8",
+"lo": 0,
+"hi": 10
+}
+]
+}

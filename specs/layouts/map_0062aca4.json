@@ -1,0 +1,11 @@
+{
+  "_evidence": "0x0040c4c3 reads the map dimensions [0x0062aca4]/[0x0062aca8] (shl 0x17/0x18), their bit lengths [0x0062acac]/[0x0062acb0] (dec -> sar count) and the positions [0x0063b828]/[0x0063b82c]. All are zero in the image and set by 0x0040bc4a: width = edx & 0xffff, height = edx >> 16 (0..65535 each) and the bit lengths by a shr/inc loop (0..16). Positions are plain dwords (full u32). Pure integer arithmetic, so no value can fault; the shift-count dwords use the callers' 0..16 range.",
+  "globals": [
+    {"addr": "0x0062aca4", "type": "u32", "lo": 0, "hi": 65535},
+    {"addr": "0x0062aca8", "type": "u32", "lo": 0, "hi": 65535},
+    {"addr": "0x0062acac", "type": "u32", "lo": 0, "hi": 16},
+    {"addr": "0x0062acb0", "type": "u32", "lo": 0, "hi": 16},
+    {"addr": "0x0063b828", "type": "u32"},
+    {"addr": "0x0063b82c", "type": "u32"}
+  ]
+}

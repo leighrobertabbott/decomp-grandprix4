@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x00419d76 (ebx = 0x006380d8) combines dwords +0x80/+0x84/+0x88 of the four 0x300-byte records in sums and differences, scales them by the Q12 gains 0x00638d6c..0x00638d8c (imul, shrd 12) and stores three totals to 0x006228e8/ec/f0. The dwords are per-record run-time state (force components) used only in add/sub/imul, so any i32 is valid for all four records.",
+  "globals": [
+    {"addr": "0x00638158", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x0063815c", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x00638160", "type": "i32", "count": 4, "stride": "0x300"}
+  ]
+}

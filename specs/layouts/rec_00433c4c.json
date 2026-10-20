@@ -1,0 +1,61 @@
+{
+ "_evidence": "Grid/segment records read by 0x00433c4c (compose after state_00431ffb+state_004059ef+geom_008943a0): 0x43207c forms edi = byte [esi+0xfd]*0x420 + [0x866f08] + 0x160 and 0x432095 adds 0x160 more when [0x7c2ea9] != 0x80 and bit 0 of [esi+0x7c] is clear, so with car_00431ffb (+0xfd 0..2) and state_00431ffb ([0x866f08] = records 0..3) edi is one of records 1..11 of the 0x8943a0 array (12 varied: 1..12). On [0x7c2ea9] == 0x80 the code reads dword +0xe4 (sar 16: the heading word whose two signs pick the neg ax / neg cx paths before the 0x7c5c5c cosine lookups, masked to 0..0x2000) and adds dwords +0xf0/+0xf8; otherwise 0x43353e/0x4320b2 read words +0x60/+0x62, dwords +0x100/+0x10c/+0xe4 and the scalars [0x62d2a4]/[0x62d2ac], and 0x404796/0x4046d1 read word +0x14 and words +0/+4/+8 (geom_008943a0). Only add/sar/imul/shrd arithmetic and masked table indices: every value is valid (0x43353e and 0x404796 were accepted on random record bytes).",
+ "globals": [
+  {
+   "addr": "0x894514",
+   "type": "i16",
+   "count": 12,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894560",
+   "type": "i16",
+   "count": 12,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894562",
+   "type": "i16",
+   "count": 12,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8945e4",
+   "type": "u32",
+   "count": 12,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8945f0",
+   "type": "u32",
+   "count": 12,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8945f8",
+   "type": "u32",
+   "count": 12,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894600",
+   "type": "u32",
+   "count": 12,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x89460c",
+   "type": "u32",
+   "count": 12,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x0062d2a4",
+   "type": "u32"
+  },
+  {
+   "addr": "0x0062d2ac",
+   "type": "u32"
+  }
+ ]
+}

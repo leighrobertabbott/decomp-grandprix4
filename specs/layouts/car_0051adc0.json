@@ -1,0 +1,13 @@
+{
+ "_evidence": "0x0051adc0: 'mov edi,[esi+0x1c]; mov edx,[edi+0x1a]; and edx,0x7ff'. The caller 0x4cb100 passes the car pointers [0x853efc]/[0x853f00]; car +0x1c is the current track-segment pointer and segment word +0x1a carries the 11-bit value (cars_0066fef0, 0x43b51c). Modelled as a 0x20-byte random record whose +0x1c is a fresh 0x20-byte random buffer (the dword read at +0x1a stays inside it), never null: the original dereferences it unchecked.",
+ "size": 32,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": 28,
+   "type": "ptr",
+   "size": 32,
+   "fill": "bytes"
+  }
+ ]
+}

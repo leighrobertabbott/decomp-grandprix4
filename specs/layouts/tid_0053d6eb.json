@@ -1,0 +1,6 @@
+{
+ "_evidence": "Text-id entries read by the message box 0x0053d6eb shows: it stores eax = 0x43e ([0xb1d3e8] == 0 or [0x7aafd3] == 0xff), 0x43c ([0x7ab184] == 0) or 0x43d (else) into [0x82fea8] = +0x10 of the static record 0x82fe98 (only 0x53d6eb references it; +4 = -1, +0xc = 0x43b in the image and never written), then 'mov esi,0x82fe98; call 0x53c8c8'. With [0xa562e9] == 0, 0x53c8c8 does 'mov eax,[esi+4]; mov edi,[esi+0xc]; mov esi,[esi+0x10]; call 0x536920', which looks both ids up with 0x54d1ad (esi = [0x835846 + 4*id]) and copies the strings (msgtxt_00536920). The string-pointer table is zero in the image (filled when the text resources load) and never null-tested, so ids 0x43b..0x43e = dwords 0x836932..0x836941 each point at their own 0x40-byte NUL-terminated string. Compose with the state layout of the caller; values are synthetic.",
+ "globals": [
+  {"addr": "0x00836932", "type": "ptr", "count": 4, "stride": 4, "size": 64, "fill": "layout=msgtxt_00536920"}
+ ]
+}

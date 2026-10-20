@@ -1,0 +1,10 @@
+{
+  "size": 256,
+  "_evidence": "Curve table at edx for 0x00411891 (callers pass the tables 0x62ecd8/0x62ecb0/0x62ee98): dword +0 = first interpolated index lo, dword +4 = last index hi, f64 +8 = input scale, f64 samples from +0x10. idx = fist(frndint(st0*scale)) under the round-down control word [0x6f29a4]; idx >= hi loads sample hi, lo <= idx < hi interpolates samples idx and idx+1, idx < lo loads sample 0, so with lo 0..4 <= hi 4..26 every sample read is one of samples 0..26 inside the buffer. Scale is a finite -2..8 (both signs, so all three paths occur for the generic st0 mix; out-of-range products fist to the masked integer indefinite, below lo); samples are finite -1000..1000.",
+  "fields": [
+    {"off": 0, "type": "i32", "lo": 0, "hi": 4},
+    {"off": 4, "type": "i32", "lo": 4, "hi": 26},
+    {"off": 8, "type": "f64", "lo": -2, "hi": 8},
+    {"off": 16, "type": "f64", "count": 28, "stride": 8, "lo": -1000, "hi": 1000}
+  ]
+}

@@ -1,0 +1,13 @@
+{
+ "_evidence": "0x0053d2f5 is a register-block thunk: it loads esi, edi, eax, ebx, ecx, edx, ebp from the dwords 0xa6987c..0xa69894, does 'call dword ptr [0xa69878]', stores the seven registers back and returns (pushal/popal: the caller's registers survive, the flags are the callee's). Its C callers (0x4feae0, 0x4feb50, 0x503a20, ...) store a hand-written routine address in [0xa69878] (0x541d06, 0x52b0ea, 0x52a1f6, 0x52a1fc) and the routine's register inputs in the block before each call; the pointer is 0 in the image (a call through it faults). Here the pointer is drawn ONLY from addresses of mapped, already-verified (accepted) bare routines that are valid for any register values and leave caller-independent flags: 0x539d8d (cmp/xchg ebx,ebp and eax,ecx: changes eax/ebx/ecx/ebp), 0x403d10 (movsx/idiv on ax,cx,dx: changes eax/ecx/edx; divisor forced nonzero, quotient fits), 0x43b83d (scans the 22 car records' +0x7c for al: changes eax/esi, CF out), 0x4340bd (clears 0x62ff6c..0x62ffac: edi/ecx out), 0x53d152 (edx = esi, then the empty 0x531b35), 0x531af4 (pushal; [0x827559] = ax; popal) and 0x531b2e (ret: the input flags pass through). Routines ending in stack arithmetic (e.g. 0x401000's 'add esp,0x20') are left out: their AF/PF depend on the stack address. The seven register dwords are free u32 values (no routine above dereferences them).",
+ "globals": [
+  {"addr": "0x00a69878", "type": "u32", "values": ["0x539d8d", "0x403d10", "0x43b83d", "0x4340bd", "0x53d152", "0x531af4", "0x531b2e"]},
+  {"addr": "0x00a6987c", "type": "u32"},
+  {"addr": "0x00a69880", "type": "u32"},
+  {"addr": "0x00a69884", "type": "u32"},
+  {"addr": "0x00a69888", "type": "u32"},
+  {"addr": "0x00a6988c", "type": "u32"},
+  {"addr": "0x00a69890", "type": "u32"},
+  {"addr": "0x00a69894", "type": "u32"}
+ ]
+}

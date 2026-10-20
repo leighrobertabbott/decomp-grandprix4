@@ -1,0 +1,77 @@
+{
+ "_evidence": "Front-end GUI state for the menu-page refresh 0x529408 (called by the item handlers 0x52928d/0x5292c0 and siblings): 0x529408 pushes [item+0x2a] (1 or 3) and calls the stdcall helpers 0x4fd1a0/0x4fd200, which run 0x5b4bb0(id) (ecx = [0xb2dd0c]; null -> eax 0), then unconditionally 'mov edx,[ebx]' with ebx = that result (0x4fd1e4/0x4fd244): with the image's null [0xb2dd0c] every case faults there. The game only shows the menus with its front-end object [0xb2dd0c] created, so it is a non-null pointer here: 0x5b4bb0/0x5b4c00/0x5b4bd0/0x5b4b30/0x5b4af0/0x5b4b10/0x5b4b50/0x5b4d60/0x5b4da0 only test it for null and pass it as 'this'; the methods reached write the dwords +0x684/+0x688 and the byte +0x68c (0x5b7680) and read the dword +0x26c8 (0x5b79d0, null -> no active page, return), so a zeroed 0x2700-byte object is valid. 0x5b7680 and the other lookups use the control table [0xb471c4] (ctrls_004fd1a0: kind-3 controls for ids 0xb4/0xb5, all other ids absent). Further state on these paths (0xb3d52c control-object table, 0xb36aa0/0xb348f8 managers) keeps its image values (null entries take the early returns). The menu-to-control walks 0x4fd260 (via 0x53e4e5) and 0x4fd3f0 (via 0x53e5e5) map each item of the menus 0x84f066 (0x529408), 0x85008f (0x52a545), 0x85158e (0x5413e9) and 0x84d8ec (0x52bae5) through the constant table 0x6698e8 (menu -> (control id, item key) list) to a control id and call 0x5b4da0(id, flag); ids above 0xffff (0x10047..0x50047, 0x11424/0x11425, 0x112df/0x212df, 0x112e5/0x212e5, 0x112e6, 0x112e7, 0x1139f..0x4139f, 0x11449, 0x1144a) make 0x5b79d0 use the control object [0xb3d52c + 4*(id & 0xffff)] without a null test (0x5bfbf0 'mov edx,[ecx+0x14c]' faults on null), so those ten entries (low ids 0x47, 0x12df, 0x12e5..0x12e7, 0x139f, 0x1424, 0x1425, 0x1449, 0x144a) hold control objects (cobj_005b79d0); every other entry keeps its null image value, which the low-id path handles ('test eax,eax; je'). None of these low ids is also a low (<= 0xffff) id of the same menus.",
+ "globals": [
+  {
+   "addr": "0x00b2dd0c",
+   "type": "ptr",
+   "size": 9984,
+   "fill": "zero"
+  },
+  {
+   "addr": "0x00b471c4",
+   "type": "ptr",
+   "size": 22528,
+   "fill": "layout=ctrls_004fd1a0"
+  },
+  {
+   "addr": "0xb3d648",
+   "type": "ptr",
+   "size": 384,
+   "fill": "layout=cobj_005b79d0"
+  },
+  {
+   "addr": "0xb420a8",
+   "type": "ptr",
+   "size": 384,
+   "fill": "layout=cobj_005b79d0"
+  },
+  {
+   "addr": "0xb420c0",
+   "type": "ptr",
+   "size": 384,
+   "fill": "layout=cobj_005b79d0"
+  },
+  {
+   "addr": "0xb420c4",
+   "type": "ptr",
+   "size": 384,
+   "fill": "layout=cobj_005b79d0"
+  },
+  {
+   "addr": "0xb420c8",
+   "type": "ptr",
+   "size": 384,
+   "fill": "layout=cobj_005b79d0"
+  },
+  {
+   "addr": "0xb423a8",
+   "type": "ptr",
+   "size": 384,
+   "fill": "layout=cobj_005b79d0"
+  },
+  {
+   "addr": "0xb425bc",
+   "type": "ptr",
+   "size": 384,
+   "fill": "layout=cobj_005b79d0"
+  },
+  {
+   "addr": "0xb425c0",
+   "type": "ptr",
+   "size": 384,
+   "fill": "layout=cobj_005b79d0"
+  },
+  {
+   "addr": "0xb42650",
+   "type": "ptr",
+   "size": 384,
+   "fill": "layout=cobj_005b79d0"
+  },
+  {
+   "addr": "0xb42654",
+   "type": "ptr",
+   "size": 384,
+   "fill": "layout=cobj_005b79d0"
+  }
+ ]
+}

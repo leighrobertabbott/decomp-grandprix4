@@ -1,0 +1,71 @@
+{
+ "_evidence": "Consistent segment-quad shapes for 0x00407af6 (compose after state_00407af6, which it re-weights; same support: every dword still any value in -2^24..2^24). The quad is the track cross-section of a record and of the next one, as 0x40729a/0x4075d0 build it: P0 = centre C0 (0x6279ac x, 0x6279cc z), P1 = side point L0 (0x6279b0, 0x6279d0), P3 = next centre C1 (0x6279b8, 0x6279d8), P2 = next side point L1 (0x6279b4, 0x6279d4). 0x407839 measures both cross-sections (stc only when both are shorter than 0x555; one short edge copies the other's fpatan angle), the loop then measures the segment between the cross-section midpoints. Aliases (each 'equal to an earlier field in about half the cases') make whole consistent shapes frequent instead of only per-edge degeneracies: L0.x = C0.x, L0.z = C0.z, C1.x = C0.x, C1.z = C0.z, L1.x = C1.x, L1.z = L0.z. That yields: both cross-sections degenerate (L0 = C0 and L1 = C1: 0x407839 stc -> 0x407b08); one degenerate edge (0x40791a/0x407936 angle copies); identical cross-sections C1 = C0, L1 = L0 with nonzero width (midpoint distance 0 < 0x555 in the loop: 0x407d19, never reached by the independent draws); axis-aligned rectangles L0 = (C0.x, Zl), C1 = (X1, C0.z), L1 = (X1, Zl) whose cross-sections are exactly perpendicular to the segment (fpatan gives exactly 0 / 2^31 and +-2^30, so the turn difference is exactly 0 for half the orientations: the positive-side +0x1000 clamp 0x407ce9, unreached before, and the negative side 0x407cd9); and general quads. 0x407af6 is fault-free for every value (fild/fsqrt/fpatan/fsincos/fdiv/fistp with masked exceptions, wrapping integer ops, loop bounded by the 0x627990 < 6 counter), so no shape is excluded. Car position 0x6278c0/0x6278c8 as state_00407af6. Synthetic coordinates only.",
+ "globals": [
+  {
+   "addr": "0x006279ac",
+   "type": "i32",
+   "lo": -16777216,
+   "hi": 16777216
+  },
+  {
+   "addr": "0x006279cc",
+   "type": "i32",
+   "lo": -16777216,
+   "hi": 16777216
+  },
+  {
+   "addr": "0x006279d0",
+   "type": "i32",
+   "lo": -16777216,
+   "hi": 16777216,
+   "alias": "0x006279cc"
+  },
+  {
+   "addr": "0x006279b0",
+   "type": "i32",
+   "lo": -16777216,
+   "hi": 16777216,
+   "alias": "0x006279ac"
+  },
+  {
+   "addr": "0x006279b8",
+   "type": "i32",
+   "lo": -16777216,
+   "hi": 16777216,
+   "alias": "0x006279ac"
+  },
+  {
+   "addr": "0x006279d8",
+   "type": "i32",
+   "lo": -16777216,
+   "hi": 16777216,
+   "alias": "0x006279cc"
+  },
+  {
+   "addr": "0x006279b4",
+   "type": "i32",
+   "lo": -16777216,
+   "hi": 16777216,
+   "alias": "0x006279b8"
+  },
+  {
+   "addr": "0x006279d4",
+   "type": "i32",
+   "lo": -16777216,
+   "hi": 16777216,
+   "alias": "0x006279d0"
+  },
+  {
+   "addr": "0x006278c0",
+   "type": "i32",
+   "lo": -16777216,
+   "hi": 16777216
+  },
+  {
+   "addr": "0x006278c8",
+   "type": "i32",
+   "lo": -16777216,
+   "hi": 16777216
+  }
+ ]
+}

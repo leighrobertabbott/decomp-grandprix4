@@ -1,0 +1,21 @@
+{
+ "_evidence": "0x516daa (called by 0x516697 with edx = 0 and 0x5166ae with edx = 1, eax = 0) maps the first order byte (order_00675958) to a car index ((b-1)&0x3f clamped to 0x15) and loads the dword of that car from 0x6759c8 (edx < 1), 0x675a20 (edx == 1) or 0x675970 (edx > 1); the wrappers store it to 0xa6987c. Both 22-dword per-car tables are runtime state (like 0x675970, which order_00675958 varies), so every entry is a random i32; the destination 0xa6987c is varied so the store is visible. Plain loads: every value is valid.",
+ "globals": [
+  {
+   "addr": "0x006759c8",
+   "type": "i32",
+   "count": 22,
+   "stride": 4
+  },
+  {
+   "addr": "0x00675a20",
+   "type": "i32",
+   "count": 22,
+   "stride": 4
+  },
+  {
+   "addr": "0x00a6987c",
+   "type": "u32"
+  }
+ ]
+}

@@ -1,0 +1,93 @@
+{
+ "_evidence": "0x00542224 bubble-sorts the pointer table at 0x830b0c by the signed dword +0x10 of each record (count = [0x830b04]; 'sub ecx,1; jle' exits for counts <= 1 including negative ones). 0x5420a8 builds this table: count = [0x830bac] clamped to 0x28, entries = 0x830bb4 + k*0x20 (the 40 datalog channel records of 0x20 bytes, 0x537f33 copies them in). So the count is drawn from 0..40 (plus -1 and 0x80000000 for the jle flags), every entry 0..39 is one of the 40 record addresses (in any order, repeats only make equal keys), and the keys +0x10 (0x830bc4 + k*0x20) are drawn from a small signed set with duplicates and the extremes, so sorted, unsorted, equal-key and multi-pass cases all occur. At most 40 passes of 39 compares: no timeout, and every pointer read is a fixed record.",
+ "globals": [
+  {
+   "addr": "0x00830b04",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    2,
+    3,
+    3,
+    4,
+    5,
+    6,
+    8,
+    12,
+    20,
+    39,
+    40,
+    "0xffffffff",
+    "0x80000000"
+   ]
+  },
+  {
+   "addr": "0x00830b0c",
+   "type": "u32",
+   "count": 40,
+   "stride": 4,
+   "values": [
+    "0x830bb4",
+    "0x830bd4",
+    "0x830bf4",
+    "0x830c14",
+    "0x830c34",
+    "0x830c54",
+    "0x830c74",
+    "0x830c94",
+    "0x830cb4",
+    "0x830cd4",
+    "0x830cf4",
+    "0x830d14",
+    "0x830d34",
+    "0x830d54",
+    "0x830d74",
+    "0x830d94",
+    "0x830db4",
+    "0x830dd4",
+    "0x830df4",
+    "0x830e14",
+    "0x830e34",
+    "0x830e54",
+    "0x830e74",
+    "0x830e94",
+    "0x830eb4",
+    "0x830ed4",
+    "0x830ef4",
+    "0x830f14",
+    "0x830f34",
+    "0x830f54",
+    "0x830f74",
+    "0x830f94",
+    "0x830fb4",
+    "0x830fd4",
+    "0x830ff4",
+    "0x831014",
+    "0x831034",
+    "0x831054",
+    "0x831074",
+    "0x831094"
+   ]
+  },
+  {
+   "addr": "0x00830bc4",
+   "type": "u32",
+   "count": 40,
+   "stride": "0x20",
+   "values": [
+    "0xfffffffd",
+    "0xfffffffe",
+    "0xffffffff",
+    0,
+    0,
+    1,
+    2,
+    3,
+    "0x80000000",
+    "0x7fffffff"
+   ]
+  }
+ ]
+}

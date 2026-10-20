@@ -1,0 +1,7 @@
+{
+ "_evidence": "Overlay for the car at esi of 0x00444284 (compose after rec_004053ff+rec_00413d01): word +0x238 is compared unsigned-extended (movzx) with 0x2000 + (0x401462's random byte)*0x20, i.e. 0x2000..0x3fe0 ('cmp eax,edx; jl' skips the flag stores when the word is larger); left zero it never took the jl. Drawn uniformly 0x1f00..0x4400 (lo/hi), so it falls below, inside and above that window. Plain compare: nothing faults.",
+ "size": 584,
+ "fields": [
+  {"off": "0x238", "type": "u16", "lo": 7936, "hi": 17408}
+ ]
+}

@@ -1,0 +1,49 @@
+{
+ "_evidence": "0x00553ec4 clears the bytes 0x866eb8..0x874e03 and 0x894240..0x9221bf (race-state blocks). They are zero in the image, so a clear of zeros proves nothing: this layout gives every dword of both ranges a nonzero pre-image (the game calls it on live state).",
+ "globals": [
+  {
+   "addr": "0x866eb8",
+   "type": "u32",
+   "count": 14291,
+   "stride": 4,
+   "values": [
+    "0x5a5aa5a5",
+    "0xffffffff",
+    "0x01020304"
+   ]
+  },
+  {
+   "addr": "0x894240",
+   "type": "u32",
+   "count": 65536,
+   "stride": 4,
+   "values": [
+    "0x5a5aa5a5",
+    "0xffffffff",
+    "0x01020304"
+   ]
+  },
+  {
+   "addr": "0x8d4240",
+   "type": "u32",
+   "count": 65536,
+   "stride": 4,
+   "values": [
+    "0x5a5aa5a5",
+    "0xffffffff",
+    "0x01020304"
+   ]
+  },
+  {
+   "addr": "0x914240",
+   "type": "u32",
+   "count": 14304,
+   "stride": 4,
+   "values": [
+    "0x5a5aa5a5",
+    "0xffffffff",
+    "0x01020304"
+   ]
+  }
+ ]
+}

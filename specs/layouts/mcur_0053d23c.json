@@ -1,0 +1,19 @@
+{
+ "size": 16,
+ "fill": "bytes",
+ "_evidence": "Item list of the current menu [0x82fd34] as walked by 0x0053d23c: esi = [0x82fd34] is the menu header (no null test: callers only run with a menu, so it is non-null) whose +0 is the first item; each item is +0 next (0 ends; acyclic, up to 3 items, each level a fresh buffer, next nullable), +0x1e flag byte (bit 0x10 = animated, values mix it set/clear), +0x1f flag byte (or 0x40), +0x26 an unaligned cursor pointer into the item's script: 'cmp [cursor+4],0; je' then cursor += 4 and the same dword, if negative, is added again (a backwards jump); only that dword is read, so the cursor buffer is 16 random bytes with +4 from {0,1,5,-4,0x7fffffff,0x80000000}. Static menu items (menu_0084300a) all have bit 0x10 clear, so they never reached the cursor code.",
+ "fields": [
+  {
+   "off": 4,
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    5,
+    "0xfffffffc",
+    "0x7fffffff",
+    "0x80000000"
+   ]
+  }
+ ]
+}

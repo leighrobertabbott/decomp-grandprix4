@@ -1,0 +1,11 @@
+{
+ "_evidence": "Head cell 0x84d8ec of the menu item list = a pointer to chain_0084d8ec (64 distinct linked nodes in one buffer; see its _evidence). Every walker loads [0x84d8ec] with its first 'mov esi,[esi]' and never tests it for null (callers 0x52bae5 run them on a populated menu).",
+ "globals": [
+  {
+   "addr": "0x0084d8ec",
+   "type": "ptr",
+   "size": 4669,
+   "fill": "layout=chain_0084d8ec"
+  }
+ ]
+}

@@ -1,0 +1,11 @@
+{
+ "_evidence": "[0x00a69878] is the current record pointer read by 0x0051fa3b/0x0051f924 and their callees (+0..+0x294); null/unset in the image, so drawn as a fresh 0x2a0-byte random record.",
+ "globals": [
+  {
+   "addr": "0x00a69878",
+   "type": "ptr",
+   "size": 672,
+   "fill": "bytes"
+  }
+ ]
+}

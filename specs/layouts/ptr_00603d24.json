@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x0041ee1f hands [0x00603d24] to 0x41ed6b as a ring-record pointer (it walks the 0x160-byte records of 0x8943a0 from it and compares it with edi): drawn equal to edi in about half the cases (alias_reg) and otherwise as a record address 0..31. Fuzzed it is wild and the walk faults.",
+ "globals": [
+  {"addr": "0x00603d24", "type": "u32", "alias_reg": "edi", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 31}}
+ ]
+}

@@ -1,0 +1,12 @@
+{
+  "_evidence": "0x0043659c compares two 0x28-byte collision objects (its caller 0x0043679c passes 0x00629e0c/0x00629e34 in both orders; 0x00436970 fills them from the car records). It reads dwords +0 and +4 (positions: (esi-edi)>>8 at 0x0043659d/0x004365a4), word +8 (heading: |a|>>2 & 0xfffe and |0x4000-a|>>2 & 0xfffe index the 0x1001-entry i16 table 0x007c5c5c, always inside it since |a| <= 0x8000) and ORs into dwords +0xc, +0x14, +0x20 (0x0043675b..0x00436791). All arithmetic wraps and no input can fault, so every field is unconstrained: the default draws (0, +-1, small, 16-bit, 32-bit) put the two objects close together in most cases (the transformed outline points then fall in the nonzero bins of the constant tables 0x00629d00/0x00629d1c/0x00629d40/0x00629d5c and the OR blocks run) and far apart otherwise. The outline/bin/mask tables 0x00629c68..0x00629d78, 0x00629be0/0x00629be4 and the sine table are initialised constants (read-only), so they keep their static values.",
+  "size": 64,
+  "fields": [
+    {"off": 0, "type": "i32"},
+    {"off": 4, "type": "i32"},
+    {"off": 8, "type": "u16"},
+    {"off": 12, "type": "u32"},
+    {"off": 20, "type": "u32"},
+    {"off": 32, "type": "u32"}
+  ]
+}

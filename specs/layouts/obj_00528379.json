@@ -1,0 +1,36 @@
+{
+ "_evidence": "0x00528379 (bounding box of an object's frame range; caller 0x528140 passes edi = the object): 'mov eax,[edi+0xc]; mov ecx,[edi+0x10]; sub ecx,eax; inc ecx' then 'dec ecx; jne' over records 0x8174f8 + first*0x18, so last >= first is required (last < first runs ~2^32 iterations off the 808-record table 0x8174f8..0x81c0b8): first i32 0..8, last i32 8..16 (count 1..17, records 0..16, see frames_008174f8). Flags dword +0x14: 'test 4/8' replace x/y by +0x18/+0x1c, else 'test 0x10/0x20' add them; 0..0xff mixes all four bits (and the caller's 0x40/0x80). Offsets +0x18/+0x1c i32 -1000..1000 so the min (vs 800/600) and max (vs 0) compares go both ways. +0x20..+0x2c are outputs. Unlisted bytes are not read.",
+ "size": 56,
+ "fields": [
+  {
+   "off": "0xc",
+   "type": "i32",
+   "lo": 0,
+   "hi": 8
+  },
+  {
+   "off": "0x10",
+   "type": "i32",
+   "lo": 8,
+   "hi": 16
+  },
+  {
+   "off": "0x14",
+   "type": "u32",
+   "lo": 0,
+   "hi": 255
+  },
+  {
+   "off": "0x18",
+   "type": "i32",
+   "lo": -1000,
+   "hi": 1000
+  },
+  {
+   "off": "0x1c",
+   "type": "i32",
+   "lo": -1000,
+   "hi": 1000
+  }
+ ]
+}

@@ -1,0 +1,8 @@
+{
+ "size": 132,
+ "fill": "bytes",
+ "_evidence": "esi car record (0x84 bytes as in the accepted spec) for 0x00441792: byte +0x7c sign (js exit) stays random; byte +0x73 is the team number whose value - 1 indexes the 11-entry table 0x62ebf1 (team_0062ebf1), so it draws 1..11 in most picks; 0, 12 and larger values (which read the following gain bytes / data, still mapped memory, and never occur in the game) keep a few out-of-table picks as before. Everything else random.",
+ "fields": [
+  {"off": "0x73", "type": "u8", "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 12, "0xff"]}
+ ]
+}

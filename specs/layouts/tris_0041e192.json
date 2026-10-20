@@ -1,0 +1,15 @@
+{
+ "_evidence": "Triangles of the collision mesh [0x9fb0bc] for 0x0041e192's probe (variant of tris_00453330, 0x18-byte records). Each triangle uses the three distinct vertices 0/1/2 of verts_00453330 (one per record, so no repeated index: tris_00453330 drew each index 0..2 independently and 21 of 27 picks were degenerate, which 0x45349d..0x453564's edge-sign test usually rejects). The test accepts a point when the three edge products share a sign, so either winding hits; the large covering triangle of verts_00453330 contains every query point, and the vertex heights still fall on both sides of the query height (0x453420/0x45343b/0x453453), so the height miss and the hit both occur. Surface code +6 (returned as-is because 0x49eeb0 passes a null out pointer, 0x453592 'test edx,edx; je 0x4535e8') is drawn from the mapped codes 2/4/8/0x10/0x20 (0x49eeb0's jump table: 0, 1, 3, 4, 5) and the unmapped 7/0xffff, with 0x10 (probe result 4, the 0x41d996 path that sets [0x625ab8] = 0xff and surface 4) in half of the picks. Plane floats as in tris_00453330 (finite; the height division at 0x4535c7 runs only with an out pointer).",
+ "size": 48,
+ "fill": "bytes",
+ "fields": [
+  {"off": 0, "type": "u16", "values": [0], "count": 2, "stride": 24},
+  {"off": 2, "type": "u16", "values": [1], "count": 2, "stride": 24},
+  {"off": 4, "type": "u16", "values": [2], "count": 2, "stride": 24},
+  {"off": 6, "type": "u16", "values": [2, 4, 8, "0x10", "0x10", "0x10", "0x10", "0x20", 7, "0xffff", "0x10", "0x10"], "count": 2, "stride": 24},
+  {"off": 8, "type": "f32", "lo": -1.0, "hi": 1.0, "count": 2, "stride": 24},
+  {"off": 12, "type": "f32", "lo": 0.5, "hi": 1.0, "count": 2, "stride": 24},
+  {"off": 16, "type": "f32", "lo": -1.0, "hi": 1.0, "count": 2, "stride": 24},
+  {"off": 20, "type": "f32", "lo": -1000.0, "hi": 1000.0, "count": 2, "stride": 24}
+ ]
+}

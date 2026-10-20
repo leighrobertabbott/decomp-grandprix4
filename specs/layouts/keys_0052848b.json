@@ -1,0 +1,26 @@
+{
+ "_evidence": "0x0052848b scans the 8 records of 0x1c bytes at 0x81cd91..0x81ce71: 'cmp dword [eax],ebx; jne' then 'mov edx,[eax+4]; cmp dword [edx],ecx'. The key +0 is drawn from 0..3 and -1 (the spec draws ebx from 0..3, so matching and non-matching keys and several matches per table occur), +4 is a pointer to a fresh 4-byte cell (key_0052848b) for every record: a record whose key matches is dereferenced unchecked, so a live record always carries a valid pointer (zero image data would fault). Nothing else of the records is read.",
+ "globals": [
+  {
+   "addr": "0x0081cd91",
+   "type": "u32",
+   "count": 8,
+   "stride": "0x1c",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x0081cd95",
+   "type": "ptr",
+   "count": 8,
+   "stride": "0x1c",
+   "size": 4,
+   "fill": "layout=key_0052848b"
+  }
+ ]
+}

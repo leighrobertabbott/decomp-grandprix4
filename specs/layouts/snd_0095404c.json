@@ -1,0 +1,7 @@
+{
+ "_evidence": "Sound-off byte [0x95404c] and channel statuses for the channel scan 0x00518d18 (compose after full_00518b09). 'test byte [0x95404c],0xff; jne ret': the game writes only 0 and 0x80 (0x5212b3 / 0x5212c0, 0x52354c, 0x523afe, 0x523eb2) and the image holds 0x80, so the scan never ran under the accepted spec; drawn 0 (scan) and 0x80/1/0xff (any nonzero: return). With zero, for k = 0..15 'cmp byte [k+0x88f988],0x80; jne' (full_00518b09's prefix-filled table: 0x80 = claimed, 0xff/1 other in-use values, 0 free) and, for a claimed channel, 0x518d01 pushes the status dword [0x88f948+4k] to 0x50a090 ('mov al,1; ret 4': eax = (k & ~0xff) | 1, never 0, so 0x518d01 returns -1 and the btr/clear path is not reachable from this caller). The 16 status dwords are any u32 (only pushed). Values are synthetic.",
+ "globals": [
+  {"addr": "0x0095404c", "type": "u8", "values": [0, 0, 0, "0x80", "0x80", 1, "0xff"]},
+  {"addr": "0x0088f948", "type": "u32", "count": 16, "stride": 4}
+ ]
+}

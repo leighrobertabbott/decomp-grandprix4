@@ -15,7 +15,13 @@ from .binary import Binary
 from .emu import Impl
 
 
-def recon_facts(dll: Binary, gp4: Binary, rec: Impl, registry: list[Impl]) -> dict:
+# Immediates used as operands of these are numbers, never code references: only
+# push/mov/lea-style uses (how gp4::call_regs passes an original's address) count.
+_ARITH = {"add", "sub", "adc", "sbb", "cmp", "test", "imul", "mul", "idiv", "div", "and", "or", "xor",
+          "shl", "shr", "sar", "rol", "ror"}
+
+
+def recon_facts(dll: Binary, gp4: Binary, rec: Impl, registry: list[Impl], starts: set[int] | None = None) -> dict:
     by_impl = {r.impl: r.addr for r in registry}
     a = Analyzer(dll, log=lambda *x: None)
     a.starts = set(by_impl)
@@ -48,14 +54,21 @@ def recon_facts(dll: Binary, gp4: Binary, rec: Impl, registry: list[Impl]) -> di
                     if disp in gp4.imports and base is None and index is None:
                         imports.add(gp4.imports[disp])
                         continue
+                    if gp4_text.contains(disp):
+                        continue    # a memory operand into .text reads constant rows embedded in code, not a call
                     vals.append(disp)
                 else:
                     v = _int(o)
                     if v is not None:
+                        if ins.mn in _ARITH and gp4_text.contains(v):
+                            continue    # a number that happens to fall in .text (e.g. 6000000), not a code address
                         vals.append(v)
                 for v in vals:
                     if gp4_text.contains(v):
-                        callees.add(v)
+                        # an immediate/displacement into .text is a code reference (call_regs target)
+                        # only when it is a known function start; other values are plain numbers
+                        if starts is None or v in starts:
+                            callees.add(v)
                     elif gp4.in_image(v) and v > gp4.base + 0x1000:
                         globals_.add(v)
                     elif dll.in_image(v) and (txt := dll.cstring(v)):
@@ -64,21 +77,65 @@ def recon_facts(dll: Binary, gp4: Binary, rec: Impl, registry: list[Impl]) -> di
             "x87": x87, "n_cond": n_cond}
 
 
+def original_code_refs(gp4: Binary, addr: int, starts: set[int]) -> set[int]:
+    """Known function starts the ORIGINAL names as plain operands (`mov esi, 0x549dcc`, `push offset`):
+    a reconstruction must reference them too (often as a gp4::call_regs target or an argument), so the
+    reconstruction side's operand references to them are not extra callees."""
+    a = Analyzer(gp4, log=lambda *x: None)
+    a.starts = set(starts) - {addr}
+    text = gp4.section(".text")
+    refs = set()
+    for ins in a.explore(addr).insns.values():
+        if ins.mn == "call" or ins.mn.startswith("j") or ins.mn in _ARITH:
+            continue
+        for o in split_operands(ins.ops):
+            v = _int(o) if not _MEM.search(o) else None
+            if v is not None and v != addr and text.contains(v) and v in starts:
+                refs.add(v)
+    return refs
+
+
+def _exempt(addr: int, key: str) -> set[int]:
+    """specs/shape_exempt.json, lead-proven and with evidence per entry:
+    'globals' - reads only for flags every path then overwrites (both branches identical);
+    'callees' - calls only on paths that can never run (the blocks are listed in
+    specs/coverage_exempt.json). A compiler legitimately deletes both."""
+    import json
+    from pathlib import Path
+    path = Path(__file__).resolve().parent.parent / "specs" / "shape_exempt.json"
+    try:
+        entry = json.loads(path.read_text()).get(f"{addr:#010x}")
+    except (OSError, ValueError):
+        return set()
+    if not entry or not entry.get("evidence"):
+        return set()
+    return {int(g, 16) for g in entry.get(key, [])}
+
+
+def _dead_reads(addr: int) -> set[int]:
+    return _exempt(addr, "globals")
+
+
 def audit(con, gp4: Binary, dll: Binary, rec: Impl, registry: list[Impl]) -> dict:
     addr = rec.addr
     f = con.execute("SELECT * FROM functions WHERE addr=?", (addr,)).fetchone()
     if not f:
         return {"gate": "shape", "status": "fail", "reason": f"{addr:#x} is not a known function start"}
     o_callees = {r[0] for r in con.execute("SELECT dst FROM edges WHERE src=?", (addr,))}
+    o_callees -= _exempt(addr, "callees")   # lead-proven calls on dead paths (specs/shape_exempt.json)
     o_imports = {r[0] for r in con.execute("SELECT import FROM func_imports WHERE addr=?", (addr,))}
     o_globals = {r[0] for r in con.execute("SELECT gaddr FROM func_globals WHERE addr=?", (addr,))}
+    o_globals -= _dead_reads(addr)   # lead-proven reads whose value can never matter (specs/shape_exempt.json)
     o_strings = {r[0]: r[1] for r in con.execute(
         "SELECT g.gaddr, s.text FROM func_globals g JOIN strings s ON s.gaddr=g.gaddr WHERE g.addr=?", (addr,))}
-    r = recon_facts(dll, gp4, rec, registry)
+    # excluded data rows (strings, tables decoded as code) are data references, not callees
+    starts = {row[0] for row in con.execute("SELECT addr FROM functions WHERE kind!='data'")}
+    r = recon_facts(dll, gp4, rec, registry, starts)
     # a string global is satisfied either by referencing GP4's copy or an identical literal
     o_globals_nostr = {g for g in o_globals if g not in o_strings or o_strings[g] not in r["strings"]}
     missing_callees = sorted(o_callees - r["callees"])
-    extra_callees = sorted(r["callees"] - o_callees)
+    o_refs = original_code_refs(gp4, addr, starts) if gp4 is not None else set()
+    extra_callees = sorted(r["callees"] - o_callees - o_refs)
     missing_imports = sorted(o_imports - r["imports"])
     extra_imports = sorted(r["imports"] - o_imports)
     # compilers fold "base + field offset" differently: an address within FOLD bytes

@@ -1,0 +1,9 @@
+{
+  "size": 216,
+  "_evidence": "0x0043ebc2 tests word [edi+0x14] against zero (small values around zero exercise both sides) and reads words +0x60 and +0x62. All bit patterns are valid.",
+  "fields": [
+    {"off": 20, "type": "i16", "lo": -3, "hi": 3},
+    {"off": 96, "type": "u16"},
+    {"off": 98, "type": "u16"}
+  ]
+}

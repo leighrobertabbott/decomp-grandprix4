@@ -1,0 +1,35 @@
+{
+ "_evidence": "0x005388ed scans the 0x400 slots of 0x18 bytes at 0x829cac (to 0x82fcac): 'cmp dword [esi+0xc],0; je' (in use: zero in about half the slots), 'cmp [esi+0x14],edx; jae' against the running limit (initially [0x82fcb4]), then 'mov edx,[esi+4]' tightens it. The three dwords of every slot and the limit are plain u32 draws: all compares are unsigned, every address is a fixed slot, nothing faults; with 1024 slots both the accept and reject directions occur in every case.",
+ "globals": [
+  {
+   "addr": "0x00829cb8",
+   "type": "u32",
+   "count": 1024,
+   "stride": "0x18",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    5,
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x00829cc0",
+   "type": "u32",
+   "count": 1024,
+   "stride": "0x18"
+  },
+  {
+   "addr": "0x00829cb0",
+   "type": "u32",
+   "count": 1024,
+   "stride": "0x18"
+  },
+  {
+   "addr": "0x0082fcb4",
+   "type": "u32"
+  }
+ ]
+}

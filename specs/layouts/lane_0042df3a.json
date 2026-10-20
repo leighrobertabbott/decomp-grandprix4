@@ -1,0 +1,9 @@
+{
+  "_evidence": "Car record behind esi for 0x0042df3a (lane/side code returned in eax): byte +0x7a bit 7 selects the early 5; word +0xea is compared with 0 (je), its sign (jns) and the equality selectors -8, 8, 0x10, 0x18 (each je), so it is drawn from those values plus their neighbours and extremes (every return code occurs); byte +0xfe bits 0x40/0x10 and the sign of word +0x94 decide the zero-offset path (random fill covers them). No pointers or divisors: every pattern is valid.",
+  "size": 262,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x7a", "type": "u8", "values": [0, 0, "0x7f", "0x80", "0xff"]},
+    {"off": "0xea", "type": "u16", "values": [0, 0, 0, "0xfff8", "0xfff8", "0xfff0", "0xffff", "0x8000", 8, 8, "0x10", "0x10", "0x18", "0x18", "0x20", 9, "0x7fff"]}
+  ]
+}

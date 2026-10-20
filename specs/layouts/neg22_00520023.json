@@ -1,0 +1,25 @@
+{
+ "_evidence": "0x00520023 (called by 0x51f1d4): 'cmp byte [0x7ad8b2],0xff; jne' (clc exit; 0xff drawn often), then counts the bytes of 0x7c2a48..0x7c2a5d with bit 7 set ('test byte [eax+0x7c2a48],0xff; jns' over ecx = 0x16) and 'cmp ebp,2; jl' selects clc (< 2) or stc. The 22 bytes use the bit_scan pattern on bit 7 so none, exactly one and many set bits all occur (random bytes alone almost always give >= 2). Per-driver state bytes: any value valid.",
+ "globals": [
+  {
+   "addr": "0x007ad8b2",
+   "type": "u8",
+   "values": [
+    "0xff",
+    "0xff",
+    "0xff",
+    0,
+    1,
+    "0xfe"
+   ]
+  },
+  {
+   "addr": "0x007c2a48",
+   "type": "u8",
+   "count": 22,
+   "stride": 1,
+   "pattern": "bit_scan",
+   "bit": 128
+  }
+ ]
+}

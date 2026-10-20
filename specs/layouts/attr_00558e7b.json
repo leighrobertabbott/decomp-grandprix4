@@ -1,0 +1,8 @@
+{
+ "_evidence": "Lookup chain of 0x00558e7b (compose after slots_0051cc50): the word [0x9559f8 + 2*(entry*0x30 + ebx)], ebx = 0xb..0xe/0x14..0x17, of the 0x60-byte entries 0..7 (rec_00558ece bounds the entry index) is an index into the 512 10-byte records at 0x961b9c (keys_0055906c: 'lea ebx,[ebx+ebx*4]; shl ebx,1; add ebx,0x961b9c'); that record's word +0 indexes the slot words 0x9e1b20 ('cmp word [eax*2+0x9e1b20],0xffff; je'), whose value 0/0x20/0x40 (slots_0051cc50, 64 slots) is an offset into 0x6975ec tested by 'test word [eax+0x14],8'. All these were image data (zero) before. Here the entry words draw 0..63 (a subset of the real 0..0x1ff, keeping the walk on varied records), the 10-byte records' word +0 draws slot 0..63, and the three tested words 0x697600/0x697620/0x697640 have bit 3 both ways. Every index stays inside its table, so nothing faults.",
+ "globals": [
+  {"addr": "0x009559f8", "type": "u16", "count": 384, "stride": 2, "lo": 0, "hi": 63},
+  {"addr": "0x00961b9c", "type": "u16", "count": 64, "stride": 10, "lo": 0, "hi": 63},
+  {"addr": "0x00697600", "type": "u16", "count": 3, "stride": "0x20", "values": [0, 8, 8, "0x18", "0xfff7", "0xffff"]}
+ ]
+}

@@ -1,0 +1,13 @@
+{
+ "size": 36,
+ "fill": "bytes",
+ "_evidence": "Record at [0xa69878] whose +0x1c is a second pointer (returned by 0x40825e) to a 0x130-byte block read by 0x0051fa72's callees.",
+ "fields": [
+  {
+   "off": "0x1c",
+   "type": "ptr",
+   "size": 304,
+   "fill": "bytes"
+  }
+ ]
+}

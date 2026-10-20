@@ -1,0 +1,61 @@
+{
+ "_evidence": "0x00550ed5 (compose after ring_008943a0+state_0040342a+ring_00406ac7+tbl_00868598+multiply_0040ce7b) steps edi one record forward or back through the ring before 0x553b21/0x553b79 read the record: forward 'add edi,0x160' then the lap-end / pit-start / pit-end tests, where the pit-end clamp 'mov edi,[0x866ef8]; sub edi,0x160' gives record [0x866ef8]-1 <= 31 and edi itself starts at records 0..29 (so up to 30 after the step); backward clamps at the pit start or wraps by [0x866ec4]. The callees read words +0x60/+0x62 (movzx, +0x50, shl 8), dwords +0x150 (fild), +0xf4 (add), and via 0x553a5e +0xec (fild), +0xf0/+0xf8 (imul operands). state_0040342a/ring_00406ac7 vary these for records 0..25 only, so records 26..31 (0x896760 + k*0x160) are varied here with the same types (plain arithmetic operands; fild/fistp of any i32 is valid with the core's masked FPU), so every reachable record is varied. Also varied: the previous outputs 0x934df0/0x934df4, which 0x550ed5 pushes before the callee overwrites them and then interpolates from ('push dword [0x934df0]; push dword [0x934df4]; ... mov eax,[0x934df4]; pop esi; sub eax,esi; imul ebp; shrd eax,edx,0xe; add eax,esi'), any i32 (imul by |eax| <= 0x4000 and shrd cannot fault); and the f64 angle scale 0x6f2bdc of 0x553a5e ('fild [edi+0xec]; fmul qword [0x6f2bdc]; fsincos'; zero in the image, set at run time), drawn as a small finite scale (|angle| stays far below the fsincos operand limit 2^63 for any i32 field).",
+ "globals": [
+  {
+   "addr": "0x008967c0",
+   "type": "u16",
+   "count": 6,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x008967c2",
+   "type": "u16",
+   "count": 6,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x0089684c",
+   "type": "i32",
+   "count": 6,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x00896850",
+   "type": "i32",
+   "count": 6,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x00896854",
+   "type": "i32",
+   "count": 6,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x00896858",
+   "type": "i32",
+   "count": 6,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x008968b0",
+   "type": "i32",
+   "count": 6,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x00934df0",
+   "type": "i32"
+  },
+  {
+   "addr": "0x00934df4",
+   "type": "i32"
+  },
+  {
+   "addr": "0x006f2bdc",
+   "type": "f64",
+   "lo": -0.0002,
+   "hi": 0.0002
+  }
+ ]
+}

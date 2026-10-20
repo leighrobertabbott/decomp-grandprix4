@@ -1,0 +1,9 @@
+{
+ "_evidence": "Stream record read by 0x555f0a through esi (size 0x12, consumed by 'add esi,0x12'): movzx ebp,word [esi] is the repeat count (number of 0x555ea4 appends = max(n,1): 'test ebp,-1; je done; dec ebp; je done' then another append), movzx ecx,word [esi+2] the ring step ('cmp ecx,1; jge' so 0 is treated as 1; the 'loop' advance runs ecx times, never 2^32 since ecx >= 1). The repeat count is bounded to 0..3 because every append consumes one of the 999 slots of the table at 0x965a30 whose overflow is the int3 assertion at 0x555ebe (callee 0x555ea4): a real stream never overflows it, and slots_00555f0a keeps the counter <= 996 so 3 appends always fit. The step may be any value (the advance 'add ebx,0x160; cmp ebx,[0x866eb8]; jb; sub ebx,[0x866ebc]' keeps ebx within records min(start, end-wrap)..max(start, end-1) of the ring, see ring_008943a0) and draws 0,1,2,3,7. The packed words +0xa (&0x30)<<2, +0x10 (&1)<<5, +0xc (&0x1f), +0xe (byte), bytes +6/+8 and word +4 (si) take any pattern, so the rest of the buffer is random bytes (fill bytes).",
+ "size": 32,
+ "fill": "bytes",
+ "fields": [
+  {"off": 0, "type": "u16", "values": [0, 1, 2, 3]},
+  {"off": 2, "type": "u16", "values": [0, 1, 2, 3, 7]}
+ ]
+}

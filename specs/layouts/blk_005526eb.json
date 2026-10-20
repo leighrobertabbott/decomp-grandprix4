@@ -1,0 +1,10 @@
+{
+  "_evidence": "ebx block of 0x005526eb, the +0x54/+0x5c/+0x60 sibling of accepted 0x0055268f (both called back to back by 0x0055278a at 0x552b4e/0x552b53; 0x55268f stores its chosen table entry into [ebx+0x54], so the entries of the +0x50 table are themselves -1 or table pointers). +0x54 'mov ecx,[ebx+0x54]; cmp ecx,-1; je 0x552761' is -1 (early ret) or a count-prefixed dword table: points_into base 0xffffffff stride 0xa20001 gives exactly -1 (k = 0) or 0x00a20000 (k = 1), the table tab_0055268f lays out (count 0..16, 16 entries; compose it in globals). +0x60 'test [ebx+0x60],4; jne' (sequential: 'mov eax,[ebx+0x5c]; inc eax') / 'test [ebx+0x60],8; jne' (random: 'mov eax,[ecx]; call 0x4015e2', state_0062d1b4) / neither (index 1): values give every combination of bits 2/3, with and without the other bits. +0x5c on the sequential path: 0..16 hit every in-table index and the 'cmp eax,[ecx]; jbe' count clamp, -1/-2 (eax <= 0) and 0x7fffffff (inc overflows negative) the 'cmp eax,1; jge' clamp, 0x80000000/0x12345678 the large-index clamp; every clamped index is 1..max(count,1) <= 16, so 'mov ax,[ecx+eax*4]' stays inside the table. +0x32/+0x34/+0x38/+0x3c/+0x3e are copied to edi (random background, fill bytes); +0x50/+0x58 are not read here.",
+  "size": 104,
+  "fill": "bytes",
+  "fields": [
+    {"off": 84, "type": "u32", "points_into": {"base": "0xffffffff", "stride": "0xa20001", "lo": 0, "hi": 1}},
+    {"off": 92, "type": "u32", "values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, "0xffffffff", "0xfffffffe", "0x7fffffff", "0x80000000", "0x12345678"]},
+    {"off": 96, "type": "u32", "values": [0, 4, 8, 12, "0xfffffff0", "0xfffffff3", "0xfffffffb", "0xffffffff", "0x80000004", "0x12345678"]}
+  ]
+}

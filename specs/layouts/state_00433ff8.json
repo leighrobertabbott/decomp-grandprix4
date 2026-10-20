@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x00433ff8: ecx = [0x0062ff64] + eax*4 (eax 0..8) and 'bt dword [ecx], edx' with edx = (byte [esi+0x7c] & 0x3f) - 1 clamped to <= 0x15, so edx = -1 addresses the dword before ecx: the mask buffer needs 4 bytes before the pointer (bias 4) and 9 dwords after. On a set bit, [0x0062ff68] + edx*4 is read as bytes +0/+1 (edx -1..0x15): bias 4 and 0x58 bytes after. All bit patterns valid.",
+  "globals": [
+    {"addr": "0x0062ff64", "type": "ptr", "size": 44, "bias": 4, "fill": "bytes"},
+    {"addr": "0x0062ff68", "type": "ptr", "size": 96, "bias": 4, "fill": "bytes"}
+  ]
+}

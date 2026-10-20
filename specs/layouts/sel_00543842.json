@@ -1,0 +1,6 @@
+{
+ "_evidence": "[0xabc088] is a list selection index (0x5002d0 stores it from a window message: 'mov ecx,[esi+0xc]; mov eax,[ecx]; mov [0xabc088],eax', resets it to 0 at 0x500418); 0x00543842, 0x52f22a and 0x52a9d1 index per-item arrays with it ('shl eax,2; add eax,edi; add eax,0xc; mov eax,[eax]'). It must select an existing slot of the block's pointer array: 0..5 for the 6-slot blk_00543842 (an index past the array reads a random dword as a pointer and faults the original).",
+ "globals": [
+  {"addr": "0x00abc088", "type": "u32", "lo": 0, "hi": 5}
+ ]
+}

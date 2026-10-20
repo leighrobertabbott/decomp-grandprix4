@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x004377a4 (esi = a car record; spec esi:rec[0x66fef0,0x41c,0..21], the caller 0x43747c passes car pointers) reads the car heading word +0xe (0x4377a5/0x4377cf: |a|>>2 & 0xfffe and |0x4000-a|>>2 & 0xfffe index the constant Q14 sine table 0x7c5c5c, at most +0x2000) of whichever car esi is, so the heading of all 22 records (0x66fefe + k*0x41c) is any i16; it then stores the result into 0x629df4 when esi equals the car pointer 0x629e00 (cmp esi,[0x629e00]; je), else into 0x629df6. 0x629e00 holds esi in about half the cases (alias_reg) and otherwise another record-aligned car pointer 0..21, so both stores occur. The i32 globals 0x934df0/0x934df4 (imul word) stay fuzzed. Nothing faults.",
+  "globals": [
+    {"addr": "0x0066fefe", "type": "i16", "count": 22, "stride": "0x41c"},
+    {"addr": "0x00629e00", "type": "u32", "alias_reg": "esi", "points_into": {"base": "0x0066fef0", "stride": "0x41c", "lo": 0, "hi": 21}}
+  ]
+}

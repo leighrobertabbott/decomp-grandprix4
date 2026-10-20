@@ -1,0 +1,9 @@
+{
+  "_evidence": "Car record (esi, 0x23d bytes) for 0x0041416e; compose as car_0041416e+ptr_00414439 (which pins the position dwords +0/+4 to -0x4000000..0x3fff7ff and the nullable target pointer +0x128 for 0x414439/0x401315, see ptr_00414439; 0x41447e subtracts the same positions from (i16 word*8 + i16 word)<<8 track points, |diff| < 2^28, no 0x401315 overflow). Byte +0x235 'cmp 2; jb' draws 0..3 and 0xff (both sides); word +0x9a (16-bit abs, 'cmp 0xbc; jl') draws the boundary +-0xbb/+-0xbc, 0, 0x1000 and 0x7fff/0x8000. All other reads are word compares/arithmetic on +0xe, +0x90, +0xb0 and RMW of +0x6f/+0x72/+0xb4, so the background is random bytes.",
+  "size": 573,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x235", "type": "u8", "values": [0, 1, 2, 2, 3, 255]},
+    {"off": "0x9a", "type": "u16", "values": ["0x0", "0xbb", "0xbc", "0xff44", "0xff45", "0x1000", "0x7fff", "0x8000"]}
+  ]
+}

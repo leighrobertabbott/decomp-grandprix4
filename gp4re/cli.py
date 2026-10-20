@@ -143,7 +143,8 @@ def cmd_show(a):
 
 def cmd_try(a):
     con = dbm.connect()
-    res = work.try_candidate(con, parse_addr(a.addr), a.file, work.agent_id(a), a.cap)
+    res = work.try_candidate(con, parse_addr(a.addr), a.file, work.agent_id(a), a.cap,
+                             rerun=getattr(a, "rerun", False))
     _p(res, True) if a.json else print(work.render_verdict(res))
     # non-zero unless it passed, so "try ... && accept ..." only accepts a pass
     sys.exit(0 if res.get("overall") in ("pass", "pass-pending-runtime") else 1)
@@ -201,7 +202,10 @@ def cmd_exclude(a, include=False):
                             "AND addr<? AND state IN ('todo','deferred','claimed')",
                             (a.why or "excluded by lead", time.time(), lo, hi)).rowcount
             con.execute("UPDATE functions SET kind=COALESCE(?, kind) WHERE addr>=? AND addr<?", (a.kind, lo, hi))
-        dbm.log_event(con, lo, work.agent_id(a), "include" if include else "exclude", {"hi": hi, "n": n, "why": a.why})
+            if a.kind == "data":   # a false start inside another function: its parent's 'tail' edge is not a call
+                con.execute("DELETE FROM edges WHERE kind='tail' AND dst>=? AND dst<?", (lo, hi))
+        dbm.log_event(con, lo, work.agent_id(a), "include" if include else "exclude",
+                      {"hi": hi, "n": n, "why": getattr(a, "why", None)})
     print(f"{'included' if include else 'excluded'} {n} functions in {hx(lo)}-{hx(hi)}")
 
 
@@ -298,7 +302,10 @@ def cmd_regress(a):
     con = dbm.connect()
     rows = con.execute("SELECT addr, state FROM ledger WHERE state IN ('accepted','accepted-runtime') "
                        "ORDER BY addr").fetchall()
-    broken = []
+    if a.addr:
+        wanted = {int(x, 16) for x in a.addr}
+        rows = [r for r in rows if r["addr"] in wanted]
+    broken, weak = [], []
     for r in rows:
         res = verify.run(r["addr"], agent="regress", cases=a.cases)
         ok = res["overall"] in ("pass", "pass-pending-runtime")
@@ -306,7 +313,12 @@ def cmd_regress(a):
         if not ok:
             broken.append(r["addr"])
             print("   " + work._why(res)[:400])
-    print(f"regression: {len(rows) - len(broken)}/{len(rows)} accepted functions still pass")
+        emu = next((g for g in res.get("gates", []) if g["gate"] == "emu"), {})
+        if emu.get("unvaried_inputs"):
+            weak.append(r["addr"])
+            print(f"   weak: unvaried data inputs {emu['unvaried_inputs'][:6]}")
+    print(f"regression: {len(rows) - len(broken)}/{len(rows)} accepted functions still pass; "
+          f"{len(weak)} rest partly on unvaried game data")
     sys.exit(1 if broken else 0)
 
 
@@ -353,6 +365,7 @@ def build_parser() -> argparse.ArgumentParser:
     s.set_defaults(fn=cmd_claim)
     s = w.add_parser("show"); s.add_argument("addr"); s.add_argument("--asm", action="store_true"); s.set_defaults(fn=cmd_show)
     s = w.add_parser("try"); s.add_argument("addr"); s.add_argument("file")
+    s.add_argument("--rerun", action="store_true", help="lead only: re-verify an unchanged file")
     s.add_argument("--cap", type=int, default=work.DEFAULT_CAP); s.add_argument("--json", action="store_true")
     s.set_defaults(fn=cmd_try)
     s = w.add_parser("accept"); s.add_argument("addr"); s.add_argument("file"); s.add_argument("--json", action="store_true")
@@ -387,7 +400,8 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--json", action="store_true"); s.set_defaults(fn=cmd_verify)
     sub.add_parser("export", help="(lead) write progress/ snapshots").set_defaults(fn=cmd_export)
     s = sub.add_parser("regress", help="re-verify every accepted function")
-    s.add_argument("--cases", type=int, default=100); s.set_defaults(fn=cmd_regress)
+    s.add_argument("--cases", type=int, default=100)
+    s.add_argument("--addr", nargs="*", help="only these accepted functions (hex)"); s.set_defaults(fn=cmd_regress)
     s = sub.add_parser("fpucw", help="(lead) set the oracle's x87 control word"); s.add_argument("value")
     s.set_defaults(fn=cmd_fpucw)
     s = sub.add_parser("ghidra", help="(lead) optional Ghidra pseudocode export/import")

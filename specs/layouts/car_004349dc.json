@@ -1,0 +1,160 @@
+{
+ "_evidence": "Car overlay for esi of 0x004349dc (compose after car_00434700+rec_00413dd5, before car_0043c677). The body past the early exits needs: +0x7b bit 6 clear, +0x25f bits 0/1 clear, +0x26b bit 3 clear (each 'jne 0x434b80'), then +0x237 == 0 ('test 0xff; jne exit' at 0x434a2a: 1/256 with the random background), then 0x434930 clc (+0xcd bit 6 clear, bit 5 decides the due-time path with +0xf0 against the clock [0x66d814]); then +0x9a (speed word) against [0x6013e2] (image constant 0x3ab) and 0x1d5 / 0x11a / 0x755 (0x434bb7, 0x434c76..0x434c93, 0x434cb4) and |+0xac| against 0x80000 (0x434aa1, 0x434bd5: ~1/4096 with random dwords). Drawn so each test goes both ways with the deep path common: +0x7b bit 6 set in 2/10 (bit 1 both ways, 0x434a5a), +0x25f bits 0/1 clear in 6/10 (bit 7 both ways, 0x434b94), +0x26b bit 3 set in 2/9, +0x237 zero in 5/7, +0xcd bits 5/6 in all four combinations with both clear most often, +0x9a around every threshold, +0xac on both sides of +-0x80000 (and 0x80000000, whose neg stays negative), +0xf0 zero or extreme. Flag bytes, a speed word, a lateral dword and a due time: plain compares, nothing is a pointer, index or divisor. Also +0xe5 bit 2 (0x434a48/0x434aac/0x434b5a branch) set in half the picks and the parts mask +0x40 ('test 0x15280' at 0x434a51) zero under that mask in most picks (rec_00413dd5's values, reweighted), so the 0x434875 / 0x434b61 sub-path is reached.",
+ "size": 1056,
+ "fields": [
+  {
+   "off": "0x7b",
+   "type": "u8",
+   "values": [
+    0,
+    2,
+    0,
+    2,
+    "0x40",
+    "0x42",
+    "0x80",
+    "0x82",
+    0,
+    2
+   ]
+  },
+  {
+   "off": "0x25f",
+   "type": "u8",
+   "values": [
+    0,
+    "0x80",
+    0,
+    "0x80",
+    "0x10",
+    "0x90",
+    1,
+    2,
+    3,
+    "0x83"
+   ]
+  },
+  {
+   "off": "0x26b",
+   "type": "u8",
+   "values": [
+    0,
+    "0x80",
+    1,
+    "0x81",
+    2,
+    8,
+    "0x88",
+    0,
+    "0x10"
+   ]
+  },
+  {
+   "off": "0x237",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "off": "0xcd",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    "0x10",
+    "0x80",
+    "0x20",
+    "0x40",
+    "0x60",
+    "0x9f"
+   ]
+  },
+  {
+   "off": "0x9a",
+   "type": "u16",
+   "values": [
+    0,
+    "0x119",
+    "0x11a",
+    "0x1d4",
+    "0x1d5",
+    "0x3aa",
+    "0x3ab",
+    "0x754",
+    "0x755",
+    "0x1000",
+    "0x7fff",
+    "0x8000",
+    "0xffff"
+   ]
+  },
+  {
+   "off": "0xac",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    "0x7ffff",
+    "0x80000",
+    "0x80001",
+    "0xfff80001",
+    "0xfff80000",
+    "0xfff7ffff",
+    "0x80000000",
+    "0x12345",
+    "0xfffedcba",
+    "0x7fffffff"
+   ]
+  },
+  {
+   "off": "0xf0",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    1,
+    "0x10000",
+    "0x7fffffff",
+    "0x80000000",
+    "0xffffffff"
+   ]
+  },
+  {
+   "off": "0xe5",
+   "type": "u8",
+   "values": [
+    0,
+    4,
+    4,
+    "0x7f",
+    "0x80",
+    "0x84",
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "off": "0x40",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    1,
+    8,
+    "0x80000000",
+    "0x1000",
+    "0x15280",
+    "0x200",
+    "0xead7f"
+   ]
+  }
+ ]
+}

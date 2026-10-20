@@ -1,0 +1,20 @@
+{
+ "_evidence": "0x00538971 returns the first of the 0x400 0x18-byte pool slots at 0x829cac whose dword +0xc is 0, or 0 when all are in use ('cmp dword [eax+0xc],0; je'; dec ecx loop over 0x400). A pool filled up to n slots: n drawn including 0x3ff and the all-used 0x400 (prefix), composed after pool_005389b9.",
+ "globals": [
+  {
+   "addr": "0x00829cb8",
+   "type": "u32",
+   "count": 1024,
+   "stride": "0x18",
+   "prefix": [
+    0,
+    1,
+    2,
+    5,
+    "0x3ff",
+    "0x400",
+    "0x400"
+   ]
+  }
+ ]
+}

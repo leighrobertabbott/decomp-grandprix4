@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x00542da8 (edx = group 0..20): 'mov ebx,[edx*4+0x8313cb]' reads an unaligned dword table (varied, 21 entries; it only feeds ebx and 'or ebp,ebx'), 'cmp word [0x7ad8ac],0' (word values 0/1/0xffff, so the 0x5b4 fallback for edx = 0 or >= 0xe is taken and skipped; fuzz:i32 left the low word nonzero almost always), then up to nine 'call 0x54d1ad' lookups esi = [0x835846 + idx*4] for idx = 0x500 + 9*edx .. +8 (or 0x5b4..0x5bc; group 20 is that fallback group: 0x500 + 9*20 = 0x5b4) each followed by 'cmp byte [esi],0; jne' - so idx spans 0x500..0x5bc, the dwords 0x836c46..0x836f36. That string-pointer table is filled at run time (zero in the image, so the original faulted reading [0]); the code never tests a pointer for null, so every entry is a valid pointer to a separate 4-byte string buffer whose bytes are 0 four times in five: the first non-empty string is found at every position and all nine are empty in about 13% of the cases. Callers: 0x542d8b gets edx = [0xabbc70]-1 with [0xabbc70] in 1..0x14 (0x542dfa clamps it, 0x4fe670 calls only for >= 0), and 0x542c87 passes byte [0x831377+k]-1 of the same option bytes, so edx 0..20 covers both.",
+ "globals": [
+  {"addr": "0x008313cb", "type": "u32", "count": 21, "stride": 4},
+  {"addr": "0x007ad8ac", "type": "u16", "values": [0, 0, 1, "0xffff"]},
+  {"addr": "0x00836c46", "type": "ptr", "size": 4, "count": 189, "stride": 4, "fill": "u8{=0,0,0,0,0x41}"}
+ ]
+}

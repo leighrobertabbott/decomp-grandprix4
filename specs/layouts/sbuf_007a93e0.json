@@ -1,0 +1,145 @@
+{
+ "_evidence": "The saved-state buffer [0x007a93e0] (a copy of the block 0x007ad890.. plus trailer). Its address helpers return B+off: 0x535a93 B+0x155e0 (0x7c2e70-0x7ad890; read as a word by 0x5359c8 lodsw / 0x535a20 cmpsw - it is the selector stored in word [0x7aafe8], 3 and 4 skip the 5+4-byte tails), 0x535ab7 B+0x15617 (byte: movsb / lodsb+xor, the check needs stamp^byte == 1), 0x535ae3 B+0x1636f (0x16254+0x11b; 5 bytes rep movsb / repe cmpsb), 0x535ac8 B+0x162c4 (0x16254+0x70; 4 bytes). 0x535aa4 returns B+[[0x826d11]+0x40]-2 (a trailing word; sblk_00826d11 draws that dword from {2,0x8000,0x16400}, so the word lies at B+0, B+0x7ffe or B+0x163fe). Size 0x16400 covers the highest byte read (0x16373) and the trailing word at 0x163fe. Background is random bytes; the compared fields use small value lists so that, against stamp_00535a20, every compare in 0x535a20 both matches and differs (selector 3/4 and the sign bit 0x8000 included); 0x5359c8 only copies them (no fault for any value). Bytes B+0x155e2/0x155e5/0x155f2 (0x7c2e72/0x7c2e75/0x7c2e82 in the saved copy) are tested 'cmp byte [esi],0xff' by 0x5121c5/0x5121f4/0x51221a: drawn 0xff in 2/5 of the cases (lead, from m162).",
+ "size": 91136,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x155e0",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    "0xffff"
+   ]
+  },
+  {
+   "off": "0x15617",
+   "type": "u8",
+   "values": [
+    0,
+    1
+   ]
+  },
+  {
+   "off": "0x1636f",
+   "type": "u8",
+   "count": 5,
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    "0x80",
+    "0xff"
+   ]
+  },
+  {
+   "off": "0x162c4",
+   "type": "u8",
+   "count": 4,
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    "0x80",
+    "0xff"
+   ]
+  },
+  {
+   "off": 0,
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0x8000"
+   ]
+  },
+  {
+   "off": "0x7ffe",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0x8000"
+   ]
+  },
+  {
+   "off": "0x163fe",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0x8000"
+   ]
+  },
+  {
+   "off": "0x155e2",
+   "type": "u8",
+   "values": [
+    "0xff",
+    "0xff",
+    0,
+    1,
+    "0x80"
+   ]
+  },
+  {
+   "off": "0x155e5",
+   "type": "u8",
+   "values": [
+    "0xff",
+    "0xff",
+    0,
+    1,
+    "0x80"
+   ]
+  },
+  {
+   "off": "0x155f2",
+   "type": "u8",
+   "values": [
+    "0xff",
+    "0xff",
+    0,
+    1,
+    "0x80"
+   ]
+  }
+ ]
+}

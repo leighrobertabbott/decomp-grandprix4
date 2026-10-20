@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x0041b5b6: 'cmp byte ptr [0x6036d7],0xff; jne 0x41b5ca' selects the 0x4193fa search (0xff) or '[esi+0x3c] = [0x6034b4] << 8'. Any byte is valid; the list gives 0xff in half the cases (a fuzzed dword's low byte is rarely 0xff) and several other patterns.",
+  "globals": [
+    {"addr": "0x006036d7", "type": "u8", "values": ["0xff", "0xff", "0xff", 0, 1, "0x7f", "0xfe", "0x80"]}
+  ]
+}

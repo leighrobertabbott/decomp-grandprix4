@@ -1,0 +1,7 @@
+{
+ "_evidence": "The two datalog compare-channel cells 0x8312cc / 0x8312d0 hold a channel index into the forty 0x20-byte records at 0x830bb4, or -1 for none. Writers: 0x541f98/0x541fa2 'mov dword [0x8312cc|0x8312d0],0xffffffff' (reset with [0x830bac]=0), 0x5422dc/0x5422ee (set to -1 when they equal the index 0x543873 returns), 0x543803 'mov [edi],eax' in the menu handler 0x5437f4 (edi = the item's cell, eax = index from 0x543873 = [0x830bac] - remaining ecx, i.e. 0..count-1 <= 39) and 0x54382f (reset to -1). Image value of both is 0xffffffff. Readers: 0x5437f4 'cmp eax,[ebx]' (the other cell, equality with the found index), 0x5435f3 'mov eax,[esi+0xe]; mov eax,[eax]; cmp eax,-1; je; imul eax,eax,0x20; add eax,0x830bb4' (an index outside 0..39 would make 0x543682/0x4fe340 read [edi+7]/[edi+9]/[edi+0x10] outside the record table), 0x4fe160 'cmp dword [ecx],-1'. The static items that pass these cells: 0x845e1c/0x845e42 (+0x1a = 0x5437f4), 0x8460da/0x846100 (+0x16 = 0x5435f3), 0x8469ad/0x8469d3 (+0x16 = 0x543467), +0xe = 0x8312cc / 0x8312d0 respectively. Domain: -1 and small indices (0..3, 5, 39) with repeats so the equality in 0x5437f4 (found index is 0 in about half the cases) and the -1 path are both common. Values are synthetic.",
+ "globals": [
+  {"addr": "0x008312cc", "type": "u32", "values": [0, 0, 1, 1, 2, 3, 5, 39, "0xffffffff", "0xffffffff"]},
+  {"addr": "0x008312d0", "type": "u32", "values": [0, 0, 1, 1, 2, 3, 5, 39, "0xffffffff", "0xffffffff"]}
+ ]
+}

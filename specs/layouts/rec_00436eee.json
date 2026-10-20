@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x00436eee compares ebx (spec u32 0..3) with dword +0x128 (cmp; jne), so +0x128 is drawn from 0..3 (equal in about a quarter of the cases); byte +0x134 bit 0x10 (test; je) comes from the random background; byte +0x235 is incremented and compared signed with 0x64 (jle), so it is drawn around that edge (0x62..0x65) plus 0, 0x7f, 0xff. Plain RMW/compare: no value faults.",
+  "size": 576,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x128", "type": "u32", "values": [0, 1, 2, 3]},
+    {"off": "0x235", "type": "u8", "values": [0, "0x62", "0x63", "0x64", "0x65", "0x7f", "0xff"]}
+  ]
+}

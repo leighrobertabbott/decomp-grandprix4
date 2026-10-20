@@ -1,0 +1,8 @@
+{
+  "size": 72,
+  "_evidence": "0x0041c300 reads dwords [ebx+0x1c] (cmp 0 / je) and [ebx+0x40] (test / je), then xor of the two (jns: equal signs keep eax, opposite signs zero it). The generic i32 draw is zero in about 1/8 of the cases and covers both signs, so all three exits occur; any value is valid.",
+  "fields": [
+    {"off": 28, "type": "i32"},
+    {"off": 64, "type": "i32"}
+  ]
+}

@@ -1,0 +1,19 @@
+{
+ "size": 8,
+ "fill": "bytes",
+ "_evidence": "Stream words read by 0x00558c3e/0x00558c9a: the loop count is word1 - word0 (via loop), so word0 is 0..8 and word1 9..24 (1..24 iterations); word2 any.",
+ "fields": [
+  {
+   "off": 0,
+   "type": "u16",
+   "lo": 0,
+   "hi": 8
+  },
+  {
+   "off": 2,
+   "type": "u16",
+   "lo": 9,
+   "hi": 24
+  }
+ ]
+}

@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x00419afd sums dword +0x274 of the four 0x300-byte records at 0x006380d8 (0x0063834c + k*0x300), clamps the magnitude to 0x1000000 (neg / unsigned jb, both signs), then idiv of sum<<11 (|dividend| <= 2^35) by dword 0x00601380, imul by the constant 0x006f2bf0 (image value 10430, never written: unvaried) and shrd 14; the result is added to the accumulator 0x006228e0 (old value copied to 0x6259e4). 0x601380 is a car parameter fistp'd by 0x4112e3 and used as an unsigned divisor by 0x411f9f, i.e. positive; 17..65536 keeps the quotient inside int32 (|d| <= 16 can #DE). The four addends are full-range i32, so sums below, inside and beyond +-0x1000000 all occur.",
+  "globals": [
+    {"addr": "0x0063834c", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x00601380", "type": "i32", "lo": 17, "hi": 65536},
+    {"addr": "0x006228e0", "type": "u32"}
+  ]
+}

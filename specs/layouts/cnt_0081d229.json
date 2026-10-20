@@ -1,0 +1,18 @@
+{
+ "_evidence": "0x529dea: 'movzx ecx,byte [0x81d229]; or byte [edi],0x80; inc edi; dec ecx; jne' marks the first count driver bytes of 0x7c2a48. count is the number of cars (1..22, 0x16); 0 would loop 2^32 times (the game never stores it), so the domain is 1..0x16.",
+ "globals": [
+  {
+   "addr": "0x0081d229",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    3,
+    "0xb",
+    "0x15",
+    "0x16",
+    "0x16"
+   ]
+  }
+ ]
+}

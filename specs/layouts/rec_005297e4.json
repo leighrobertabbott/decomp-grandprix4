@@ -1,0 +1,31 @@
+{
+ "_evidence": "esi record of the menu item handler 0x005297e4: 'mov ebx,[esi+0xe]; call 0x539944' then push eax and call the stdcall routine 0x503140. 0x539944 reads the width selector byte +0xd ('and edx,3': byte/word/dword/zero via the jump table 0x539960) and loads eax from [ebx]; 0x503140 does 'fild dword [esp+4]; fmul 0.125; fadd 50.0', formats 100-x and x with '%2.3f : %2.3f' (0x66b93c) into its 0x20-byte stack buffer via CRT sprintf 0x5db088 and passes it to 0x5b4b50 (returns at once while the renderer object [0xb2dd0c] is null). No value faults: even a full signed dword gives |x| < 2.7e8, at most 14+3+13 characters + NUL = 31 bytes, inside the buffer. So +0xe must be a real pointer to an 8-byte value cell (at most a dword is read) with random contents, and +0xd is drawn from {0,1,2,3} plus bytes with high bits set (only its low two bits are used). The static item that owns this handler (0x84f690: +0x16 = 0x5297e4, +0xd = 0, +0xe = 0x81d1f9, limit 0xc8 at +0x24) uses the byte width with values 0..200; the random cell covers that and the other widths. The rest of the record is random.",
+ "size": 64,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0xd",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    0,
+    1,
+    2,
+    3,
+    "0x80",
+    "0xfd",
+    "0x42",
+    "0xff"
+   ]
+  },
+  {
+   "off": "0xe",
+   "type": "ptr",
+   "size": 8,
+   "fill": "bytes"
+  }
+ ]
+}

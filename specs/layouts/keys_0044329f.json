@@ -1,0 +1,7 @@
+{
+ "_evidence": "Per-car key dwords read by 0x0044329f: for a code byte al without bit 7 it takes k = (al & 0x3f) - 1 clamped to 0 (0x4432a4..0x4432ad), so k is 0..62, and compares 'cmp dword [k*4+0x675970], 0x20000000; jne' then 'cmp dword [k*4+0x7c3184], 0x20000000; jne' before testing the flag byte [k+0x66d90a] (flags_0066d909). Both tables are runtime state (0x52283a copies 0x7c3184[0..21] into 0x675970; 0x522c2e/0x4fec10 and others write 0x7c3184, whose image holds 0x20000000 in its first 22 entries; 0x675970 is zero in the image and also holds the order-sort keys of order_00675958), so all 63 entries of each that the index can reach (0x675970..0x675a6b, 0x7c3184..0x7c327f, writable .data) vary. Only equality with 0x20000000 matters, so each entry draws 0x20000000 in a quarter of the cases and otherwise neighbours/extremes (0x1fffffff, 0x20000001, 0, 1, -1, 0x80000000): both jne outcomes for both tables, and both together (carry) in about 1/16 x the flag-bit-7-clear half. Plain compares: nothing faults.",
+ "globals": [
+  {"addr": "0x675970", "type": "u32", "count": 63, "stride": 4, "values": ["0x20000000", "0x20000000", "0x1fffffff", "0x20000001", 0, 1, "0xffffffff", "0x80000000"]},
+  {"addr": "0x7c3184", "type": "u32", "count": 63, "stride": 4, "values": ["0x20000000", "0x20000000", "0x1fffffff", "0x20000001", 0, 1, "0xffffffff", "0x80000000"]}
+ ]
+}

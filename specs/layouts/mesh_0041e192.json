@@ -1,0 +1,23 @@
+{
+ "_evidence": "Collision-mesh overlay for 0x0041e192 (compose after mesh_00453330 and state_0041d9eb). Here the probe 0x41d9eb -> 0x41d96d -> 0x51fb25 -> 0x49eeb0 -> 0x453330 queries each wheel's own position: [0x6278c0]/[0x6278c8] are stored by 0x406dbb (0x406dbc/0x406dc1) from 0x41e156's wheel position [0x623e30]/[0x623e38], scaled by [0x5f0aa4] = 2^-15.7 (|x|,|z| <= 39951), not drawn. With mesh_00453330's grid (origins -60000..20000, 1..2 cells of 30000..100000) and tris_00453330's independent vertex indices, 600 cases gave 228 queries, 124 outside the grid (bl cleared at 0x45335f/0x453384/0x4533c5), 32 empty cells, and only 8 hits, all with codes 7/0xffff: the surface-4 blocks 0x41e369/0x41e376/0x41e383/0x41e390 of 0x41e192 (wheel record +0x2d == 4, set from [0x601f1e] = 4 that only the 0x41da16 code-4 path gives, which also sets [0x625ab8] = 0xff) were never reached. In the game the mesh covers the track under every wheel. Domain: the triangles of tris_0041e192 (distinct vertices, half of them surface 0x10); origins -60000..-41000 so x - origin >= 0 for every query, cell sizes 30000..100000 with width/height 1..2 (columns/rows past the grid still occur and miss); the other mesh fields stay as in mesh_00453330.",
+ "globals": [
+  {
+   "addr": "0x009fb0bc",
+   "type": "ptr",
+   "size": 48,
+   "fill": "layout=tris_0041e192"
+  },
+  {
+   "addr": "0x0063ede4",
+   "type": "f32",
+   "lo": -60000.0,
+   "hi": -41000.0
+  },
+  {
+   "addr": "0x0063edf4",
+   "type": "f32",
+   "lo": -60000.0,
+   "hi": -41000.0
+  }
+ ]
+}

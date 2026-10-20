@@ -1,0 +1,9 @@
+{
+  "size": 164,
+  "_evidence": "0x0040e9ac reads byte +0x74 of the car block at esi as an index into the pointer slots 0x6279ec/0x6279f0/0x6279f4 (written by 0x40b028, 0x40b047, 0x40afb9 with segment-record pointers; 0x6279f8 is a byte flag), so it is 0..2; words +0x96 (added) and +0x9a (divisor, clamped to >= 0x3ab) are any i16. No other byte of the block is read.",
+  "fields": [
+    {"off": "0x74", "type": "u8", "lo": 0, "hi": 2},
+    {"off": "0x96", "type": "i16"},
+    {"off": "0x9a", "type": "i16"}
+  ]
+}

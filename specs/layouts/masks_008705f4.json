@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x00557f0e (called first by 0x00556cf1): when edi > [0x871ca4], 'mov eax,[0x8705f4]; or [edi+0x2c],eax; mov dl,[0x87062f]; or [edi+0x67],dl' - the dword [0x8705f4] and the byte [0x87062f] are OR masks applied to the record, and eax/dl leave with them (0x556cf1 returns eax and edx). Run-time state built by the stream decoders 0x557843/0x5578a4 ('or [0x8705f4],edx', 'or/and [0x87062f],al') and 0x557903/0x557966 ('and'), cleared by 0x553f72; zero in the image. They are not 0x556cf1's own globals, so fuzz:i32 does not reach them. Pure bit masks (no pointer, index or divisor): every value is valid and a wrong width, offset or a dropped OR shows in the record bytes and in eax/edx.",
+ "globals": [
+  {"addr": "0x008705f4", "type": "u32"},
+  {"addr": "0x0087062f", "type": "u8"}
+ ]
+}

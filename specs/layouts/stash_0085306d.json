@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00520d28: 'cmp byte [0x85306c],0; je done; mov ecx,0x7c3ae4; sub ecx,0x7c30a3; mov esi,0x85306d; mov edi,0x7c30a3; rep movsb; mov byte [0x85306c],0' - restores the 0xa41-byte stash 0x85306d..0x853aad (written by the saver 0x00520cf4 from 0x7c30a3, zero in the image) over 0x7c30a3. A byte copy never faults, so every pattern is valid; varying all 2625 source bytes shows a wrong length, direction or offset. Compose after once_00520cf4 (flag 0x85306c zero / nonzero, destination block varied so an unwanted copy shows).",
+ "globals": [
+  {"addr": "0x0085306d", "type": "u8", "count": 2625, "stride": 1}
+ ]
+}

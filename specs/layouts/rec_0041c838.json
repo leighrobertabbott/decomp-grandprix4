@@ -1,0 +1,16 @@
+{
+  "_evidence": "Record pointed to by [0x60203c] and [0x602050] in 0x0041c838: movsx word +6, test word +0x48 with 0x200/0x100, movzx words +0x60/+0x62 (+0x50, <<8, clamped >= 0x8000), +0x74/+0x76 (optionally -0x50, <<8, clamped >= 0x8000), movsx words +0xd8/+0xda/+0xe0/+0xe2. Any word value is valid (the idiv divisor is clamped to >= 0x8000); full u16 ranges include the 0/1 edges so both sides of the 0x8000 clamps are reached.",
+  "size": 236,
+  "fields": [
+    {"off": 6, "type": "i16"},
+    {"off": "0x48", "type": "u16"},
+    {"off": "0x60", "type": "u16", "lo": 0, "hi": 65535},
+    {"off": "0x62", "type": "u16", "lo": 0, "hi": 65535},
+    {"off": "0x74", "type": "u16", "lo": 0, "hi": 65535},
+    {"off": "0x76", "type": "u16", "lo": 0, "hi": 65535},
+    {"off": "0xd8", "type": "i16"},
+    {"off": "0xda", "type": "i16"},
+    {"off": "0xe0", "type": "i16"},
+    {"off": "0xe2", "type": "i16"}
+  ]
+}

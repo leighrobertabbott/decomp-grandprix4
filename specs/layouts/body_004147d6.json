@@ -1,0 +1,7 @@
+{
+ "_evidence": "Overlay for the car block that car +0x128 points to (compose after pos_00405cf8): 0x4147d6 tests its byte +0xff for bit 3 ('test byte [ebx+0xff],8; je' after 0x414562 returned CF=1 and the own car's +0xff bit 3 was clear) and then sets bit 1 of its own +0x6f (block 0x414867). The pos_00405cf8 buffer left that byte zero, so the block never ran; it is a plain flag byte (any u8: bit 3 set in about half the cases).",
+ "size": 264,
+ "fields": [
+  {"off": "0xff", "type": "u8"}
+ ]
+}

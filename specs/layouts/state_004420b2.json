@@ -1,0 +1,35 @@
+{
+ "_evidence": "0x004420b2 appends a record to the log buffer 0x630238 at byte offset [0x630230] ('cmp edi,0x7c28; jge' exit, then edi = offset + 0x630238 and up to 8 + 9*28 + 4 bytes are written: still inside .data for every offset below 0x7c28) and stores the new offset (record end - 0x630238, never negative) back. The offset is drawn 0..0x7c40 (edges 0 and 0x7c40 often, so the full-buffer exit is taken); negative or huge offsets are not producible by its only writer (this function) and made the record land outside .data (17/200 faults). [0x62ff64] is a pointer to the nine masks of masks_004420b2; [0x62ff68] (the car table 0x44205d reads with bit index 0..21, 88 bytes + the dword before) as in state_00433ff8. Race clock 0x66d814 any dword. The log buffer contents 0x630238.. (8000 dwords, past the 0x7c28 limit plus the largest record) are varied as plain dwords: the 0x14-byte path read-modify-writes record dwords whose padding bytes the record writer leaves untouched.",
+ "globals": [
+  {
+   "addr": "0x00630230",
+   "type": "u32",
+   "lo": 0,
+   "hi": 31808
+  },
+  {
+   "addr": "0x0062ff64",
+   "type": "ptr",
+   "size": 44,
+   "bias": 4,
+   "fill": "layout=masks_004420b2"
+  },
+  {
+   "addr": "0x0062ff68",
+   "type": "ptr",
+   "size": 96,
+   "bias": 4,
+   "fill": "bytes"
+  },
+  {
+   "addr": "0x0066d814",
+   "type": "i32"
+  },
+  {
+   "addr": "0x00630238",
+   "type": "u32",
+   "count": 8000,
+   "stride": 4
+  }
+ ]
+}

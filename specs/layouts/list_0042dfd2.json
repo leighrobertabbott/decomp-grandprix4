@@ -1,0 +1,124 @@
+{
+ "_evidence": "Car-pointer list of 0x0042dfd2 (compose after cars_0066fef0+pair_0042e8e6): 0x42f8bf appends each car esi (the 0x430ddd loop over the 22 cars at 0x66fef0) to the table 0x607968 at index [0x607964]++ and stores the car's 0x42df3a class (-2..5) in its byte +0xc6; 0x430d07 resets [0x607960]/[0x607964] to 0 and 0x42e191 advances [0x607960]. So the table holds car pointers 0x66fef0 + k*0x41c (never null: 0x42dfd2 reads [ebx+0x68] at 0x42dff4 before its 'or ebx,ebx' test, so a null entry would fault in the original), [0x607964] is a count 0..22 (drawn 0..14) and [0x607960] a start 0..6, so the walk edx = [0x607964]-1 down to [0x607960] (jl/jge) runs zero or several steps. Byte +0xc6 of the 22 cars takes the class values 0xfe, 0xff, 0..5 (equal to and different from the esi class). [0x604280] is 0 (0x42df2f/0x42e624 clear it) or a car (0x42e5f2 stores ebx); the found-car list 0x604294 (entries 0..8, edi = count) holds cars stored by 0x42dc79/0x42dfd2/0x42e06a/0x42e191, so both list hits and misses occur.",
+ "globals": [
+  {
+   "addr": "0x00607960",
+   "type": "i32",
+   "lo": 0,
+   "hi": 6
+  },
+  {
+   "addr": "0x00607964",
+   "type": "i32",
+   "lo": 0,
+   "hi": 14
+  },
+  {
+   "addr": "0x00607968",
+   "type": "u32",
+   "count": 22,
+   "stride": 4,
+   "values": [
+    "0x66fef0",
+    "0x67030c",
+    "0x670728",
+    "0x670b44",
+    "0x670f60",
+    "0x67137c",
+    "0x671798",
+    "0x671bb4",
+    "0x671fd0",
+    "0x6723ec",
+    "0x672808",
+    "0x672c24",
+    "0x673040",
+    "0x67345c",
+    "0x673878",
+    "0x673c94",
+    "0x6740b0",
+    "0x6744cc",
+    "0x6748e8",
+    "0x674d04",
+    "0x675120",
+    "0x67553c"
+   ]
+  },
+  {
+   "addr": "0x00604294",
+   "type": "u32",
+   "count": 9,
+   "stride": 4,
+   "values": [
+    "0x66fef0",
+    "0x67030c",
+    "0x670728",
+    "0x670b44",
+    "0x670f60",
+    "0x67137c",
+    "0x671798",
+    "0x671bb4",
+    "0x671fd0",
+    "0x6723ec",
+    "0x672808",
+    "0x672c24",
+    "0x673040",
+    "0x67345c",
+    "0x673878",
+    "0x673c94",
+    "0x6740b0",
+    "0x6744cc",
+    "0x6748e8",
+    "0x674d04",
+    "0x675120",
+    "0x67553c"
+   ]
+  },
+  {
+   "addr": "0x00604280",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    0,
+    "0x66fef0",
+    "0x67030c",
+    "0x670728",
+    "0x670b44",
+    "0x670f60",
+    "0x67137c",
+    "0x671798",
+    "0x671bb4",
+    "0x671fd0",
+    "0x6723ec",
+    "0x672808",
+    "0x672c24",
+    "0x673040",
+    "0x67345c",
+    "0x673878",
+    "0x673c94",
+    "0x6740b0",
+    "0x6744cc",
+    "0x6748e8",
+    "0x674d04",
+    "0x675120",
+    "0x67553c"
+   ]
+  },
+  {
+   "addr": "0x0066ffb6",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0xfe",
+    "0xff",
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ]
+  }
+ ]
+}

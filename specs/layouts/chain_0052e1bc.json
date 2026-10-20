@@ -1,0 +1,87 @@
+{
+ "_evidence": "Menu item list walked by 0x0052e1bc from the head cell 0x845192 ('mov edi,[edi]' five times to reach the first slot item, then once per item while setting +0x12/+0x1f/+0x26 for up to 6 file slots and 6-n cleared ones, then two more): 16 distinct 0x40-byte nodes inside one buffer, node k's link dword +0 pointing at node k+1 and the last node at itself, so every walk of up to 15 steps visits distinct nodes and any longer walk stays on the last one. Other bytes are random (fill bytes: flag bytes +0x1f are read-modify-write).",
+ "size": 1024,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x0",
+   "type": "self",
+   "bias": "0x40"
+  },
+  {
+   "off": "0x40",
+   "type": "self",
+   "bias": "0x80"
+  },
+  {
+   "off": "0x80",
+   "type": "self",
+   "bias": "0xc0"
+  },
+  {
+   "off": "0xc0",
+   "type": "self",
+   "bias": "0x100"
+  },
+  {
+   "off": "0x100",
+   "type": "self",
+   "bias": "0x140"
+  },
+  {
+   "off": "0x140",
+   "type": "self",
+   "bias": "0x180"
+  },
+  {
+   "off": "0x180",
+   "type": "self",
+   "bias": "0x1c0"
+  },
+  {
+   "off": "0x1c0",
+   "type": "self",
+   "bias": "0x200"
+  },
+  {
+   "off": "0x200",
+   "type": "self",
+   "bias": "0x240"
+  },
+  {
+   "off": "0x240",
+   "type": "self",
+   "bias": "0x280"
+  },
+  {
+   "off": "0x280",
+   "type": "self",
+   "bias": "0x2c0"
+  },
+  {
+   "off": "0x2c0",
+   "type": "self",
+   "bias": "0x300"
+  },
+  {
+   "off": "0x300",
+   "type": "self",
+   "bias": "0x340"
+  },
+  {
+   "off": "0x340",
+   "type": "self",
+   "bias": "0x380"
+  },
+  {
+   "off": "0x380",
+   "type": "self",
+   "bias": "0x3c0"
+  },
+  {
+   "off": "0x3c0",
+   "type": "self",
+   "bias": "0x3c0"
+  }
+ ]
+}

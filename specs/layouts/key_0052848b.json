@@ -1,0 +1,16 @@
+{
+ "_evidence": "Pointee of the +4 field of a 0x81cd91 table record (keys_0052848b): 0x52848b reads only its first dword ('cmp dword [edx],ecx' with ecx = eax), drawn from the same small set as the eax argument so both the match and the mismatch occur.",
+ "size": 4,
+ "fields": [
+  {
+   "off": 0,
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3
+   ]
+  }
+ ]
+}

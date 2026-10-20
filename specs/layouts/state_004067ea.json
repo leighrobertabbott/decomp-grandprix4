@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x004067ea adds the dwords [0x006278c0] and [0x006278c8] (a reference x/z position, zero in the image, game state) to the negated record coordinates before each fild/fpatan; fild takes any 32-bit pattern and fpatan any finite pair, so both vary over the full i32 range. [0x006f2be4] is the constant angle scale (set by the oracle's startup run) and 0x006278f8/0x006278fc/0x006f2bf4 are written before they are read, so none of them is varied.",
+  "globals": [
+    {"addr": "0x006278c0", "type": "i32"},
+    {"addr": "0x006278c8", "type": "i32"}
+  ]
+}

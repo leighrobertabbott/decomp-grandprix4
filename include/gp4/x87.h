@@ -104,6 +104,139 @@ inline Ext fpatan(const Ext& y, const Ext& x) {
     return r;
 }
 
+// Unary instructions on an extended value (st0 in, st0 out).
+inline Ext fsin(const Ext& a) {
+    Ext r; const Ext* pa = &a; Ext* pr = &r;
+    __asm { mov eax, pa } __asm { fld tbyte ptr [eax] } __asm { fsin } __asm { mov eax, pr } __asm { fstp tbyte ptr [eax] }
+    return r;
+}
+inline Ext fcos(const Ext& a) {
+    Ext r; const Ext* pa = &a; Ext* pr = &r;
+    __asm { mov eax, pa } __asm { fld tbyte ptr [eax] } __asm { fcos } __asm { mov eax, pr } __asm { fstp tbyte ptr [eax] }
+    return r;
+}
+inline Ext fptan(const Ext& a) {   // FPTAN pushes 1.0; the tangent is below it
+    Ext r; const Ext* pa = &a; Ext* pr = &r;
+    __asm { mov eax, pa } __asm { fld tbyte ptr [eax] } __asm { fptan } __asm { fstp st(0) } __asm { mov eax, pr } __asm { fstp tbyte ptr [eax] }
+    return r;
+}
+inline Ext frndint(const Ext& a) {   // current rounding mode
+    Ext r; const Ext* pa = &a; Ext* pr = &r;
+    __asm { mov eax, pa } __asm { fld tbyte ptr [eax] } __asm { frndint } __asm { mov eax, pr } __asm { fstp tbyte ptr [eax] }
+    return r;
+}
+inline Ext f2xm1(const Ext& a) {   // 2^x - 1 for |x| <= 1
+    Ext r; const Ext* pa = &a; Ext* pr = &r;
+    __asm { mov eax, pa } __asm { fld tbyte ptr [eax] } __asm { f2xm1 } __asm { mov eax, pr } __asm { fstp tbyte ptr [eax] }
+    return r;
+}
+inline Ext fabs(const Ext& a) {
+    Ext r; const Ext* pa = &a; Ext* pr = &r;
+    __asm { mov eax, pa } __asm { fld tbyte ptr [eax] } __asm { fabs } __asm { mov eax, pr } __asm { fstp tbyte ptr [eax] }
+    return r;
+}
+inline Ext fchs(const Ext& a) {
+    Ext r; const Ext* pa = &a; Ext* pr = &r;
+    __asm { mov eax, pa } __asm { fld tbyte ptr [eax] } __asm { fchs } __asm { mov eax, pr } __asm { fstp tbyte ptr [eax] }
+    return r;
+}
+
+inline void fsincos(const Ext& a, Ext* s, Ext* c) {
+    const Ext* pa = &a;
+    __asm { mov eax, pa } __asm { fld tbyte ptr [eax] } __asm { fsincos }   // st0 = cos, st1 = sin
+    __asm { mov eax, c } __asm { fstp tbyte ptr [eax] } __asm { mov eax, s } __asm { fstp tbyte ptr [eax] }
+}
+// FSCALE: st0 = x * 2^trunc(e), with st1 = e
+inline Ext fscale(const Ext& x, const Ext& e) {
+    Ext r; const Ext* px = &x; const Ext* pe = &e; Ext* pr = &r;
+    __asm { mov eax, pe } __asm { fld tbyte ptr [eax] } __asm { mov eax, px } __asm { fld tbyte ptr [eax] }
+    __asm { fscale } __asm { fstp st(1) } __asm { mov eax, pr } __asm { fstp tbyte ptr [eax] }
+    return r;
+}
+// FYL2X: y * log2(x), with st1 = y, st0 = x
+inline Ext fyl2x(const Ext& y, const Ext& x) {
+    Ext r; const Ext* py = &y; const Ext* px = &x; Ext* pr = &r;
+    __asm { mov eax, py } __asm { fld tbyte ptr [eax] } __asm { mov eax, px } __asm { fld tbyte ptr [eax] }
+    __asm { fyl2x } __asm { mov eax, pr } __asm { fstp tbyte ptr [eax] }
+    return r;
+}
+// FPREM until complete: partial remainder of x by y (st0 = x, st1 = y)
+inline Ext fprem(const Ext& x, const Ext& y) {
+    Ext r; const Ext* px = &x; const Ext* py = &y; Ext* pr = &r;
+    __asm { mov eax, py } __asm { fld tbyte ptr [eax] } __asm { mov eax, px } __asm { fld tbyte ptr [eax] }
+again_ext:
+    __asm { fprem } __asm { fnstsw ax } __asm { test ah, 4 } __asm { jnz again_ext }
+    __asm { fstp st(1) } __asm { mov eax, pr } __asm { fstp tbyte ptr [eax] }
+    return r;
+}
+// Constants exactly as the load-constant instructions push them.
+inline Ext ext_one() { Ext r; Ext* pr = &r; __asm { fld1 } __asm { mov eax, pr } __asm { fstp tbyte ptr [eax] } return r; }
+inline Ext ext_zero() { Ext r; Ext* pr = &r; __asm { fldz } __asm { mov eax, pr } __asm { fstp tbyte ptr [eax] } return r; }
+inline Ext ext_pi() { Ext r; Ext* pr = &r; __asm { fldpi } __asm { mov eax, pr } __asm { fstp tbyte ptr [eax] } return r; }
+inline Ext ext_l2e() { Ext r; Ext* pr = &r; __asm { fldl2e } __asm { mov eax, pr } __asm { fstp tbyte ptr [eax] } return r; }
+inline Ext ext_l2t() { Ext r; Ext* pr = &r; __asm { fldl2t } __asm { mov eax, pr } __asm { fstp tbyte ptr [eax] } return r; }
+inline Ext ext_lg2() { Ext r; Ext* pr = &r; __asm { fldlg2 } __asm { mov eax, pr } __asm { fstp tbyte ptr [eax] } return r; }
+inline Ext ext_ln2() { Ext r; Ext* pr = &r; __asm { fldln2 } __asm { mov eax, pr } __asm { fstp tbyte ptr [eax] } return r; }
+inline Ext ext_i16(int16_t x) { Ext r; Ext* p = &r; __asm { fild x } __asm { mov eax, p } __asm { fstp tbyte ptr [eax] } return r; }
+inline Ext ext_i64(int64_t x) { Ext r; Ext* p = &r; __asm { fild x } __asm { mov eax, p } __asm { fstp tbyte ptr [eax] } return r; }
+
+// Comparisons: the x87 status word bits C3 (0x4000), C2 (0x0400), C0 (0x0100)
+// after comparing st0 = a with st1 = b. a > b: none; a < b: C0; equal: C3;
+// unordered: C3|C2|C0. After FNSTSW AX / SAHF: CF = C0, PF = C2, ZF = C3.
+inline uint16_t fucom(const Ext& a, const Ext& b) {
+    uint16_t sw; const Ext* pa = &a; const Ext* pb = &b;
+    __asm { mov eax, pb } __asm { fld tbyte ptr [eax] } __asm { mov eax, pa } __asm { fld tbyte ptr [eax] }
+    __asm { fucompp } __asm { fnstsw ax } __asm { mov sw, ax }
+    return static_cast<uint16_t>(sw & 0x4500u);
+}
+inline uint16_t fcom(const Ext& a, const Ext& b) {     // signalling compare (FCOM/FCOMP/FCOMPP)
+    uint16_t sw; const Ext* pa = &a; const Ext* pb = &b;
+    __asm { mov eax, pb } __asm { fld tbyte ptr [eax] } __asm { mov eax, pa } __asm { fld tbyte ptr [eax] }
+    __asm { fcompp } __asm { fnstsw ax } __asm { mov sw, ax }
+    return static_cast<uint16_t>(sw & 0x4500u);
+}
+inline uint16_t ftst(const Ext& a) {                   // compare with +0.0
+    uint16_t sw; const Ext* pa = &a;
+    __asm { mov eax, pa } __asm { fld tbyte ptr [eax] } __asm { ftst } __asm { fnstsw ax } __asm { mov sw, ax }
+    __asm { fstp st(0) }
+    return static_cast<uint16_t>(sw & 0x4500u);
+}
+
+// FISTP straight from an extended value (e.g. an FILD/FMUL product the original
+// never stores): one rounding, in the current mode, like the instruction.
+inline int32_t fistp32(const Ext& a) { int32_t r; const Ext* p = &a; __asm { mov eax, p } __asm { fld tbyte ptr [eax] } __asm { fistp r } return r; }
+inline int16_t fistp16(const Ext& a) { int16_t r; const Ext* p = &a; __asm { mov eax, p } __asm { fld tbyte ptr [eax] } __asm { fistp r } return r; }
+inline Ext ext_i32(int32_t x) { Ext r; Ext* p = &r; __asm { fild x } __asm { mov eax, p } __asm { fstp tbyte ptr [eax] } return r; }
+inline Ext ext_f32(float x) { Ext r; Ext* p = &r; __asm { fld x } __asm { mov eax, p } __asm { fstp tbyte ptr [eax] } return r; }
+
+}}  // namespace gp4::x87
+
+// ---- 80-bit values in the register file (regs convention) ---------------
+// in_st(r, k): x87 input k at full precision (the double st[k] when the caller
+// only supplied a double). set_out_st(r, k, v): x87 output k at full precision
+// (also stores the rounded double). out_st(r, k): output k of an original
+// routine called through gp4::call_regs. set_in_st(r, k, v): input k for it.
+#include <gp4/gp4.h>
+namespace gp4 { namespace x87 {
+inline Ext in_st(const Regs* r, int k) {
+    if ((r->st_xin_mask >> k) & 1u) { Ext v; for (int i = 0; i < 10; ++i) v.b[i] = r->st_xin[k][i]; return v; }
+    return ext(r->st[k]);
+}
+inline void set_out_st(Regs* r, int k, const Ext& v) {
+    for (int i = 0; i < 10; ++i) r->st_xout[k][i] = v.b[i];
+    r->st_xout_mask |= 1u << k;
+    r->st[k] = narrow(v);
+}
+inline Ext out_st(const Regs& r, int k) {
+    if ((r.st_xout_mask >> k) & 1u) { Ext v; for (int i = 0; i < 10; ++i) v.b[i] = r.st_xout[k][i]; return v; }
+    return ext(r.st[k]);
+}
+inline void set_in_st(Regs& r, int k, const Ext& v) {
+    for (int i = 0; i < 10; ++i) r.st_xin[k][i] = v.b[i];
+    r.st_xin_mask |= 1u << k;
+    r.st[k] = narrow(v);
+}
+
 // Rounding helpers for when the original stores to float/double memory in the
 // middle of a calculation (forces the same precision loss).
 inline float  to_f32(double x) { volatile float f = static_cast<float>(x); return f; }

@@ -1,0 +1,317 @@
+{
+ "_evidence": "0x0052aa3f is the +0x16 draw handler of exactly twelve static items: a raw dword scan of the image finds 0x52aa3f only at +0x16 of 0x8501ff..0x8502d1 and 0x8517e0..0x8518b2 (two menus, six rows each, stride 0x2a, ids 8..0xd and 0xd..0x12, input handler +0x1a = 0x52a9d1), all with the list cell +0xe = 0x81d314 and the row +0x26 = 0..5 (no code writes item +0x26 or +0xe), so the spec draws esi only from these items and their bytes stay as in the image except the flag byte +0x1f ('test 0x10; jne' skips everything, 'test 0x20' picks the colour; any byte - drawn mostly clear, with 0x10/0x20 and others). 'mov dl,[0x82fd45]; cmp dl,[esi+0xc]; jne': [0x82fd45] is the focused item id byte (0x53daae stores it from [0x82fd88]): drawn from the twelve ids and others. The list cell 0x81d314 = {+0 first visible entry, +4 count, +8 page (6 in the image), +0xc entries}: the builders 0x52a36d/0x5411b3 copy, for each of the 22 car-slot bytes 0x7c2a48 whose top bits are 10b, '(b & 0x3f) - 1' (slot numbers 1..22 -> 0..21) into 0x81d320.. and store +0 = 0, +4 = that count (0..22); the scroll handlers 0x539c04/0x539c1d (the arrow items 0x8502fb/0x850347, 0x8518dc/0x851928 share the cell) keep +0 in 0..max(count-6, 0). 'mov edx,[esi+0x26]; mov esi,[esi+0xe]; add edx,[esi]; cmp edx,[esi+4]; jae exit; movzx esi,byte [edx+esi+0xc]': the read stays inside the 22 entries for every count <= 22 whatever the first entry is (v1's 8-byte cell with a random count read past it: the 291 faults at 0x52aaab), so +0 is drawn 0..16 (and -1: wraps, still below the count check) and the count {0..22} on both sides of row+first, the entries 0..21. 'cmp esi,[0x7c2f28]; jne': the current car slot (builders store the first entry, 0x52a9d1 the chosen one; 0..21 as ent_0052a0ec), drawn from values shared with the entries so 0x52aad1 runs often. Then 'add esi,0xb90; call 0x54d1a2': 0x54d1ad loads the string pointer [0x835846 + 4*(0xb90+entry)] (the driver-name entries 0x838686..0x8386dd of the run-time text table, zero in the image, filled by the text loaders) and 0x54d211 passes it to 0x4fd820, which copies the string into the capture buffer when [0xabc07c] != 0 and [0x669ed8] != -1 (textout_0054d211): each of the 22 entries points at its own 0x40-byte string of printable bytes and NULs (at most 0x40 + NUL copied at a capture index <= 0x9f: inside the 0x100-byte buffer 0xaa2e50); a null entry faults there. The text cursor y [0x833cc9] (overriding textout_0054d211's random dword) and the last captured line y [0xaa2d48] ('cmp ecx,eax; je' in 0x4fd820 before the newline store; zero in the image) are drawn from one small set so both the same-line and the new-line capture paths run. Item bytes other than +0x1f (link, box words, id, cell pointer, row, handlers) are static menu definitions and keep their image values. Values are synthetic.",
+ "globals": [
+  {
+   "addr": "0x0081d314",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    2,
+    3,
+    10,
+    16,
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x0081d318",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    5,
+    6,
+    7,
+    12,
+    16,
+    22,
+    22
+   ]
+  },
+  {
+   "addr": "0x0081d320",
+   "type": "u8",
+   "count": 22,
+   "stride": 1,
+   "values": [
+    0,
+    0,
+    1,
+    1,
+    2,
+    5,
+    13,
+    21
+   ]
+  },
+  {
+   "addr": "0x007c2f28",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    5,
+    13,
+    21,
+    7
+   ]
+  },
+  {
+   "addr": "0x0082fd45",
+   "type": "u8",
+   "values": [
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    "0xff",
+    0
+   ]
+  },
+  {
+   "addr": "0x0085021e",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    "0x20",
+    "0x20",
+    "0x10",
+    "0x80",
+    "0x40",
+    "0x60",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x00850248",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    "0x20",
+    "0x20",
+    "0x10",
+    "0x80",
+    "0x40",
+    "0x60",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x00850272",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    "0x20",
+    "0x20",
+    "0x10",
+    "0x80",
+    "0x40",
+    "0x60",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0085029c",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    "0x20",
+    "0x20",
+    "0x10",
+    "0x80",
+    "0x40",
+    "0x60",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x008502c6",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    "0x20",
+    "0x20",
+    "0x10",
+    "0x80",
+    "0x40",
+    "0x60",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x008502f0",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    "0x20",
+    "0x20",
+    "0x10",
+    "0x80",
+    "0x40",
+    "0x60",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x008517ff",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    "0x20",
+    "0x20",
+    "0x10",
+    "0x80",
+    "0x40",
+    "0x60",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x00851829",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    "0x20",
+    "0x20",
+    "0x10",
+    "0x80",
+    "0x40",
+    "0x60",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x00851853",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    "0x20",
+    "0x20",
+    "0x10",
+    "0x80",
+    "0x40",
+    "0x60",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0085187d",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    "0x20",
+    "0x20",
+    "0x10",
+    "0x80",
+    "0x40",
+    "0x60",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x008518a7",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    "0x20",
+    "0x20",
+    "0x10",
+    "0x80",
+    "0x40",
+    "0x60",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x008518d1",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    "0x20",
+    "0x20",
+    "0x10",
+    "0x80",
+    "0x40",
+    "0x60",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x00838686",
+   "type": "ptr",
+   "count": 22,
+   "stride": 4,
+   "size": 64,
+   "fill": "u8{=0x20,0x41,0x42,0x43,0x61,0x62,0x7a,0x2e,0x31,0}"
+  },
+  {
+   "addr": "0x00833cc9",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    "0x17d",
+    "0x1b1"
+   ]
+  },
+  {
+   "addr": "0x00aa2d48",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    "0x17d",
+    "0x1b1"
+   ]
+  }
+ ]
+}

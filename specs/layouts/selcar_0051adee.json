@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x0051adee passes esi = [0x66d820] (the current car) to 0x418901, which reads byte [esi+0x202] with no test (eax = 0x625abc + byte*0xa8), so the pointer is one of the 22 car records 0x66fef0 + k*0x41c, k 0..21. state_00437888 also draws k = 22 (one past the array: a 'no car' value its own compares need), which here made 0x418901 read the order list (0x675958+0x202, never varied); this layout, composed after carbg_0066fef0+state_00437888, keeps it on a real car whose +0x202 byte carbg_0066fef0 varies.",
+ "globals": [
+  {"addr": "0x0066d820", "type": "u32", "points_into": {"base": "0x0066fef0", "stride": "0x41c", "lo": 0, "hi": 21}}
+ ]
+}

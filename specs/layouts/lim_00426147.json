@@ -1,0 +1,25 @@
+{
+  "_evidence": "Tuning dwords of 0x00426147, read only here (xref: no writer; static 0x3c00 and 0x1800): the distance limit 0x603e18 (cmp edx; jge, signed) draws its static value, values on both sides of the car distances of car_00426147 (0, -1, 0x1000, 0x2000, 0x8000) and large limits (0x60000000, 0x7fffffff) under which the overflowing distances reach the weight clamps; the gain 0x601b58 (imul; shrd 14) is any i32. No divisor or index.",
+  "globals": [
+    {
+      "addr": "0x00603e18",
+      "type": "u32",
+      "values": [
+        "0x3c00",
+        "0x3c00",
+        "0x2000",
+        "0x1000",
+        0,
+        "0xffffffff",
+        "0x8000",
+        "0x60000000",
+        "0x7fffffff",
+        "0x7fffffff"
+      ]
+    },
+    {
+      "addr": "0x00601b58",
+      "type": "i32"
+    }
+  ]
+}

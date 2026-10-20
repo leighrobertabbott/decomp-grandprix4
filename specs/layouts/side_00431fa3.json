@@ -1,0 +1,6 @@
+{
+  "_evidence": "Car byte +0x7e of all 22 car records at 0x66fef0 (0x431fc2 movzx eax,[esi+0x7e], stored to 0x62a96c and passed to 0x431efb, which loads ebx = [eax*4 + 0x62a970], one of the four entry pointers of state_00431efb): the index is 0..3 (a larger byte would load a pointer from past the 4-entry table, which the game never does), so it is drawn 0..3 and every entry, with its own header and records, is used; static zero only ever used entry 0. Compose after cars_0066fef0+state_00431efb+state_00432f18.",
+  "globals": [
+    {"addr": "0x0066ff6e", "type": "u8", "count": 22, "stride": "0x41c", "lo": 0, "hi": 3}
+  ]
+}

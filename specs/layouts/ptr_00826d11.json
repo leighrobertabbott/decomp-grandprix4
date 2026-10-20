@@ -1,0 +1,15 @@
+{
+ "_evidence": "0x00535aa4 dereferences the unaligned pointer global [0x826d11] at +0x40: a fresh 0x48-byte random block; 0x7a93e0 free.",
+ "globals": [
+  {
+   "addr": "0x00826d11",
+   "type": "ptr",
+   "size": 72,
+   "fill": "bytes"
+  },
+  {
+   "addr": "0x007a93e0",
+   "type": "i32"
+  }
+ ]
+}

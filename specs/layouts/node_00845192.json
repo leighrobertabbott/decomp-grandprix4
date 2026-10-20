@@ -1,0 +1,13 @@
+{
+ "_evidence": "Node A behind the cell 0x845192 (see cell_00845192): +0 = pointer to the next node (written at +0x12 by 0x52f5bd/0x52f5d7), other bytes random.",
+ "size": 32,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": 0,
+   "type": "ptr",
+   "size": 32,
+   "fill": "bytes"
+  }
+ ]
+}

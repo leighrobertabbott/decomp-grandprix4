@@ -1,0 +1,31 @@
+{
+ "_evidence": "esi record of 0x00529ee2 (menu value handler over 0x539944/0x539a13 like 0x529dab): the value cell pointer +0xe is read through 0x539944 (width selector byte +0xd & 3) and, when u8 0x81d1eb is 0xff, the result is also stored through the second target pointer +0x36 by 0x539a13 - both real 8-byte buffers (dword store at most), never random. The rest of the 0x40-byte record is random (bit 2 of +0x1e set in about half the cases). Global part as rec_00529dab: 0x81d1eb is 0xff in half the cases.",
+ "size": 64,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0xe",
+   "type": "ptr",
+   "size": 8,
+   "fill": "bytes"
+  },
+  {
+   "off": "0x36",
+   "type": "ptr",
+   "size": 8,
+   "fill": "bytes"
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x0081d1eb",
+   "type": "u8",
+   "values": [
+    "0xff",
+    "0xff",
+    0,
+    1
+   ]
+  }
+ ]
+}

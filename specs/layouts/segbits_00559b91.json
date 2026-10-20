@@ -1,0 +1,41 @@
+{
+ "_evidence": "0x00559b91: edi = [0x866f08] + 0x2520, i.e. 27 records after the grid-start segment record (state_0040cb38 keeps [0x866f08] at records 0..20 of the 0x160-byte array 0x8943a0, so edi is record 27..47), ax = 0x300 & word [edi+0x2c], then 0x559bab ORs ax into words +0x3c/+0x30/+0x34/+0x38/+0x40. Those six words of records 27..47 are run-time segment flags (zero there before): random u16, so both mask bits 8/9 and the OR targets vary. Pure and/or: every value is valid. Compose after state_0040cb38.",
+ "globals": [
+  {
+   "addr": "0x8968ec",
+   "type": "u16",
+   "count": 21,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8968f0",
+   "type": "u16",
+   "count": 21,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8968f4",
+   "type": "u16",
+   "count": 21,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8968f8",
+   "type": "u16",
+   "count": 21,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8968fc",
+   "type": "u16",
+   "count": 21,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x896900",
+   "type": "u16",
+   "count": 21,
+   "stride": "0x160"
+  }
+ ]
+}

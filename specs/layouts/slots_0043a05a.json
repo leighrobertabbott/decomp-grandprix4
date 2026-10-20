@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x0043a05a scans the slot bytes [eax+0x0063db7c] for eax = 1..15 (cmp byte, 0 / je at 0x0043a05f; loop ends at eax == 0x10) and marks the first free (zero) slot 0xff (stc), or returns clc when all 15 are used. Byte 0 is never read. Each of the 15 bytes is zero (free) with probability 1/10, otherwise 0xff (the used marker this function writes) or another nonzero value, so cases hit the first free slot at varied positions and about a fifth exhaust the scan. Any byte value is valid.",
+  "globals": [
+    {"addr": "0x0063db7d", "type": "u8", "count": 15, "stride": 1, "values": [0, "0xff", "0xff", "0xff", "0xff", "0xff", "0xff", 1, "0x80", "0x7f"]}
+  ]
+}

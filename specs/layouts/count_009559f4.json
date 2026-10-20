@@ -1,0 +1,11 @@
+{
+ "_evidence": "Entry count [0x9559f4] incremented by 0x00559024 and asserted below 0x200 (int3 guard): drawn 0..0x1fe.",
+ "globals": [
+  {
+   "addr": "0x009559f4",
+   "type": "u32",
+   "lo": 0,
+   "hi": 510
+  }
+ ]
+}

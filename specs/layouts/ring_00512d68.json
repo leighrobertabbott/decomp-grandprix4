@@ -1,0 +1,17 @@
+{
+ "_evidence": "0x00512d68 (compose after walk_00512cc1+idx_00520b65; this layout redraws every ring field they set except the start row 0x88f624, which 0x512d68 writes at 0x512d6e before 0x512cc1 reads it). Ring of index 2 (edx=2 tables): lower bound L [0x679ba4] ('cmp/sub eax,[edx*4+0x679b9c]', main walk 'mov eax,[edx*4+0x679b9c]' after a wrap), wrap end W [0x679bb4] ('add eax,[edx*4+0x679bac]' in 0x512cc1, 'cmp eax,[edx*4+0x679bac]; jle' in the walk), position P [0x679b3c] and upper limit U [0x679b2c] (0x512ca2: start row S = P if P <= U else L). The game's only ring initialiser 0x5376aa sets L = 3 and W = 2 + [0x7a8e1c] (row count N >= 1), and 0x520ad0 keeps P in L..W, so W >= L always: L draws 0..3 and W 3..7 (W >= L in every case). P draws 0..7 and equals W in about half the cases (alias): P = W is the only position outside 0x512cc1's backward cycle L..W-1, the one case where 0x512cc1(6)/(0x14) return a real row instead of hitting the marker S (needed for the [0x88f628]/[0x88f62c] equality blocks at 0x512e11/0x512e19). U draws -1..7 (0x520584 stores -1). Row bounds: with W > L 0x512cc1 never returns below 0 (a wrap adds W-L >= 1), with W = L it returns at worst P-3 >= -3, and -1 on failure; when byte [0x7c2e82] is set that result becomes the start row (0x512dae), so the walk visits rows -3..7 (R+1 > W resets to L; P <= 7). The slot area [0x7a8e18] (row r at base + r*pitch, 'imul [0x6975c4]; add esi,[0x7a8e18]') is therefore a 0x23c00-byte buffer with base = buffer + 0x9c00 (3 rows of the largest pitch before it, 8 rows after: rows -3..7 plus a full-row rep movsb). Pitch [0x6975c4] is drawn from the real slot sizes 0x2d78/0x3400 (slot_00520b1b: state block + 0x2978) and the small 0x24/0x40 (the code is generic in it; all multiples of 4 so every row tag is a dword of the fill). The fill draws dwords mostly from {1,2,3} (the row tags 'cmp eax,1/2/3'; other values copy nothing), which also feeds the step [0x88f604] (row S + 0x20, read by 0x512d1a) and the +0x20 dword 0x512d3f rewrites in a full-row copy. N [0x7a8e1c] is the 'dec ecx; jne' walk count (0 would be 2^32 rows) and 0x512cc1's step limit: 1..24 with 20+ often (0x512cc1(0x14) needs N >= 20). Byte [0x7c2e82] ('test 0xff') and byte [0x88f5fc] (the 'cmp byte [0x88f5fc],0' after a -1 result) take both values. [0x88f5f8] is the save-buffer cursor 0x512f2a stores from edi after copying the state block: 0x512d68 rewrites dword [ptr + 0x6c + 0x20] through 0x512d3f, so it points at a 0x100-byte buffer. The wrap span [0x7a8e2c]-[0x7a8e28] of 0x512d3f is plain arithmetic (random). Every read stays inside the buffers for every draw, so nothing can fault.",
+ "globals": [
+  {"addr": "0x00679ba4", "type": "i32", "lo": 0, "hi": 3},
+  {"addr": "0x00679bb4", "type": "i32", "lo": 3, "hi": 7},
+  {"addr": "0x00679b3c", "type": "i32", "lo": 0, "hi": 7, "alias": "0x00679bb4"},
+  {"addr": "0x00679b2c", "type": "i32", "lo": -1, "hi": 7},
+  {"addr": "0x007a8e1c", "type": "u32", "values": [1, 2, 3, 5, 6, 7, 12, 19, 20, 21, 22, 24]},
+  {"addr": "0x006975c4", "type": "u32", "values": ["0x24", "0x40", "0x2d78", "0x3400"]},
+  {"addr": "0x007a8e18", "type": "ptr", "size": "0x23c00", "bias": "0x9c00", "fill": "u32{1,2,3}"},
+  {"addr": "0x0088f5f8", "type": "ptr", "size": 256, "fill": "bytes"},
+  {"addr": "0x007c2e82", "type": "u8", "values": [0, "0xff"]},
+  {"addr": "0x0088f5fc", "type": "u8", "values": [0, "0xff"]},
+  {"addr": "0x007a8e28", "type": "u32"},
+  {"addr": "0x007a8e2c", "type": "u32"}
+ ]
+}

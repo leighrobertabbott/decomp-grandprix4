@@ -1,0 +1,12 @@
+{
+  "_evidence": "0x00418d27 loops over the 22 car records at 0x0066fef0 (stride 0x41c, ecx = 0x16). For each, 0x418901 selects entry 0x625abc + byte [rec+0x202]*0xa8 (0x006700f2 + k*0x41c; 22 entries, so 0..21), then: entry dword +0 bit 0x80 (jne skip), dword [rec+0x254] (0x00670144 + k*0x41c; zero skips) and the sign of [0x0066d814] - [rec+0x254] (jns skip); otherwise it zeroes entry +0x98/+0x9c (varied here so the stores are observable), clears bit 7 of entry +0 and sets it again when byte 0x00638d1c is zero. Generic u32/u8 draws give zero, both signs of the difference and both bit states; nothing can fault. Several records may select the same entry, as in the game.",
+  "globals": [
+    {"addr": "0x006700f2", "type": "u8", "lo": 0, "hi": 21, "count": 22, "stride": "0x41c"},
+    {"addr": "0x00670144", "type": "u32", "count": 22, "stride": "0x41c"},
+    {"addr": "0x00625abc", "type": "u32", "count": 22, "stride": "0xa8"},
+    {"addr": "0x00625b54", "type": "u32", "count": 22, "stride": "0xa8"},
+    {"addr": "0x00625b58", "type": "u32", "count": 22, "stride": "0xa8"},
+    {"addr": "0x0066d814", "type": "u32"},
+    {"addr": "0x00638d1c", "type": "u8"}
+  ]
+}

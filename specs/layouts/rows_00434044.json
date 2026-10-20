@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x00434044: 'bts dword [eax*4+0x0062ff6c], edx' with edx = (byte [esi+0x7c] & 0x3f) - 1 clamped to <= 0x15, i.e. -1..21. The register bit offset is signed, so edx = -1 sets bit 31 of the dword BEFORE the row (0x0062ff68 + eax*4); edx 0..21 stays in the row. The spec's eax 0..31 (rows 0..15 of the car bit masks, 0x00433fe0 returns 0x0062ff6c, plus the 0x1c-stride table at 0x0062ffac they run into) reaches dwords 0x0062ff68..0x0062ffeb. They are bit-mask state (BSS, zero in the image, set at run time), so all 33 dwords draw any u32: both old bit values (CF) and the RMW of existing bits.",
+  "globals": [
+    {"addr": "0x0062ff68", "type": "u32", "count": 33, "stride": 4}
+  ]
+}

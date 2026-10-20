@@ -1,0 +1,47 @@
+{
+ "_evidence": "0x0054cc37 (colour select; also reached from 0x54d22f/0x54d236 after 'lodsb'): flag bytes 'cmp [0x833cd6],0; je' (je: clamp al to 0..0x19 ('cmp al,0x19; jbe' else 0x18) and read the word table [al*2+0x838bd4], 26 words), 'cmp [0x7ad869],0; je' (je: store al to 0x833cd5) and 'cmp [0xae6740],0; je' (also tested by the callee 0x54cc96: 15/16-bit colour repacking), else the word table [al*2+0x6e2568] (256 words, zero in the image: a run-time colour conversion table). The three flags draw zero and nonzero values, both word tables are random u16 (only masked/shifted and stored), so every path is valid.",
+ "globals": [
+  {
+   "addr": "0x00833cd6",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x007ad869",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    1,
+    "0x80"
+   ]
+  },
+  {
+   "addr": "0x00ae6740",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x006e2568",
+   "type": "u16",
+   "count": 256,
+   "stride": 2
+  },
+  {
+   "addr": "0x00838bd4",
+   "type": "u16",
+   "count": 26,
+   "stride": 2
+  }
+ ]
+}

@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00530dda copies 0x38 bytes from 0x827425 to 0x7ad7f8 ('mov esi,0x827425; mov edi,0x7ad7f8; mov ecx,0x38; rep movsb'). The source bytes are data reached through esi (never varied by fuzz:i32): any byte pattern is valid. The destination is overwritten.",
+ "globals": [
+  {"addr": "0x00827425", "type": "u8", "count": 56, "stride": 1}
+ ]
+}

@@ -1,0 +1,20 @@
+{
+ "_evidence": "0x5376aa: 'test byte [0x8299b5],0x80' (descriptor block 0x8299a8 +0xd, reached through edx so fuzz:i32 never varies it) gates the whole body; the dword [0x8299bc] (+0x14) is compared/copied. Zero in the image; any byte/dword is valid (only tested and copied).",
+ "globals": [
+  {
+   "addr": "0x008299b5",
+   "type": "u8",
+   "values": [
+    0,
+    "0x80",
+    "0xff",
+    "0x7f",
+    1
+   ]
+  },
+  {
+   "addr": "0x008299bc",
+   "type": "u32"
+  }
+ ]
+}

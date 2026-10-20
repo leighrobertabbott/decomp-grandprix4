@@ -1,0 +1,19 @@
+{
+  "_evidence": "0x0040705f: edi is a ring record (0x160 bytes, array 0x008943a0; fixed here at record 0) and the code reads this record's words +0x154..+0x15a and the next record's (+0x2b4..+0x2ba = next +0x154..). cmp edi,[0x00891500] (unsigned, jae exit) is the ring/pit boundary, a record-aligned pointer into the same array (k 0..6; k=0 takes the exit). xor dl,[0x00868582] / js and test [0x868582] sign: byte any value, edx any value (callers pass 0 or -1). The or of words +0x2b4|+0x2b8|+0x154|+0x158 (je exit at 0x407096) and their own zero tests (0x4070e6, 0x4070f1, 0x407144, 0x407153) need zeros often, so those four words draw from a list that is zero about 36% of the time, otherwise spread over both signs and around 0x4000; +0x156/+0x15a/+0x2b6/+0x2ba are full-range i16. The f64 fractions 0x00627950/0x00627958 are fistp'd after *16384: callers fill them as clamp(x,0,m)/m or int32*2^-14 (0x407ffb, unbounded int), so they use the generic f64 mix (0, +-1, 0.5, [-1,1], +-1000, +-1e6 where fistp gives the indefinite 0x80000000 - masked, no fault). 0x006f2b04 is the initialised, never-written constant 16384.0 (unvaried). 0x006277b8/0x006277bc are only written here and read stale at 0x4071a3/0x4071f6 when block 1 is skipped, so they are full-range i32. All three idivs clamp the numerator to 0..den with den >= 1: no input faults. Dead blocks: 0x4071de/0x4071ea (quotient always 0..0x4000) and 0x40722d (eax=max(esi,0) <= max(bc,1)).",
+  "globals": [
+    {"addr": "0x00891500", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 6}},
+    {"addr": "0x00868582", "type": "u8"},
+    {"addr": "0x00627950", "type": "f64"},
+    {"addr": "0x00627958", "type": "f64"},
+    {"addr": "0x006277b8", "type": "i32"},
+    {"addr": "0x006277bc", "type": "i32"},
+    {"addr": "0x008944f4", "type": "u16", "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, "0x40", "0x400", "0x1000", "0x2000", "0x3000", "0x3fff", "0x4000", "0x4001", "0x5000", "0x7fff", "0x8000", "0xc000", "0xe000", "0xfc00", "0xffc0", "0xffff"]},
+    {"addr": "0x008944f8", "type": "u16", "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, "0x40", "0x400", "0x1000", "0x2000", "0x3000", "0x3fff", "0x4000", "0x4001", "0x5000", "0x7fff", "0x8000", "0xc000", "0xe000", "0xfc00", "0xffc0", "0xffff"]},
+    {"addr": "0x00894654", "type": "u16", "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, "0x40", "0x400", "0x1000", "0x2000", "0x3000", "0x3fff", "0x4000", "0x4001", "0x5000", "0x7fff", "0x8000", "0xc000", "0xe000", "0xfc00", "0xffc0", "0xffff"]},
+    {"addr": "0x00894658", "type": "u16", "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, "0x40", "0x400", "0x1000", "0x2000", "0x3000", "0x3fff", "0x4000", "0x4001", "0x5000", "0x7fff", "0x8000", "0xc000", "0xe000", "0xfc00", "0xffc0", "0xffff"]},
+    {"addr": "0x008944f6", "type": "i16"},
+    {"addr": "0x008944fa", "type": "i16"},
+    {"addr": "0x00894656", "type": "i16"},
+    {"addr": "0x0089465a", "type": "i16"}
+  ]
+}

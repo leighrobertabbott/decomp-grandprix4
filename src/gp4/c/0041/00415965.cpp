@@ -36,4 +36,4 @@ void __cdecl FUN_00415965(gp4::Regs* r) {
     r->eax = shifted + offset;
     r->eflags = (r->eflags & ~0x8d5u) | additionFlags32(shifted, offset);
 }
-GP4_IMPL(0x00415965, FUN_00415965, "regs() -> (eax, cf, pf, af, zf, sf, of); globals=fuzz:i32")
+GP4_IMPL(0x00415965, FUN_00415965, "regs() -> (eax, cf, pf, af, zf, sf, of); globals=fuzz:i32+layout=state_0066d8c0")

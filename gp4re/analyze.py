@@ -265,6 +265,8 @@ class Analyzer:
         if not m:
             return []
         base, index, scale, disp = parse_mem(m.group(1))
+        if base and not index and not disp:
+            return self._add_table(f, ins, base)
         if not (index and scale == 4 and base is None and self.in_text(disp)):
             return []
         limit = self._table_bound(f, ins, index)
@@ -279,6 +281,35 @@ class Analyzer:
             entries.append(e)
         if entries:
             f.jtables.append((disp, len(entries)))
+        return entries
+
+    def _add_table(self, f: Func, jmp: Insn, reg: str) -> list[int]:
+        # The legacy (R3) switch form `[cmp reg,N ...] shl reg,2; add reg,TABLE; jmp [reg]`:
+        # the add must directly precede the jump. Entries are code within 0x4000 bytes of
+        # the table, which ends before the lowest target that follows it (tools/fix_switches.py).
+        prev = [a for a in f.insns if a < jmp.va and a + f.insns[a].size == jmp.va]
+        if not prev:
+            return []
+        add = f.insns[prev[0]]
+        ops = split_operands(add.ops)
+        table = _int(ops[1]) if add.mn == "add" and len(ops) == 2 and REG32.get(ops[0]) == REG32.get(reg) else None
+        if table is None or not self.in_text(table):
+            return []
+        limit = self._table_bound(f, add, reg) or 256
+        entries = []
+        for k in range(min(limit, 256)):
+            v = self.b.u32(table + 4 * k)
+            if not self.in_text(v) or abs(v - table) > 0x4000:
+                break
+            entries.append(v)
+            after = [t for t in entries if t > table]
+            if after and table + 4 * (k + 1) >= min(after):
+                break
+        after = [t for t in entries if t > table]
+        if after:
+            entries = entries[:(min(after) - table) // 4]
+        if entries:
+            f.jtables.append((table, len(entries)))
         return entries
 
     def _table_bound(self, f: Func, jmp: Insn, index_reg: str) -> int | None:

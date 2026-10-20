@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x0043cb8f adds byte [0x0066d802 + (edx>>1)] (edx = car 0..21, so team 0..10) to byte [ebx+1] and clamps the signed sum to 1..20. The 11 bytes are run-time state: 0x0043cd92 stores them per team (al from 0x0043cc82) every call. The add and the signed compares accept any byte, so all 11 draw any u8 (both clamps and the in-range case).",
+  "globals": [
+    {"addr": "0x0066d802", "type": "u8", "count": 11, "stride": 1}
+  ]
+}

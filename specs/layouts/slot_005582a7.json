@@ -1,0 +1,22 @@
+{
+ "_evidence": "Slot counter [0x874d2c] incremented by 0x005582a7 and asserted below 0x10 (int3 guard): drawn 0..0xe; the mode byte 0x86857c is 2 (active) or other.",
+ "globals": [
+  {
+   "addr": "0x00874d2c",
+   "type": "u32",
+   "lo": 0,
+   "hi": 14
+  },
+  {
+   "addr": "0x0086857c",
+   "type": "u8",
+   "values": [
+    2,
+    2,
+    2,
+    0,
+    1
+   ]
+  }
+ ]
+}

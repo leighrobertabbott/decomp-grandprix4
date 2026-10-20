@@ -1,0 +1,7 @@
+{
+ "_evidence": "Car record at esi for 0x00424878's callee 0x424a21 (overlay after car_0041e500+rec_00420e1d): dword +0x1c is the car's current track-segment record (0x424a21 reads word +6 of it, 0x443db0 passes it as edi to 0x402fcd, which reads the record and its successor), so it is a record address 0..25 of the 0x160-stride array at 0x8943a0, as in car_00426fa5 (car_0041e500's 0x70-byte block is too small for 0x402fcd's 0x16c-byte read).",
+ "size": 1052,
+ "fields": [
+  {"off": "0x1c", "type": "u32", "values": ["0x8943a0", "0x894500", "0x894660", "0x8947c0", "0x894920", "0x894a80", "0x894be0", "0x894d40", "0x894ea0", "0x895000", "0x895160", "0x8952c0", "0x895420", "0x895580", "0x8956e0", "0x895840", "0x8959a0", "0x895b00", "0x895c60", "0x895dc0", "0x895f20", "0x896080", "0x8961e0", "0x896340", "0x8964a0", "0x896600"]}
+ ]
+}

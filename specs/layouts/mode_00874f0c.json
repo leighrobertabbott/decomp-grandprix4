@@ -1,0 +1,39 @@
+{
+ "_evidence": "0x005260cd tests [0x874f24] == -1 (branch 0x5261d9) and divides by the mode sizes 0x874f0c..0x874f18 (kept positive).",
+ "globals": [
+  {
+   "addr": "0x00874f24",
+   "type": "u32",
+   "values": [
+    "0xffffffff",
+    0,
+    1,
+    "0x100"
+   ]
+  },
+  {
+   "addr": "0x00874f0c",
+   "type": "u32",
+   "lo": 2,
+   "hi": 4096
+  },
+  {
+   "addr": "0x00874f10",
+   "type": "u32",
+   "lo": 1,
+   "hi": 4096
+  },
+  {
+   "addr": "0x00874f14",
+   "type": "i32",
+   "lo": 2,
+   "hi": 65536
+  },
+  {
+   "addr": "0x00874f18",
+   "type": "i32",
+   "lo": 1,
+   "hi": 65536
+  }
+ ]
+}

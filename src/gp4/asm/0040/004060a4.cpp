@@ -6,4 +6,4 @@ void __cdecl FUN_004060a4(gp4::Regs* r) {
     r->edi += 0x160u;
     gp4::call_regs(0x004060b0, *r);
 }
-GP4_IMPL(0x004060a4, FUN_004060a4, "regs(edi:u32) -> (edi, cf, pf, af, zf, sf, of); globals=fuzz:i32")
+GP4_IMPL(0x004060a4, FUN_004060a4, "regs(edi:rec[0x8943a0,0x160,0..15]) -> (edi, cf, pf, af, zf, sf, of); globals=layout=seg_004060a4")

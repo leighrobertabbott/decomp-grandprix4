@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x0054ffcf interpolates over one of two 10-record key tables (0x934f7c, or 0x9350bc when 'test byte [0x934f64],0xff' is nonzero): 'mov eax,[0x934f04]; cmp eax,0; jge; cmp eax,0xf00; jle' clamps the parameter to 0..0xf00, then 'cmp eax,[esi+0x20]; jl; add esi,0x20' walks to the bracketing pair and the Q14 fraction t = ((x - key) << 14) / (next - key) drives six imul/shrd interpolations. The two tables are initialised .data (keys 0,0x10,0x20,..,0x1000 doubling, last > 0xf00) referenced only by this reader, i.e. constant tables, and keep their image values. A uniform fuzzed parameter is almost always clamped (negative -> 0, > 0xf00 -> 0xf00), so only records 0 and 8 were interpolated: the parameter dword 0x934f04 is drawn from -0x100..0x1000 (both clamps plus every bracket 0..8 with nonzero fractions) and the table selector byte 0x934f64 takes zero and nonzero values. Every value in the range is valid (x - key < next - key, so the unsigned div quotient is < 2^14).",
+ "globals": [
+  {"addr": "0x00934f04", "type": "i32", "lo": -256, "hi": 4096},
+  {"addr": "0x00934f64", "type": "u8", "values": [0, 0, 1, "0x80", "0xff"]}
+ ]
+}

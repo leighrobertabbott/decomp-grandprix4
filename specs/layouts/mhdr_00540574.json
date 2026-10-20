@@ -1,0 +1,30 @@
+{
+ "size": 48,
+ "fill": "bytes",
+ "_evidence": "Menu header [0x82fd34] as read by 0x00540574: 'or eax,eax; je' (nullable), 'test byte [eax+0x11],0x40; je' (+0x11 mixes bit 6 set/clear), 'cmp dword [eax+0x24],0; je' (+0x24 zero/nonzero). Only these two fields are read.",
+ "fields": [
+  {
+   "off": "0x11",
+   "type": "u8",
+   "values": [
+    0,
+    "0x40",
+    "0x40",
+    "0x41",
+    "0xbf",
+    "0xff"
+   ]
+  },
+  {
+   "off": "0x24",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    1,
+    "0x84300a",
+    "0xffffffff"
+   ]
+  }
+ ]
+}

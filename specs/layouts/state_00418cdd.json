@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x00418cdd (caller 0x437859: eax and edx are two car pointers) clears/sets bits 9 and 10 of dword +0 of the car's record at 0x625abc (22 records, stride 0xa8, varied) and takes the bit-10 path when edx == [0x679d30] or esi (= eax) == [0x679d30] (the player-car pointer, see state_0040f898): alias_reg makes the global equal the eax argument in about half the cases, and otherwise its generic u32 draw sometimes equals the small edx values of the spec. The two 'cmp eax,0; je' after 'mov eax,-1' (0x418cf7, 0x418d1d) are never taken, as exempted for the twin 0x00418c68. No value faults.",
+  "globals": [
+    {"addr": "0x00679d30", "type": "u32", "alias_reg": "eax"},
+    {"addr": "0x00625abc", "type": "u32", "count": 22, "stride": "0xa8"}
+  ]
+}

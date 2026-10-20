@@ -1,0 +1,10 @@
+{
+ "_evidence": "Car record at esi for 0x00417fc5 (random background): dword +0x240 is the per-record mask ('mov ebp,[esi+0x240]', 'cmp al,0x20; jae' per record, 'shr ebp,8'), so its four bytes are drawn below 0x20 in about half the picks and above otherwise; dwords +0/+4 are the car position the callee 0x41e156 adds to the rotated offset before the 0x50c980 line walk, i.e. world coordinates of the i16 record frame << 11 (-0x4000000..0x3fff7ff, as car_004129fa).",
+ "size": 584,
+ "fill": "bytes",
+ "fields": [
+  {"off": 0, "type": "i32", "lo": -67108864, "hi": 67106815},
+  {"off": 4, "type": "i32", "lo": -67108864, "hi": 67106815},
+  {"off": "0x240", "type": "u8", "count": 4, "stride": 1, "values": [0, 1, 7, "0x10", "0x1f", "0x20", "0x80", "0xff"]}
+ ]
+}

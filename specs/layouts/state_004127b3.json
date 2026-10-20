@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x004127b3 follows the car pointer [0x601a74] (random dwords faulted every case) to its block (car_004127b3) and the record at +0x1c; besides those it reads the sign of dword 0x6036dc and the multiplier dword 0x6038e8 (any i32; the idiv cannot overflow, see car_004127b3).",
+  "globals": [
+    {"addr": "0x00601a74", "type": "ptr", "size": 656, "fill": "layout=car_004127b3"},
+    {"addr": "0x006036dc", "type": "i32"},
+    {"addr": "0x006038e8", "type": "i32"}
+  ]
+}

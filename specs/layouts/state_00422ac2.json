@@ -1,0 +1,57 @@
+{
+  "_evidence": "0x00422ac2: pointer global 0x609744 is dereferenced unconditionally ('mov eax,[0x609744]; mov eax,[eax+0x4c]'), so it addresses a real block (obj_00422ac2: the +0x4c flag gate). Then max(|[0x607f34]|,|[0x607f3c]|) < [0x6080b0] and |[0x607f38]| < [0x6080b4] (test/jns/neg, signed cmp/jge) gate the 0x421887 transform and the fsincos/fcos/fistp scaling: the three positions are -0x20000..0x20000 (both signs) and the two limits 0..0x20000 so each compare goes both ways (full-range fuzz made both limits fail or pass together). Compares only: every value is valid (abs of 0x80000000 stays negative and simply fails the limit). The remaining direct inputs are listed so the spec needs no fuzz:i32 (which would overwrite the low dword of the never-written f64 constant 0x6f2bdc, pi/2^31): the angles [0x6082dc]/[0x6082d4] (fild * pi/2^31, fsincos/fcos) and the gains [0x6080c0]/[0x6080b8] (imul/shrd 14 of the clamped fistp result) are any i32; 0x607fd4/0x607fd8 are written by 0x421887 from view_00609860's positions and matrix before they are read.",
+  "globals": [
+    {
+      "addr": "0x00609744",
+      "type": "ptr",
+      "size": 80,
+      "fill": "layout=obj_00422ac2"
+    },
+    {
+      "addr": "0x00607f34",
+      "type": "i32",
+      "lo": -131072,
+      "hi": 131072
+    },
+    {
+      "addr": "0x00607f38",
+      "type": "i32",
+      "lo": -131072,
+      "hi": 131072
+    },
+    {
+      "addr": "0x00607f3c",
+      "type": "i32",
+      "lo": -131072,
+      "hi": 131072
+    },
+    {
+      "addr": "0x006080b0",
+      "type": "i32",
+      "lo": 0,
+      "hi": 131072
+    },
+    {
+      "addr": "0x006080b4",
+      "type": "i32",
+      "lo": 0,
+      "hi": 131072
+    },
+    {
+      "addr": "0x006082d4",
+      "type": "i32"
+    },
+    {
+      "addr": "0x006082dc",
+      "type": "i32"
+    },
+    {
+      "addr": "0x006080b8",
+      "type": "i32"
+    },
+    {
+      "addr": "0x006080c0",
+      "type": "i32"
+    }
+  ]
+}

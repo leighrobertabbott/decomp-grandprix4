@@ -1,0 +1,28 @@
+{
+ "_evidence": "0x00536f64 walks the record table [0x829278] (16-byte records with negative +8 links, -2 terminates) from the base [0x829710]; sentinel [0x829708] = -2.",
+ "globals": [
+  {
+   "addr": "0x00829710",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    "0x100",
+    "0x1000"
+   ]
+  },
+  {
+   "addr": "0x00829278",
+   "type": "ptr",
+   "size": 131072,
+   "fill": "layout=recs_00829278"
+  },
+  {
+   "addr": "0x00829708",
+   "type": "u32",
+   "values": [
+    "0xfffffffe"
+   ]
+  }
+ ]
+}

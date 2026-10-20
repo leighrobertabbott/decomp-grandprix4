@@ -90,4 +90,4 @@ void __cdecl FUN_004200a7(gp4::Regs* r) {
     r->ebp = ebp;
     r->eflags = (r->eflags & ~0x8d5u) | flags;
 }
-GP4_IMPL(0x004200a7, FUN_004200a7, "regs(esi:ptr[0x3a4]:bytes) -> (eax, ebx, edx, ebp, cf, pf, af, zf, sf, of); globals=fuzz:i32")
+GP4_IMPL(0x004200a7, FUN_004200a7, "regs(esi:ptr[0x3a4]:bytes) -> (eax, ebx, edx, ebp, cf, pf, af, zf, sf, of); globals=fuzz:i32+layout=integ_004200a7")

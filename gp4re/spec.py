@@ -7,11 +7,12 @@ Grammar (whitespace-insensitive)::
     arg     := type                       # stack/ecx/edx args for compiled conventions
              | reg ":" type               # regs convention: eax..ebp, st0..st7, arithmetic flags
     type    := i32 | u32 | i16 | u16 | i8 | u8 | f32 | f64 [ "[" lo ".." hi "]" ]
-             | ptr "[" size "]" [":" fill]
+             | ptr "[" size "]" [":" fill]   # nptr[...]: same, null in ~1/4 of cases
+             | rec "[" base "," stride "," lo ".." hi "]"   # base + k*stride, k in lo..hi
     fill    := f32 | f64 | i32 | bytes | zero | layout=<name>
     ret     := void | i32 | u32 | f32 | f64 | i64 | "(" out ("," out)* ")" | "()"
     out     := eax|ebx|ecx|edx|esi|edi|ebp|st0..st7|cf|pf|af|zf|sf|of
-    opt     := tol=<float> | cases=<n> | fpucw=<hex> | globals=keep|fuzz:<f32|f64|i32>|layout=<name>
+    opt     := tol=<float> | cases=<n> | fpucw=<hex> | globals=keep|fuzz:<f32|f64|i32>|[fuzz:<k>+]layout=<name>[+<name>...]
              | emu=skip:<reason> | maxinsn=<n> | seed=<n>
 
 Examples::
@@ -47,6 +48,12 @@ class ArgType:
     hi: float | None = None
     size: int = 0            # ptr buffer size
     fill: str = "bytes"      # ptr fill
+    nullable: bool = False   # nptr: null in about a quarter of the cases
+    base: int = 0            # rec[base,stride,lo..hi]: value = base + k*stride
+    stride: int = 0
+    ref: str = ""            # rel[reg,stride,lo..hi]: value = <earlier input reg> + k*stride
+    choices: tuple = ()      # u32{a,b,c}: drawn from the set in about 3/4 of the cases
+    exclusive: bool = False  # u32{=a,b,c}: drawn only from the set (indexes, pointers)
 
 
 @dataclass
@@ -66,7 +73,8 @@ class Spec:
     fpucw: int | None = None
     globals: str = "keep"
     emu_skip: str | None = None
-    maxinsn: int = 20_000_000
+    maxinsn: int = 4_000_000          # per run; raise with maxinsn=<n> for long legitimate loops
+    wall: int = 0                     # emu gate wall clock (s) for very heavy routines; 0 = config default
     seed: int = 0
     raw: str = ""
 
@@ -79,24 +87,62 @@ class Spec:
         return sorted(o for o in self.outs if o.startswith("st"))
 
 
+def _bound(text: str) -> float:
+    """A range bound: decimal/float, or a hexadecimal integer such as 0x3fff or -0x80."""
+    if re.fullmatch(r"[-+]?0[xX][0-9a-fA-F]+", text):
+        return float(int(text, 16))
+    try:
+        return float(text)
+    except ValueError:
+        raise SpecError(f"bad range bound {text!r}") from None
+
+
 def _type(tok: str) -> ArgType:
     tok = tok.strip()
-    m = re.fullmatch(r"ptr\[(0x[0-9a-fA-F]+|\d+)\](?::(.+))?", tok)
+    m = re.fullmatch(r"(n?)ptr\[(0x[0-9a-fA-F]+|\d+)\](?::(.+))?", tok)
     if m:
+        nullable, m = bool(m.group(1)), re.fullmatch(r"n?ptr\[(0x[0-9a-fA-F]+|\d+)\](?::(.+))?", tok)
         fill = (m.group(2) or "bytes").strip()
-        if not (fill in ("f32", "f64", "i32", "bytes", "zero") or fill.startswith("layout=")):
+        ranged = re.fullmatch(r"(i8|u8|i16|u16|i32|u32|f32|f64)\[([-+0-9.eExXa-fA-F]+)\.\.([-+0-9.eExXa-fA-F]+)\]", fill)
+        valueset = re.fullmatch(r"(i8|u8|i16|u16|i32|u32)\{=?[-+0-9xXa-fA-F, ]+\}", fill)
+        if ranged or valueset:   # every element of the buffer drawn from this typed range / value set
+            _type(fill)   # validates the range or set against the element type
+        elif not (fill in ("f32", "f64", "i32", "bytes", "zero") or fill.startswith("layout=")):
             raise SpecError(f"bad ptr fill {fill!r}")
         size = int(m.group(1), 0)
         if size <= 0:
             raise SpecError("pointer buffers must have positive size")
-        if fill.startswith("layout=") and not re.fullmatch(r"layout=[A-Za-z0-9_-]+", fill):
-            raise SpecError("layout name must be a plain file stem")
-        return ArgType("ptr", size=size, fill=fill)
-    m = re.fullmatch(r"(i8|u8|i16|u16|i32|u32|f32|f64)(?:\[([-+0-9.e]+)\.\.([-+0-9.e]+)\])?", tok)
+        if fill.startswith("layout=") and not re.fullmatch(r"layout=[A-Za-z0-9_-]+(\+[A-Za-z0-9_-]+)*", fill):
+            raise SpecError("layout names must be plain file stems (layout=a or layout=a+b)")
+        return ArgType("ptr", size=size, fill=fill, nullable=nullable)
+    m = re.fullmatch(r"rec\[(0x[0-9a-fA-F]+|\d+),(0x[0-9a-fA-F]+|\d+),(0x[0-9a-fA-F]+|\d+)\.\.(0x[0-9a-fA-F]+|\d+)\]", tok)
+    if m:   # a record-aligned address into a fixed array (e.g. esi = 0x66fef0 + k*0x41c)
+        base, stride, lo, hi = (int(m.group(k), 0) for k in (1, 2, 3, 4))
+        if stride < 1 or lo > hi or base + hi * stride > 0xFFFFFFFF:
+            raise SpecError("rec[base,stride,lo..hi] needs stride >= 1, lo <= hi and a 32-bit range")
+        return ArgType("rec", float(lo), float(hi), base=base, stride=stride)
+    m = re.fullmatch(r"(i8|u8|i16|u16|i32|u32)\{(=?)([-+0-9xXa-fA-F, ]+)\}", tok)
+    if m:   # an integer drawn mostly ({a,b}) or only ({=a,b}) from a value set
+        bits = INT_TYPES[m.group(1)] * 8
+        signed = m.group(1).startswith("i")
+        vals = tuple(int(v.strip(), 0) for v in m.group(3).split(",") if v.strip())
+        lower = -(1 << (bits - 1)) if signed else 0
+        upper = (1 << (bits - int(signed))) - 1
+        if not vals or any(v < lower or v > upper for v in vals):
+            raise SpecError(f"value set {tok!r} must be nonempty and fit its type")
+        return ArgType(m.group(1), choices=vals, exclusive=bool(m.group(2)))
+    num = r"(-?0x[0-9a-fA-F]+|-?\d+)"
+    m = re.fullmatch(rf"rel\[(e[abcd]x|esi|edi|ebp),{num},{num}\.\.{num}\]", tok)
+    if m:   # a register tied to an earlier input register (e.g. ebp = edi + k*0x160)
+        stride, lo, hi = int(m.group(2), 0), int(m.group(3), 0), int(m.group(4), 0)
+        if stride == 0 or lo > hi or abs(stride) * max(abs(lo), abs(hi)) > 0xFFFFFFFF:
+            raise SpecError("rel[reg,stride,lo..hi] needs a nonzero stride, lo <= hi and a 32-bit range")
+        return ArgType("rel", float(lo), float(hi), stride=stride, ref=m.group(1))
+    m = re.fullmatch(r"(i8|u8|i16|u16|i32|u32|f32|f64)(?:\[([-+0-9.eExXa-fA-F]+)\.\.([-+0-9.eExXa-fA-F]+)\])?", tok)
     if not m:
         raise SpecError(f"bad type {tok!r}")
-    lo = float(m.group(2)) if m.group(2) else None
-    hi = float(m.group(3)) if m.group(3) else None
+    lo = _bound(m.group(2)) if m.group(2) else None
+    hi = _bound(m.group(3)) if m.group(3) else None
     if lo is not None:
         if not math.isfinite(lo) or not math.isfinite(hi) or lo > hi:
             raise SpecError("input range must be finite and ordered")
@@ -133,9 +179,14 @@ def parse(text: str) -> Spec:
                 raise SpecError("a GPR cannot contain a 64-bit float")
             if reg in FLAG_BITS and (arg_type.kind not in INT_TYPES or arg_type.lo != 0 or arg_type.hi != 1):
                 raise SpecError("flag inputs need an integer type with range [0..1]")
+            if arg_type.kind == "rel" and (reg not in GPRS or arg_type.ref not in [x.reg for x in args]):
+                raise SpecError(f"{reg}: rel[{arg_type.ref},...] must name an earlier input register")
             args.append(Arg(arg_type, reg))
         else:
-            args.append(Arg(_type(a)))
+            t = _type(a)
+            if t.kind == "rel":
+                raise SpecError("rel[...] ties registers: only the regs convention supports it")
+            args.append(Arg(t))
     spec = Spec(conv=conv, args=args, ret=None, raw=raw)
     if conv == "regs":
         outs = retstr.strip("()").strip()
@@ -178,6 +229,10 @@ def parse(text: str) -> Spec:
             spec.emu_skip = v.partition(":")[2] or "unspecified"
         elif k == "maxinsn":
             spec.maxinsn = int(v)
+        elif k == "wall":
+            spec.wall = int(v)
+            if not 0 < spec.wall <= 3600:
+                raise SpecError("wall=<seconds> must be 1..3600")
         elif k == "seed":
             spec.seed = int(v)
         else:
@@ -186,8 +241,9 @@ def parse(text: str) -> Spec:
         raise SpecError("tolerance must be finite and nonnegative")
     if spec.cases <= 0 or spec.maxinsn <= 0:
         raise SpecError("case and instruction budgets must be positive")
-    if spec.globals not in ("keep", "fuzz:f32", "fuzz:f64", "fuzz:i32") and not re.fullmatch(r"layout=[A-Za-z0-9_-]+", spec.globals):
-        raise SpecError("globals must be keep, fuzz:f32/f64/i32, or layout=<name>")
+    if spec.globals not in ("keep", "fuzz:f32", "fuzz:f64", "fuzz:i32") and             not re.fullmatch(r"(fuzz:(f32|f64|i32)\+)?layout=[A-Za-z0-9_-]+(\+[A-Za-z0-9_-]+)*", spec.globals):
+        raise SpecError("globals must be keep, fuzz:f32/f64/i32, layout=<name>[+<name>...] "
+                        "or fuzz:<kind>+layout=<name>[+...] (layout fields override the fuzzed values)")
     if spec.fpucw is not None and not 0 <= spec.fpucw <= 0xFFFF:
         raise SpecError("FPU control word must fit 16 bits")
     return spec
@@ -196,9 +252,9 @@ def parse(text: str) -> Spec:
 def _split_args(s: str) -> list[str]:
     out, depth, cur = [], 0, ""
     for ch in s:
-        if ch == "[":
+        if ch in "[{":
             depth += 1
-        elif ch == "]":
+        elif ch in "]}":
             depth -= 1
         if ch == "," and depth == 0:
             out.append(cur)

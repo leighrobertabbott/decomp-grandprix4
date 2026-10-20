@@ -1,0 +1,31 @@
+{
+  "_evidence": "0x00442baa: 'mov esi,[0x679d34]' then 0x442c41 reads [esi+0x1c]/[esi+0x71]/[esi+0x7c] and 0x4097c7 -> 0x409162 zeroes the 0x41c-byte record at esi and stores (esi-0x66fef0)/0x41c as its index, so [0x679d34] is a non-null car record of the 22-record array 0x66fef0 (points_into 0x66fef0 stride 0x41c, 0..21; zero in the image, a wild fuzzed value faults at 0x442c41). Byte [0x7aafd4] 'test 0xff; je' selects the 0x444c89 call: values {0,0,1,0xff} so both outcomes occur (fuzz:i32 makes it zero only 1/256 of the time). The other directly addressed globals (0x679d30 copied to 0x852d3c, words 0x66d8be/c0/c2 saved and restored) stay plain fuzz:i32. Byte [0x66d897] is the placed car's key: copied to 0x66d896 and passed in al to 0x4097c7 (stored as car +0x7c), then 0x409b87 looks it up among the 22 cars' +0x7c and sets [0x66d820] to the match - but a zero key takes 'je 0x409bb9' and leaves [0x66d820] = 0, so 0x410d04 returns esi = 0 and, with [0x7c2e75] != 0, 'or byte [esi+0x7b],2' at 0x442bf1 faults: the game only places cars with a real (nonzero) key, so the key draws 1..255 (any nonzero key is found again, the car itself carries it).",
+  "globals": [
+    {
+      "addr": "0x00679d34",
+      "type": "u32",
+      "points_into": {
+        "base": "0x0066fef0",
+        "stride": "0x41c",
+        "lo": 0,
+        "hi": 21
+      }
+    },
+    {
+      "addr": "0x007aafd4",
+      "type": "u8",
+      "values": [
+        0,
+        0,
+        1,
+        "0xff"
+      ]
+    },
+    {
+      "addr": "0x0066d897",
+      "type": "u8",
+      "lo": 1,
+      "hi": 255
+    }
+  ]
+}

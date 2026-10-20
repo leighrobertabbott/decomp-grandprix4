@@ -1,0 +1,13 @@
+{
+  "size": 600,
+  "_evidence": "0x00405489 (and its callee 0x00405320) read the record words movzx +0xa2, +0xba, +0x10e (imul/shrd 14 multipliers, every value valid), byte +0xe5 (test 1: selects ebp=0x4000 or 0x4000-(+0xba*[0x62d29c]>>14)) and movzx +0xb2, the idiv divisor at 0x4054a7/0x4054d2, and write words +0x24c/+0x24e. The dividends are (X*[0x603854])>>13 with X a signed 32-bit dword (0x602d78, or the 32-bit sum 0x602d74+0x602d78) and [0x603854] <= 65535 (state_00405489), so |dividend| <= 2^31*65535/2^13 < 2^34 and a divisor >= 8 keeps |quotient| < 2^31: +0xb2 is 8..0xffff (0 is #DE and 1..7 can #DE for large X in the original). All other values reach both 'jge 0x10' outcomes.",
+  "fields": [
+    {"off": "0xa2", "type": "u16"},
+    {"off": "0xb2", "type": "u16", "lo": 8, "hi": 65535},
+    {"off": "0xba", "type": "u16"},
+    {"off": "0xe5", "type": "u8"},
+    {"off": "0x10e", "type": "u16"},
+    {"off": "0x24c", "type": "u16"},
+    {"off": "0x24e", "type": "u16"}
+  ]
+}

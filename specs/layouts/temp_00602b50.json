@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x004323c5 clamps the signed dword [0x602b50] to 0..0x1900 (cmp 0x1900; jle, then cmp 0; jge) before 0x432372; values below 0, inside the band and above it (with the edges) reach both clamps and the pass-through. Nothing faults.",
+  "globals": [
+    {"addr": "0x00602b50", "type": "u32", "values": ["0x80000000", "0xffffffff", "0xffffff00", 0, 1, "0x800", "0x18ff", "0x1900", "0x1901", "0x2710", "0x7fffffff"]}
+  ]
+}

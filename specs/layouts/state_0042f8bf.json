@@ -1,0 +1,13 @@
+{
+ "_evidence": "Remaining state of 0x0042f8bf (esi = car rec 0..21; compose LAST, after the accepted list ending in carea_0042f6ee+flags_00408f7b). Its only caller chain 0x430d07 zeroes the counters [0x607964] and [0x6078e0] and then calls it once per car (ecx = 0x16 over 0x66fef0..), so on entry each counter is 0..21: 'mov [eax*4+0x607968], esi; inc' and 'mov [eax*4+0x6078e4], esi; inc' store into the 22-car pointer lists (0x607968.., 0x6078e4.. with 32 slots before 0x607964); a wild counter stores outside them (the image zero only ever tried slot 0). Dwords 0x627870/0x627874 (written by 0x40cb38: offsets loaded as ax, negated by the sign of byte 0x868582, then |ax - car +0x90| vs the word threshold) are any value; the selector byte 0x7c2ea9 ('cmp 0x80; je' picks 0x627874) draws 0x80 in half the cases. Word 0x603bfe is never written (only 0x42f7fb reads it; image 0x180): a tuning constant, drawn as its image value in about half the cases and otherwise other thresholds (signed 'cmp ax, [0x603bfe]; jl': both outcomes). Car bytes +0x26b (bit 7 test in 0x42f7fb) and +0x294 (0x42b88b movzx factor) of all 22 cars are plain draws. Only stores to fixed lists, compares and imul/shrd: nothing faults.",
+ "globals": [
+  {"addr": "0x607964", "type": "u32", "lo": 0, "hi": 21},
+  {"addr": "0x6078e0", "type": "u32", "lo": 0, "hi": 21},
+  {"addr": "0x627870", "type": "i32"},
+  {"addr": "0x627874", "type": "i32"},
+  {"addr": "0x7c2ea9", "type": "u8", "values": ["0x80", "0x80", "0x80", 0, "0x7f", "0xff"]},
+  {"addr": "0x603bfe", "type": "u16", "values": ["0x180", "0x180", "0x180", "0x180", 0, "0x40", "0x400", "0x7fff", "0x8000", "0xffff"]},
+  {"addr": "0x67015b", "type": "u8", "count": 22, "stride": "0x41c"},
+  {"addr": "0x670184", "type": "u8", "count": 22, "stride": "0x41c"}
+ ]
+}

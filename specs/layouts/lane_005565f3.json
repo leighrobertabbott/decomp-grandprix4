@@ -1,0 +1,14 @@
+{
+ "_evidence": "Record edi of 0x005565f3 (the pit/lane object the caller 0x556791 loads from [0x852cd4]/[0x852ccc]). Fields read, all through the callees: word +0x60 (ebx = 0 arm: 0x553ab7 r = -((w+0x50)<<8), 0x5539f0) or +0x62 (ebx != 0: 0x553ad4 r = (w+0x50)<<8, 0x553a26), movzx so any u16 (|r| <= 0x1004f00); dword +0xec the heading (0x553a5e 'fild [edi+0xec]; fmul [0x6f2bdc] (pi/2^31, set by the oracle's init 0x527476); fsincos': any i32 is an angle in -pi..pi), dwords +0xf0/+0xf8 the lane origin (X = round(r cos) + [+0xf0], Z = [+0xf8] - round(r sin): integer adds, wrap allowed), +0xf4 (added to the scale result in ecx) and +0x150 (fild, times f64 [0x6f2a04] and r, fistp: |product| < 2^31 for any i32 with the multiply_0040ce7b coefficient range). The target then takes the bearing/distance from (eax, edx) to (X, Z) and replaces the bearing with [+0xec] -/+ 0x40000000 when the distance is below 0x555. No input faults (fistp overflow gives the masked integer indefinite). To reach both sides of the 0x555 test with a non-trivial record, the value lists are weighted to small perturbations of the axis-aligned lane (w 0..4, heading within +-0x400000 of 0 = +-0.006 rad, origin within +-0x100), which keep (X, Z) within ~0x500 of (-/+0x5000, 0) where the spec draws eax/edx, plus large values (full-circle headings 0x40000000/0x80000000/0xc0000000/arbitrary, w 0x40/0xffff, origins +-0x10000 and near the i32 limits) for the general far case.",
+ "size": 344,
+ "fill": "zero",
+ "fields": [
+  {"off": "0x60", "type": "u16", "values": [0, 0, 1, 2, 3, 4, "0x40", "0xffff"]},
+  {"off": "0x62", "type": "u16", "values": [0, 0, 1, 2, 3, 4, "0x40", "0xffff"]},
+  {"off": "0xec", "type": "u32", "values": [0, 0, 1, "0x1000", "0x40000", "0x3fffff", "0xffffffff", "0xfffff000", "0xffc00001", "0x40000000", "0x80000000", "0xc0000000", "0x12345678", "0x9abcdef0"]},
+  {"off": "0xf0", "type": "u32", "values": [0, 0, 1, "0x80", "0xffffff80", "0x100", "0xffffff00", "0x10000", "0x80010000", "0x7fff0000"]},
+  {"off": "0xf4", "type": "u32"},
+  {"off": "0xf8", "type": "u32", "values": [0, 0, 1, "0x80", "0xffffff80", "0x100", "0xffffff00", "0x10000", "0x80010000", "0x7fff0000"]},
+  {"off": "0x150", "type": "i32"}
+ ]
+}

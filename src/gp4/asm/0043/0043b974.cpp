@@ -48,4 +48,4 @@ void __cdecl FUN_0043b974(gp4::Regs* r) {
     r->ebx = entry;
     r->eflags = (r->eflags & ~0x8d5u) | (flags & ~1u);   // clc
 }
-GP4_IMPL(0x0043b974, FUN_0043b974, "regs(esi:ptr[0x84]:bytes) -> (ebx,cf,pf,af,zf,sf,of); globals=layout=search_0066d82c")
+GP4_IMPL(0x0043b974, FUN_0043b974, "regs(esi:ptr[0x84]:bytes) -> (ebx,cf,pf,af,zf,sf,of); globals=layout=search_0066d82c+list_0066fe3c")

@@ -1,0 +1,202 @@
+{
+ "_evidence": "Track-surface warm-up 0x0040bce6 (wrapped by 0x40bd57, a one-block pushal/call/popal wrapper); compose after state_0066d8c0 (0x401462 generator), map_0040c43b (surface map), ring_0040c0ae (ring pointers, words +0x7a 1..30, 0x675a82 entries) and state_0040bec7. Budget-bounded domain (every excluded value is still valid for the original, it only exhausts the emulator's per-run instruction/wall-clock budget; the wrapper has no branch to skip): 0x40c204 loops ecx += [0x00603854] until >= 0x2580000 (zero never ends), each pass running 0x40c1d6 (unless byte 0x006f299d is set) -> 0x40bfcf, which advances ([0x0063b818] + [0x62282c]) >> 16 segments with [0x62282c] = (((w 0x00868558 + w 0x0086855a) * [0x00622820]) >> 14) * rate; the rate is drawn 0x2580000..0x4000000 (one pass), the accumulator 0x63b818 0..0xffff (it is masked to 16 bits by 0x40bfcf, so larger values never occur), the lap words 0..0x100 and the scale from {0, 0x20} (static 0x400) so at most a few hundred segment steps run. 0x40b68c steps a 16-bit angle from -[0x00622516] by [0x00622518] while <= [0x622516], 560 map lookups per step: the step must be positive and |bound| + step < 0x8000 (a signed 16-bit overflow wraps below the bound and never ends), so step 0x100..0x3000 and bound -0x100..0x80 (one or two steps). 0x0062250c (radius, imul/shrd), 0x00622514 (angle), 0x0062257c, 0x0062ac74, 0x0063b838/0x0063b83c are free. 0x40c2c0 (run when byte 0x006f29a0 != 0 and dword 0x00622584 != -1 differs from 0x00622588 after clamping to 0..11) walks the ring twice and up to 64 rounds (exit when byte 0x00622529 >> 4 equals the target): values cover -1, inside and outside 0..11. Record words +4/+8 (map coordinates for 0x40bfcf/0x51fbc5) and the 0x51f2e9 lane words +0x88/+0x8a/+0x9c/+0x138/+0x13e (cmp 0xffff) of records 0..26 vary, with dwords 0x00a53ad0/0x0064594c. All table indices formed (0x6225c0/0x6225a8/0x622590 by a map byte, 0x6225d8 by a clamped 0..11, the 0x62accc counters by map byte + 6*row) stay inside .data; the only divisors are the constant 0x19 and a count forced nonzero.",
+ "globals": [
+  {
+   "addr": "0x00603854",
+   "type": "u32",
+   "lo": 39321600,
+   "hi": 67108864
+  },
+  {
+   "addr": "0x00868558",
+   "type": "u16",
+   "lo": 0,
+   "hi": 256
+  },
+  {
+   "addr": "0x0086855a",
+   "type": "u16",
+   "lo": 0,
+   "hi": 256
+  },
+  {
+   "addr": "0x00622820",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    0,
+    "0x20"
+   ]
+  },
+  {
+   "addr": "0x0063b818",
+   "type": "u32",
+   "lo": 0,
+   "hi": 65535
+  },
+  {
+   "addr": "0x006f299d",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x006f29a0",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x00622584",
+   "type": "u32",
+   "values": [
+    "0xffffffff",
+    0,
+    3,
+    5,
+    11,
+    20,
+    "0xfffffffb"
+   ]
+  },
+  {
+   "addr": "0x00622588",
+   "type": "i32",
+   "lo": 0,
+   "hi": 11
+  },
+  {
+   "addr": "0x00622529",
+   "type": "u8"
+  },
+  {
+   "addr": "0x00622516",
+   "type": "i16",
+   "lo": -256,
+   "hi": 128
+  },
+  {
+   "addr": "0x00622518",
+   "type": "i16",
+   "lo": 256,
+   "hi": 12288
+  },
+  {
+   "addr": "0x00622514",
+   "type": "i16"
+  },
+  {
+   "addr": "0x0062250c",
+   "type": "i32"
+  },
+  {
+   "addr": "0x0062257c",
+   "type": "i32"
+  },
+  {
+   "addr": "0x0062ac74",
+   "type": "i32"
+  },
+  {
+   "addr": "0x0063b838",
+   "type": "i32"
+  },
+  {
+   "addr": "0x0063b83c",
+   "type": "i32"
+  },
+  {
+   "addr": "0x008943a4",
+   "type": "i16",
+   "count": 27,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x008943a8",
+   "type": "i16",
+   "count": 27,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x00894428",
+   "type": "u16",
+   "count": 27,
+   "stride": "0x160",
+   "values": [
+    "0xffff",
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x0089442a",
+   "type": "u16",
+   "count": 27,
+   "stride": "0x160",
+   "values": [
+    "0xffff",
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x0089443c",
+   "type": "u16",
+   "count": 27,
+   "stride": "0x160",
+   "values": [
+    "0xffff",
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x008944d8",
+   "type": "u16",
+   "count": 27,
+   "stride": "0x160",
+   "values": [
+    "0xffff",
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x008944de",
+   "type": "u16",
+   "count": 27,
+   "stride": "0x160",
+   "values": [
+    "0xffff",
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x00a53ad0",
+   "type": "u32",
+   "values": [
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x0064594c",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2
+   ]
+  }
+ ]
+}

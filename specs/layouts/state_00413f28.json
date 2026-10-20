@@ -1,0 +1,11 @@
+{
+  "_evidence": "0x00413f28 (esi = car record rec[0x66fef0,0x41c,0..21]; compose after list_0066fe3c, which builds the car-order list and the fields its callee 0x413ea0 walks): word +0x90 (|v|-0x100 >= +0xb0 and |v|-0x600 < +0xb0 select the speed window) and word +0xb0 are drawn in -0x1000..0x1000 so the window is hit and missed both ways; word +0x9a (cmp 0x755; jge) in 0..0xa00 for both sides; the sign of word +0x90 xor word 0x00934df0 (jns) and word 0x00934df4 (cmp 0xc00; jl, drawn 0x800..0x1800) decide the callee call. Bytes +0x6f and +0x203 are RMW flags (+0x203 also varied by list_0066fe3c). Nothing here is a pointer or divisor; the 0x413ea0 walk stays between the list guards (list_0066fe3c).",
+  "globals": [
+    {"addr": "0x0066ff80", "type": "i16", "count": 22, "stride": "0x41c", "lo": -4096, "hi": 4096},
+    {"addr": "0x0066ffa0", "type": "i16", "count": 22, "stride": "0x41c", "lo": -4096, "hi": 4096},
+    {"addr": "0x0066ff8a", "type": "u16", "count": 22, "stride": "0x41c", "lo": 0, "hi": 2560},
+    {"addr": "0x0066ff5f", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x00934df0", "type": "i16"},
+    {"addr": "0x00934df4", "type": "i16", "lo": 2048, "hi": 6144}
+  ]
+}

@@ -1,0 +1,13 @@
+{
+ "size": 16,
+ "fill": "bytes",
+ "_evidence": "0x0052fe4b: esi = 0x843404, then 'mov esi,[esi]; dec ecx; jne' with ecx = 12, so the pointer cell [0x843404] starts a chain of 12 hops: levels 1..11 are read only at dword +0 (the next level), and the 12th pointer is the record that receives dword +0x2a ([0x7a97a4]) and word +0x30 (the mask), so it is a 0x40-byte random buffer. Each level is a fresh buffer (acyclic). Under fuzz:i32 the first hop already read a wild pointer. This is level 1.",
+ "fields": [
+  {
+   "off": 0,
+   "type": "ptr",
+   "size": 16,
+   "fill": "layout=hop2_00843404"
+  }
+ ]
+}

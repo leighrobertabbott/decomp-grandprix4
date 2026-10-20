@@ -1,0 +1,9 @@
+{
+ "_evidence": "0x00520b1b saves state slot eax (spec 0..3): 'pop eax; imul dword [0x6975c4]; mov edi,eax; add edi,[0x7a8e18]' (slot pitch and slot area base), 'mov esi,0x66d810; mov ecx,[0x6975c0]; shr ecx,2; rep movsd' (state block size), 'mov [slot],3', then 0x40b511 appends 0xa5e dwords (0x2978 bytes, copy_0063b814) at edi. The sibling 0x520d54 lays out the same slot as [0x6975c0] state bytes + the 0x40b511 table + [0x6975c4]-sized rows from [0x7a8e18], so a slot holds size + 0x2978 bytes. Domain: size from {0,3,0x40,0x100,0x3ff,0x400} (shr 2 drops the tail; 0 copies nothing), pitch from {0x2d78 (= 0x400+0x2978), 0x3000, 0x3400}, base a 0x10000-byte buffer: the last byte written is below 3*0x3400 + 0x400 + 0x2978 = 0xcf78, inside it. A fuzzed size/pitch/base writes far outside any mapped slot area (the original faults or runs 2^30 moves). The 0x400-byte source block 0x66d810..0x66dc0f (read through esi, never addressed directly) is game state: random u32 (the copy and the pointer<->offset conversions of 0x513982/0x5139ed on 0x66d818..0x66d82f are pure arithmetic, every value is valid).",
+ "globals": [
+  {"addr": "0x006975c0", "type": "u32", "values": [0, 3, "0x40", "0x100", "0x3ff", "0x400"]},
+  {"addr": "0x006975c4", "type": "u32", "values": ["0x2d78", "0x3000", "0x3400"]},
+  {"addr": "0x007a8e18", "type": "ptr", "size": 65536, "fill": "bytes"},
+  {"addr": "0x0066d810", "type": "u32", "count": 256, "stride": 4}
+ ]
+}

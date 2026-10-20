@@ -1,0 +1,33 @@
+{
+ "_evidence": "Lateral-profile dwords of the 0x160-byte segment records at 0x8943a0, records -1..33 (0x41eacf reads the previous record of a record 0 that is at or above the pit start, and the successors up to E+2 / the pit-end successor): dword +0xf4 (height offset, added to the 0x41eaa7 term) and dword +0x150 (lateral slope: 0x41eaa7 fild * f64 [0x6f2a04] * esi, fistp), word +0x130 (0x41e7f3: the start-line blend factor 0x4000 - w for the lap-end-1 record, imul/shrd only), and the 12 start-line table dwords 0x6279fc..0x627a28 that 0x41e910 indexes with ecx = 0/0x10/0x20 (+0..+0xc each). For 0x41e7f3, 0x41e910 and 0x41eacf these are pure data: there is no division anywhere in them (0x41eacf only forms A = max(0x40000 - (esi*sx(+0x14)>>14), 0x10) and D = [+0xf4] - fistp(...) into 0x627858..0x627860 / 0x637ff0..0x637ffc; the idiv is in 0x41eba5, called only by 0x41ec08), fistp overflow gives the masked indefinite, so every value is valid and they are drawn full range. The accepted runs left them static zero (D = 0 everywhere). 0x41ec08 uses dsmall_0041ec08 instead, whose bounds make its 0x41eba5 idiv safe. Synthetic draws only. Word +0x14 of record -1 (0x894254; ring_008943a0 varies +0x14 of records 0..31 only) is any i16 too: in 0x41eacf it only feeds 0x41ea89's imul/shrd and the 0x10 floor.",
+ "globals": [
+  {
+   "addr": "0x894334",
+   "type": "i32",
+   "count": 35,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894390",
+   "type": "i32",
+   "count": 35,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894370",
+   "type": "u16",
+   "count": 35,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x006279fc",
+   "type": "i32",
+   "count": 12,
+   "stride": 4
+  },
+  {
+   "addr": "0x894254",
+   "type": "i16"
+  }
+ ]
+}

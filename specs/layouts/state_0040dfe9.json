@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x0040dfe9 -> 0x51f1d4 -> 0x00520023: byte 0x007ad8b2 compared with 0xff (jne: clc), then the 22 bytes 0x007c2a48..0x007c2a5d are tested for bit 7 (js) and counted; >= 2 set gives stc and 0x40dfe9 then calls 0x408f7b (the 22-car pass over 0x66fef0, accepted with plain image/fuzz data). Values for 0x7ad8b2 give 0xff about half the time; the 22 bytes are plain u8 draws (each sign bit about half set), so counts below and at/above 2 both occur. Nothing is a pointer or divisor.",
+  "globals": [
+    {"addr": "0x007ad8b2", "type": "u8", "values": ["0xff", "0xff", "0xff", 0, 1, "0xfe"]},
+    {"addr": "0x007c2a48", "type": "u8", "count": 22, "stride": 1, "pattern": "bit_scan", "bit": 128}
+  ]
+}

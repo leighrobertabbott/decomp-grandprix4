@@ -1,0 +1,7 @@
+{
+ "_evidence": "Debris launch coefficients read by 0x00424a21 (callee of 0x424878): nine random-velocity terms '((rand & 0xff) << 6) imul [0x609884/0x609890/0x60989c/0x6098a8/0x6098b0/0x6098b8]; shrd 0xe; add [0x609888]+[0x60988c] / [0x609894]+[0x609898] / [0x6098a0]+[0x6098a4] / [0x6098ac] / [0x6098b4] / [0x6098bc]; shl 8' (zero in the image, set at run time) and dword 0x62a080 that 0x444837 copies to record +0x50/+0x54: imul/shrd/add/shl and fild only (fistp overflow is masked), so every value is valid.",
+ "globals": [
+  {"addr": "0x00609884", "type": "i32", "count": 15, "stride": 4},
+  {"addr": "0x0062a080", "type": "i32"}
+ ]
+}

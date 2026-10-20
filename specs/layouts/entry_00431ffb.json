@@ -1,0 +1,9 @@
+{
+  "_evidence": "Entry behind [0x62a970 + 4*sel] as read by 0x00431ffb: dword +0 is a byte offset added to the car's segment start (drawn as record multiples and small/negative values), dword +4 the record count (test; je: zero exits; 0..3 as entry_00431f6e), then up to 3 sixteen-byte records whose i16 +6 (at +0xe + 0x10k) is returned for the record index (edi - start)/0x160 < count, so every read stays inside the 56 bytes.",
+  "size": 56,
+  "fields": [
+    {"off": 0, "type": "u32", "values": [0, 0, "0x160", "0x2c0", "0x10", "0xfffffea0"]},
+    {"off": 4, "type": "u32", "lo": 0, "hi": 3},
+    {"off": 14, "type": "i16", "count": 3, "stride": 16}
+  ]
+}

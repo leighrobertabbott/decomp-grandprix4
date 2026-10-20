@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x535a20 compares the 14-byte stamp at 0x822300 (read back from file by 0x54b10c in caller 0x535946) with the saved-state buffer: cmpsw [0x822300] vs B+0x155e0, cmpsw [0x822302] vs the trailing word (sign of [0x822302] picks the [0x7a93b7]=0xff exit), lodsb [0x822304] xor B+0x15617 == 1, word [0x7aafe8] == 3/4 exits, repe cmpsb 5 bytes [0x822305..09] vs B+0x1636f and 4 bytes [0x82230a..0d] vs B+0x162c4. Value lists overlap those of sbuf_007a93e0 so each compare both matches and differs and the deep path is reached; the tail stamp bytes are 0 so the buffer's {0,1,0x80,0xff} gives both compare orders distinct flags. Any byte values are valid (plain compares).",
+  "globals": [
+    {"addr": "0x00822300", "type": "u16", "values": [0, 0, 0, 0, 0, 0, 0, 1]},
+    {"addr": "0x00822302", "type": "u16", "values": [0, 0, 1, "0x8000"]},
+    {"addr": "0x00822304", "type": "u8", "values": [0, 1]},
+    {"addr": "0x00822305", "type": "u8", "count": 9, "values": [0]},
+    {"addr": "0x007aafe8", "type": "u16", "values": [0, 1, 2, 3, 4, "0x8003"]}
+  ]
+}

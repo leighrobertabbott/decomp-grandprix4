@@ -1,0 +1,10 @@
+{
+ "_evidence": "0x00522d39 (called from 0x511d87) first calls 0x522d18, whose 'test byte [0x7c2e74],0xff; je' gates the driver counts of 0x522da0 (22 bytes 0x7c2a48.., eax = bit7&!bit6, edx = bit7&bit6, 'cmp eax,1; ja' / 'cmp edx,1; ja' then stc): CF=1 needs the byte nonzero (values 0,1,1,0xff, zero kept so the clc exit runs) and both counts <= 1, which the bit_scan pattern on bit 7 of neg22_00520023 (composed before this layout) gives in its all-clear and single-hit modes (the hit's bit 6 varies, so 0x522e0e's eax==1 and 0x522e31's edx==1 paths both occur). Then 'test byte [0x7aafd4],0xff; jne' selects the single pass (zero) or the ordered pair (values 0,1,1,0xff). 'mov dl,[0x7ab756]; cmp dl,[0x7a93b2]; jb/ja' compares two unsigned bytes: 0x7ab756 is drawn from 0,1,2,3,0xff and 0x7a93b2 aliases it in about half the cases (equal: the reset path, which writes (1,2) or (2,1) and compares again, so the loop always ends) else is a random byte (below and above both occur). 'cmp byte [0x7ab1a0],0xff; je' picks the reset order (0xff often). 0x522cda (called by both passes with dl = one of the two bytes) clamps dx-1 to 0..0x15 before indexing the 22-entry order list 0x675958 (order_00675958), so every byte value is valid. No pointers are read.",
+ "globals": [
+  {"addr": "0x007c2e74", "type": "u8", "values": [0, 1, 1, "0xff"]},
+  {"addr": "0x007aafd4", "type": "u8", "values": [0, 1, 1, "0xff"]},
+  {"addr": "0x007ab756", "type": "u8", "values": [0, 1, 2, 3, "0xff"]},
+  {"addr": "0x007a93b2", "type": "u8", "alias": "0x007ab756"},
+  {"addr": "0x007ab1a0", "type": "u8", "values": ["0xff", "0xff", 0, 1]}
+ ]
+}

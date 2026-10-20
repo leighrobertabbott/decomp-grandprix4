@@ -1,0 +1,78 @@
+{
+ "_evidence": "Car-record overlay for esi and ebx of 0x0042ecbf (compose AFTER car_00431ffb+car_004035c3+pos_00405cf8+car_0042b17e+car_0043c677). The 0x42eee3 call (0x42eecb, only when bytes 0x604156 and 0x604157 are both 0xff) returns CF=1 only when a conjunction of independent tests passes on the two cars (see state_0042eee3, which drives the same tests for car-array records): ebx +0xe5 bit 2 clear, esi +0xce bit 7 clear, both words +0xea zero, both +0xfe and +0x135 bit 6 clear, ebx dword +0x1a0 below [0x62236c], d = ebx +0x68 - esi +0x68 in 1..((segment +0x10 & 0x7f)-1)/2, and the ebx +0x90/+0x94 test; random bytes made the conjunction (blocks 0x42eed2, direction 0x42eed0:fallthrough) unreachable. The same value lists as state_0042eee3 keep both outcomes of every test while favouring the passing one. Dword +0x1a0 stays inside car_004035c3's +-0x400000 (the 0x4035c3 blend fraction; larger values #DE the original at 0x403c19). Bit and word compares only: nothing faults.",
+ "size": 668,
+ "fields": [
+  {
+   "off": "0xe5",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    4,
+    "0xff"
+   ]
+  },
+  {
+   "off": "0xce",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    "0x7f",
+    "0x80"
+   ]
+  },
+  {
+   "off": "0xea",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    "0x10"
+   ]
+  },
+  {
+   "off": "0xfe",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    "0xbf",
+    "0x40"
+   ]
+  },
+  {
+   "off": "0x135",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    "0xbf",
+    "0x40"
+   ]
+  },
+  {
+   "off": "0x1a0",
+   "type": "i32",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "off": "0x68",
+   "type": "i16",
+   "lo": -40,
+   "hi": 40
+  }
+ ]
+}

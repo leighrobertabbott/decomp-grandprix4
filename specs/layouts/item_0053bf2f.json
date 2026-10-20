@@ -1,0 +1,46 @@
+{
+ "_evidence": "Menu item record (esi) for the value-text handler 0x53bf2f, reached from the item dispatchers 0x53d214/0x53d55c/0x53eb5e ('mov ebx,[esi+0xe]; stc; ... call [esi+0x16]'). Read here: +0x12 (unaligned dword) = text id passed to 0x54d798 ('mov esi,[esi+0x12]'), +0xd = width selector of 0x539944 ('mov dl,[esi+0xd]; and edx,3': jump table 0x539960 = byte / word / dword / none (eax = 0)), and by 0x53c135 the rectangle words +4/+6/+8/+0xa ('movzx' only, passed to the list insert 0x549db9 and averaged; any value). The text id must select a loaded string-table entry (script_0054d798 + strs_0053bf2f: 0..7, 0x491..0x590, 0x607, 0xba6..0xbbb; the image item 0x8477f0 uses 0x607 with width 0): drawn from those sets. The width byte takes all four low-bit values (with high bits): cell_0053bf2f keeps value + 0x491 a loaded id for every width. Other bytes random.",
+ "size": 64,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x0d",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    1,
+    2,
+    2,
+    3,
+    "0x41",
+    "0x82",
+    "0xc3"
+   ]
+  },
+  {
+   "off": "0x12",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    "0x491",
+    "0x492",
+    "0x4b0",
+    "0x590",
+    "0x607",
+    "0x607",
+    "0xba6",
+    "0xbb0",
+    "0xbbb"
+   ]
+  }
+ ]
+}

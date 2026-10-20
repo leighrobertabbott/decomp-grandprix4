@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x0054888e ('mov ebx,0x7a93fa; mov ecx,0x16; xor eax,eax' then 'cmp word [ebx],0; je; inc eax; add ebx,2; loop') counts the nonzero words among the 22 at 0x7a93fa into [0x8236ac]; its sibling 0x005488ac does the same for the 11 words at 0x7a9426 into [0x8236b0]. Both tables are zero in the image (runtime state reached through ebx, unvaried by fuzz:i32), so every count was 0. Each word is drawn from zero (in about a third of the picks) and nonzero patterns including the sign bit and 0xffff, so counts vary across 0..22 / 0..11; plain compares, every value valid.",
+ "globals": [
+  {"addr": "0x007a93fa", "type": "u16", "count": 22, "stride": 2, "values": [0, 0, 1, 2, "0x100", "0x8000", "0xffff"]},
+  {"addr": "0x007a9426", "type": "u16", "count": 11, "stride": 2, "values": [0, 0, 1, 2, "0x100", "0x8000", "0xffff"]}
+ ]
+}

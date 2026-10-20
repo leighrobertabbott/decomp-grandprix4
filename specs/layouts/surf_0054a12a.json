@@ -1,0 +1,17 @@
+{
+ "_evidence": "0x0054a12a/0x0054a15b copy a (2*w) x h byte rectangle into/out of the surface at [0x822258] with row pitch [0x82224c]: rows <= 15, 2*x <= 30 and 2*w <= 32 with the spec's register ranges, so a 0x800-byte surface and a pitch of 32..96 (>= the widest row) keep every access inside it; fuzzed base/pitch are wild.",
+ "globals": [
+  {
+   "addr": "0x0082224c",
+   "type": "u32",
+   "lo": 32,
+   "hi": 96
+  },
+  {
+   "addr": "0x00822258",
+   "type": "ptr",
+   "size": 2048,
+   "fill": "bytes"
+  }
+ ]
+}

@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x00420e1d: cap [0x608154] in +-0x7fff (cmp/jle at 0x420e49, signed: both outcomes against sums in +-0xfffc), multiplier [0x6228ac] in +-0xffff, then idiv by (max(eax,1)<<10) >= 1024 with eax in 0..0x3ff (the spec) bounds |quotient| <= 2^31/2^10: no #DE (an unbounded cap or multiplier overflows the quotient: the original's own fault, 3/200 with fuzz). [0x608150] only feeds imul/shrd 14: full i32.",
+  "globals": [
+    {"addr": "0x00608154", "type": "i32", "lo": -32767, "hi": 32767},
+    {"addr": "0x006228ac", "type": "i32", "lo": -65535, "hi": 65535},
+    {"addr": "0x00608150", "type": "i32"}
+  ]
+}

@@ -17,4 +17,4 @@ void __cdecl FUN_0040860a(gp4::Regs* r) {
     r->ecx = 0;
     r->eflags &= ~0x8d5u;
 }
-GP4_IMPL(0x0040860a, FUN_0040860a, "regs() -> (ecx, esi, cf, pf, af, zf, sf, of)")
+GP4_IMPL(0x0040860a, FUN_0040860a, "regs() -> (ecx, esi, cf, pf, af, zf, sf, of); globals=layout=state_0040860a")

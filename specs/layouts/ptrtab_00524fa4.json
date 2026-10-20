@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x00524fa4: ebx = [0x679bd8]; edi = [ebx*4 + 0x6f306c]; movsx words [edi+4]/[edi+6]/[edi+8] (shl 6/3/6 stored to 0x6f3b00/04/08), edi stored to 0x679be0. The table 0x6f306c is one of the 32-entry (0x80-byte) parallel per-object arrays filled by 0x0055ab0e (mov [ebx*4+0x6f306c],edi with neighbours 0x6f2fec/0x6f30ec spaced 0x80 apart), and 0x00524fdc keeps [0x679bd8] below the count [0x6f3ad8], so the index is 0..31 and every entry is a non-null object pointer (0x55ac8a result). Words +4/+6/+8 are signed 16-bit (movsx), any value; the rest of the object is not read here (random bytes).",
+ "globals": [
+  {"addr": "0x00679bd8", "type": "u32", "lo": 0, "hi": 31},
+  {"addr": "0x006f306c", "type": "ptr", "size": 16, "fill": "bytes", "count": 32, "stride": 4}
+ ]
+}

@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x00420e1d sums dwords [esi+0x2ec],[esi+0x2f0],[esi+0x2f4],[esi+0x2f8] (0x420e31..0x420e43), clamps the sum to <= [0x608154] (jle, signed), multiplies by [0x6228ac] and 'idiv ebp' with ebp = max(eax,1)<<10. Fields in +-0x3fff keep |sum| <= 0xfffc so with the state_00420e1d bounds |dividend| < 2^32 and |quotient| < 2^22 (no #DE); both sides of the cap compare are reached.",
+  "size": 768,
+  "fields": [
+    {"off": "0x2ec", "type": "i32", "count": 4, "stride": 4, "lo": -16383, "hi": 16383}
+  ]
+}

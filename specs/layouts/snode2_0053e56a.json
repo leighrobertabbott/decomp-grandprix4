@@ -1,0 +1,9 @@
+{
+ "_evidence": "Menu item node walked by 0x0053e56a / 0x0053e58c (node 2 of a sentinel-terminated chain): +0 next, +0x1f flag byte (bit 4 set/cleared by the walk; the rest random). The walk stops at a null link or at the static list head 0x838c94, which item chains use as their end marker ('cmp dword [esi],0x838c94' / 'cmp esi,0x838c94'; 0x53ca9a counts menu items up to the same sentinel). The next link is a further fresh node or null (a quarter of the cases); the last node snode4_0053e56a ends on 0x838c94 or null, so chains are acyclic and both exits occur. The sentinel itself is only compared, never dereferenced.",
+ "size": 40,
+ "fill": "bytes",
+ "fields": [
+  {"off": "0x1f", "type": "u8"},
+  {"off": 0, "type": "ptr", "size": 40, "fill": "layout=snode3_0053e56a", "nullable": true}
+ ]
+}

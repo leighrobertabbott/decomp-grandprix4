@@ -1,0 +1,99 @@
+{
+ "_evidence": "Overlay for the car at esi of 0x0041464c (compose after car_0041416e+ptr_00414439+car_00413fb0, whose background is zero): word +0xe is the car heading, from which 0x41464c subtracts the track heading word +0 of the segment record edi ([0x934df0]/[0x934df8]/[0x934df4]: 16-bit sub, neg, compares with 0x4000); both were zero, so the difference was always 0 and the 0x4146fb..0x414737 branch (|difference| >= 0x4000) never ran. Word +0x68 (lap distance) and +0xd8 (speed) feed 0x413ea0's gap test (dx = +0x68 - car +0x68 vs [0x603b0c] and vs ((min(+0xd8, car +0x9a) + car +0x9a)/2 * ebp) >> 10), so it can find a car close ahead (CF=0) or none. All plain i16/u16 arithmetic: nothing faults. The heading is drawn uniformly over the full i16 range (lo/hi) so differences of 0x4000 or more are common. The flag bytes +0xff (bit 3), +0x71 (bit 0), +0xe7 (bit 0) and +0xe5 (bit 4) that select 0x41464c's branches draw all-clear in about 3/8 of the cases and set bits otherwise, and byte +0x235 (0x414548 'cmp 2; jb') draws 0..3/0xff with values below 2 in half the cases, so the heading branch and 0x413ea0's search are reached often enough to see both of its results. Byte +0x203 (bit 1: 0x414727 sets it and +0x1f6 = 5 when clear) draws both states.",
+ "size": 576,
+ "fields": [
+  {
+   "off": "0xe",
+   "type": "i16",
+   "lo": -32768,
+   "hi": 32767
+  },
+  {
+   "off": "0x68",
+   "type": "i16"
+  },
+  {
+   "off": "0xd8",
+   "type": "u16"
+  },
+  {
+   "off": "0xff",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    8,
+    "0x10",
+    "0xef",
+    "0xff"
+   ]
+  },
+  {
+   "off": "0x71",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    8,
+    "0x10",
+    "0xef",
+    "0xff"
+   ]
+  },
+  {
+   "off": "0xe7",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    8,
+    "0x10",
+    "0xef",
+    "0xff"
+   ]
+  },
+  {
+   "off": "0xe5",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    8,
+    "0x10",
+    "0xef",
+    "0xff"
+   ]
+  },
+  {
+   "off": "0x235",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    "0xff"
+   ]
+  },
+  {
+   "off": "0x203",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    2,
+    "0xfd",
+    "0xff"
+   ]
+  }
+ ]
+}

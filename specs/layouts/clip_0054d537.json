@@ -1,0 +1,64 @@
+{
+ "_evidence": "0x54d537 (clipped 2-bit mask blit, the clipping front of 0x54d4ee): the clip window 0x833d00..0x833d04 (rows) and 0x833cf8..0x833cfc (columns) is compared with the position eax/ebx and the size [0x833f7c] rows x [0x833f78] pixels; the clipped counts drive 'dec ecx; jne' loops, so an unordered window (zero in the image; fuzz:i32 gives any order) makes 2^32-iteration loops. Windows are ordered (low 0..8, high 9..40), rows 1..4, pixels 1..32 (0 would wrap the do-while), pitches 0x82224c {0x20,0x40,0x80} and 0x822244 {0x20..0x100} as for real surfaces, colour any byte; with eax -8..44 and ebx -40..44 every clip side occurs and the writes stay inside the 0x2000-byte edi buffer.",
+ "globals": [
+  {
+   "addr": "0x00833d00",
+   "type": "u32",
+   "lo": 0,
+   "hi": 8
+  },
+  {
+   "addr": "0x00833d04",
+   "type": "u32",
+   "lo": 9,
+   "hi": 40
+  },
+  {
+   "addr": "0x00833cf8",
+   "type": "u32",
+   "lo": 0,
+   "hi": 8
+  },
+  {
+   "addr": "0x00833cfc",
+   "type": "u32",
+   "lo": 9,
+   "hi": 40
+  },
+  {
+   "addr": "0x00833f7c",
+   "type": "u32",
+   "lo": 1,
+   "hi": 4
+  },
+  {
+   "addr": "0x00833f78",
+   "type": "u32",
+   "lo": 1,
+   "hi": 32
+  },
+  {
+   "addr": "0x0082224c",
+   "type": "u32",
+   "values": [
+    "0x20",
+    "0x40",
+    "0x80"
+   ]
+  },
+  {
+   "addr": "0x00822244",
+   "type": "u32",
+   "values": [
+    "0x20",
+    "0x40",
+    "0x80",
+    "0x100"
+   ]
+  },
+  {
+   "addr": "0x00833cd5",
+   "type": "u8"
+  }
+ ]
+}

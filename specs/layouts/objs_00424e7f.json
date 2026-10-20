@@ -1,0 +1,680 @@
+{
+ "_evidence": "Object state of 0x00424e7f (compose LAST): it walks the 64 records 0x63bd7c + k*0x78 and runs the heavy 0x424462 chain (0x42456e, 0x424404, 0x43b127, 0x4250b9, 0x421a06 contact solver, then 0x424e41/0x424e1b and 0x422833) only for slot bytes [0x63bcfc+k] == 1, so the slots are 1 in about one pick of twelve (a few objects per case, inside the instruction budget). Each record carries the union of the accepted callee domains, in globals form: positions +0/+8 as obj_00424e1b (+-2^26, the ring walkers 0x405c30/0x405a12 stop inside records 0..14); +4, +0x18..+0x2c and +0x58 (copied by 0x42429d to 0x607f2c, 0x607f34..0x607f48, 0x607fbc) in +-2^16 as rec_00421a06/state_0042320a; +0xc..+0x14 and +0x3c..+0x44 any i32 (copied values, rec_0042453d); +0x30/+0x34/+0x38 are the object position that the rebuild 0x42453d -> 0x42458b turns into [0x62a064..0x62a06c] and 0x4227e5 shifts back into the block header, i.e. the solver origin 0x6097b4..bc that 0x42192d copies: +-2^16 like the origin (a full-range draw made the 0x421f53 weighted sums overflow the 0x421fc3 idiv at 0x42202a); +0x48 (0x424462: [0x608254] and [0x639630] = max(+0x48, 0x20)) 0..0x3ff as state_004250f1/state_00421a06; +0x4c the mask list of rec_0042453d; +0x60 the deadline (any i32, compared with the clock by 0x424e7f itself); +0x64 the segment offset k*0x160, k 0..11 (obj_00424e1b); +0x68 any (obj_0043b127); +0x6d the block index 0..21 (rec_0042453d); +0x6e the solver phase copied to 0x60827c (0..3 as state_00421a06); +0x6f flags any; +0x74 as rec_004250b9 but with every byte a 0x4250f1 record index 0..15 or the 0xff skip (0x4250b9 appends the bytes to the 0x609870 index table that 0x4250f1 multiplies by 0x34; rec_004250b9's random bytes would address wild memory there), -1 in a quarter of the picks (0x4250b9 skip and the 0x421a06 exit). [0x60384c] is passed as ecx to 0x421a06 (0..0x100 with state_00421a06's chunk sizes: step count 0..4). The 22 contact blocks 0x6099c0 + idx*0x5d8 (0x424462 sets [0x6097b0] to block +0x6d; 0x421a06/0x42192d copy its header and walk its records) carry blk_00421a06's domain in globals form: origin +0/+4/+8 in +-2^16, count +0x18 1..8 (static zero made 0x422bc9's 'inc ecx; cmp ecx,[0x6097cc]; jne' walk run past the list and index 0x6082f4 with garbage kinds: the 0x422d07 faults), +0x1c any (blk_00424553), eight records at +0x38 as pts_0042320a. When 0x42456e rebuilds a block (mask differs from the cached slot), 0x422397 appends entries from the 16-byte position table [0x62a058] (copied from [0x62a044] by 0x42458b) shifted left 5, so that table is pos_0062a044 (coordinates +-2^11, i.e. +-2^16 after the shift) instead of state_0042458b's random bytes.",
+ "globals": [
+  {
+   "addr": "0x0063bcfc",
+   "type": "u8",
+   "count": 64,
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x63bd7c",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78",
+   "lo": -67108864,
+   "hi": 67106815
+  },
+  {
+   "addr": "0x63bd84",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78",
+   "lo": -67108864,
+   "hi": 67106815
+  },
+  {
+   "addr": "0x63bd80",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x63bd88",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78"
+  },
+  {
+   "addr": "0x63bd8c",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78"
+  },
+  {
+   "addr": "0x63bd90",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78"
+  },
+  {
+   "addr": "0x63bd94",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x63bd98",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x63bd9c",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x63bda0",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x63bda4",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x63bda8",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x63bdac",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x63bdb0",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x63bdb4",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x63bdb8",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78"
+  },
+  {
+   "addr": "0x63bdbc",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78"
+  },
+  {
+   "addr": "0x63bdc0",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78"
+  },
+  {
+   "addr": "0x63bdc4",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78",
+   "lo": 0,
+   "hi": 1023
+  },
+  {
+   "addr": "0x63bdc8",
+   "type": "u32",
+   "count": 64,
+   "stride": "0x78",
+   "values": [
+    0,
+    1,
+    2,
+    "0x80",
+    "0x200",
+    "0x4000",
+    "0x10000"
+   ]
+  },
+  {
+   "addr": "0x63bdd4",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x63bddc",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78"
+  },
+  {
+   "addr": "0x63bde0",
+   "type": "u32",
+   "count": 64,
+   "stride": "0x78",
+   "values": [
+    "0x0",
+    "0x160",
+    "0x2c0",
+    "0x420",
+    "0x580",
+    "0x6e0",
+    "0x840",
+    "0x9a0",
+    "0xb00",
+    "0xc60",
+    "0xdc0",
+    "0xf20"
+   ]
+  },
+  {
+   "addr": "0x63bde4",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78"
+  },
+  {
+   "addr": "0x63bde9",
+   "type": "u8",
+   "count": 64,
+   "stride": "0x78",
+   "lo": 0,
+   "hi": 21
+  },
+  {
+   "addr": "0x63bdea",
+   "type": "u8",
+   "count": 64,
+   "stride": "0x78",
+   "values": [
+    0,
+    1,
+    2,
+    2,
+    3
+   ]
+  },
+  {
+   "addr": "0x63bdeb",
+   "type": "u8",
+   "count": 64,
+   "stride": "0x78"
+  },
+  {
+   "addr": "0x63bdf0",
+   "type": "u32",
+   "count": 64,
+   "stride": "0x78",
+   "values": [
+    "0xffffffff",
+    "0xffffffff",
+    "0x03020100",
+    "0xffff0501",
+    "0x0f0e0d0c",
+    "0xff070605",
+    "0x000a0b09",
+    "0xffffff00"
+   ]
+  },
+  {
+   "addr": "0x0060384c",
+   "type": "u32",
+   "lo": 0,
+   "hi": 256
+  },
+  {
+   "addr": "0x6099c0",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x6099c4",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x6099c8",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x6099d8",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": 1,
+   "hi": 8
+  },
+  {
+   "addr": "0x6099dc",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8"
+  },
+  {
+   "addr": "0x6099f8",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x6099fc",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x609a00",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x609a04",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x5d8",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0xffffffff",
+    "0x100"
+   ]
+  },
+  {
+   "addr": "0x609a08",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a0c",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x609a10",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x609a14",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x609a18",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x5d8",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0xffffffff",
+    "0x100"
+   ]
+  },
+  {
+   "addr": "0x609a1c",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a20",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x609a24",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x609a28",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x609a2c",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x5d8",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0xffffffff",
+    "0x100"
+   ]
+  },
+  {
+   "addr": "0x609a30",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a34",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x609a38",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x609a3c",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x609a40",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x5d8",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0xffffffff",
+    "0x100"
+   ]
+  },
+  {
+   "addr": "0x609a44",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a48",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x609a4c",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x609a50",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x609a54",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x5d8",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0xffffffff",
+    "0x100"
+   ]
+  },
+  {
+   "addr": "0x609a58",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a5c",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x609a60",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x609a64",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x609a68",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x5d8",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0xffffffff",
+    "0x100"
+   ]
+  },
+  {
+   "addr": "0x609a6c",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a70",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x609a74",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x609a78",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x609a7c",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x5d8",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0xffffffff",
+    "0x100"
+   ]
+  },
+  {
+   "addr": "0x609a80",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a84",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x609a88",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x609a8c",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x609a90",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x5d8",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0xffffffff",
+    "0x100"
+   ]
+  },
+  {
+   "addr": "0x609a94",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x0062a044",
+   "type": "ptr",
+   "size": 1024,
+   "fill": "layout=pos_0062a044"
+  }
+ ]
+}

@@ -1,0 +1,25 @@
+{
+ "size": 16,
+ "_evidence": "Singly linked list walked by the bubble pass 0x0054a09f: [ebx] is the head link, each node is +0 next (nullable) and +8 a signed key; acyclic chains of up to 5 nodes (each level a fresh buffer).",
+ "fields": [
+  {
+   "off": 8,
+   "type": "u32",
+   "values": [
+    4294967294,
+    4294967295,
+    0,
+    1,
+    2,
+    3
+   ]
+  },
+  {
+   "off": 0,
+   "type": "ptr",
+   "size": 16,
+   "fill": "layout=node2_0054a09f",
+   "nullable": true
+  }
+ ]
+}

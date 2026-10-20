@@ -70,6 +70,15 @@ class GlobalInputLayoutTests(unittest.TestCase):
             seen.add(int.from_bytes(values[0][1], "little"))
         self.assertEqual(seen, {0x402100 + 0x20 * k for k in range(2, 6)})
 
+    def test_nullable_points_into_is_sometimes_null(self):
+        seen = set()
+        for seed in range(100):
+            self.generator = SimpleNamespace(rng=random.Random(seed), scalar=lambda t: 0)
+            values = self.generate([{"addr": "0x402010", "type": "u32", "nullable": True,
+                                     "points_into": {"base": "0x402100", "stride": "0x20", "lo": 2, "hi": 3}}])
+            seen.add(int.from_bytes(values[0][1], "little"))
+        self.assertEqual(seen, {0, 0x402140, 0x402160})
+
     def test_points_into_rejects_invalid_fields(self):
         base = {"base": 0x402100, "stride": 0x20, "lo": 2, "hi": 5}
         for field in ({"type": "u16"}, {"count": 2}, {"lo": 0, "hi": 1},
@@ -89,6 +98,32 @@ class GlobalInputLayoutTests(unittest.TestCase):
             differ += values[0x402010] != values[0x402020]
         self.assertGreater(equal, 20)
         self.assertGreater(differ, 20)
+
+    def test_alias_always_is_equal_in_every_case(self):
+        for seed in range(50):
+            self.generator = SimpleNamespace(rng=random.Random(seed),
+                                             scalar=lambda t, r=random.Random(seed): r.randrange(1 << 32))
+            values = dict(self.generate([{"addr": "0x402010", "type": "u32"},
+                                         {"addr": "0x402020", "type": "u32", "alias": "0x402010",
+                                          "alias_always": True}]))
+            self.assertEqual(values[0x402010], values[0x402020])
+        with self.assertRaises(ValueError):
+            self.generate([{"addr": "0x402010", "type": "u32", "alias_always": True}])
+
+    def test_prefix_fills_the_first_n_entries_and_clears_the_rest(self):
+        seen = set()
+        for seed in range(60):
+            self.generator = SimpleNamespace(rng=random.Random(seed),
+                                             scalar=lambda t, r=random.Random(seed): r.randrange(1 << 32))
+            values = dict(self.generate([{"addr": "0x402010", "type": "u32", "count": 5, "stride": 4,
+                                          "prefix": [0, 2, 5], "values": [0, 7, 9]}]))
+            row = [int.from_bytes(values[0x402010 + 4 * k], "little") for k in range(5)]
+            n = next((k for k, v in enumerate(row) if v == 0), 5)
+            self.assertTrue(all(v in (7, 9) for v in row[:n]) and all(v == 0 for v in row[n:]), row)
+            seen.add(n)
+        self.assertEqual(seen, {0, 2, 5})
+        with self.assertRaises(ValueError):
+            self.generate([{"addr": "0x402010", "type": "u32", "count": 2, "prefix": [3]}])
 
     def test_values_pick_from_the_list_and_validate_fit(self):
         self.generator = SimpleNamespace(rng=random.Random(1), scalar=lambda t: 0)
@@ -118,6 +153,37 @@ class GlobalInputLayoutTests(unittest.TestCase):
                       {"type": "ptr", "size": 16, "fill": "bytes", "bias": 16}):
             with self.assertRaises(ValueError):
                 self.generate([{"addr": "0x402010", **field}])
+
+    def test_alias_reg_equals_the_register_argument_in_some_cases(self):
+        equal = 0
+        for seed in range(60):
+            self.generator = SimpleNamespace(rng=random.Random(seed), scalar=lambda t: 0x1234)
+            (self.layout_dir / "example.json").write_text(json.dumps(
+                {"globals": [{"addr": "0x402010", "type": "u32", "alias_reg": "esi"}]}))
+            with patch.object(input_layouts, "LAYOUT_DIR", self.layout_dir):
+                data = input_layouts.global_buffers(self.generator, "example", self.binary, regs={"esi": 0x20001000})
+            equal += int.from_bytes(data[0][1], "little") == 0x20001000
+        self.assertTrue(10 < equal < 50)
+
+    def test_alias_offset_ties_a_global_to_a_register_plus_constant(self):
+        seen = set()
+        for seed in range(40):
+            self.generator = SimpleNamespace(rng=random.Random(seed), scalar=lambda t: 0x1234)
+            (self.layout_dir / "example.json").write_text(json.dumps(
+                {"globals": [{"addr": "0x402010", "type": "u32", "alias_reg": "edi", "alias_offset": "-0x1b80"}]}))
+            with patch.object(input_layouts, "LAYOUT_DIR", self.layout_dir):
+                data = input_layouts.global_buffers(self.generator, "example", self.binary, regs={"edi": 0x20001000})
+            seen.add(int.from_bytes(data[0][1], "little"))
+        self.assertEqual(seen, {0x1234, 0x20001000 - 0x1b80})
+        with self.assertRaises(ValueError):
+            self.generate([{"addr": "0x402010", "type": "u32", "alias_offset": 4}])
+
+    def test_sign_of_extends_the_low_dword(self):
+        for low in (5, 0x80000001):
+            self.generator = SimpleNamespace(rng=random.Random(0), scalar=lambda t, v=low: v)
+            values = dict(self.generate([{"addr": "0x402010", "type": "u32"},
+                                         {"addr": "0x402014", "type": "u32", "sign_of": "0x402010"}]))
+            self.assertEqual(values[0x402014], bytes([0xFF]) * 4 if low & 0x80000000 else bytes(4))
 
     def test_alias_needs_an_earlier_field_of_the_same_width(self):
         for fields in ([{"addr": "0x402020", "type": "u32", "alias": "0x402010"}],

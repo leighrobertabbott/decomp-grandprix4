@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00445fb4 compares esi (a car record) with the selected-car pointer [0x0062f8b0] ('cmp esi,[0x62f8b0]; je'); the equality case needs the global to hold the same record in some cases (alias_reg), as state_00434602 does for 0x66d820.",
+ "globals": [
+  {"addr": "0x0062f8b0", "type": "u32", "alias_reg": "esi"}
+ ]
+}

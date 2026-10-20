@@ -1,0 +1,126 @@
+{
+ "size": 640,
+ "fill": "bytes",
+ "_evidence": "0x00414f8c shapes the control inputs with the percentage bytes +0x17a/+0x17b/+0x1d2/+0x1d3 (0..100: p=200 divides by zero and p >= 194 overflows the div at 0x415070); the signed axis bytes +0x6c/+0x6d/+0x6e include the 0x7f/0x80 limits; +0x7a bit 0x20 and +0xe5 bit 4 are mostly clear.",
+ "fields": [
+  {
+   "off": "0x17a",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    100,
+    100,
+    1,
+    50,
+    99,
+    25
+   ]
+  },
+  {
+   "off": "0x17b",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    100,
+    100,
+    1,
+    50,
+    99,
+    25
+   ]
+  },
+  {
+   "off": "0x1d2",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    100,
+    100,
+    1,
+    50,
+    99,
+    25
+   ]
+  },
+  {
+   "off": "0x1d3",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    100,
+    100,
+    1,
+    50,
+    99,
+    25
+   ]
+  },
+  {
+   "off": "0x6c",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    "0x7f",
+    "0x80",
+    "0xff",
+    "0x40",
+    "0xc0"
+   ]
+  },
+  {
+   "off": "0x6d",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    "0x7f",
+    "0x80",
+    "0xff",
+    "0x40",
+    "0xc0"
+   ]
+  },
+  {
+   "off": "0x6e",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    "0x7f",
+    "0x80",
+    "0xff",
+    "0x40",
+    "0xc0"
+   ]
+  },
+  {
+   "off": "0x7a",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    "0x20",
+    1,
+    "0x80"
+   ]
+  },
+  {
+   "off": "0xe5",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    "0x10",
+    4,
+    1
+   ]
+  }
+ ]
+}

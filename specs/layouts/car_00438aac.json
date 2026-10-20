@@ -1,0 +1,9 @@
+{
+  "_evidence": "esi of 0x00438aac: a car record (0x420 bytes), background random (fill bytes: the four damage dwords +0x2ec.. (imul/shrd, compared with the constant threshold tables 0x62a71c..0x62a7bb that only this function reads), flag byte +0xcc, and the 0x4378fc/0x437888 fields +0x78/+0x1c/+0x203/+0x68 are plain operands); overlay rec_004105c7 for the nonzero 0x410841 divisors +0x2cc.. (div). Dword +0x40 is the car's damage mask (test; jne at 0x438bb3: only an undamaged car, mask 0, asks 0x4378fc before OR-ing the new bits): drawn zero in 3 of 7 picks so the 0x438bb5 call and both of its CF outcomes occur (random dwords were never zero). Dword +0x44 (0x43790c test; jne -> clc) draws zero half the time so 0x4378fc reaches its car comparisons and the 0x437888 walk.",
+  "size": 1056,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x40", "type": "u32", "values": [0, 0, 0, 1, "0x80000000", "0xffffffff", "0x12345678"]},
+    {"off": "0x44", "type": "u32", "values": [0, 0, 1, "0xffffffff"]}
+  ]
+}

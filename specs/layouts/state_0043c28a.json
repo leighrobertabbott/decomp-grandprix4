@@ -1,0 +1,45 @@
+{
+ "_evidence": "0x0043c28a: ebp = max([0x622778], 300) * 1000 (imul, 32-bit), then 'idiv ebp' of [0x62d238] << 15 (edx zeroed first: unsigned dividend < 2^47). For v <= 2147483 the product is 300000..2^31-1, so the divisor is > 2^16 and the quotient < 2^31; a larger v wraps the product (possibly to a small or zero divisor: the original's own #DE), so v is drawn in -100000..2147483 (both sides of the 300 clamp). [0x6227a0] scales the quotient (imul/shrd 14, clamped 0..0x4000: +-32768 reaches both clamps). [0x6227e8]/[0x6227ec] index the 9-dword tables 0x6227c4 and 0x63b844 (0..8; a wild index faulted 40/200 with fuzz); the table entries are full-range i32 (wrapping subtracts, both jns outcomes).",
+ "globals": [
+  {
+   "addr": "0x00622778",
+   "type": "i32",
+   "lo": -100000,
+   "hi": 2147483
+  },
+  {
+   "addr": "0x0062d238",
+   "type": "u32"
+  },
+  {
+   "addr": "0x006227a0",
+   "type": "i32",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x006227e8",
+   "type": "u32",
+   "lo": 0,
+   "hi": 8
+  },
+  {
+   "addr": "0x006227ec",
+   "type": "u32",
+   "lo": 0,
+   "hi": 8
+  },
+  {
+   "addr": "0x006227c4",
+   "type": "i32",
+   "count": 9,
+   "stride": 4
+  },
+  {
+   "addr": "0x0063b844",
+   "type": "i32",
+   "count": 9,
+   "stride": 4
+  }
+ ]
+}

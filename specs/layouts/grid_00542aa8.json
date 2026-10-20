@@ -1,0 +1,9 @@
+{
+ "_evidence": "0x00542aa8 draws the two axis grids of the plot whose view globals 0x8310c0..d0 / zoom 0x83137b/7f are shared by 0x5426d3/0x542b72 (origin c0/cc added after 'mul [c4]/[d0]': c4/d0 are unsigned ranges, c8 the visible width). Loop 1: tick = 0, step (ebx from 0x542c43, 4000 halved down to 1 when '0x269300*[0x83137b]/[0x8310c4] >> 14' is large, e.g. a negative zoom) ... while 'cmp ecx,[0x8310c4]; jbe'; ticks below c0 ('sub eax,[0x8310c0]; jl') are skipped and 'cmp eax,[0x8310c8]; jg' ends the walk. With c4 up to 0x7fffffff (bounds_00542c43) and step 1 only the c8 exit bounds it, so c0 is i32 -0x800..0x2000 and c8 i32 -0x10..0x2000 (at most ~0x4000 iterations; c8 < 0 is the immediate exit). The idiv at 0x542ae5 divides (tick-c0)*0x278*[0x83137b] with tick-c0 <= c8 <= 0x2000 and |zoom| <= 2^20 by c4 >= 0x1000 (or skips c4 = 0): |q| < 1.4e9, no #DE. Loop 2: t = 0..0x67b23a by 0xcf647 (8 steps); 'imul eax,eax,0x13c' truncates (t-[0x8310cc])*0x13c to 32 bits (cc stays fuzzed, any i32), 'imul [0x83137f]' and 'idiv [0x8310d0]' (je skips 0): with |zoom2| <= 0xfffff and d0 0 or >= 0x100000 the quotient magnitude is < 2^31 (2^31 * (2^20-1) / 2^20); larger zooms or smaller ranges divide-fault the original (#DE), states the plot never holds (d0 is the range 0x5426d3 multiplies into). Compose after bounds_00542c43 (zoom 0x83137b and c4).",
+ "globals": [
+  {"addr": "0x008310c0", "type": "i32", "lo": -2048, "hi": 8192},
+  {"addr": "0x008310c8", "type": "i32", "lo": -16, "hi": 8192},
+  {"addr": "0x0083137f", "type": "i32", "lo": -1048575, "hi": 1048575},
+  {"addr": "0x008310d0", "type": "u32", "values": [0, "0x100000", "0x200000", "0x400000", "0x123457", "0x7fffffff"]}
+ ]
+}

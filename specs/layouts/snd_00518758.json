@@ -1,0 +1,13 @@
+{
+ "_evidence": "Sample start/stop entry points 0x51850a (tail of 0x51f26b) and 0x518538 (tail of 0x51f271); compose after full_00518b09+chan_005188f5+chan_00518654. 0x51850a: 'test byte [0x95404c],0xff; jne ret' - the sound-off byte (game writes 0 and 0x80; the image holds 0x80, so the weak accept only took the return): drawn 0 (start) and 0x80/1. 0x518758 and 0x518816: 'cmp byte [0x95405c],0xff; je stc-exit' then set/clear it - a re-entry guard: 0 or 0xff. 0x518758 -> 0x518b2d indexes the sample record [0x88f6cc]*0x1c + 0xb1c8e8 (100 records, sample 0..99): 'cmp dword [eax],0; je stc' (+0 nonzero = loaded; zero in the image (bss), so the start path never ran), then 0x518b09 claims a channel (full_00518b09), 0x518bff/0x518c83 read the volume table 0x7a8eec (index clamped 0..0x80) and record +0xc, flags +0x14 bit 0 with [0x88fbac] (1: keep, 0: clear, else set) choose the 0x81 'looping' channel byte; every back-end call (0x509ec0 'ret 8', 0x50a050 'mov al,1; ret 8', 0x518cfe) is a stub, so no import or COM pointer is reached. Records: +0 from {0, 1, 0x12345678} (only compared with 0), +0xc and +0x14 any u32. 0x518816: 'and byte [eax+0x88fb28],0x7f; mov ebx,[eax*4+0x88f998]; cmp eax,[ebx*4+0x88f948]; jne' (the channel still plays this sample) -> 0x518ba7 (btr/clear, 0x50a060 'ret 4'). The per-sample flag bytes 0x88fb28[0..99] are random (or 0x80 / and 0x7f visible). The sample index [0x88f6cc] is drawn from {0,1,7,50,99,3,42} (inside chan_00518654's 0..99) so that it often equals one of chan_005188f5's channel statuses {-1,0x80000000,0,1,7,50,99} and the stop path is reached. All indices stay inside their 100/16-entry tables: nothing faults.",
+ "globals": [
+  {"addr": "0x0095404c", "type": "u8", "values": [0, 0, 0, "0x80", 1]},
+  {"addr": "0x0095405c", "type": "u8", "values": [0, 0, 0, "0xff"]},
+  {"addr": "0x0088f6cc", "type": "u32", "values": [0, 1, 7, 50, 99, 3, 42]},
+  {"addr": "0x00b1c8e8", "type": "u32", "count": 100, "stride": "0x1c", "values": [0, 1, "0x12345678", "0x12345678"]},
+  {"addr": "0x00b1c8f4", "type": "u32", "count": 100, "stride": "0x1c"},
+  {"addr": "0x00b1c8fc", "type": "u32", "count": 100, "stride": "0x1c"},
+  {"addr": "0x0088fbac", "type": "u32", "values": [0, 1, 2, "0xffffffff"]},
+  {"addr": "0x0088fb28", "type": "u8", "count": 100, "stride": 1}
+ ]
+}

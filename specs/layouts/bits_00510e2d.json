@@ -1,0 +1,25 @@
+{
+ "_evidence": "Bitmap bytes 0x8245a3 (wanted) and 0x8910d8 (state) tested by 0x00510e2d (bit 3), zero in the image and only reached through the callee: independent draws with bit 3 set and clear.",
+ "globals": [
+  {
+   "addr": "0x008245a3",
+   "type": "u8",
+   "values": [
+    0,
+    8,
+    "0xff",
+    "0xf7"
+   ]
+  },
+  {
+   "addr": "0x008910d8",
+   "type": "u8",
+   "values": [
+    0,
+    8,
+    "0xff",
+    "0xf7"
+   ]
+  }
+ ]
+}

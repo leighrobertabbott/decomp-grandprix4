@@ -1,0 +1,73 @@
+{
+ "_evidence": "Inputs of 0x00426320 -> 0x00426261 -> 0x00426216 beyond ring_008943a0+ring_0040c0ae (which give the lap/pit pointers, the wrap, record words +0x7a in 1..30 and the varied 10-byte entries at 0x675a82, so the entry byte +1 test takes both sides). Record bytes +0x51 (bit 7: return 0) and +0x71 (lead count: (b-6)*0x160 offset of the looked-up record, b<<14 the clamp bound) of records 0..25: +0x71 is a small count 0..8, so the looked-up record is at most 6 back / 2 ahead (stepping through the lap/pit wrap of ring_0040c0ae; reads below record 0 stay in .data). Scalars: 0x602b4c (gain, shrd 28), 0x62d2dc (Q14 gain) and 0x62d2a0 (offset, clamp at 0x6000) draw zero, Q14 and extreme values so res = 0, 0 < res < 0x2000 and res >= 0x2000 (count 1..9, then both the lap-wrap and the pit-end clamp of 0x426320) all occur. Nothing faults (movzx indices stay in .data, no division).",
+ "globals": [
+  {
+   "addr": "0x008943f1",
+   "type": "u8",
+   "count": 26,
+   "stride": "0x160",
+   "values": [
+    "0x0",
+    "0x7f",
+    "0x80",
+    "0x1",
+    "0x10"
+   ]
+  },
+  {
+   "addr": "0x00894411",
+   "type": "u8",
+   "count": 26,
+   "stride": "0x160",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ]
+  },
+  {
+   "addr": "0x00602b4c",
+   "type": "u32",
+   "values": [
+    "0x10000000",
+    "0x20000000",
+    "0x40000000",
+    "0x0",
+    "0xf0000000",
+    "0x7fffffff"
+   ]
+  },
+  {
+   "addr": "0x0062d2dc",
+   "type": "u32",
+   "values": [
+    "0x0",
+    "0x1000",
+    "0x4000",
+    "0x8000",
+    "0xffffc000"
+   ]
+  },
+  {
+   "addr": "0x0062d2a0",
+   "type": "u32",
+   "values": [
+    "0x0",
+    "0x1000",
+    "0x3000",
+    "0x5000",
+    "0x6000",
+    "0x7000",
+    "0xfffff000",
+    "0x7fffffff",
+    "0x80000000"
+   ]
+  }
+ ]
+}

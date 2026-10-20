@@ -1,0 +1,13 @@
+{
+ "_evidence": "Text-script entries [0x835846 + 4*id] (zero in the image: the table is filled when the text resources load, never null-tested) for the ids 0x534de4 (the six-slot list builder behind the step handler 0x534d53) passes to the interpreter 0x54d798: 'mov esi,0xa18' then 'add esi,1' per slot (ids 0xa18..0xa1d, one per slot ecx = 0..5) and the constant ids 0xa1e/0xa1f/0xa20 inside each slot whose bit is set in [0x828164]. Dwords 0x8380a6 + 4k (k = 0..8; 0x835846 + 4*0xa18 = 0x8380a6). Each points at its own 0x40-byte script with the script_0054d798 byte set (no opcode 4, which dereferences the never-written [0x833f1c]). Compose after tab_00835846 (it varies ids 0..0x3ff as plain dwords; these ids lie beyond it).",
+ "globals": [
+  {
+   "addr": "0x008380a6",
+   "type": "ptr",
+   "count": 9,
+   "stride": 4,
+   "size": 64,
+   "fill": "u8{=0,1,2,3,5,6,7,8,9,0xa,0xb,0xc,0xd,0xe,0xf,0x10,0x11,0x12,0x13,0x14,0x20,0x41,0x7f,0x80,0xff}"
+  }
+ ]
+}

@@ -1,0 +1,9 @@
+{
+  "_evidence": "Overlay on obj_00424e1b for 0x0043b127's callee 0x43b070 (esi = the same object record): dwords +0x18 and +0x20 (velocity components: imul by the cos/sin words, shrd 14, then imul [0x603854] shrd 16) and +0x68 (added before each 'cmp [0x608284]') were zero (unlisted buffer bytes). Any i32: imul/shrd/add only, and the sum falls on both sides of the -0x4000 threshold.",
+  "size": 108,
+  "fields": [
+    {"off": "0x18", "type": "i32"},
+    {"off": "0x20", "type": "i32"},
+    {"off": "0x68", "type": "i32"}
+  ]
+}

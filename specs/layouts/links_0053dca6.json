@@ -1,0 +1,1069 @@
+{
+ "_evidence": "0x0053dca6 (menu navigation; compose after menu_0084300a+sel_0053d8c5+items_0053dc57, globals=layout only so the static next pointers, ids, +0xe value pointers and +0x1a handlers keep their image values): every caller passes ebx = 0x22/0x23/0x24/0x25 (0x53d799/0x53d7a4/0x53d7af/0x53d7ba and 0x53db52 'mov ebx,0x2N') and esi = the selected item of the current menu (0x53db52 hops [0x82fd45] times from [[0x82fd34]]), so esi is one of the 13 static items 0x843040..0x843224 of the menu 0x84300a. 'movzx eax,byte [ebx+edi]' reads the direction link of the item: 0 returns, 1..[0x82fd52]=13 hops 'mov edi,[edi]; loop' from the header (valid for 1..13), above the count or 0xfc..0xff goes to the empty stub 0x54e232, 0xfa/0xfb call [0x82feac+4*(link-0xfa)] = 0x53dd23/0x53dd3a only while edi == esi (they read/write the dword [[esi+0xe]] (+4/+8) = 0x81e4f8.. or 0x7ab544.., static data, then call 0x53dc57 whose domain items_0053dc57 provides). A target whose +0x1f has 0x10 or 0x20 (varied by menu_0084300a) is skipped by re-reading ITS link at the same offset, so a chain of disabled items that returns to an earlier item never terminates (the game's menus never form such a cycle: it would hang the menu). Each item's four link bytes (+0x22..+0x25, real item strides 0x26/0x2a) are therefore varied per direction over an acyclic graph: offsets 0x22/0x24 link item k only to items k+1..13, offsets 0x23/0x25 only to items 1..k-1 (both forward and backward links occur), plus 0 (twice), 0xfa, 0xfb, 0xfc, 0xff and 14/0xf9 (above the count). Every walk ends after at most 13 hops, so nothing hangs or faults, and disabled chains that end in 0, a special code at a non-entry item (0x53dce8 taken) or a rejected index all occur. The 0xfb handler 0x53dd3a also reads the scroll record behind +0xe ({pos, max +4, page +8}: 0x81e4f8/0x81e4fc/0x81e500 for items 1-5, 0x7ab544/0x7ab548/0x7ab54c for items 6-13; menu_0084300a varies pos), so max and page vary over small signed values (-2..40) and both clamps (pos+1+page > max, result < 0) occur; only add/sub/cmp read them, so no value faults.",
+ "globals": [
+  {
+   "addr": "0x843062",
+   "type": "u8",
+   "values": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x843063",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x843064",
+   "type": "u8",
+   "values": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x843065",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x843088",
+   "type": "u8",
+   "values": [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x843089",
+   "type": "u8",
+   "values": [
+    1,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x84308a",
+   "type": "u8",
+   "values": [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x84308b",
+   "type": "u8",
+   "values": [
+    1,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x8430ae",
+   "type": "u8",
+   "values": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x8430af",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x8430b0",
+   "type": "u8",
+   "values": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x8430b1",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x8430d4",
+   "type": "u8",
+   "values": [
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x8430d5",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    3,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x8430d6",
+   "type": "u8",
+   "values": [
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x8430d7",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    3,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x8430fa",
+   "type": "u8",
+   "values": [
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x8430fb",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    3,
+    4,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x8430fc",
+   "type": "u8",
+   "values": [
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x8430fd",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    3,
+    4,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x843120",
+   "type": "u8",
+   "values": [
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x843121",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x843122",
+   "type": "u8",
+   "values": [
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x843123",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x84314a",
+   "type": "u8",
+   "values": [
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x84314b",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x84314c",
+   "type": "u8",
+   "values": [
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x84314d",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x843174",
+   "type": "u8",
+   "values": [
+    9,
+    10,
+    11,
+    12,
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x843175",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x843176",
+   "type": "u8",
+   "values": [
+    9,
+    10,
+    11,
+    12,
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x843177",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x84319e",
+   "type": "u8",
+   "values": [
+    10,
+    11,
+    12,
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x84319f",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x8431a0",
+   "type": "u8",
+   "values": [
+    10,
+    11,
+    12,
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x8431a1",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x8431c8",
+   "type": "u8",
+   "values": [
+    11,
+    12,
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x8431c9",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x8431ca",
+   "type": "u8",
+   "values": [
+    11,
+    12,
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x8431cb",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x8431f2",
+   "type": "u8",
+   "values": [
+    12,
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x8431f3",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x8431f4",
+   "type": "u8",
+   "values": [
+    12,
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x8431f5",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x84321c",
+   "type": "u8",
+   "values": [
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x84321d",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x84321e",
+   "type": "u8",
+   "values": [
+    13,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x84321f",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x843246",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x843247",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x843248",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x843249",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    0,
+    0,
+    "0xfa",
+    "0xfb",
+    "0xfc",
+    "0xff",
+    14,
+    "0xf9"
+   ]
+  },
+  {
+   "addr": "0x0081e4fc",
+   "type": "i32",
+   "lo": -2,
+   "hi": 40
+  },
+  {
+   "addr": "0x0081e500",
+   "type": "i32",
+   "lo": -2,
+   "hi": 40
+  },
+  {
+   "addr": "0x007ab548",
+   "type": "i32",
+   "lo": -2,
+   "hi": 40
+  },
+  {
+   "addr": "0x007ab54c",
+   "type": "i32",
+   "lo": -2,
+   "hi": 40
+  }
+ ]
+}

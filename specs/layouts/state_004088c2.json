@@ -1,0 +1,35 @@
+{
+ "_evidence": "0x004088c2: count [0x00601fbc] (test; je: zero exits at once), start index [0x00601fb8] and divisor [0x00601fc0]. The only caller chain (0x408ab4 -> 0x408998) sets count = min(byte +0x198,3) - start in 1..3, start = byte +0x136 in 0..2 and divisor = count or count+1, so with caller values the clamps at 0x4088ed (eax < 0) and 0x4088fa (eax > count) are dead (eax = count - k stays in 1..count). The domain is wider but still fault-free so the original's clamp blocks run: count -8..8 (a negative count makes eax = count - k negative, clamps it to 0 and then back to count; the loop still ends because edi = start+k reaching 3 exits before the store, at most 4 passes whatever ecx is), start 0..4 (byte [esi+0x199+edi] is a 3-entry byte array inside the record; edi only grows from start), and the divisor from a nonzero list with both signs (|dividend| = |clamped eax * ebp| <= 8*100000, so every nonzero divisor fits; zero is a #DE in the original).",
+ "globals": [
+  {
+   "addr": "0x00601fbc",
+   "type": "i32",
+   "lo": -8,
+   "hi": 8
+  },
+  {
+   "addr": "0x00601fb8",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4
+  },
+  {
+   "addr": "0x00601fc0",
+   "type": "u32",
+   "values": [
+    1,
+    2,
+    3,
+    5,
+    10,
+    100,
+    1000,
+    "0xffffffff",
+    "0xfffffffb",
+    "0xfffffc18",
+    "0x7fffffff",
+    "0x80000000"
+   ]
+  }
+ ]
+}

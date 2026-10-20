@@ -1,0 +1,21 @@
+{
+ "_evidence": "0x00423160 (insert path, reached from 0x004233dd when the average reaches [0x608040]) dereferences dword +0x60 of the six 0x64-byte view records at 0x621aa0 (0x621b00 + k*0x64) as a pointer to a 0x38-byte block; recs_00621aa0 draws it as a random i32. Drawn as fresh 0x38-byte random blocks; +0x48 (0x621ae8 + k*0x64) is a key 0..3.",
+ "globals": [
+  {
+   "addr": "0x00621b00",
+   "type": "ptr",
+   "size": 56,
+   "fill": "bytes",
+   "count": 6,
+   "stride": "0x64"
+  },
+  {
+   "addr": "0x00621ae8",
+   "type": "u32",
+   "count": 6,
+   "stride": "0x64",
+   "lo": 0,
+   "hi": 3
+  }
+ ]
+}

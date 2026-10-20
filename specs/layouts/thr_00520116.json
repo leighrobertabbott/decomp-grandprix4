@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00520116 threshold overlay (compose after lap_0040cf8c+f10_00520116). Both folds compare a positive record distance with the half-lap threshold [0x866ed8] ('sub eax,edx; cmp eax,[0x866ed8]; jl 0x52018c' at 0x52014e and 'sub edx,eax; cmp edx,[0x866ed8]; jl 0x520184' at 0x52016f). The in-range positions are records 0..7 below the lap end 0x894ea0, so a distance is at most 7*0x160 = 0x9a0, while lap_0040cf8c draws the threshold uniformly over 0..0x2400 (for 0x40cf8c's 26-record differences): the mixed case edx >= pit > eax then reached the fold 0x520177 in no case. Here the threshold is drawn from record multiples 0..0xb00 (equal distances test the signed 'jl' boundary; 0x580 is half of lap_0040cf8c's lap length 0xb00) plus 0x9a1 and 0x2400 (above every distance), so both outcomes of both compares occur. A plain dword compared by cmp: every value valid.",
+ "globals": [
+  {"addr": "0x00866ed8", "type": "u32", "values": [0, "0x160", "0x2c0", "0x420", "0x580", "0x580", "0x6e0", "0x840", "0x9a0", "0x9a1", "0xb00", "0x2400"]}
+ ]
+}

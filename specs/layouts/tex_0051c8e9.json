@@ -1,0 +1,9 @@
+{
+ "_evidence": "0x0051c8e9: 'mov ebx,0x351; movzx ebx, word [ebx*2 + 0x9e1b20]' (= word 0x9e21c2), 'cmp bx,-1; je 0x51c917' skips; otherwise 'add ebx,0x6975ec; mov esi,[ebx]; mov edi,esi; mov ecx,0x2000' and 0x2000 bytes are rewritten in place (lodsb; neg al; add al,0x10; shl al,4; stosb; loop). Same family as tex_0051c690/tex_0051c746: the word is 0xffff (0x51bfb6 resets every word to 0xffff) or the byte offset k*0x20 of a 0x20-byte entry of the texture table 0x6975ec (0x51c058 stores edi-0x6975ec in 0x9e1b20[]); entries 0..2 are drawn (0, 0x20, 0x40). Entry +0 is the pointer to the map (0 in the image), so each is supplied as a distinct 0x2000-byte random buffer: the loop reads and writes exactly 0x2000 bytes of it. (The accepted spec used tex_0051c690, which varies word 0x9e21b6 of 0x51c690, so the 0x9e21c2 word kept its image value.) Values are synthetic.",
+ "globals": [
+  {"addr": "0x009e21c2", "type": "u16", "values": ["0xffff", 0, 0, "0x20", "0x40"]},
+  {"addr": "0x006975ec", "type": "ptr", "size": "0x2000", "fill": "bytes"},
+  {"addr": "0x0069760c", "type": "ptr", "size": "0x2000", "fill": "bytes"},
+  {"addr": "0x0069762c", "type": "ptr", "size": "0x2000", "fill": "bytes"}
+ ]
+}

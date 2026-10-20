@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x0043ef49 walks segment records from 0x8943a0 + [0x627b28]*0x160 for [0x627b24]-[0x627b28]+1 records and read-modify-writes byte +0x73 of the last one: both dwords are record indexes (start 0..15, end 0..31); fuzzed they walk off the array (20 faults, 9 timeouts in 200).",
+ "globals": [
+  {"addr": "0x00627b28", "type": "u32", "lo": 0, "hi": 15},
+  {"addr": "0x00627b24", "type": "u32", "lo": 0, "hi": 31}
+ ]
+}

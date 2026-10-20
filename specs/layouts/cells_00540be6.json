@@ -1,0 +1,19 @@
+{
+ "_evidence": "0x540be6: or's the four dwords 0xb1b8c8..0xb1b8d4 (via esi) and sets eax bit 0 when all are zero, then walks the static item chain 0x848c6e through 0x53e4db. The dwords are only or'ed, so any value is valid; zero in the image (so the nonzero arm never ran). Layout-only (no fuzz): fuzz:i32 rewrites the chain header.",
+ "globals": [
+  {
+   "addr": "0x00b1b8c8",
+   "type": "u32",
+   "count": 4,
+   "stride": 4,
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0x80000000",
+    "0xffffffff"
+   ]
+  }
+ ]
+}

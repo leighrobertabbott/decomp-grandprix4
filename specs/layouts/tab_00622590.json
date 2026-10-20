@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x0040c566 indexes dword table 0x00622590 by the surface kind ecx returned by 0x40c43b (map_0040c43b gives kinds 0..5; 0x6225a8 is the next table, so 6 entries). Kinds 1 and 4 blend base + ((0x10000-base)*half >> 14) with half 0x2000..0x4000 and clamp at 'cmp eax,0x10000; jle' (0x40c61a), which only falls through for base > 0x10000; the other kinds return the entry itself. Values span below, at and above 0x10000 and the signed extremes.",
+ "globals": [
+  {"addr": "0x00622590", "type": "u32", "count": 6, "stride": 4,
+   "values": [0, "0x8000", "0x10000", "0x18000", "0x20000", "0x7fffffff", "0xffff0000", "0xc000"]}
+ ]
+}

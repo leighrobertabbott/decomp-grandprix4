@@ -1,0 +1,9 @@
+{
+  "size": 232,
+  "_evidence": "0x0041246e reads movsx word [esi+0xe0] (or/je: zero stores 0 at 0x41249e; the full-range i16 generator yields 0 in about 1/8 of the cases), movzx words +0xd6 and +0xb2 (imul/shrd 14, imul, <<3 then idiv by dword 0x603854; see state_0041246e). All values of the three words are valid.",
+  "fields": [
+    {"off": 178, "type": "u16"},
+    {"off": 214, "type": "u16"},
+    {"off": 224, "type": "i16"}
+  ]
+}

@@ -1,0 +1,11 @@
+{
+ "_evidence": "Effect state behind 0x51e380 -> 0x005069d0 (stdcall id, value, raw value, parameter): 'lea eax,[ecx+ecx*4]; mov esi,[eax*8+0xae68b8]; test esi,esi; je' looks up the effect object of id [0x6f2d4c] / [0x6f2d5c] (never written: 0 and 1 in the image; drawn from {0,1} here, the two created slots 0xae68b8/0xae68e0, so both lookups stay inside the table); 0x506420 stores the created COM object there, so each slot is null (no device: early exit, the image case) or a synthetic object com_005069d0 whose method +0x18 is the GP4 'xor eax,eax; ret 0xc' routine 0x5a9d40. 'mov al,[0x7a8e0c]; test al,al; je' (force feedback on, 0xff in the image) both ways. 'mov ecx,[ecx*4+0xae6acc]; cmp ecx,1; jne' is the effect kind of the slot ({0,1,2}). On the full path the scaled value (clamped to +-10000), the raw value and the parameter are stored into 0xae6af4/0xae69b4/0xae69b8, so the arguments 0x51e380 pushes become visible memory effects instead of being ignored by the null-slot exit.",
+ "globals": [
+  {"addr": "0x006f2d4c", "type": "u32", "values": [0, 1]},
+  {"addr": "0x006f2d5c", "type": "u32", "values": [0, 1]},
+  {"addr": "0x00ae68b8", "type": "ptr", "size": 8, "fill": "layout=com_005069d0", "nullable": true},
+  {"addr": "0x00ae68e0", "type": "ptr", "size": 8, "fill": "layout=com_005069d0", "nullable": true},
+  {"addr": "0x007a8e0c", "type": "u8", "values": [0, "0xff", "0xff", 1]},
+  {"addr": "0x00ae6acc", "type": "u32", "count": 2, "stride": 4, "values": [0, 1, 1, 2]}
+ ]
+}

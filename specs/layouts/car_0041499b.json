@@ -1,0 +1,8 @@
+{
+  "_evidence": "esi of 0x0041499b: car record prefix (0x169 bytes; the callee 0x414886 reads up to +0x163), background random (fill bytes: heading +0xe, flags +0x161/+0x163/+0x6f, words +0x90/+0x94/+0x9a/+0xb0 are plain operands). Word +0xb4 (0x4149d1 test; je: zero leaves the flags alone, else its sign picks bit 8 or 4) draws zero in 3 of 8 picks, the extremes and both signs otherwise; random words were never zero. The thresholds 0x603bc2..0x603bc9 read by 0x414886 are image constants (only reader, never written) and keep their values.",
+  "size": 361,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0xb4", "type": "u16", "values": [0, 0, 0, 1, "0x7fff", "0x8000", "0xffff", "0x1234"]}
+  ]
+}

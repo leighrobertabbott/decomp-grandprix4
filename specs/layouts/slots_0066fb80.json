@@ -1,0 +1,13 @@
+{
+ "_evidence": "Per-car dword tables read by 0x00441706: index edx = (car byte +0x7c - 1) & 0x3f (0..63, not clamped to the 22 cars), and it loads [edx*4 + 0x66fb80], [edx*4 + 0x66fbd8], [edx*4 + 0x66fc30] and [edx*4 + 0x66fc88] (four 22-dword tables 0x58 bytes apart; car numbers above 22 read into the following table and up to 0x66fd87), storing each >> 16. All 130 dwords 0x66fb80..0x66fd87 (0x66fc88 + 63*4 = 0x66fd84 is the last one read) are run-time car state (zero in the image; fuzz:i32 only varied the four first dwords), drawn uniformly over u32 (lo/hi) so the high halves vary. Plain loads and shifts: nothing faults.",
+ "globals": [
+  {
+   "addr": "0x66fb80",
+   "type": "u32",
+   "count": 130,
+   "stride": 4,
+   "lo": 0,
+   "hi": 4294967295
+  }
+ ]
+}

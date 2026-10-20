@@ -1,0 +1,227 @@
+{
+ "_evidence": "Wheel-integrator overlay for 0x00420d3f (compose LAST): its callee 0x420ed6 (todo) is a fixed-point implicit integration of the four 0x300-byte wheel records at 0x6380d8 with ten 64/32 idivs (0x421135..0x421304 and the rear-pair copy, plus 0x4217a8's 'idiv [0x602bc0]' and 0x420ee8's 'div [0x602bc0]'), where [0x602bc0] = [0x6228ac] is the step (image 0x80) and the divisors are the effective masses M = 3*m<<22/dt + 3*c<<10 + (k*dt)>>6 (0x4217a8: m = record +0x9c, c = +0x120+0x140, k = +0x11c+0x13c+0x110, +0x110 = the car's +0x40c/+0x410 copied by 0x42181c). The composed layouts drew these as full-range state, so 0x420d3f's cases all faulted or stalled at those idivs (8/8). In the game they are physical: positive mass and step, bounded stiffness/damping and car state. Domain: dt in {0x40,0x80,0x80,0x100}; m in 0x100..0x2000 (so 3m<<22/dt < 2^31: 0x4217a8 cannot overflow and M >= 3*2^22); c and k terms 0..0x1000; the product terms +0x124..+0x130/+0x144..+0x150 (>>10 sums into 0x602ba8/ac) +-0x4000; +0xcc and the reference [0x637f9c] +-0x10000; the car fields (car_00420d3f): velocities +0x30c..+0x318 and positions +0x32c..+0x358 +-0x4000, coupling +0x40c/+0x410 0..0x4000. Bounding every numerator term by these ranges (e.g. 0x421220: (3*ba8)<<20 ~ 2^42, (3*q)*k<<10 ~ 2^48.6, (3m*dt'>>9)*v ~ 2^54, -(m'/dt)*v ~ 2^55) against M >= 3m*2^22/dt keeps every quotient below 2^30, and the 'ebp = M - x^2/M' divisors stay >= M/2 > 0, so no #DE; all values are inside the composed layouts' ranges. Inputs of 0x41f805, which rewrites the coefficient fields before 0x420ed6 runs (+0x11c/+0x120/+0x13c/+0x140 and the product terms +0x124..+0x150): record fields +0x8c, +0x1d4, +0x1c8, +0x6c, +0xc4 (positions/offsets, +-0x4000), +0x90 (travel limit 0..0x4000), +0x1d0 (bump-stop rate 0..0x1000), +0x15c (>>4, +-2^18), and the global rates [0x601df0]/[0x601dac]/[0x601db4] (0..0x1000) and knees [0x601e50]/[0x601e54] (+-0x4000); see car_00420d3f for the car's rates and positions.",
+ "globals": [
+  {
+   "addr": "0x006228ac",
+   "type": "u32",
+   "values": [
+    "0x40",
+    "0x80",
+    "0x80",
+    "0x100"
+   ]
+  },
+  {
+   "addr": "0x00637f9c",
+   "type": "i32",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x638174",
+   "count": 4,
+   "stride": "0x300",
+   "type": "i32",
+   "lo": 256,
+   "hi": 8192
+  },
+  {
+   "addr": "0x6381a4",
+   "count": 4,
+   "stride": "0x300",
+   "type": "i32",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x6381f4",
+   "count": 4,
+   "stride": "0x300",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "addr": "0x6381f8",
+   "count": 4,
+   "stride": "0x300",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "addr": "0x638214",
+   "count": 4,
+   "stride": "0x300",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "addr": "0x638218",
+   "count": 4,
+   "stride": "0x300",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "addr": "0x6381fc",
+   "count": 4,
+   "stride": "0x300",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "addr": "0x638200",
+   "count": 4,
+   "stride": "0x300",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "addr": "0x638204",
+   "count": 4,
+   "stride": "0x300",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "addr": "0x638208",
+   "count": 4,
+   "stride": "0x300",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "addr": "0x63821c",
+   "count": 4,
+   "stride": "0x300",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "addr": "0x638220",
+   "count": 4,
+   "stride": "0x300",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "addr": "0x638224",
+   "count": 4,
+   "stride": "0x300",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "addr": "0x638228",
+   "count": 4,
+   "stride": "0x300",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "addr": "0x638164",
+   "type": "i32",
+   "count": 4,
+   "stride": "0x300",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "addr": "0x638168",
+   "type": "i32",
+   "count": 4,
+   "stride": "0x300",
+   "lo": 0,
+   "hi": 16384
+  },
+  {
+   "addr": "0x6382ac",
+   "type": "i32",
+   "count": 4,
+   "stride": "0x300",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "addr": "0x6382a0",
+   "type": "i32",
+   "count": 4,
+   "stride": "0x300",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "addr": "0x6382a8",
+   "type": "i32",
+   "count": 4,
+   "stride": "0x300",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "addr": "0x638144",
+   "type": "i32",
+   "count": 4,
+   "stride": "0x300",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "addr": "0x638234",
+   "type": "i32",
+   "count": 4,
+   "stride": "0x300",
+   "lo": -262144,
+   "hi": 262144
+  },
+  {
+   "addr": "0x63819c",
+   "type": "i32",
+   "count": 4,
+   "stride": "0x300",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "addr": "0x00601df0",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "addr": "0x00601dac",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "addr": "0x00601db4",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "addr": "0x00601e50",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "addr": "0x00601e54",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  }
+ ]
+}

@@ -1,0 +1,19 @@
+{
+ "_evidence": "0x00549f22: the band list head cell 0x831d81 (span1..5_00549f22: null in about a quarter of the cases, then 1..5 nodes) and the free list [0x831d85] (free1..4_00549f22: null in about a quarter of the cases - the 0x54e232 empty-pool exit at the first overlap - else 1..4 nodes). See the node layouts' evidence for the domain.",
+ "globals": [
+  {
+   "addr": "0x00831d81",
+   "type": "ptr",
+   "size": 20,
+   "fill": "layout=span1_00549f22",
+   "nullable": true
+  },
+  {
+   "addr": "0x00831d85",
+   "type": "ptr",
+   "size": 20,
+   "fill": "layout=free1_00549f22",
+   "nullable": true
+  }
+ ]
+}

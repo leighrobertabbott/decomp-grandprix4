@@ -1,0 +1,36 @@
+{
+ "_evidence": "esi record of 0x00421a06 (0x7c bytes as the worker spec; stored to [0x609744]): dword +0x74 is compared with -1 ('cmp dword [esi+0x74],-1; je 0x421b32' exits when byte 0x60827d == 0 and 0x60827c == 2), so it is -1 in a third of the picks, else 0/1. The callback 0x42429d (eax, called at 0x421a97) copies the record into the solver state: +0/+4/+8 -> 0x607f28/2c/30, +0xc/+0x10/+0x14 -> 0x607f4c/50/54, +0x18..+0x2c -> 0x607f34..0x607f48, +0x58 -> 0x607fbc. The ones the contact solver 0x42320a projects with fistp (state_0042320a: 0x607f2c, 0x607f34..0x607f48, 0x607fbc in +-2^16; a random dword there overflowed the 64-bit weighted sums of 0x421f53 and #DE'd 0x421fc3 at 0x42202a) get that domain; the other bytes are plain data (fill bytes).",
+ "size": 124,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x74",
+   "type": "u32",
+   "values": [
+    "0xffffffff",
+    0,
+    1
+   ]
+  },
+  {
+   "off": 4,
+   "type": "i32",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "off": "0x18",
+   "type": "i32",
+   "count": 6,
+   "stride": 4,
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "off": "0x58",
+   "type": "i32",
+   "lo": -65536,
+   "hi": 65536
+  }
+ ]
+}

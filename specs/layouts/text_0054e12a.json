@@ -1,0 +1,6 @@
+{
+ "_evidence": "Text bytes moved by 0x0054e12a (see buf_0054e12a): the source edx..E lies in 0xa20000..0xa20080 and the destination, shifted by eax (spec i32[-8..8]; callers pass 1), in 0xa1fff8..0xa20088. The dwords 0xa1ffc0..0xa200c0 are varied so the copied bytes and the bytes around the moved block differ from case to case.",
+ "globals": [
+  {"addr": "0x00a1ffc0", "type": "u32", "count": 64, "stride": 4}
+ ]
+}

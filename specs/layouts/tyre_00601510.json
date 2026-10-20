@@ -1,0 +1,141 @@
+{
+ "_evidence": "Four wheel/tyre records at 0x00601510 (stride 0x158, ecx 0..3: 0x411922/0x411e69/0x411f09 pick front tables for ecx < 2, rear otherwise; filled by 0x411922/0x411a22). 0x00411cc4, 0x00411d31 and 0x00411da4 scale f64 +0x70 by the constant 0x601450 (224.7, read only), fistp and return 0 unless the result is < -2, otherwise take the sign of st0 (fucompp), form 1 - sign*[+0x18 | +0x48 | +0x90] times [+0x78 | +0x80/+0x50 | +0x88], store it (+0xe0 | +0x110 | +0x140) and run the magic-formula helper 0x411e17 on the block at +0xc8 | +0xf8 | +0x128 (B = +0, C = +8, D = +0x10, E = +0x18), then scale by the constant tables 0x62f860/0x62f870 (read only) and 2^-14. The record doubles stayed at their static zero (the < -2 path was never taken). All are varied as finite -4..4 (+0x70 both sides of -2/224.7), the divisor +0x50 as 0.1..8; x87 exceptions are masked, so no value faults.",
+ "globals": [
+  {
+   "addr": "0x601528",
+   "type": "f64",
+   "count": 4,
+   "stride": "0x158",
+   "lo": -4,
+   "hi": 4
+  },
+  {
+   "addr": "0x601558",
+   "type": "f64",
+   "count": 4,
+   "stride": "0x158",
+   "lo": -4,
+   "hi": 4
+  },
+  {
+   "addr": "0x601588",
+   "type": "f64",
+   "count": 4,
+   "stride": "0x158",
+   "lo": -4,
+   "hi": 4
+  },
+  {
+   "addr": "0x601590",
+   "type": "f64",
+   "count": 4,
+   "stride": "0x158",
+   "lo": -4,
+   "hi": 4
+  },
+  {
+   "addr": "0x601598",
+   "type": "f64",
+   "count": 4,
+   "stride": "0x158",
+   "lo": -4,
+   "hi": 4
+  },
+  {
+   "addr": "0x6015a0",
+   "type": "f64",
+   "count": 4,
+   "stride": "0x158",
+   "lo": -4,
+   "hi": 4
+  },
+  {
+   "addr": "0x6015d8",
+   "type": "f64",
+   "count": 4,
+   "stride": "0x158",
+   "lo": -4,
+   "hi": 4
+  },
+  {
+   "addr": "0x6015e0",
+   "type": "f64",
+   "count": 4,
+   "stride": "0x158",
+   "lo": -4,
+   "hi": 4
+  },
+  {
+   "addr": "0x6015e8",
+   "type": "f64",
+   "count": 4,
+   "stride": "0x158",
+   "lo": -4,
+   "hi": 4
+  },
+  {
+   "addr": "0x601608",
+   "type": "f64",
+   "count": 4,
+   "stride": "0x158",
+   "lo": -4,
+   "hi": 4
+  },
+  {
+   "addr": "0x601610",
+   "type": "f64",
+   "count": 4,
+   "stride": "0x158",
+   "lo": -4,
+   "hi": 4
+  },
+  {
+   "addr": "0x601618",
+   "type": "f64",
+   "count": 4,
+   "stride": "0x158",
+   "lo": -4,
+   "hi": 4
+  },
+  {
+   "addr": "0x601638",
+   "type": "f64",
+   "count": 4,
+   "stride": "0x158",
+   "lo": -4,
+   "hi": 4
+  },
+  {
+   "addr": "0x601640",
+   "type": "f64",
+   "count": 4,
+   "stride": "0x158",
+   "lo": -4,
+   "hi": 4
+  },
+  {
+   "addr": "0x601648",
+   "type": "f64",
+   "count": 4,
+   "stride": "0x158",
+   "lo": -4,
+   "hi": 4
+  },
+  {
+   "addr": "0x601580",
+   "type": "f64",
+   "count": 4,
+   "stride": "0x158",
+   "lo": -4,
+   "hi": 4
+  },
+  {
+   "addr": "0x601560",
+   "type": "f64",
+   "count": 4,
+   "stride": "0x158",
+   "lo": 0.1,
+   "hi": 8
+  }
+ ]
+}

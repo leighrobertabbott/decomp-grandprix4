@@ -1,0 +1,9 @@
+{
+  "_evidence": "Globals of 0x0041416e (with ring_008943a0 for 0x41447e). [0x6224fc] is the target-distance limit of 'cmp edx,[0x6224fc]; jge' (edx = 0x40113f sqrt of the squared position differences, up to about 2^27; static 0x50000, also only read by 0x414562, which fuzzes it): i32 0..0x8000000 puts the distance on both sides. [0x934df8] (test sign; jns) and [0x934df4] (cmp 0x1800; jge) are the i16 track-frame offsets written by 0x4041dd: any i16. [0x6013ac] is the unsigned clamp ('jb') of |angle term| (0x7c5c5c cosine entry or the 0x41447e heading difference, at most 0x8000): u32 0..0x8000 gives both sides. 0x7c5c5c is the image cosine table and is not varied (no fuzz).",
+  "globals": [
+    {"addr": "0x006224fc", "type": "i32", "lo": 0, "hi": 134217728},
+    {"addr": "0x00934df8", "type": "i16"},
+    {"addr": "0x00934df4", "type": "i16"},
+    {"addr": "0x006013ac", "type": "u32", "lo": 0, "hi": 32768}
+  ]
+}

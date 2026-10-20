@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x0040b0ac is 'rep movsb' of the state block 0x00630224..0x0063e18c (ecx = 0x0063e18c - 0x00630224 = 0xdf68 = 57192 bytes) to EDI. A byte copy accepts every pattern, so the whole source block is varied as 14298 u32 words; with the zero image block a wrong source address or length would copy zeros and still match.",
+  "globals": [
+    {"addr": "0x00630224", "type": "u32", "count": 14298, "stride": 4}
+  ]
+}

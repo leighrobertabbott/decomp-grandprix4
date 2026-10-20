@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x005585db: eax = [0x870598] (then incremented) must be < 0x3ff ('cmp eax,0x3ff; jl') or the int3 assertion at 0x5585fb traps, so in every valid game state the counter is 0..0x3fe; it then indexes the 0x3ff-entry tables written by this routine.",
+ "globals": [
+  {
+   "addr": "0x00870598",
+   "type": "u32",
+   "lo": 0,
+   "hi": "0x3fe"
+  }
+ ]
+}

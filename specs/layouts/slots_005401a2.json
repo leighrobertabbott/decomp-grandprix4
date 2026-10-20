@@ -1,0 +1,35 @@
+{
+ "_evidence": "0x005401a2 builds the network packet at [0x830010] (pkt_00830010: a 578-byte buffer): the dword [0x833c98], 16 bytes from 0x7ab4bc and the 22 slot-flag bytes 0x7c2a48 ('rep movsb'), then for each slot byte 'and al,0xc0; cmp al,0x80; jne' copies that slot's 0x18-byte name from 0x7c2b3c + 0x18*k (the driver-name table, editable at run time) or skips it. The slot bytes draw values whose top two bits are 10 (copied) and 00/01/11 (skipped) with varied low bits; the 16 header bytes and the 22 x 0x18 name bytes are random (pure copies). At most 22 names are copied, so the packet stays within 50 + 22*24 = 578 bytes.",
+ "globals": [
+  {
+   "addr": "0x007ab4bc",
+   "type": "u8",
+   "count": 16,
+   "stride": 1
+  },
+  {
+   "addr": "0x007c2a48",
+   "type": "u8",
+   "count": 22,
+   "stride": 1,
+   "values": [
+    "0x80",
+    "0x80",
+    "0x81",
+    "0xbf",
+    "0xc0",
+    "0x40",
+    "0",
+    "0x7f",
+    "0xff",
+    "0x9c"
+   ]
+  },
+  {
+   "addr": "0x007c2b3c",
+   "type": "u8",
+   "count": 528,
+   "stride": 1
+  }
+ ]
+}

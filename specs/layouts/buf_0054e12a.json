@@ -1,0 +1,8 @@
+{
+ "_evidence": "Text-edit record at edi for 0x0054e12a (callers 0x54dd7a/0x54defe: +0 text start, +4 end pointer E, +8 cursor, +0xc capacity end). The routine reads only +4: 'mov esi,[edi+4]; add [edi+4],eax; mov edi,[edi+4]; mov ecx,esi; sub ecx,edx; inc ecx; std; rep movsb', i.e. it moves the bytes edx..E up by eax (callers pass eax = 1 and edx = the cursor [edi+8] or a scan position inside the text, so edx <= E). A generated buffer cannot tie the edx register to the pointer stored at +4, so the text lives at the fixed unreferenced .data (bss) block 0xa20000 (no function addresses 0xa05c3c..0xa48cd8 directly, zero in the image; text_0054e12a varies its bytes): E = 0xa20000 + 0x40..0x80 and edx (spec rec[0xa20000,1,0..64]) = 0xa20000 + 0..0x40, so edx <= E always and the count E - edx + 1 is 1..0x81. Other bytes are random (never read).",
+ "size": 16,
+ "fill": "bytes",
+ "fields": [
+  {"off": 4, "type": "u32", "points_into": {"base": "0xa20000", "stride": 1, "lo": 64, "hi": 128}}
+ ]
+}

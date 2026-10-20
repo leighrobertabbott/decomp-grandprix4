@@ -1,0 +1,19 @@
+{
+ "_evidence": "Overlay for 0x0040eb6b (compose LAST). Word 0x7c2eb8 is race-session state (13 readers/writers, e.g. 0x40b334, 0x442360, 0x522ab1; zero in the image) that the callee 0x40e97d compares signed with 2 ('cmp word [0x7c2eb8],2' at 0x40e992); state_0043260e already treats it as a plain i16. Values around the threshold (0, 1, 2, 3, -1) plus the extremes reach both outcomes. Compare only: nothing faults.",
+ "globals": [
+  {
+   "addr": "0x007c2eb8",
+   "type": "u16",
+   "values": [
+    0,
+    1,
+    2,
+    2,
+    3,
+    "0xffff",
+    "0x7fff",
+    "0x8000"
+   ]
+  }
+ ]
+}

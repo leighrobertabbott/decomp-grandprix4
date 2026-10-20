@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x0054e733: 'push 0x838c5c; call 0x5a48be' (kernel32!QueryPerformanceCounter, modelled by the emulator: it writes a random, increasing 64-bit count) and then 'mov eax,[0x838c5c]; mov edx,[0x838c60]'. The stub's host-side write is not seen by the emulator's write tracking, so the two dwords were reported as unvaried image reads although the stub fills them. A random pre-image is given here: any value is valid (it is overwritten), and a reconstruction that read the qword before the call (or skipped the call) would now return the stale random value instead of the counter.",
+ "globals": [
+  {"addr": "0x00838c5c", "type": "u32", "count": 2, "stride": 4}
+ ]
+}

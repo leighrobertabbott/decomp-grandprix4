@@ -1,0 +1,25 @@
+{
+ "_evidence": "Value cell (ebx = the item's [esi+0xe], set by the dispatchers 0x53d225/0x53eb61) read by 0x539944 for 0x53bf2f as byte / word / dword / none by the item's width (+0xd & 3); 0x53bf2f then loads text id value + 0x491 through 0x54d1ad with no bound, so the value must give a loaded id: with strs_0053bf2f (ids 0x491..0x590) and script_0054d798 (0xba6..0xbbb) every read of a first dword drawn from 0..0xff or 0x715..0x72a is valid (byte: low byte -> 0x491..0x590; word/dword: 0x491..0x590 or 0xba6..0xbbb; none: 0 -> 0x491). The image item 0x8477f0 reads a byte cell (0x81d222). Bytes 4..7 random (never read).",
+ "size": 8,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": 0,
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    "0x10",
+    "0x7f",
+    "0xfe",
+    "0xff",
+    "0x715",
+    "0x71f",
+    "0x720",
+    "0x72a"
+   ]
+  }
+ ]
+}

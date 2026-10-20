@@ -1,0 +1,7 @@
+{
+ "_evidence": "Car-code list scanned by 0x00443278 (compose after flags_0066d909+keys_0044329f): ecx = dword [0x66d8ec] ('or ecx,ecx; je' skips the scan, then 'loop' over ecx bytes from 0x66d8f4). [0x66d8ec] is the number of cars in the order list (the count the 0x52286e sort and 0x442468/0x443148 use; 22 cars at most, the list 0x66d8f4..0x66d909 holds 22 bytes), so it draws 0..22: 0 takes the guard (the only caller 0x4432db calls with count > word [0x66d876] >= 0, but the guard is the function's own and a zero count is fault-free), a full-range count would run the loop over 2^32 bytes past the list. List bytes 0x66d8f4[0..21]: 'test byte,0xff; js' skips flagged entries, the others go to 0x44329f as al, which indexes keys_0044329f/flags_0066d909 by (al & 0x3f) - 1 clamped to 0..62 (always in range), so any byte is valid; they draw car codes 1..22 (the order list's codes) plus 0, 0x3f (index 62), bit-6 codes 0x41/0x56 and bit-7 codes 0x81/0x96/0xc5/0xff (js skip).",
+ "globals": [
+  {"addr": "0x66d8ec", "type": "u32", "lo": 0, "hi": 22},
+  {"addr": "0x66d8f4", "type": "u8", "count": 22, "stride": 1, "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 0, "0x3f", "0x41", "0x56", "0x81", "0x96", "0xc5", "0xff"]}
+ ]
+}

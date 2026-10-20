@@ -1,0 +1,8 @@
+{
+  "_evidence": "Globals for 0x00414cc2 and its callee 0x414c1a. Byte 0x7c2ea9 (game-mode flags, written by 0x40ce31/0x5119ac..): 'test byte [0x7c2ea9],0xff; jns' (0x414d38), sign set in 3/5. In 0x414c1a, 'cmp edi,[0x891500]; jb' compares the segment pointer with the pit start: equal to edi + 1 record in about half the cases (below), else 0, the image value 0x8943a0 or 0xffffffff (both sides for a heap edi); only compared there. Byte 0x868582 (written by 0x554445; 'test; jns' at 0x414c40): any u8. 0x623de0 is a never-written constant (0x180) and keeps its image value.",
+  "globals": [
+    {"addr": "0x007c2ea9", "type": "u8", "values": ["0x80", "0x80", "0xff", 0, "0x7f"]},
+    {"addr": "0x00891500", "type": "u32", "alias_reg": "edi", "alias_offset": "0x160", "values": [0, "0x8943a0", "0xffffffff"]},
+    {"addr": "0x00868582", "type": "u8"}
+  ]
+}

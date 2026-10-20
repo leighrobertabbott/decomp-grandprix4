@@ -1,0 +1,68 @@
+{
+ "_evidence": "State read by the message box 0x0053d636 (called by the menu item handler 0x54e99a event 5). 'cmp byte [0x82fd6c],0; jne 0x53d6aa': [0x82fd6c] is the open-message-box nesting counter (0x54a78b/0x54a7b8 add [0x82fd6d] = 1 before a box and 0xff after it), so nonzero goes straight to 0x53d6aa: 'pushal; test byte [0x7ab17e],0xff; jne' -> eax 1 (zero) or 0, 'push eax; call 0x503670' (stores al to [0xabc0fc]; [0xabc07c] keeps its image value 0, as in mode_007aafd3: nonzero calls the session layer 0x5b4df0); popal - fully modelled. Zero shows the box: 0x54a78b (adds 1, 0x54eb70 accepted), 0x53c374 (accepted), text id 0x37e / 0x37c (0x5345dc CF) / 0x37a / 0x37b (by the toggled [0x7ab17e]) into [0x82fe94], then 0x53c8c8 -> 0x536920 (strings from script_0054d798 entry 0 and tid_0053d636: compose both) -> 0x50a1a0 / MessageBoxExA / 0x50a230, all modelled by gp4re/stubs.py since the cursor stubs were added (2026-10-20 16:14), so these cases run to the end; the cursor/window state [0xb1c7f0]/[0xb1c888] (any u32, logged arguments), [0xb2cefc] {0,1}, [0xb2cf04] {0, a handle} is varied and [0xa6c0fc] keeps its image value 0 (see msgbox_0053d6eb). 0x5345dc reads the control bytes [0x7ab54a]/[0x7ab550]/[0x7ab553] through 0x52c689 (constant key table 0x81d891) and the dword mask [0x7ab0ec]: compose ctl_007ab548 for the bytes; the mask is any u32 here. 0x53c374 copies [0x8245c0] (any u32) and 0x54eb70 -> 0x54eb10 walks the shared item list 0x838c94 (compose list_0054eaf7+links_0054eaf7+tail_0054eb10 first). Domain: [0x82fd6c] {0,1}, [0x7ab17e] {0, 0xff, 1, 0x5a} (only 'test ..,0xff' and 'not'), [0x7aafd3] {0, 1, 0x80}. [0x7aafd3] == 0xff (the in-race menu mode) is left out: with [0x82fd6c] == 0, 0x54a78b -> 0x54a7b8 -> 0x54ac8b and 0x54a2c3 run the in-race fade loop ('cmp word [0x7a9476],0; jne 0x54a2ed', the word decremented only by the asynchronous timer), which the emulated original never leaves (see msgbox_0053d6eb, menu_0052d5f8). [0x7ab1a0] is read only on that excluded 0xff arm. [0xa562e9] keeps its image value 0: 1 routes 0x53c8c8 to the in-game dialog 0x53d350 over the D3D surfaces. Values are synthetic.",
+ "globals": [
+  {
+   "addr": "0x0082fd6c",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    1
+   ]
+  },
+  {
+   "addr": "0x007ab17e",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0xff",
+    1,
+    "0x5a"
+   ]
+  },
+  {
+   "addr": "0x007aafd3",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0x80"
+   ]
+  },
+  {
+   "addr": "0x008245c0",
+   "type": "u32"
+  },
+  {
+   "addr": "0x007ab0ec",
+   "type": "u32"
+  },
+  {
+   "addr": "0x00b1c7f0",
+   "type": "u32"
+  },
+  {
+   "addr": "0x00b1c888",
+   "type": "u32"
+  },
+  {
+   "addr": "0x00b2cefc",
+   "type": "u32",
+   "values": [
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x00b2cf04",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    "0x10012"
+   ]
+  }
+ ]
+}

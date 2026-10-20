@@ -1,0 +1,238 @@
+{
+ "_evidence": "Family layout for the 0x160-byte track-segment ring at 0x8943a0. Positions are record-aligned pointers (points_into): lap start [0x891504] 0..4, lap end [0x866ecc] 4..26, pit start [0x891500] 0..30, pit end [0x866ef8] 1..32 (all orders against each other), the walk start [0x626990] 0..29, and a wrap distance [0x866ec4] of 1..4 records (never more than the lap end), exactly as ring_004317ae/ring_0043ec1a. The forward advance used by 0x43dd13/0x43e7bd/0x43e867/0x43ea29/0x43eb10/0x43f696 (+0x160; < lap end keep; < pit start subtract the wrap; < pit end keep; else pit end - 0x160) and its 0x86857a variant (+0x160 unless >= pit end) map record p <= 31 to a record in 0..31 (p+1 <= 31, p+1-D >= lap end - D >= 0, pit end - 1 <= 31), so every visited record is 0..31 for any number of steps; the backward walk of 0x43e768 (clamp at pit start, or wrap +D below lap start: <= lap start - 1 + D <= 7) stays in 0..max(start,7). 0x43d6b4 walks from the lap start with its own wrap ([0x866eb8] end 4..26 minus [0x866ebc] 1..4 records, so >= 0) for word [0x868558]+0x100 iterations (16-bit: 0..0x8ff, or negative = one pass; 0x7fxx would be a 32768-step walk and is not drawn). Register record pointers use rec[0x8943a0,0x160,0..29]. The step-by-step byte walks of 0x43e768/0x43e7bd/0x43e867 store the running al into +0x6b, so a revisited record always ends them (at most 33 steps). Record fields of records 0..31 vary: bytes +0x10/+0x12 (RMW)/+0x51 (bit 7 test, RMW)/+0x6b/+0x73 (RMW)/+0xa8 (RMW)/+0xb6 (index into the 0x40-stride table 0x626fb8, whose 256 dwords +0 vary: any byte stays inside .data), word +0x14 and word +0xa6 (0..0x6000: both sides of the 0x2000 band), and word +2 of records -1..32 (0x43ea29 reads [edi+0x162] and [edi-0x15e]). 0x43fc28 walks three do-while ranges [0x627b48]->[0x603ed0]->[0x627b5c]->[0x627b4c] ending on 'jne', so those are record pointers 0..24 (start >= end skips: both orders). Selector bytes 0x86857a and 0x627b65 are zero in half the picks. Loop count [0x62ac48] is 0..40 (0x43dd13 'loop' would run 2^32 times on a negative count, 0x43eb10 shifts it). Variant for 0x0043eb10: [0x603ed0] is 0 (walk [0x62ac48]>>1 steps from [0x626990]; 0x43dd13 stores 0 there when nothing is found) or a record pointer (stored unchanged); the count is 0..80 so the shifted loop count is 0..40.",
+ "globals": [
+  {
+   "addr": "0x00891504",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 4
+   }
+  },
+  {
+   "addr": "0x00866ecc",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 4,
+    "hi": 26
+   }
+  },
+  {
+   "addr": "0x00891500",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 30
+   }
+  },
+  {
+   "addr": "0x00866ef8",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 1,
+    "hi": 32
+   }
+  },
+  {
+   "addr": "0x00866ec4",
+   "type": "u32",
+   "values": [
+    "0x160",
+    "0x2c0",
+    "0x420",
+    "0x580"
+   ]
+  },
+  {
+   "addr": "0x00866eb8",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 4,
+    "hi": 26
+   }
+  },
+  {
+   "addr": "0x00866ebc",
+   "type": "u32",
+   "values": [
+    "0x160",
+    "0x2c0",
+    "0x420",
+    "0x580"
+   ]
+  },
+  {
+   "addr": "0x00626990",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 29
+   }
+  },
+  {
+   "addr": "0x0086857a",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    255
+   ]
+  },
+  {
+   "addr": "0x8943b0",
+   "type": "u8",
+   "count": 32,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8943b2",
+   "type": "u8",
+   "count": 32,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8943b4",
+   "type": "i16",
+   "count": 32,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894446",
+   "type": "u16",
+   "count": 32,
+   "stride": "0x160",
+   "lo": 0,
+   "hi": 24576
+  },
+  {
+   "addr": "0x8943f1",
+   "type": "u8",
+   "count": 32,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x89440b",
+   "type": "u8",
+   "count": 32,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894413",
+   "type": "u8",
+   "count": 32,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894448",
+   "type": "u8",
+   "count": 32,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894456",
+   "type": "u8",
+   "count": 32,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894242",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x00626fb8",
+   "type": "u32",
+   "count": 256,
+   "stride": "0x40"
+  },
+  {
+   "addr": "0x00868558",
+   "type": "u16",
+   "values": [
+    "0xff00",
+    "0xff01",
+    "0xff05",
+    "0xff19",
+    "0xff80",
+    "0xffff",
+    0,
+    1,
+    "0x100",
+    "0x3ff",
+    "0x7ff"
+   ]
+  },
+  {
+   "addr": "0x00627b48",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 24
+   }
+  },
+  {
+   "addr": "0x00627b5c",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 24
+   }
+  },
+  {
+   "addr": "0x00627b4c",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 24
+   }
+  },
+  {
+   "addr": "0x00627b65",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    255
+   ]
+  },
+  {
+   "addr": "0x0062ac48",
+   "type": "i32",
+   "lo": 0,
+   "hi": 80
+  },
+  {
+   "addr": "0x00603ed0",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    0,
+    "0x8943a0",
+    "0x894500",
+    "0x8956e0"
+   ]
+  }
+ ]
+}

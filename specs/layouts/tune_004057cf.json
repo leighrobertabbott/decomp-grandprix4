@@ -1,0 +1,10 @@
+{
+ "_evidence": "Never-written constants of 0x004057cf's loop (compose after state_00404ed0+state_00404f33+engine_00413606), each drawn from its image value in about half the cases and otherwise other valid values. [0x603078] is the pass count (image 3; its only reader is 0x4057da, nothing writes it): 'push ecx ... pop ecx; dec ecx; je' runs the 0x404f99 evaluation that many times, 0 would loop 2^32 times, so it draws 1..5 with 3 most often. The f64 scales 0x601440 (image 0x3ef23a3ac19ff06c, about 1.7e-5) and 0x601460 (image 0x404cc37da8a24b19, about 57.5) are read by 0x411c26/0x411c75 (called by 0x404f99) and 0x416738/0x416789/0x41724d, written by none: they are fmul factors before fabs/fistp (masked x87 exceptions: an overflowing fistp stores the integer indefinite), so their exact image dwords are kept in about half the cases and otherwise paired with other finite high dwords (1e-4, negative, 100, 1.0).",
+ "globals": [
+  {"addr": "0x603078", "type": "u32", "values": [3, 3, 3, 3, 1, 2, 4, 5]},
+  {"addr": "0x601440", "type": "u32", "values": ["0xc19ff06c", "0xc19ff06c", 0]},
+  {"addr": "0x601444", "type": "u32", "values": ["0x3ef23a3a", "0x3ef23a3a", "0x3ef23a3a", "0x3f1a36e2", "0xbef23a3a"]},
+  {"addr": "0x601460", "type": "u32", "values": ["0xa8a24b19", "0xa8a24b19", 0]},
+  {"addr": "0x601464", "type": "u32", "values": ["0x404cc37d", "0x404cc37d", "0x404cc37d", "0x40590000", "0xc04cc37d", "0x3ff00000"]}
+ ]
+}

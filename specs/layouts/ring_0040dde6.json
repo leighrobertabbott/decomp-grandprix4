@@ -1,0 +1,19 @@
+{
+  "_evidence": "0x0040dde6 (edi = segment record [0x866ed0] or [0x866ed4], see 0x40def9; spec rec[0x8943a0,0x160,0..3]) takes the point pair +0x118/+0x11c or +0x120/+0x124 of edi (sign of byte 0x868582) and the cursor record [edi+0x44], moves it 50 records back (pit: clamp at the pit start [0x891500]; lap: below the lap start [0x891504] add the lap length [0x866ec4]) and then visits 100 records forward (at the lap end [0x866ecc]: below the pit start subtract the lap length, at/after the pit end [0x866ef8] clamp to its last record), keeping the nearest of the other point pair (fild/fsqrt/fistp, masked: any values). Random pointers faulted every case. The single wrap is only coherent when the lap holds more than 50 records and start/end/length agree, so the lap is fixed at records 0..119 (start 0x8943a0, end base+120*0x160, length 0xa500); pit start 125..128, pit end 140..150. The cursor +0x44 of records 0..3 is any record 0..149 (lap, gap or pit; every one stays inside records 0..149), and the four position dwords of records 0..149 are varied i32 (both outcomes of the nearest-point compare).",
+  "globals": [
+    {"addr": "0x00868582", "type": "u8"},
+    {"addr": "0x00891504", "type": "u32", "values": ["0x8943a0"]},
+    {"addr": "0x00866ecc", "type": "u32", "values": ["0x89e8a0"]},
+    {"addr": "0x00866ec4", "type": "u32", "values": ["0xa500"]},
+    {"addr": "0x00891500", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 125, "hi": 128}},
+    {"addr": "0x00866ef8", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 140, "hi": 150}},
+    {"addr": "0x008943e4", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 149}},
+    {"addr": "0x00894544", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 149}},
+    {"addr": "0x008946a4", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 149}},
+    {"addr": "0x00894804", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 149}},
+    {"addr": "0x008944b8", "type": "i32", "count": 150, "stride": "0x160"},
+    {"addr": "0x008944bc", "type": "i32", "count": 150, "stride": "0x160"},
+    {"addr": "0x008944c0", "type": "i32", "count": 150, "stride": "0x160"},
+    {"addr": "0x008944c4", "type": "i32", "count": 150, "stride": "0x160"}
+  ]
+}

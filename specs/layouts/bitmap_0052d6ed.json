@@ -1,0 +1,31 @@
+{
+ "_evidence": "0x0052d6ed (and its wrappers 0x52da11..0x52db86) ORs the 8 dwords of the 256-bit key-state bitmap 0x8245a0..0x8245bf (run-time keyboard state, zero in the image) to test 'any key down'. Any pattern is a valid keyboard state; each dword is mostly 0 so the all-empty case (about 1 in 4) and non-empty cases both occur.",
+ "globals": [
+  {
+   "addr": "0x008245a0",
+   "type": "u32",
+   "count": 8,
+   "stride": 4,
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    "0x80",
+    "0xff00ff00"
+   ]
+  }
+ ]
+}

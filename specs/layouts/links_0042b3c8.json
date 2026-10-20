@@ -1,0 +1,50 @@
+{
+ "_evidence": "0x0042b3c8 (compose after ring_00405a12): dword +0x44 of the start record (records 0..25) is zero (je: clc) or a link; the linked record's signed bytes +0x7c (first) and +0x7d (last) give 'sub ecx,eax; js' both ways, then the backward walk 0x405d65 starts at link + first*0x160. ring_00405a12 proves walks from records 0..11 stay inside records 0..14, so link targets are records 0..9 and first is 0..2 (start record <= 11); last is -1..4 so last < first and last >= first both occur. The final 'cmp edi,[0x891500]; jb' sees walk results on both sides of the pit start (9..10).",
+ "globals": [
+  {
+   "addr": "0x008943e4",
+   "type": "u32",
+   "count": 26,
+   "stride": "0x160",
+   "values": [
+    0,
+    0,
+    "0x8943a0",
+    "0x894500",
+    "0x894660",
+    "0x8947c0",
+    "0x894920",
+    "0x894a80",
+    "0x894be0",
+    "0x894d40",
+    "0x894ea0",
+    "0x895000"
+   ]
+  },
+  {
+   "addr": "0x0089441c",
+   "type": "u8",
+   "count": 26,
+   "stride": "0x160",
+   "values": [
+    0,
+    1,
+    2
+   ]
+  },
+  {
+   "addr": "0x0089441d",
+   "type": "u8",
+   "count": 26,
+   "stride": "0x160",
+   "values": [
+    "0xff",
+    0,
+    1,
+    2,
+    3,
+    4
+   ]
+  }
+ ]
+}

@@ -1,0 +1,9 @@
+{
+  "_evidence": "Car record fields 0x004035f7 hands to 0x00403524 (overlay on car_00431ffb for +0x7e/+0xfd and the random background): movzx ecx,byte [esi+0x272] is the interpolation mode, mov ebp,[esi+0x1a4] the blend fraction, test byte [esi+0xfe],0x80 the side (edx 0/-1; random background bit). Writers: 0x4037a9 stores +0x272 = mode of 0x403a1e (eax 0..7) and +0x1a4 = eax of 0x403ab9 (0x403d10 clamps to +-0x400000) with the side in +0xfe bit 7; 0x428efb/0x428fd3 copy +0x294/+0x1a0 (same domain, see car_004035c3) or store +0x295 and movsx word +0x10a (i16); 0x42aa47 stores 1 and 0x4000. So the mode is 0..7 and the fraction lies in [-0x400000..0x400000]; random bytes there (modes 8..255, huge fractions) are impossible and make the original fault/time out inside 0x403938/0x403bb6.",
+  "size": 627,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x272", "type": "u8", "values": [0, 1, 2, 3, 4, 5, 6, 7]},
+    {"off": "0x1a4", "type": "i32", "lo": -4194304, "hi": 4194304}
+  ]
+}

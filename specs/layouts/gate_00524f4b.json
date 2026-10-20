@@ -1,0 +1,9 @@
+{
+ "_evidence": "0x00524f4b: 'mov eax,[0x679bd8]; cmp eax,[0x6f3b94]; jne refresh; cmp byte [0x6f3c00],0xff; jne refresh; cmp byte [0x6f3c02],0xff; je 0x524fa3 (skip)'. [0x6f3b94] is the cached copy of the object index [0x679bd8], so [0x6f3b94] holds the same dword in about half the cases (equality selector) and its own random value otherwise; the two cache bytes are 0xff in half the cases and 0/0xfe otherwise, so the skip path at 0x524f68 (about 1/8 of the cases) and each of the three refresh exits occur. The index is only compared here and passed in eax to 0x526465, which overwrites eax before use (it reads [0x679d30], see ptr_00679d30), so any value is valid.",
+ "globals": [
+  {"addr": "0x00679bd8", "type": "u32"},
+  {"addr": "0x006f3b94", "type": "u32", "alias": "0x00679bd8"},
+  {"addr": "0x006f3c00", "type": "u8", "values": ["0xff", "0xff", 0, "0xfe"]},
+  {"addr": "0x006f3c02", "type": "u8", "values": ["0xff", "0xff", 0, "0xfe"]}
+ ]
+}

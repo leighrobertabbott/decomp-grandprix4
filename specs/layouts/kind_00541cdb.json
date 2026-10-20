@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00541cdb counts the used slots (dword +0 nonzero, slots_00541d5a) of the 22-slot table 0xb1b8d8 (stride 0x1c, state: zero in the image, part of the settings snapshot copied by 0x54045b) whose kind byte +0x14 differs from dl = eax (spec 0..3): 'cmp byte [ebx+0x14],dl; je skip; inc eax'. The kind bytes (0xb1b8ec + k*0x1c) kept their zero image value, so only kind 0 was ever compared. Here each draws a kind 0..3 or 0xff (an unset slot), so equal and different kinds both occur for every dl; a plain byte compare, every value is valid. Compose after slots_00541d5a.",
+ "globals": [
+  {"addr": "0x00b1b8ec", "type": "u8", "count": 22, "stride": "0x1c", "values": [0, 1, 2, 3, "0xff"]}
+ ]
+}

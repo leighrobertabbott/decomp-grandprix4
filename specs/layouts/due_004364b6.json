@@ -1,0 +1,23 @@
+{
+ "_evidence": "0x004364b6 (the pit-stop timing check, reached from 0x521f6e): 'test word [0x66d898],0xffff; jne' exits, else 'test dword [0x66d83c],-1; je' or 'neg; add [0x66d814]; jns' (race clock minus the due time [0x66d83c], clock_0066d814 draws 0..0x10000) decide whether the clock is stored to car +0xf0 and, when [0x7aafd4] is set (state_0043b920), the 5-byte opcode 6 is written through the stream cursor [0x62d1a0] by 0x444d97 (compose with stream_0062d1a0: a fresh 64-byte buffer). 0x66d898 draws zero and nonzero words, 0x66d83c 0..0x20000 (zero sometimes, and on both sides of the clock). Only tested/compared: any value valid.",
+ "globals": [
+  {
+   "addr": "0x0066d898",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0xffff",
+    "0x8000"
+   ]
+  },
+  {
+   "addr": "0x0066d83c",
+   "type": "u32",
+   "lo": 0,
+   "hi": 131072
+  }
+ ]
+}

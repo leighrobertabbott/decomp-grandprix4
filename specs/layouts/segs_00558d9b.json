@@ -1,0 +1,38 @@
+{
+ "_evidence": "0x00558d9b rebuilds segment attributes from the start record [0x866ec0] (records 0..3) up to the end [0x866eb8] (records 4..26) and tests byte +0x48 (bit 2) of each record.",
+ "globals": [
+  {
+   "addr": "0x00866ec0",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 3
+   }
+  },
+  {
+   "addr": "0x00866eb8",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 4,
+    "hi": 26
+   }
+  },
+  {
+   "addr": "0x008943e8",
+   "type": "u8",
+   "count": 32,
+   "stride": "0x160",
+   "values": [
+    0,
+    4,
+    "0x44",
+    "0xff",
+    1
+   ]
+  }
+ ]
+}

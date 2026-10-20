@@ -1,0 +1,6 @@
+{
+  "_evidence": "The 16-byte row-limit table 0x00937dd0 (written by 0x550be1, read by 0x41f02b and 0x43bee0): 0x43bee0 reads byte [(entry byte +1 >> 4) + 0x937dd0] (index 0..15) and caps the gear offset at that byte << 4. It is game state (image values 5,5,5,5,4,3,2,1,...), so all 16 bytes are any u8. The gear-score table 0x622840..0x622887 and the six weights 0x622888.. (sum 0x4000) are image constants with a single reader and keep their values; with them every channel score is <= 0xb0 and their weighted average cannot exceed 0xb0, so 0x43bf98's clamp block 0x43c008 is unreachable in the game.",
+  "globals": [
+    {"addr": "0x00937dd0", "type": "u8", "count": 16, "stride": 1}
+  ]
+}

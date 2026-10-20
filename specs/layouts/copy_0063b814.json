@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x0040b511 is 'rep movsd' of 0xa5e dwords (10616 bytes) from the state block at 0x0063b814 to EDI. A dword copy accepts every pattern, so all 2654 source dwords are varied as u32.",
+  "globals": [
+    {"addr": "0x0063b814", "type": "u32", "count": 2654, "stride": 4}
+  ]
+}

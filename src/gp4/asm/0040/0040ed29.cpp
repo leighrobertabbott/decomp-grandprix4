@@ -58,4 +58,4 @@ void __cdecl FUN_0040ed29(gp4::Regs* r) {
     r->eax = (uint32_t)index;
     r->eflags = (r->eflags & ~0x8d5u) | incByteFlags(old);
 }
-GP4_IMPL(0x0040ed29, FUN_0040ed29, "regs(esi:ptr[0x41d]:bytes) -> (eax, edx, cf, pf, af, zf, sf, of); globals=fuzz:i32")
+GP4_IMPL(0x0040ed29, FUN_0040ed29, "regs(esi:ptr[0x41d]:bytes) -> (eax, edx, cf, pf, af, zf, sf, of); globals=layout=state_0040ed29")

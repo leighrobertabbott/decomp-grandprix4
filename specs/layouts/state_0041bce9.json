@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x0041bce9: v = ((dword 0x00638118 + dword 0x00638418) sar 1) + dword 0x00638ce0 (records 0/1 +0x40 of 0x006380d8, 32-bit wrap, any value), then (v<<14) idiv dword 0x006013d8, imul 60 / shrd 6, imul dword 0x00623b6c / shrd 14 into 0x6258a8. 0x6013d8 is a positive car dimension (0x4112e3 fist's dim*pi*k; image value 111522): any divisor >= 0x4000 keeps |v<<14 / d| within int32 (zero, negative or small divisors can #DE), so it is 0x4000..0x100000; everything else is full-range i32.",
+  "globals": [
+    {"addr": "0x00638118", "type": "i32"},
+    {"addr": "0x00638418", "type": "i32"},
+    {"addr": "0x00638ce0", "type": "i32"},
+    {"addr": "0x006013d8", "type": "i32", "lo": 16384, "hi": 1048576},
+    {"addr": "0x00623b6c", "type": "i32"}
+  ]
+}

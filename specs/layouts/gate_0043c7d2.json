@@ -1,0 +1,104 @@
+{
+ "_evidence": "Overlay for 0x0043c7d2 (compose LAST; esi uses car_0043c677+car_0043c7d2). Gates on the car's segment pointer pos = [esi+0x1c] (records 0..25): 'cmp pos,[0x891500]; jae exit' (on the lap, not in the pit lane) and [0x866f00]-0xf0a0 <= pos < [0x866f00]-0x44c0 (between 175 and 50 records before the pit-entry record). The family layouts draw [0x866f00] as records 0..26, so pos >= [0x866f00]-0x44c0 always exited; on a real track the pit entry lies hundreds of records after most positions. Domain: [0x866f00] a record pointer 30..210 of the 0x8943a0 array (only compared here and in 0x43c608, whose 16-record walk 'add edi,0x1600; cmp edi,[0x866f00]; jb' reads words +0xca/+0x7a of every 16th record up to it: records past the 26 varied ones are image zeros, +0xca clamps to 0x780 and +0x7a = 0 indexes entry 0, no fault), [0x891500] the pit start 0..40 (above and below pos; 0x43c677 divides only when [0x891500] <= pos < [0x866f08], so the divisor stays positive, and 0x43c6fb's divisor is the constant 0x160), dword 0x63b830 (frame/phase counter added to car byte +0x202, 'test 0x1f') from multiples of 32 and others. The team-mate found by 0x43b974 (a car of the global array) is then tested: byte +0x71 bit 7 (0x66ff61), +0x1c (0x66ff0c: a segment record 0..25, compared with [0x891500] and differenced with pos), +0x230 bit 7 (0x670120), and through 0x43c75b its +0xfd (0x66ffed, clamped to 10 by 0x43c6fb): all plain draws. Byte 0x7c2e75 ('cmp 0; jne' before the 0x418fd0 call) draws 0/0/1/0xff. The team-mates' segment pointers also take a few far records (260, 300, 400: inside .data, image zeros past the varied 26) (beyond the pit start, the +0x230 test path); their readers only compare them, walk to [0x866f00] (exits at once when beyond it) or divide by the constant 0x160.",
+ "globals": [
+  {
+   "addr": "0x0063b830",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x100",
+    "0x3e0",
+    7,
+    "0x1f"
+   ]
+  },
+  {
+   "addr": "0x00866f00",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 30,
+    "hi": 210
+   }
+  },
+  {
+   "addr": "0x00891500",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 40
+   }
+  },
+  {
+   "addr": "0x0066ff0c",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x8943a0",
+    "0x894500",
+    "0x894660",
+    "0x8947c0",
+    "0x894920",
+    "0x894a80",
+    "0x894be0",
+    "0x894d40",
+    "0x894ea0",
+    "0x895000",
+    "0x895160",
+    "0x8952c0",
+    "0x895420",
+    "0x895580",
+    "0x8956e0",
+    "0x895840",
+    "0x8959a0",
+    "0x895b00",
+    "0x895c60",
+    "0x895dc0",
+    "0x895f20",
+    "0x896080",
+    "0x8961e0",
+    "0x896340",
+    "0x8964a0",
+    "0x896600",
+    "0x8aa920",
+    "0x8ae020",
+    "0x8b69a0"
+   ]
+  },
+  {
+   "addr": "0x0066ff61",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x00670120",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x0066ffed",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x007c2e75",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  }
+ ]
+}

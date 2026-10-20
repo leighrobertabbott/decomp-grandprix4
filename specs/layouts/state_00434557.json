@@ -1,0 +1,17 @@
+{
+ "_evidence": "0x00434557: 0x433fe0 returns the constant 0x62ff6c, so 'bt dword [0x62ff6c + eax*4], esi' with eax 0..15 and esi 0..21 (the spec) tests bit esi of one of 16 row dwords; on a set bit, when eax == 4, it loads dword +0 of record esi of the 0x1c-stride table at 0x62ffac (22 records). Rows and record dwords are plain u32 draws (0, all-ones, random: both bt outcomes).",
+ "globals": [
+  {
+   "addr": "0x0062ff6c",
+   "type": "u32",
+   "count": 16,
+   "stride": 4
+  },
+  {
+   "addr": "0x0062ffac",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x1c"
+  }
+ ]
+}

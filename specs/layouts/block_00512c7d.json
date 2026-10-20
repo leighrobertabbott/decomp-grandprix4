@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00512c7d copies the state block 0x7ad890..0x7c3ae4 (0x16254 bytes; 'mov esi,0x7ad890; mov edx,0x7c3ae4; movsb; cmp esi,edx; jne') to the buffer at edi. The block is run-time .data state (game/menu variables such as 0x7ad8ac, 0x7ab... live in it), never interpreted here: every byte is copied as is, so any pattern is valid. Its 0x5895 dwords are random so a wrong source offset, length or order shows in the copied bytes (the image block is mostly zero).",
+ "globals": [
+  {"addr": "0x007ad890", "type": "u32", "count": 22677, "stride": 4}
+ ]
+}

@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x0044334d reads the selected-car pointer [0x679d30] (one of the 22 car records) and the car word +0xc0 (0x66ffb0 + k*0x41c), whose sentinel 0xc0000000 means 'not set': the clc path needs the sentinel, the other paths ordinary due times. Both are zero in the image.",
+ "globals": [
+  {"addr": "0x00679d30", "type": "u32", "points_into": {"base": "0x0066fef0", "stride": "0x41c", "lo": 0, "hi": 21}},
+  {"addr": "0x0066ffb0", "type": "u32", "count": 22, "stride": "0x41c", "values": ["0xc0000000", "0xc0000000", "0xc0000000", 0, 1, 5, "0xfffffffb", "0x7fffffff", "0x80000000", "0x12345"]}
+ ]
+}

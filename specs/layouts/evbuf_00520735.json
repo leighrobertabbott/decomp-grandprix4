@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00520735 is the reader twin of 0x005207a9: 'mov edi,[0x66d830]; add edi,[0x7a8e28]' then reads event bytes [edi], [edi+1], word [edi+2] ('shl ax,1; sar ax,1': 15-bit sign extension, so bit 14 matters), [edi+4], [edi+5], [edi+6] and copies them into the car record and 0x679d1b/0x679d1c. With fill_005204d0 (ring base 0xa06000..0xa06040, end 0xa06040..0xa0607f) and event_005207a9 (offset 0..0x38) every read lands in 0xa06000..0xa0607f, the unreferenced zero-initialised .data stretch the ring uses, so without a layout every event read is zero (and the masks/sign extension untested). Those 128 bytes are drawn at random (32 dwords): plain byte/word loads, every pattern valid. Compose after state_00437888+fill_005204d0+event_005207a9.",
+ "globals": [
+  {"addr": "0x00a06000", "type": "u32", "count": 32, "stride": 4}
+ ]
+}

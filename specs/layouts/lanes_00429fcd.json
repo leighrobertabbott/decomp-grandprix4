@@ -1,0 +1,145 @@
+{
+ "_evidence": "Lane table and loop state for 0x00429fcd -> 0x425cb3 (todo) -> 0x4056c9 (todo) / 0x404f99 (todo) / 0x425bed (compose after ring_008943a0+words_008943a0+words_00413090+engine_00413606): 0x425cb3 indexes the 16-byte entries 0x6269b8 + lane*16 with the car's lane byte +0x234 (car_00429fcd: 0..0x5f, the 96 entries 0x40cd8b clears per circuit and 0x43ff93 fills); an entry is word +0 (lane offset, 0x43ff93: [0x626964]), word +2 (0x5800-clamped speed), words +4/+6 (lane bounds for 0x425be8), dword +8 = [0x603ed0] (0 or a segment record: 0x440070/0x4403a3) stored to 0x602d84 and dereferenced by 0x404ed0 and 0x425bed, dword +0xc = [0x602d88] (0 or a segment record; 0x404f33 reads its +0x162/-0x15e). Random image entries (lanes >= 0x60) pointed into garbage and faulted, so those dwords are null or records 0..29. 0x425bed divides by the record's half-widths +0x60 + +0x62 (half_00425bed: a zero sum is the original's #DE), so records 0..33 draw +0x60 0..0x400 and +0x62 1..0x400 (track half-widths; words_008943a0's full-range draws could make both zero). 0x4056c9 runs 'dec edi; jne' from [0x622434] (0x43ff93 sets 0x14): 0 would loop 2^32 times, so 1..20. [0x679d2c] (player car, cmp esi) equals esi in about half the cases; word [0x66d8b4] (test 0x200) is any value.",
+ "globals": [
+  {
+   "addr": "0x6269b8",
+   "type": "i16",
+   "count": 96,
+   "stride": 16
+  },
+  {
+   "addr": "0x6269ba",
+   "type": "i16",
+   "count": 96,
+   "stride": 16
+  },
+  {
+   "addr": "0x6269bc",
+   "type": "i16",
+   "count": 96,
+   "stride": 16
+  },
+  {
+   "addr": "0x6269be",
+   "type": "i16",
+   "count": 96,
+   "stride": 16
+  },
+  {
+   "addr": "0x006269c0",
+   "type": "u32",
+   "count": 96,
+   "stride": 16,
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    "0x8943a0",
+    "0x894500",
+    "0x894660",
+    "0x8947c0",
+    "0x894920",
+    "0x894a80",
+    "0x894be0",
+    "0x894d40",
+    "0x894ea0",
+    "0x895000",
+    "0x895160",
+    "0x8952c0",
+    "0x895420",
+    "0x895580",
+    "0x8956e0",
+    "0x895840",
+    "0x8959a0",
+    "0x895b00",
+    "0x895c60",
+    "0x895dc0",
+    "0x895f20",
+    "0x896080",
+    "0x8961e0",
+    "0x896340",
+    "0x8964a0",
+    "0x896600",
+    "0x896760",
+    "0x8968c0",
+    "0x896a20",
+    "0x896b80"
+   ]
+  },
+  {
+   "addr": "0x006269c4",
+   "type": "u32",
+   "count": 96,
+   "stride": 16,
+   "values": [
+    0,
+    0,
+    "0x894500",
+    "0x894660",
+    "0x8947c0",
+    "0x894920",
+    "0x894a80",
+    "0x894be0",
+    "0x894d40",
+    "0x894ea0",
+    "0x895000",
+    "0x895160",
+    "0x8952c0",
+    "0x895420",
+    "0x895580",
+    "0x8956e0",
+    "0x895840",
+    "0x8959a0",
+    "0x895b00",
+    "0x895c60",
+    "0x895dc0",
+    "0x895f20",
+    "0x896080",
+    "0x8961e0",
+    "0x896340",
+    "0x8964a0",
+    "0x896600",
+    "0x896760",
+    "0x8968c0",
+    "0x896a20",
+    "0x896b80"
+   ]
+  },
+  {
+   "addr": "0x00894400",
+   "type": "u16",
+   "count": 34,
+   "stride": "0x160",
+   "lo": 0,
+   "hi": 1024
+  },
+  {
+   "addr": "0x00894402",
+   "type": "u16",
+   "count": 34,
+   "stride": "0x160",
+   "lo": 1,
+   "hi": 1024
+  },
+  {
+   "addr": "0x00622434",
+   "type": "u32",
+   "lo": 1,
+   "hi": 20
+  },
+  {
+   "addr": "0x00679d2c",
+   "type": "u32",
+   "alias_reg": "esi"
+  },
+  {
+   "addr": "0x0066d8b4",
+   "type": "u16"
+  }
+ ]
+}

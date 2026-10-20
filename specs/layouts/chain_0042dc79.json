@@ -1,0 +1,150 @@
+{
+ "_evidence": "Car-chain inputs of 0x0042dc79 and its callee 0x0040dc8a (compose after cars_0066fef0; ebx and esi are car records rec[0x66fef0,0x41c,0..21], edi the list length 0..7). Word +0x23e (0x67012e + k*0x41c) is the link to the next car as a byte offset from 0x66fef0 (movzx; 0 ends the walk; 'sub eax,0x66fef0; mov [esi+0x23e],ax' stores the same encoding), so it draws 0 or k*0x41c and every followed link lands on a varied car record; a link equal to esi or a cycle ends the walk, and the inc ecx / cmp ecx,8 counter bounds it at 8 hops. [0x604280] is a car pointer (initial je exit for ebx, and the double hop at 0x42dd0c for a chain car) - drawn from the car addresses so both happen (it overrides the alias of cars_0066fef0, under which the double hop could never occur). The 8 dwords at 0x604294 (list scanned for i < edi, written at edi <= 7) are car addresses or 0, so 'already listed' exits occur. Bytes +0x9c (bit 1) and +0x21d (bit 2), words +0xe2 and +0x148/+0x14a/+0x14c/+0x14e (callee: sar 8 / shl 6 / sub) are full-range; [0x603b28] (signed word vs the difference, jge) any i16; [0x603b84] (running maximum of ecx, jge) -2..10 so both outcomes occur. Compares, word arithmetic and stores only: nothing faults.",
+ "globals": [
+  {
+   "addr": "0x00604280",
+   "type": "u32",
+   "values": [
+    "0x0",
+    "0x66fef0",
+    "0x67030c",
+    "0x670728",
+    "0x670b44",
+    "0x670f60",
+    "0x67137c",
+    "0x671798",
+    "0x671bb4",
+    "0x671fd0",
+    "0x6723ec",
+    "0x672808",
+    "0x672c24",
+    "0x673040",
+    "0x67345c",
+    "0x673878",
+    "0x673c94",
+    "0x6740b0",
+    "0x6744cc",
+    "0x6748e8",
+    "0x674d04",
+    "0x675120",
+    "0x67553c"
+   ]
+  },
+  {
+   "addr": "0x00604294",
+   "type": "u32",
+   "count": 8,
+   "stride": 4,
+   "values": [
+    "0x0",
+    "0x12345678",
+    "0x66fef0",
+    "0x67030c",
+    "0x670728",
+    "0x670b44",
+    "0x670f60",
+    "0x67137c",
+    "0x671798",
+    "0x671bb4",
+    "0x671fd0",
+    "0x6723ec",
+    "0x672808",
+    "0x672c24",
+    "0x673040",
+    "0x67345c",
+    "0x673878",
+    "0x673c94",
+    "0x6740b0",
+    "0x6744cc",
+    "0x6748e8",
+    "0x674d04",
+    "0x675120",
+    "0x67553c"
+   ]
+  },
+  {
+   "addr": "0x00603b28",
+   "type": "i16"
+  },
+  {
+   "addr": "0x00603b84",
+   "type": "i32",
+   "lo": -2,
+   "hi": 10
+  },
+  {
+   "addr": "0x66ff8c",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x66ffd2",
+   "type": "i16",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x67010d",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x670038",
+   "type": "i16",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x67003a",
+   "type": "i16",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x67003c",
+   "type": "i16",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x67003e",
+   "type": "i16",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x67012e",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x0",
+    "0x0",
+    "0x0",
+    "0x41c",
+    "0x838",
+    "0xc54",
+    "0x1070",
+    "0x148c",
+    "0x18a8",
+    "0x1cc4",
+    "0x20e0",
+    "0x24fc",
+    "0x2918",
+    "0x2d34",
+    "0x3150",
+    "0x356c",
+    "0x3988",
+    "0x3da4",
+    "0x41c0",
+    "0x45dc",
+    "0x49f8",
+    "0x4e14",
+    "0x5230",
+    "0x564c"
+   ]
+  }
+ ]
+}

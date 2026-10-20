@@ -1,0 +1,113 @@
+{
+ "_evidence": "Lap-record block 0x7ab760: 17 circuit records of 0xe8 bytes (run-time state: the RECORDS.REC merge 0x54fa80 and the default copies 0x54f784/0x54f889 fill it; recs_0054fa80). 0x4ff760 passes record 0x7ab760 + circuit*0xe8 (circuit 0..16, trk_007ad894) to 0x4ff7a0, which reads the time dwords +0xdc and +0xa8 ('test eax,eax; jne' picks the record's own name/team strings or the 'no time' texts [0x838672]/[0x836286]; the dword is also handed to the time formatter 0x52ad47 through [0xa69884], where 0x52ad57 'cmp eax,0x3e80000; jae' skips times of 1000 minutes and more) and the strings +0x82/+0x9a/+0xac/+0xb4/+0xcc/+0xe0 (C strings inside their fields; +0x9a and +0xcc go through sprintf '(%s)'). Time dwords: 0 (no record) and times across the formatter's cases, including both sides of 0x3e80000 (any dword is valid). The first byte of each string field draws NUL (empty string) or a letter/space; the image's terminators inside the fields are kept, so every string still ends in its field.",
+ "globals": [
+  {
+   "addr": "0x007ab808",
+   "type": "u32",
+   "count": 17,
+   "stride": "0xe8",
+   "values": [
+    0,
+    0,
+    1,
+    999,
+    59999,
+    90556,
+    3599999,
+    "0x3e7ffff",
+    "0x3e80000",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x007ab83c",
+   "type": "u32",
+   "count": 17,
+   "stride": "0xe8",
+   "values": [
+    0,
+    0,
+    1,
+    999,
+    59999,
+    90556,
+    3599999,
+    "0x3e7ffff",
+    "0x3e80000",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x007ab7e2",
+   "type": "u8",
+   "count": 17,
+   "stride": "0xe8",
+   "values": [
+    0,
+    "0x41",
+    "0x7a",
+    "0x20"
+   ]
+  },
+  {
+   "addr": "0x007ab7fa",
+   "type": "u8",
+   "count": 17,
+   "stride": "0xe8",
+   "values": [
+    0,
+    "0x41",
+    "0x7a",
+    "0x20"
+   ]
+  },
+  {
+   "addr": "0x007ab80c",
+   "type": "u8",
+   "count": 17,
+   "stride": "0xe8",
+   "values": [
+    0,
+    "0x41",
+    "0x7a",
+    "0x20"
+   ]
+  },
+  {
+   "addr": "0x007ab814",
+   "type": "u8",
+   "count": 17,
+   "stride": "0xe8",
+   "values": [
+    0,
+    "0x41",
+    "0x7a",
+    "0x20"
+   ]
+  },
+  {
+   "addr": "0x007ab82c",
+   "type": "u8",
+   "count": 17,
+   "stride": "0xe8",
+   "values": [
+    0,
+    "0x41",
+    "0x7a",
+    "0x20"
+   ]
+  },
+  {
+   "addr": "0x007ab840",
+   "type": "u8",
+   "count": 17,
+   "stride": "0xe8",
+   "values": [
+    0,
+    "0x41",
+    "0x7a",
+    "0x20"
+   ]
+  }
+ ]
+}

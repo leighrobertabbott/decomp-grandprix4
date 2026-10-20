@@ -1,0 +1,12 @@
+{
+ "_evidence": "0x00408998 indexes the 4-entry dword tables 0x601fc8/0x601fd8 by [0x601fbc]-1 (ecx*4 addressing), so the count is 1..4 (a wild index faults); both tables hold 0..0x4000 positions compared with the 0..0x4000 fraction ebp. 0x408936 reads byte [esi+0x199+i] for 0 <= i < [0x601fb0] (else the word 0x7c2e96), so the bound is 0..40 inside the 0x1d0-byte esi buffer and the index [0x601fb8](-1) is 0..41 (negative -> 0). 0x601fb4/0x601fc4 are nearby distances (0..0x8000) so their difference takes both signs and small spans; the idiv by ebp >= 1 then never faults.",
+ "globals": [
+  {"addr": "0x00601fbc", "type": "u32", "lo": 1, "hi": 4},
+  {"addr": "0x00601fc8", "type": "i32", "count": 4, "lo": 0, "hi": 16384},
+  {"addr": "0x00601fd8", "type": "i32", "count": 4, "lo": 0, "hi": 16384},
+  {"addr": "0x00601fb0", "type": "u32", "lo": 0, "hi": 40},
+  {"addr": "0x00601fb8", "type": "u32", "lo": 0, "hi": 41},
+  {"addr": "0x00601fb4", "type": "i32", "lo": 0, "hi": 32768},
+  {"addr": "0x00601fc4", "type": "i32", "lo": 0, "hi": 32768}
+ ]
+}

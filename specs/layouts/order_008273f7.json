@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00530d28 / 0x00530d81: for ecx = 0..6, 'movzx eax,byte [ecx+0x8273f7]; cmp dword [ebx+eax*4+0x28] (resp. +0x14),0; jne found' - the 7-byte slot-order table 0x8273f7 picks which of the 7 slot dwords is tested next; found: [ebx+0xc] = eax, clc; none: stc. The table is .data that no instruction writes (only these two read it), so the game sees its image order; fuzz:i32 varied only its first 4 bytes. Here all 7 entries draw slot numbers 0..6 (duplicates allowed: a repeated slot is simply tested twice), so every visiting order occurs; with the spec's 0x440-byte ebx block any byte index stays in bounds (255*4 + 0x28 < 0x440) and the slot dwords are mostly zero, so found-at-k and the exhausted exit both occur. Plain loads, every value is valid.",
+ "globals": [
+  {"addr": "0x008273f7", "type": "u8", "count": 7, "stride": 1, "lo": 0, "hi": 6}
+ ]
+}

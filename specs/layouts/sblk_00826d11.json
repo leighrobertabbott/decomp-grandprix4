@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x535aa4: mov eax,[0x826d11]; mov eax,[eax+0x40]; add eax,[0x7a93e0]; sub eax,2 - the dword +0x40 of the block is an offset (end) inside the saved-state buffer whose last word is read by 0x5359c8 (movsw) and compared by 0x535a20 (cmpsw). Values 2 (first word), 0x8000 and 0x16400 (the end of the 0x16400-byte sbuf_007a93e0) keep B+v-2..B+v-1 inside the buffer; the rest of the 0x48-byte block is random and unread.",
+  "size": 72,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x40", "type": "u32", "values": [2, "0x8000", "0x16400"]}
+  ]
+}

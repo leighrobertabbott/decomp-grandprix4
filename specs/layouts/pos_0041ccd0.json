@@ -1,0 +1,37 @@
+{
+ "_evidence": "Integer inputs of 0x0041ccd0 (callee of 0x4168fd; compose with trig_00622e98 for the body sines/cosines 0x622ed0/0x622ed8 = 0x622e98+0x38/+0x40 and view_00609860 for the body matrix 0x622ef0..0x622f37 = +0x58..+0x98, all finite in [-1,1]): it filds the dwords 0x623eb8/0x623ebc/0x623ec0, 0x63804c>>8 and 0x638054>>8 (sar, then fild through 0x6f2bf8) and, for each of the four 0x300-byte records at 0x6380d8 (loop 'add ebx,0x300; cmp ebx,0x638cd8'), dwords +0x4c/+0x50/+0x54 (fild into body +0xb8..+0xc8 for 0x401f02's matrix product); results are fstp/fistp'd (masked: an out-of-range fistp stores the integer indefinite in both runs). Pure x87 on fild'ed integers, so every i32 is valid: all are runtime state (zero in the image) drawn full range.",
+ "globals": [
+  {
+   "addr": "0x00623eb8",
+   "type": "i32",
+   "count": 3,
+   "stride": 4
+  },
+  {
+   "addr": "0x0063804c",
+   "type": "i32"
+  },
+  {
+   "addr": "0x00638054",
+   "type": "i32"
+  },
+  {
+   "addr": "0x00638124",
+   "type": "i32",
+   "count": 4,
+   "stride": "0x300"
+  },
+  {
+   "addr": "0x00638128",
+   "type": "i32",
+   "count": 4,
+   "stride": "0x300"
+  },
+  {
+   "addr": "0x0063812c",
+   "type": "i32",
+   "count": 4,
+   "stride": "0x300"
+  }
+ ]
+}

@@ -1,0 +1,73 @@
+{
+ "_evidence": "0x0041befb with ebx = 0x6380d8 (its only caller 0x41c145 sets mov ebx,0x6380d8 before both calls): it reads the wheel-pair dwords d = [0x6383f4]+[0x638418]-[0x6380f4]-[0x638118] (ebx+0x31c, +0x340, +0x1c, +0x40; je on zero, sign selects +-B), a = [0x638634] (ebx+0x55c), b = [0x638334] (ebx+0x25c), B = [0x623b8c], K = [0x6013d4], D = [0x623af4], S = [0x60384c]. The only faulting instruction is 'idiv dword [0x623af4]' at 0x41bf50 on (((a - b - 2*(+-B)) << 5) * K): with |a|,|b| <= 2^20, B in 0..0x20000 (static 0x17000; 0x41c027 stores a Q14 product or [0x6013bc]), K in 0..0x8000 (static 0x4555 = ROUND([0x62ed60]*[0x601408]) of 0x4112e3, a positive gain; 0 gives the q == 0 exit) and D in 0x1000..0x7fff (static 0x1aec, never written) the quotient stays below 2^30 (a zero or tiny divisor is a #DE the game cannot produce). 'div ebp' at 0x41bf80 divides |d|<<16 by |q| only when |q| > |d|>>16 (jbe guard) and the final idiv divides (ecx<<14) by S with ecx < S (jb guard), so d is any i32 and S is the rate 1..0xffff (see rate_007ad8b8). The second wheel's +0x1c/+0x40 repeat the first's in about half the cases (alias), so d is zero in about a quarter (the 0x41bf9a path with ecx = 0); the four dwords are drawn in +-2^22 so (|d|<<16)/|q| falls on both sides of S, and (a-b)>>1 on both sides of B.",
+ "globals": [
+  {
+   "addr": "0x006380f4",
+   "type": "i32",
+   "lo": -4194304,
+   "hi": 4194304
+  },
+  {
+   "addr": "0x00638118",
+   "type": "i32",
+   "lo": -4194304,
+   "hi": 4194304
+  },
+  {
+   "addr": "0x006383f4",
+   "type": "i32",
+   "alias": "0x006380f4",
+   "lo": -4194304,
+   "hi": 4194304
+  },
+  {
+   "addr": "0x00638418",
+   "type": "i32",
+   "alias": "0x00638118",
+   "lo": -4194304,
+   "hi": 4194304
+  },
+  {
+   "addr": "0x00638334",
+   "type": "i32",
+   "lo": -1048576,
+   "hi": 1048576
+  },
+  {
+   "addr": "0x00638634",
+   "type": "i32",
+   "lo": -1048576,
+   "hi": 1048576
+  },
+  {
+   "addr": "0x00623b8c",
+   "type": "i32",
+   "lo": 0,
+   "hi": 131072
+  },
+  {
+   "addr": "0x006013d4",
+   "type": "u32",
+   "values": [
+    "0x0",
+    "0x1000",
+    "0x2000",
+    "0x4555",
+    "0x4555",
+    "0x8000"
+   ]
+  },
+  {
+   "addr": "0x00623af4",
+   "type": "i32",
+   "lo": 4096,
+   "hi": 32767
+  },
+  {
+   "addr": "0x0060384c",
+   "type": "u32",
+   "lo": 1,
+   "hi": 65535
+  }
+ ]
+}

@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x0052f5bd / 0x0052f5d7 (pushal; mov esi,0x845192; mov esi,[esi]; mov [esi+0x12],imm; mov esi,[esi]; mov [esi+0x12],imm; popal): the unaligned dword cell 0x845192 holds a node pointer that is dereferenced without a null test (zero in the image: the cell is set at run time, 0x52e1bc/0x52e272/0x52e501/0x52e58f/0x537453 also use it), and that node's dword +0 points to a second node; both are written at +0x12..+0x15. So the cell is an allocated node A (node_00845192, 0x20 bytes) whose +0 is an allocated node B (0x20 bytes, random). Unlisted bytes are random; only the two links are pinned.",
+ "globals": [
+  {
+   "addr": "0x00845192",
+   "type": "ptr",
+   "size": 32,
+   "fill": "layout=node_00845192"
+  }
+ ]
+}

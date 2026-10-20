@@ -1,0 +1,12 @@
+{
+  "_evidence": "0x0041bd56 (compose after state_0041bce9+state_0041bd28, which bound the divisors of its callees 0x41bce9 and 0x41bd28): position 0x00623c34 is clamped to [low 0x00623c2c, high 0x00623c30] (cmp/jge, jle) - all three drawn -0x1000..0x1000 so every order occurs and 0 is an edge; the offset 0x006258c8 (cmp 0; je, then sign tests 'xor; jns' against the 0x41bd28 step) takes zero, +-1, small and extreme values; byte 0x006258dc (cmp 0xff; je) is 0xff in most picks; 0x006258b4 (step, negated by the sign of 0x6258c8 into 0x6258ac, which 0x41bd28 subtracts before its <<19 idiv) stays in -2^19..2^19 as state_0041bd28 requires of 0x6258ac. The gain 0x00623b6c (overrides state_0041bce9) includes 0 so the 0x41bce9 result 0x6258a8 can be 0 and the 'pos - 0x6258a8 == 0' path (0x41bda3 not taken) is reachable with pos = 0. The second 'cmp eax,[0x623c2c]; jge' at 0x41bd73 repeats the failed compare at 0x41bd60, so its taken direction is dead code.",
+  "globals": [
+    {"addr": "0x00623c2c", "type": "i32", "lo": -4096, "hi": 4096},
+    {"addr": "0x00623c30", "type": "i32", "lo": -4096, "hi": 4096},
+    {"addr": "0x00623c34", "type": "i32", "lo": -4096, "hi": 4096},
+    {"addr": "0x006258c8", "type": "u32", "values": [0, 0, 1, "0xffffffff", "0x100", "0xffffff00", "0x7fffffff", "0x80000000"]},
+    {"addr": "0x006258dc", "type": "u8", "values": ["0xff", "0xff", "0xff", "0xff", 0, 1]},
+    {"addr": "0x006258b4", "type": "i32", "lo": -524288, "hi": 524288},
+    {"addr": "0x00623b6c", "type": "u32", "values": [0, 0, 1, "0x4000", "0xffffc000", "0x12345678", "0x7fffffff", "0x80000000"]}
+  ]
+}

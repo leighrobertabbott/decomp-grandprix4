@@ -1,0 +1,37 @@
+{
+ "_evidence": "Two 256-byte character translation tables (0x833d18, 0x833e18) filled at run time (zero in the image) and read by the R3 text routines 0x54d747/0x54d755/0x54d93a/0x54d94a/0x52f4b8: entries drawn from NUL, letters, space and DEL so the scan/continue branches vary. (0x5f restored: L24's earlier version of this layout drew the underscore case for 0x54e456; widened, not narrowed.)",
+ "globals": [
+  {
+   "addr": "0x00833d18",
+   "type": "u8",
+   "count": 256,
+   "stride": 1,
+   "values": [
+    0,
+    "0x41",
+    "0x61",
+    "0x20",
+    "0x7f",
+    1,
+    "0x30",
+    "0x5f"
+   ]
+  },
+  {
+   "addr": "0x00833e18",
+   "type": "u8",
+   "count": 256,
+   "stride": 1,
+   "values": [
+    0,
+    "0x41",
+    "0x61",
+    "0x20",
+    "0x7f",
+    1,
+    "0x30",
+    "0x5f"
+   ]
+  }
+ ]
+}

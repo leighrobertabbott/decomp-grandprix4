@@ -1,0 +1,9 @@
+{
+  "_evidence": "esi of 0x00402db6: a car record prefix (0x286 bytes), background random (fill bytes: words +0x66 lerp t, +0xe heading, +0x90 speed, +0xb0 are plain imul/compare operands, nothing is a pointer, index or divisor). 0x402f5f mov dx,[esi+0x278]; sub dx,[esi+0x27e]; je 0x402f86 skips the 0x401315 call when the two words are equal: both draw from one short list (equal in about 1/6 of the cases, both signs and the extremes otherwise), so the equal-words exit and the call both occur; their sum <<5 is also added at 0x402deb (any value).",
+  "size": 646,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x278", "type": "u16", "values": [0, 0, 1, "0xffff", "0x7fff", "0x8000", "0x0123", "0xfe00"]},
+    {"off": "0x27e", "type": "u16", "values": [0, 0, 1, "0xffff", "0x7fff", "0x8000", "0x0123", "0xfe00"]}
+  ]
+}

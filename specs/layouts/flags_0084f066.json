@@ -1,0 +1,253 @@
+{
+ "_evidence": "Item flag bytes (+0x1f) of the static menu item chain 0x84f066 (header; 62 items 0x84f0d4 .. 0x84fb51, the last links to 0), walked by 0x0053e5e5 (esi = 0x84f066 from its only caller chain 0x529408 -> 0x53e5d8): 'pushal; push edx; push eax; push esi; call 0x4fd3f0' (menu -> control lookup through the constant table 0x6698e8, where 0x84f066 is key 2 with the pair list 0x669498), then 'mov esi,[esi]; or esi,esi; je / cmp esi,0x838c94; je' and per item 'shr edx,1; rcr eax,1; jb' -> 'or byte [esi+0x1f],8' else 'and byte [esi+0x1f],0xf7'. The links and item ids (+0xc = 1..62) are constant .data (only the header address is referenced in code: 0x528b88 and 0x529408's immediates; no store into the chain except flag bytes), so they keep their image values; byte +0x1f is run-time item state (zero in the image) and every bit pattern is valid (only bit 3 is rewritten, the others are kept), so all 62 flag bytes draw any byte. Compose after session_004fd1a0 (the front-end object the menus run with).",
+ "globals": [
+  {
+   "addr": "0x0084f0f3",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f119",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f13f",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f165",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f18b",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f1b1",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f1d7",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f1fd",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f223",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f249",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f27e",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f2b3",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f2e8",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f31d",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f347",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f371",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f39b",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f3c5",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f3ef",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f419",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f443",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f46d",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f497",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f4c9",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f4f3",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f51d",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f54f",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f579",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f5a3",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f5d5",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f5ff",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f629",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f65b",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f685",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f6af",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f6e1",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f70b",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f735",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f767",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f791",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f7bb",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f7ed",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f817",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f841",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f873",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f89d",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f8c7",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f8f9",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f923",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f94d",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f97f",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f9a9",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084f9d3",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084fa05",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084fa2f",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084fa59",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084fa8b",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084fab5",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084faea",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084fb14",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084fb3e",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0084fb70",
+   "type": "u8"
+  }
+ ]
+}

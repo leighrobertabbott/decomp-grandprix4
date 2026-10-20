@@ -1,0 +1,21 @@
+{
+  "_evidence": "Inputs of the surface/grip routine 0x0041f02b (wrapped by 0x41f1ad with edi = a segment record, eax = word +0 + word +0x18, edx = word +0x16, and by 0x41f1c1 with eax/edx = car words +0xe/+0x90) and its callees 0x51f2ca -> 0x50cfc2 -> 0x50cf72 and 0x41ef48. Record fields (0x160-byte records at 0x8943a0, 27 so edi+0x176 of record 25 is covered): i16 +0, +0x16, +0x18 (angle, track offsets), u16 +0x1a (low 6 bits pick a 0x400-byte row of the texture map), u16 +0x7a (entry of the 10-byte table at 0x675a82, a per-segment index drawn 0..31; entries 0..31 have their bytes +0 (min position), +1 (position, >>4 indexes the 16-byte table 0x937dd0), +3, +4 varied). Gains 0x601348/0x60134c/0x601350 (imul by sin/cos table words, shrd 14) are car dimensions, drawn -131071..131071, so the four sample positions stored at 0x62ac78.. stay below about 2^23 + 2^18. The texture table 0x6975ec: words 0x9e21ba and 0x9e239c are entry offsets (0 = the first entry) or 0xffff (no texture: zero results / stc); entry 0 is a pointer to a map buffer (0 in the image, so it is supplied). 0x50cfc2 reads [map + row*0x400 + q + 0x20] only when q + 0x20 < 0x40 (unsigned check), and [map + 0x10000 + e] with e = 4q + 0xc0 - [0x948b58] where q = ((pos >> 8) * [0x73d198] + 0x2000) >> 16 and [0x948b58] = ((w+0x176 + w+0x16) >> 1) * [0x73d198] >> 14 (0x50cf72); with the constant scale 0x73d198 = 0x480 (static, not varied) and the bounds above |e| < 0x1400, then [map + b + 0x300 + (sx byte 0x697609 << 8)] (-0x7d00..0x8400). The pointer therefore addresses 0x8000 bytes into a 0x1a000-byte random buffer, covering every offset. Map bytes are unconstrained: they become the column added to the 0x41ef48 table index, which stays inside .data for any byte. Everything else is imul/shrd/compare arithmetic.",
+  "globals": [
+    {"addr": "0x008943a0", "type": "i16", "count": 27, "stride": "0x160"},
+    {"addr": "0x008943b6", "type": "i16", "count": 27, "stride": "0x160"},
+    {"addr": "0x008943b8", "type": "i16", "count": 27, "stride": "0x160"},
+    {"addr": "0x008943ba", "type": "u16", "count": 27, "stride": "0x160"},
+    {"addr": "0x0089441a", "type": "u16", "count": 27, "stride": "0x160", "lo": 0, "hi": 31},
+    {"addr": "0x00675a82", "type": "u8", "count": 32, "stride": 10},
+    {"addr": "0x00675a83", "type": "u8", "count": 32, "stride": 10},
+    {"addr": "0x00675a85", "type": "u8", "count": 32, "stride": 10},
+    {"addr": "0x00675a86", "type": "u8", "count": 32, "stride": 10},
+    {"addr": "0x00601348", "type": "i32", "lo": -131071, "hi": 131071},
+    {"addr": "0x0060134c", "type": "i32", "lo": -131071, "hi": 131071},
+    {"addr": "0x00601350", "type": "i32", "lo": -131071, "hi": 131071},
+    {"addr": "0x009e21ba", "type": "u16", "values": [0, 0, 0, "0xffff"]},
+    {"addr": "0x009e239c", "type": "u16", "values": [0, 0, 0, "0xffff"]},
+    {"addr": "0x006975ec", "type": "ptr", "size": "0x1a000", "bias": "0x8000", "fill": "bytes"},
+    {"addr": "0x00697609", "type": "u8"}
+  ]
+}

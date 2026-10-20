@@ -1,0 +1,13 @@
+{
+ "size": 16,
+ "fill": "bytes",
+ "_evidence": "Pointer chain at [0x82fd34] walked by 0x0053d98c/0x0053d999: esi = [[0x82fd34]], then esi = [esi] ecx (1..4) times, so each level's dword +0 points to the next level (7 levels, the last random).",
+ "fields": [
+  {
+   "off": 0,
+   "type": "ptr",
+   "size": 16,
+   "fill": "layout=chain2_0082fd34"
+  }
+ ]
+}

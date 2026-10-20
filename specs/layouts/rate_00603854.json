@@ -1,0 +1,6 @@
+{
+  "_evidence": "The simulation rate dword 0x603854 (S): written only by 0x412609 from [0x7ad8b8] (rate_007ad8b8: 1..0xffff, 0x10000 would #DE 0x4125ce), read by many imul/idiv users (e.g. 0x43b107 'imul [0x603854]; shrd 16', 0x444063). Drawn 1..0xffff. Use it where the rate is read only by a callee (fuzz:i32 varies directly addressed globals only).",
+  "globals": [
+    {"addr": "0x00603854", "type": "u32", "lo": 1, "hi": 65535}
+  ]
+}

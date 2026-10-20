@@ -1,0 +1,21 @@
+{
+ "_evidence": "Ring-record inputs of 0x005558c6 (run by 0x00555903 on records 0..32 of the 0x160-byte ring 0x8943a0: lap walk to [0x866ecc] <= 26, pit walk [0x891500]..[0x866ef8] <= 32, end records included; compose AFTER ring_00555b28, whose +0xf0/+0xf8 this replaces). Readers: 0x555636/0x55577e -> 0x55671d/0x556757 -> 0x55669e: distance dword +0x100 (left) / +0x10c (right), angle +0x104/+0x110 (fild*[0x6f2bdc], fsincos), words +0x108/+0x10a / +0x114/+0x116 (<<6), edge point 0x553ab7/0x553ad4 (+0x60/+0x62 widths, u16, +0x50, <<8, rotated by angle +0xec via 0x553a5e, added to the position dwords +0xf0/+0xf8), height 0x5539f0/0x553a26 (+0x150 * [0x6f2a04] * width + dword +0xf4); then word +0x48 bits 0x200/0x100 pick 0x553ab7|0x553aef / 0x553ad4|0x553b09, the 64-bit dx^2+dy^2 of the >>5 coordinates goes to the isqrt 0x40113f and 'cmp eax,0xf000; jbe; int3' (0x5558cc/0x5558e9) asserts length>>3 <= 0xf000; atan2 0x401315 minus word +0 indexes the Q14 cosine table, 'idiv' by max(|cos|,0x1000). 0x555474/0x555555 read +0xa (angle word, used when max(|dx|,|dy|) < 0x400), +0x60/+0x62 (movsx) and +0x150 (sar 0xe, imul). Domain: the two edge points differ by the rotated distance plus at most 0x50<<8 = 0x5000, so the asserted value is <= (d + 0x5000)/256 + 1; d is a non-negative distance (the builder 0x556791 stores fistp(fsqrt(...)), see trackgeo_008943a0 I2), drawn 0..0xe00000 (the assertion fails above ~0xefaf00, which the game never stores); the positions +0xf0/+0xf8 are i32 within +-2^30 (a random dword near +-2^31 lets 'position + width + distance' wrap between the two >>5 terms and trips the same int3); every other field (angles, widths, flags, heights, +0x150) is any value (fild/fsincos/fistp stay in range: |angle*const| < 2^63, products < 2^31). Edge draws d = 0/1 give the < 0x400 branch, larger d the atan2 branch.",
+ "globals": [
+  {"addr": "0x008943a0", "type": "u16", "count": 33, "stride": "0x160"},
+  {"addr": "0x008943aa", "type": "u16", "count": 33, "stride": "0x160"},
+  {"addr": "0x008943e8", "type": "u16", "count": 33, "stride": "0x160"},
+  {"addr": "0x00894400", "type": "u16", "count": 33, "stride": "0x160"},
+  {"addr": "0x00894402", "type": "u16", "count": 33, "stride": "0x160"},
+  {"addr": "0x0089448c", "type": "i32", "count": 33, "stride": "0x160"},
+  {"addr": "0x00894490", "type": "i32", "count": 33, "stride": "0x160", "lo": -1073741824, "hi": 1073741824},
+  {"addr": "0x00894494", "type": "i32", "count": 33, "stride": "0x160"},
+  {"addr": "0x00894498", "type": "i32", "count": 33, "stride": "0x160", "lo": -1073741824, "hi": 1073741824},
+  {"addr": "0x008944a0", "type": "i32", "count": 33, "stride": "0x160", "lo": 0, "hi": 14680064},
+  {"addr": "0x008944a8", "type": "u16", "count": 33, "stride": "0x160"},
+  {"addr": "0x008944aa", "type": "u16", "count": 33, "stride": "0x160"},
+  {"addr": "0x008944ac", "type": "i32", "count": 33, "stride": "0x160", "lo": 0, "hi": 14680064},
+  {"addr": "0x008944b4", "type": "u16", "count": 33, "stride": "0x160"},
+  {"addr": "0x008944b6", "type": "u16", "count": 33, "stride": "0x160"},
+  {"addr": "0x008944f0", "type": "i32", "count": 33, "stride": "0x160"}
+ ]
+}

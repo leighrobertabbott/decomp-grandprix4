@@ -1,0 +1,8 @@
+{
+ "_evidence": "Row records of the surface [0x7a8e18] searched by 0x00520c08: rows are [0x6975c4] bytes apart (4, 0x20, 0x40 or 0x80 from rows_00520584), so with pitch 4 every dword is a row head and with larger pitches the heads fall on dword multiples; all 1024 dwords therefore draw from one list. 'mov eax,[esi]; cmp eax,3; jne next' selects rows whose head is 3 (3 is about 4/14 of the picks, so both outcomes occur), then 'mov edx,[esi+4]; add edx,0xcb2; cmp edx,[0x66d814]; jg found' is a SIGNED compare against the clock: the list holds small times, 0xcb0/0x100, negatives 0xfffff34e/0xfffff34d (edx = 0 / -1 after the add) and 0x7ffff34e/0x7ffff34d/0x7fffffff (signed overflow of the add, OF set), so both jg outcomes and the overflow edge are reached. Every pattern is valid; the values only steer the search.",
+ "size": 4096,
+ "fields": [
+  {"off": 0, "type": "u32", "count": 1024, "stride": 4,
+   "values": [3, 3, 3, 3, 0, 1, 2, "0xcb0", "0x100", "0xfffff34e", "0xfffff34d", "0x7ffff34e", "0x7ffff34d", "0x7fffffff"]}
+ ]
+}

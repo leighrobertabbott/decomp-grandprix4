@@ -1,0 +1,15 @@
+{
+  "_evidence": "Car record read by 0x0042595c through esi: byte +0x70 (cmp 2, jb exits), byte +0x8d (test 2, jne exits), byte +0x179 (test 1, jne returns; or 1 / and 0xfe later), byte +0x415 (>>1, below 4 gates a random check), movsx words +0xb6 (imul gain), +0x10e (-0x3000, clamped to 0..0x1000: the list straddles both clamp edges), +0x1ac (added to the result), and read-modify-write bytes +0x203 (and 0xdf / or 0x20) and +0x230 (or 0x40 / and 0xbf). The gate bytes favour the pass side but take both; plain u8 draws for +0x415 are small often enough to reach the <4 branch. All values are valid (no division depends on the record).",
+  "size": 1059,
+  "fields": [
+    {"off": "0x70", "type": "u8", "values": [2, 3, 7, 128, 255, 0, 1]},
+    {"off": "0x8d", "type": "u8", "values": [0, 0, 0, 1, 2, 255, 253]},
+    {"off": "0xb6", "type": "i16"},
+    {"off": "0x10e", "type": "u16", "values": ["0x8000", "0xffff", 0, "0x2fff", "0x3000", "0x3001", "0x3800", "0x4000", "0x4001", "0x5000", "0x7fff"]},
+    {"off": "0x179", "type": "u8", "values": [0, 0, 0, 1, 254, 255]},
+    {"off": "0x1ac", "type": "i16"},
+    {"off": "0x203", "type": "u8"},
+    {"off": "0x230", "type": "u8"},
+    {"off": "0x415", "type": "u8"}
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "_evidence": "The three body angles of the fixed body 0x006231d8 (+0x10/+0x18/+0x20 = 0x6231e8..0x6231ff, f64 radians as in body_00609860's layout), which 0x0043a079 multiplies by the startup scale 2^31/pi at 0x6f2be4 and fistps into the Q32 angles passed to 0x402655. They are body state (static zero here, so the rotation helpers only ever saw angle 0) and are drawn as finite angles in -3.14..3.14 (inside the fistp range; any finite value would only give the masked indefinite integer). Compose with view_00609860, which varies this body's matrix.",
+  "globals": [
+    {"addr": "0x006231e8", "type": "f64", "count": 3, "stride": 8, "lo": -3.14, "hi": 3.14}
+  ]
+}

@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00533d79 reads 'mov esi,[0x828108]' only when ah == 2 and walks the zero-terminated byte-pair list it points to without a null test; its writers (0x53380c, 0x533875, 0x5338ec) always store the address of a static list before the text-entry loop runs, so the pointer is never null or wild (the image holds 0, fuzz:i32 gives a faulting pointer). It is a fresh 16-byte pairs_00533d79 buffer.",
+ "globals": [
+  {"addr": "0x00828108", "type": "ptr", "size": 16, "fill": "layout=pairs_00533d79"}
+ ]
+}

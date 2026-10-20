@@ -1,0 +1,18 @@
+{
+ "size": 40,
+ "fill": "bytes",
+ "_evidence": "Linked nodes walked by 0x0053e612: +0 next (nullable), +0x1f a flag byte; acyclic chains of up to 5 nodes.",
+ "fields": [
+  {
+   "off": "0x1f",
+   "type": "u8"
+  },
+  {
+   "off": 0,
+   "type": "u32",
+   "values": [
+    0
+   ]
+  }
+ ]
+}

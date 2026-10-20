@@ -1,0 +1,17 @@
+{
+ "_evidence": "0x0052bca6 walks the static linked list whose head cell is 0x84d8ec ('mov esi,[esi]' 0x31 times; the link is at node +0), then or/and-s bit 0x20 of the flag byte +0x1f of the next five nodes. Selectors: u8 0x7a8e0d and u8 0x81d615 ('cmp byte,0; je/jne': all five set when either is zero), u8 0x81d616 ('test byte,1; jne': the four after the first are set or cleared). Following the image's links, node 49 is 0x84e1a8 and the list continues 0x84e1d2 (50), 0x84e1fc (51), 0x84e22e (52), 0x84e258 (53), 0x84e282 (54), 0x84e2b7 (55), 0x84e2ec (56, whose link is null). The flag bytes of nodes 49..55 (node + 0x1f) are drawn so the or/and 0x20 results differ from the input. To prove the walk follows the links rather than fixed addresses, the link of node 48 (cell 0x84e182) is also drawn from the node addresses 49/50/51 and the link of node 50 (cell 0x84e1d2) from 51/52: every choice is a real node of the same list, so the walk stays on nodes 49..55 for the five flag updates and ends on node 55 or 56 (read only as the final 'mov esi,[esi]'), never dereferencing null.",
+ "globals": [
+  {"addr": "0x007a8e0d", "type": "u8", "values": [0, 1, 1, 2, "0xff"]},
+  {"addr": "0x0081d615", "type": "u8", "values": [0, 1, 1, 2, "0xff"]},
+  {"addr": "0x0081d616", "type": "u8", "values": [0, 1, 2, 3, "0xfe", "0xff"]},
+  {"addr": "0x0084e182", "type": "u32", "values": ["0x84e1a8", "0x84e1a8", "0x84e1d2", "0x84e1fc"]},
+  {"addr": "0x0084e1d2", "type": "u32", "values": ["0x84e1fc", "0x84e1fc", "0x84e22e"]},
+  {"addr": "0x0084e1c7", "type": "u8", "values": [0, "0x20", "0xdf", "0xff", "0x5a", "0x25"]},
+  {"addr": "0x0084e1f1", "type": "u8", "values": [0, "0x20", "0xdf", "0xff", "0x5a", "0x25"]},
+  {"addr": "0x0084e21b", "type": "u8", "values": [0, "0x20", "0xdf", "0xff", "0x5a", "0x25"]},
+  {"addr": "0x0084e24d", "type": "u8", "values": [0, "0x20", "0xdf", "0xff", "0x5a", "0x25"]},
+  {"addr": "0x0084e277", "type": "u8", "values": [0, "0x20", "0xdf", "0xff", "0x5a", "0x25"]},
+  {"addr": "0x0084e2a1", "type": "u8", "values": [0, "0x20", "0xdf", "0xff", "0x5a", "0x25"]},
+  {"addr": "0x0084e2d6", "type": "u8", "values": [0, "0x20", "0xdf", "0xff", "0x5a", "0x25"]}
+ ]
+}

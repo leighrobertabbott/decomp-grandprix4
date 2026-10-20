@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x004217a8 loops ebx over the four 0x300-byte records at 0x006380d8 (exit cmp ebx,0x638cd8): dwords +0xf0 (imul by [0x00602bc0], shrd 6), +0xf4 (shl 10, *3) and +0x9c (*3, cdq, shld/shl 22, idiv [0x602bc0]) are full-range i32. The idiv dividend is sx(3v) * 2^22 with |3v| <= 2^31 (32-bit wrap), so |dividend| <= 2^53 and any divisor with |d| > 2^22 gives |quotient| < 2^31; the divisor 0x602bc0 is drawn from such values of both signs (zero is #DE and small divisors overflow for large +0x9c in the original). +0xf8..+0x104 are outputs.",
+  "globals": [
+    {"addr": "0x00602bc0", "type": "u32", "values": ["0x400001", "0x800000", "0x1000000", "0x12345678", "0x7fffffff", "0xffbfffff", "0xff000000", "0x80000000"]},
+    {"addr": "0x00638174", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x006381c8", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x006381cc", "type": "i32", "count": 4, "stride": "0x300"}
+  ]
+}

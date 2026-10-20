@@ -1,0 +1,88 @@
+{
+ "size": 96,
+ "fill": "bytes",
+ "_evidence": "0x0052e42f: esi = [0x826d11] (unaligned pointer global; the current file record), edi = 0x82471a. 'cmp byte [esi+0x52],0xff; je': != 0xff copies 0x30 bytes (rep movsb) + NUL; == 0xff scans the name: lodsb, 'cmp al,0x2e; je' / 'or al,al; je' end it, else stosb, then 'loop 0x52e44c' - whose target is the 'mov ecx,0x30' itself, so ecx is reset every pass and the scan is NOT bounded by 0x30: it runs to the first '.' or NUL wherever that is. The record is therefore drawn so that both happen: bytes +0..+0x4f come from 48 name characters plus '.' and NUL (4% terminator per byte: early ends at every position and ~14% of names with no terminator in the first 0x30 bytes, which continue through +0x30..), and +0x5f is NUL so every scan ends inside the 0x60-byte buffer (a real record always has a terminator after the name; without one the original reads past any buffer). Then '.', and the 3 characters of the 4-byte extension entry 0x826dbe + 4*byte[+0x50] (table of 20 types nam/rec/con/cs?/.../ql?, read-only: index 0..19), where '?' becomes 0x52f4f9's letter from [0x7ad894] (low 5 bits; random dword) and every char goes through 0x54d755's map table 0x833e18. Mode +0x52 is 0xff in half the cases. The output area 0x82471a..+0x68 is varied so every store is visible.",
+ "fields": [
+  {
+   "off": 0,
+   "type": "u8",
+   "count": "0x50",
+   "stride": 1,
+   "values": [
+    "0x61",
+    "0x62",
+    "0x63",
+    "0x64",
+    "0x65",
+    "0x66",
+    "0x67",
+    "0x68",
+    "0x69",
+    "0x6a",
+    "0x6b",
+    "0x6c",
+    "0x6d",
+    "0x6e",
+    "0x6f",
+    "0x70",
+    "0x71",
+    "0x72",
+    "0x73",
+    "0x74",
+    "0x75",
+    "0x76",
+    "0x77",
+    "0x78",
+    "0x79",
+    "0x7a",
+    "0x30",
+    "0x31",
+    "0x32",
+    "0x33",
+    "0x34",
+    "0x35",
+    "0x36",
+    "0x37",
+    "0x38",
+    "0x39",
+    "0x41",
+    "0x42",
+    "0x43",
+    "0x44",
+    "0x45",
+    "0x46",
+    "0x47",
+    "0x48",
+    "0x49",
+    "0x4a",
+    "0x2d",
+    "0x5f",
+    "0x2e",
+    0
+   ]
+  },
+  {
+   "off": "0x50",
+   "type": "u8",
+   "lo": 0,
+   "hi": 19
+  },
+  {
+   "off": "0x52",
+   "type": "u8",
+   "values": [
+    "0xff",
+    "0xff",
+    0,
+    1
+   ]
+  },
+  {
+   "off": "0x5f",
+   "type": "u8",
+   "values": [
+    0
+   ]
+  }
+ ]
+}

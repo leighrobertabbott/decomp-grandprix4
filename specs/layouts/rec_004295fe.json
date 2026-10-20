@@ -1,0 +1,7 @@
+{
+ "_evidence": "Car record overlay for 0x004295fe (after car_00431ffb+car_0040362e+car_00426fa5): dword +0x1c is the car's segment record, compared with the pit start ('cmp ebx,[0x891500]; jae' exits) and walked 4 records for the |word +0x14| maximum and the slope sum; under state_004295fe's lap (records 0..7, sentinel 8, pit 9..) it draws lap records, the sentinel (whose 4-record walk runs into the pit and onto the pit-end clamp) and pit records (early exit).",
+ "size": 664,
+ "fields": [
+  {"off": "0x1c", "type": "u32", "values": ["0x8943a0", "0x894500", "0x894660", "0x8947c0", "0x894920", "0x894a80", "0x894be0", "0x894d40", "0x894ea0", "0x894ea0", "0x895000", "0x895160"]}
+ ]
+}

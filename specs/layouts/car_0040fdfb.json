@@ -1,0 +1,8 @@
+{
+  "_evidence": "esi of 0x0040fdfb: car record prefix (0x310 bytes), background random (fill bytes; nothing else is read). The four dwords +0x2fc/+0x300 and +0x304/+0x308 are suspension/ride values averaged pairwise (add; sar 1), clamped to the limits 0x6012f8/0x6012fc and offset by 0x601300/0x601304 (susp_0040fdfb): drawn -0x100000..0x100000 so the clamp goes both ways and the products stay in range, which with a uniform full-range ecx makes every bit of the final shrd result (eax, SF from bit 31, PF from the low byte) vary independently; fully random dwords overflowed the fistp to the indefinite 0x80000000, whose product leaves bit 7 always clear.",
+  "size": 784,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x2fc", "type": "i32", "count": 4, "stride": 4, "lo": -1048576, "hi": 1048576}
+  ]
+}

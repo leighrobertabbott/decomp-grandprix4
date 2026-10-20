@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x0051d97c: `mov eax,[0x7a93c8]; or eax,[0x7a93c4]; je` (two dwords, zero pair skips the wait), `mov eax,[0x7a93c0]; add eax,0x300; ... call 0x54e6af; cmp eax,edx; ja 0x51d998` (polls the timer fraction until it reaches limit+0x300), `cmp byte [0x7aafdb],1; je` (mode byte, also read by the callee 0x51d9c8). The timer fraction 0x54e6af returns is at most 0x40000000 (its overflow value), so a limit above that never ends the poll: [0x7a93c0] is drawn from its written domain. Writers: 0x51d91d stores min(timer+0x100, 2*[0x7ad8b8]) (`cmp eax,edx; jb; mov eax,edx`) with [0x7ad8b8] in 1..0x10000 (rate_007ad8b8), i.e. <= 0x20000; 0x523d79 stores 0. So 0..0x20000, limit <= 0x20300. The pair 0x7a93c4/0x7a93c8 is plain dword state (0x7a93c8 is pushed to 0x5064f0 by 0x51d91d): values with zero weighted so both the skip and the wait occur, plus a high-bit and a mid value. The mode byte is compared only for equality with 1: values 0, 1, 2. Compose after rate_007ad8b8 (0x51d9c8 polls up to [0x7ad8b8]).",
+  "globals": [
+    {"addr": "0x007a93c0", "type": "u32", "lo": 0, "hi": 131072},
+    {"addr": "0x007a93c4", "type": "u32", "values": [0, 0, 0, 1, "0x80000000", "0x0001e240"]},
+    {"addr": "0x007a93c8", "type": "u32", "values": [0, 0, 0, 1, "0x80000000", "0x00c0ffee"]},
+    {"addr": "0x007aafdb", "type": "u8", "values": [0, 1, 1, 2]}
+  ]
+}

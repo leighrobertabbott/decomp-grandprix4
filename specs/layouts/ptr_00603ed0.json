@@ -1,0 +1,6 @@
+{
+ "_evidence": "[0x603ed0] is the current run's start record: 0x43ff93 stores 0 there (0x440070) or a segment record pointer (tab_0043d5d8), and 0x43dda2 tests it ('test [0x603ed0],-1; je' skips the whole body) before walking from it. Compose after ring_008943a0 (which draws it as a record 0..24 only): the same record range, null in about a quarter of the cases, so the skip is exercised too.",
+ "globals": [
+  {"addr": "0x603ed0", "type": "u32", "nullable": true, "points_into": {"base": "0x8943a0", "stride": "0x160", "lo": 0, "hi": 24}}
+ ]
+}

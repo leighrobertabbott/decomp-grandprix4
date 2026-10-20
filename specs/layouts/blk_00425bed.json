@@ -1,0 +1,8 @@
+{
+  "_evidence": "16-byte entry behind ebx for 0x00425bed (0x425cb3: ebx = 0x6269b8 + idx*16): words +4/+6 are the interpolation endpoints (sign tests and movsx/imul/shrd: full range); dword +8 is the segment pointer - the caller only calls with it nonzero, the function itself tests it and falls back to the car's widths when it is null, so it is a real half_00425bed record or null (both paths valid).",
+  "size": 16,
+  "fill": "bytes",
+  "fields": [
+    {"off": 8, "type": "ptr", "size": 104, "fill": "layout=half_00425bed", "nullable": true}
+  ]
+}

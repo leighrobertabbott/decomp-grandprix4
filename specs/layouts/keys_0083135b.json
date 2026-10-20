@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x00543442 searches the six unaligned dwords 0x83135b..0x831373 (esi = 0x83135b, +4 each) for the key dword [0x831377] ('mov eax,[esi]; cmp eax,[edi]; je'; edi = 0x831377) and stores the index of the first match, or 6, at 0x831357. fuzz:i32 drew independent random dwords, so a match (the je taken at index 0..5) almost never occurred. Domain: the six entries and the key drawn from one small set {0, 1, 2, 3, 0x10, 0xffffffff} (a match at each index and no match - about a third of the cases - both occur, duplicates included). Plain dword compares of fixed addresses: every value is valid.",
+ "globals": [
+  {"addr": "0x0083135b", "type": "u32", "count": 6, "stride": 4, "values": [0, 1, 2, 3, "0x10", "0xffffffff"]},
+  {"addr": "0x00831377", "type": "u32", "values": [0, 1, 2, 3, "0x10", "0xffffffff"]}
+ ]
+}

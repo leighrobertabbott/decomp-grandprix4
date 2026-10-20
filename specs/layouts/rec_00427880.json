@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x00427880 reads two dwords of the esi record: [esi+0x284] (0x0042789d, minus the idiv quotient q; the signed difference is ebp and its sign picks the final neg at 0x00427906) and [esi+0x98] (0x004278ab, sar 8, then max'ed with [0x006247b0] and made absolute). The code after the idiv only adds/subtracts/multiplies these and divides edx:eax by a divisor that is always above edx (q when q > edx, else edx+1, or 0xffffffff with edx-1), so every i32 value is valid; unconstrained draws give both signs of the difference and of w, and both q > hi and q <= hi. Nothing else in the 0x2a0-byte record is read.",
+  "size": 672,
+  "fields": [
+    {"off": 152, "type": "i32"},
+    {"off": 644, "type": "i32"}
+  ]
+}

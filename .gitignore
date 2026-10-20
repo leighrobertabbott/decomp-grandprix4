@@ -8,6 +8,9 @@
 /runtime/
 /build/
 /logs/
+/text.lst
+/*.lst
+/build*test.exe
 
 # --- Python / tooling noise
 __pycache__/

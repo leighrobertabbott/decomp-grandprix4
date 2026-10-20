@@ -1,0 +1,38 @@
+{
+ "_evidence": "0x0044226c walks the event list of 0x24-byte records at 0x630238 from the cursor [0x63022c] to the end [0x630230]; both are byte offsets that are multiples of 0x24 (cursor 0..9 records, end 0..10 records, including an empty list).",
+ "globals": [
+  {
+   "addr": "0x0063022c",
+   "type": "u32",
+   "values": [
+    "0x0",
+    "0x24",
+    "0x48",
+    "0x6c",
+    "0x90",
+    "0xb4",
+    "0xd8",
+    "0xfc",
+    "0x120",
+    "0x144"
+   ]
+  },
+  {
+   "addr": "0x00630230",
+   "type": "u32",
+   "values": [
+    "0x0",
+    "0x24",
+    "0x48",
+    "0x6c",
+    "0x90",
+    "0xb4",
+    "0xd8",
+    "0xfc",
+    "0x120",
+    "0x144",
+    "0x168"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,21 @@
+{
+ "_evidence": "0x00515187 (esi = one of the 22 car records 0x66fef0 + k*0x41c, spec rec[]). Body inputs: mode byte 0x7c2ea9 ('cmp byte [0x7c2ea9],0x80; jne'), the other-car pointer [0x66d820] ('cmp esi,[0x66d820]; je', 'test [0x66d820],-1; je', then 'test byte [ebx+0x7a],0x80'): equal to esi about half the time (alias_reg), else null or a car record (points_into, nullable) so +0x7a is a real record byte; car bytes +0x7a (bit 7), +0x8b (bit 4 selects 'call 0x4080c9' = movzx [esi+0x224] instead of movzx [esi+0x60]) and +0x89 ('and byte [esi+0x89],0x7f', flags out) of every record; the words +0x60/+0x224 draw from a list that puts value>>6 below 10 (blank tens digit), between 10 and 0x63 and above 0x63 (clamped) with varied low 6 bits (fraction digit); the cache dword 0x88fdb4 ('cmp [0x88fdb4],0x40000000; je' and 'cmp eax,[0x88fdb4]; je') draws 0x40000000 and several of those word values so both early returns occur. Callee-chain state (validity only): the '--.-' path calls 0x51f3bd -> 0x51d2ec four times: byte 0x89152b == 1 stores al at [edi] (edi is a 0x10-byte buffer, 4 stores); otherwise 0x88fe12 == 0xff with 0x93251c != 0xff goes to 0x51d47a (-> 0x51d48d, ret) and else 0x51d319, which draws the glyph only when 0x7ad844 == 0xff via 0x51d329: with 0x7ad869 != 0 the hardware path 0x4a97c0 runs, whose surface interface [0xa6e204] is -1 here (its own 'cmp eax,-1; je' no-surface exit; the image's 0 would be dereferenced as a COM pointer and fault); with 0x7ad869 == 0 the software path writes 8 rows of 7 bytes at [0x874ee4] + row*[0x875254] + [0x88fd94]*7 + [0x88fd96] + 1, where 0x515187 zeroes 0x88fd94..97 first (the cursor then advances <= 4), so a 0x600-byte surface with pitch 64..128 holds every write (escape state 0x88fd9b keeps its image 0). Random dwords there (fuzz) faulted the original, so no fuzz.",
+ "globals": [
+  {"addr": "0x007c2ea9", "type": "u8", "values": ["0x80", "0x80", "0x80", "0x7f", "0x81", 0, "0xff"]},
+  {"addr": "0x0066d820", "type": "u32", "alias_reg": "esi", "points_into": {"base": "0x66fef0", "stride": "0x41c", "lo": 0, "hi": 21}, "nullable": true},
+  {"addr": "0x0066ff6a", "type": "u8", "count": 22, "stride": "0x41c", "values": [0, "0x80", "0x7f", "0xff", "0x12", "0x93"]},
+  {"addr": "0x0066ff7b", "type": "u8", "count": 22, "stride": "0x41c", "values": [0, "0x10", "0xef", "0xff", "0x31", "0x04"]},
+  {"addr": "0x0066ff79", "type": "u8", "count": 22, "stride": "0x41c"},
+  {"addr": "0x0066ff50", "type": "u16", "count": 22, "stride": "0x41c", "values": [0, 1, 5, "0x3f", "0x40", "0x41", "0x7f", "0x13a", "0x27f", "0x280", "0x2c5", "0x63f", "0x640", "0x1000", "0x18ff", "0x1900", "0x1901", "0x1fff", "0x2a37", "0x7fff", "0x8000", "0xc3e1", "0xffff"]},
+  {"addr": "0x00670114", "type": "u16", "count": 22, "stride": "0x41c", "values": [0, 1, 5, "0x3f", "0x40", "0x41", "0x7f", "0x13a", "0x27f", "0x280", "0x2c5", "0x63f", "0x640", "0x1000", "0x18ff", "0x1900", "0x1901", "0x1fff", "0x2a37", "0x7fff", "0x8000", "0xc3e1", "0xffff"]},
+  {"addr": "0x0088fdb4", "type": "u32", "values": ["0x40000000", "0x40000000", "0x40000000", 0, "0x40", "0x280", "0x1900", "0xffff", "0x2a37", "0x12345678"]},
+  {"addr": "0x0089152b", "type": "u8", "values": [0, 0, 1]},
+  {"addr": "0x0088fe12", "type": "u8", "values": [0, "0xff"]},
+  {"addr": "0x0093251c", "type": "u8", "values": [0, "0xff"]},
+  {"addr": "0x007ad844", "type": "u8", "values": ["0xff", "0xff", 0]},
+  {"addr": "0x007ad869", "type": "u8", "values": [0, "0xff"]},
+  {"addr": "0x00a6e204", "type": "u32", "values": ["0xffffffff"]},
+  {"addr": "0x00874ee4", "type": "ptr", "size": 1536, "fill": "bytes"},
+  {"addr": "0x00875254", "type": "u32", "lo": 64, "hi": 128}
+ ]
+}

@@ -1,0 +1,182 @@
+{
+ "_evidence": "Car-record overlay for esi of 0x00433709 (compose LAST, after car_00431ffb+rec_00432f18+car_004168fd+car_0042dd4b; those keep +0xfd 0/1, +0x7e, +0x66 -64..64 and the +0xe heading). The entry gates are 'test byte [esi+0x7a],0x20; jne exit' (0x433716), 'test byte [esi+0x232],1; je exit' (0x433720) and 'test byte [esi+0x26b],0x80' (0x43372d: path A at 0x43373a vs path B at 0x43390a); random bytes passed both first gates in a quarter of the cases only, so +0x7a draws bit 5 clear in 9/10 and +0x232 bit 0 set in 7/8, and +0x26b draws path B values (0, 0x7f, 8) and the path A values 0x80 (bits 1/3 clear: 0x433793 heading path), 0x88 (bit 3: 0x43378d -> 0x43399a tail with [0x601bac]=0xff) and 0x82 (bit 1: 0x433780 exit). Signed byte +0xe4 is compared with 1 (jl) / 5 (jg) at 0x43373a/0x433747 and with 2 (jl) at 0x43384a: drawn 1 often (0x433860 chain), 2/3/5 (0x43399a) and 0/6/0xff (exit). Byte +0x230 bit 7 (0x433860 jne exit) mostly clear; word +0xea compared with 0x20 (0x43386d jne exit) drawn 0x20 in 7/9. Byte +0x25f bit 1 (0x433793 je exit, 0x433b05) mostly set, both. Dword +0x1c is the car's segment pointer used only arithmetically by 0x432c21 ((start - [+0x1c]) idiv by the constant 0x160, no #DE for any value): record-aligned and mid-record addresses 0.5..8 records into 0x8943a0 so the index lands around -6..4, both sides of -1 and of [0x601bb4] (-1..3), with equality. Byte +0x7c only feeds 0x43b974 ((b-1)&0x3f ^1)+1 is the car number searched in the 22 array records' +0x7c (cars_00433709 draws those 1..6): 1..6 find a car (ebx = that record), 0x30 does not (ebx = 0x675958, the readable order list after the array). Word +0x68 (0x4338ce: ebx +0x68 minus it, js exit) -8..0 against the array cars' -8..8. Words +0x90 / +0x11c / +0x11e (0x43394f..0x43398d: |+0x90| + 0x7d vs +0x11c/+0x11e + 0x150, sign of +0x90 against the sign byte 0x868582) -0x400..0x400 so every order occurs. Dwords +0/+4 are the car position: the tail (0x4339b3/0x4339be) subtracts the segment-derived point (record +0xf0/+0xf8 plus offsets of at most 2^25) and fild/rotates/fistps the difference into [0x601bc0]; random 32-bit positions overflowed that fistp to the integer indefinite 0x80000000, which 0x433590 negates and divides 'shl 16; idiv ebp' (0x43360d: #DE): positions and the segment origins (state_00433709) are drawn within +-2^28 (a car is never 2^30 away from its own segment), so the rotated difference fits. Only compares and arithmetic on these fields otherwise: nothing faults.",
+ "size": 627,
+ "fields": [
+  {
+   "off": "0x0",
+   "type": "i32",
+   "lo": -268435456,
+   "hi": 268435456
+  },
+  {
+   "off": "0x4",
+   "type": "i32",
+   "lo": -268435456,
+   "hi": 268435456
+  },
+  {
+   "off": "0x1c",
+   "type": "u32",
+   "values": [
+    "0x894500",
+    "0x8945b0",
+    "0x894660",
+    "0x894710",
+    "0x8947c0",
+    "0x894870",
+    "0x894920",
+    "0x8949d0",
+    "0x894a80",
+    "0x894be0",
+    "0x894450",
+    "0x894ea0"
+   ]
+  },
+  {
+   "off": "0x68",
+   "type": "i16",
+   "lo": -8,
+   "hi": 0
+  },
+  {
+   "off": "0x7a",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    "0x80",
+    1,
+    "0x5f",
+    "0xdf",
+    "0x9f",
+    "0x20"
+   ]
+  },
+  {
+   "off": "0x7c",
+   "type": "u8",
+   "values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    1,
+    2,
+    "0x30"
+   ]
+  },
+  {
+   "off": "0x90",
+   "type": "i16",
+   "lo": -1024,
+   "hi": 1024
+  },
+  {
+   "off": "0x11c",
+   "type": "i16",
+   "lo": -1024,
+   "hi": 1024
+  },
+  {
+   "off": "0x11e",
+   "type": "i16",
+   "lo": -1024,
+   "hi": 1024
+  },
+  {
+   "off": "0xe4",
+   "type": "u8",
+   "values": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    3,
+    5,
+    0,
+    6,
+    "0xff"
+   ]
+  },
+  {
+   "off": "0xea",
+   "type": "u16",
+   "values": [
+    "0x20",
+    "0x20",
+    "0x20",
+    "0x20",
+    "0x20",
+    "0x20",
+    "0x20",
+    "0x18",
+    0
+   ]
+  },
+  {
+   "off": "0x230",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    "0x7f",
+    "0x80",
+    "0x10"
+   ]
+  },
+  {
+   "off": "0x232",
+   "type": "u8",
+   "values": [
+    1,
+    1,
+    1,
+    3,
+    "0x81",
+    "0xff",
+    "0x41",
+    0
+   ]
+  },
+  {
+   "off": "0x25f",
+   "type": "u8",
+   "values": [
+    2,
+    2,
+    2,
+    "0xff",
+    "0x82",
+    "0x22",
+    0,
+    "0xfd"
+   ]
+  },
+  {
+   "off": "0x26b",
+   "type": "u8",
+   "values": [
+    "0x80",
+    "0x80",
+    "0x80",
+    "0x80",
+    "0x88",
+    "0x88",
+    "0x82",
+    0,
+    "0x7f",
+    8
+   ]
+  }
+ ]
+}

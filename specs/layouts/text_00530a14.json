@@ -1,0 +1,18 @@
+{
+ "_evidence": "Text line parsed by 0x00530a14 through esi (0x54c53f skips ' '/'\t', 0x54c495 reads a decimal number: stc when the first char is not '0'..'9', else 'imul eax,10; add' while digits). The first number with bit 7 set ('test eax,0x80; je') is a header and the next number is read instead; otherwise byte 0x82741e = 0xff and it is the first slot. Then up to 7 pairs (inc ecx; cmp ecx,7; jne): slot ('cmp eax,4; jbe', else the error exit 0x530a9a) and value ('cmp eax,0x10000; jbe', else 0x530a9a), stored to [ebx+slot*4+0x28]. Synthetic line in a 0x40-byte buffer: header '1' + one of 3/9/2 + one of 0/8/9/' ' + ' ' (130..199 and 128/129 have bit 7; 13/19/12/120 do not and end at the slot check), then 7 pairs of 8 bytes at +4+8k: a slot digit ('0'..'4' mostly, '5'/'8' out of range), a separator (' '/'\t'), a 4- or 5-digit value (first digit 0..6: 6xxxx sometimes exceeds 0x10000; the fifth position is a digit or ' ') and a separator; bytes 60..63 are NUL (a number read there fails). So the full 7-pair run (the 'cmp ecx,7' fall-through at 0x530a77), every early exit and the header/no-header paths all occur. Every byte read lies inside the buffer (the walks stop at the NUL tail).",
+ "size": 64,
+ "fields": [
+  {"off": 0, "type": "u8", "values": ["0x31"]},
+  {"off": 1, "type": "u8", "values": ["0x33", "0x39", "0x32", "0x33"]},
+  {"off": 2, "type": "u8", "values": ["0x30", "0x38", "0x39", "0x20"]},
+  {"off": 3, "type": "u8", "values": ["0x20"]},
+  {"off": 4, "type": "u8", "count": 7, "stride": 8, "values": ["0x30", "0x31", "0x32", "0x33", "0x34", "0x30", "0x31", "0x32", "0x33", "0x34", "0x30", "0x31", "0x32", "0x33", "0x34", "0x35", "0x38"]},
+  {"off": 5, "type": "u8", "count": 7, "stride": 8, "values": ["0x20", "0x20", "0x09"]},
+  {"off": 6, "type": "u8", "count": 7, "stride": 8, "values": ["0x30", "0x31", "0x32", "0x33", "0x34", "0x35", "0x36", "0x30", "0x31", "0x32"]},
+  {"off": 7, "type": "u8", "count": 7, "stride": 8, "lo": 48, "hi": 57},
+  {"off": 8, "type": "u8", "count": 7, "stride": 8, "lo": 48, "hi": 57},
+  {"off": 9, "type": "u8", "count": 7, "stride": 8, "lo": 48, "hi": 57},
+  {"off": 10, "type": "u8", "count": 7, "stride": 8, "values": ["0x30", "0x31", "0x32", "0x33", "0x34", "0x35", "0x36", "0x37", "0x38", "0x39", "0x20", "0x20"]},
+  {"off": 11, "type": "u8", "count": 7, "stride": 8, "values": ["0x20", "0x09", "0x20"]}
+ ]
+}

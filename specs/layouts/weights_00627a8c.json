@@ -1,0 +1,179 @@
+{
+ "_evidence": "Inputs of 0x00440b67's two weighted draws. Weights: 8 words 0x627a8c..0x627a9b, copied per circuit by 0x40cbf7 (rep movsw from the circuit record): run-time state, summed with [0x62241c] into ebp and compared with a random Q14 fraction of the sum (imul/shrd, cmp/jl), so any u16 is valid; zero in the image (the selection never varied). Never-written tuning data (only 0x440b67 reads them): the 11 per-team chance words 0x62ebd0[0..10] (index (car +0x73 - 1) & 0x1f clamped to 10; 'mul ecx' by a word >= 20, 'div ebp' by 100: the u16*u16 product cannot overflow the quotient) and the per-weight bias dword 0x62241c (image 0x276): each draws its image value in about a third of the picks and otherwise other values (0, 1, 100, 0x8000, 0xffff / large and negative biases), so the pass no longer rests on one static table.",
+ "globals": [
+  {
+   "addr": "0x00627a8c",
+   "type": "u16",
+   "count": 8,
+   "stride": 2
+  },
+  {
+   "addr": "0x0062ebd0",
+   "type": "u16",
+   "values": [
+    963,
+    963,
+    963,
+    0,
+    1,
+    100,
+    "0x8000",
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x0062ebd2",
+   "type": "u16",
+   "values": [
+    5782,
+    5782,
+    5782,
+    0,
+    1,
+    100,
+    "0x8000",
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x0062ebd4",
+   "type": "u16",
+   "values": [
+    4336,
+    4336,
+    4336,
+    0,
+    1,
+    100,
+    "0x8000",
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x0062ebd6",
+   "type": "u16",
+   "values": [
+    2891,
+    2891,
+    2891,
+    0,
+    1,
+    100,
+    "0x8000",
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x0062ebd8",
+   "type": "u16",
+   "values": [
+    3854,
+    3854,
+    3854,
+    0,
+    1,
+    100,
+    "0x8000",
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x0062ebda",
+   "type": "u16",
+   "values": [
+    3373,
+    3373,
+    3373,
+    0,
+    1,
+    100,
+    "0x8000",
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x0062ebdc",
+   "type": "u16",
+   "values": [
+    5300,
+    5300,
+    5300,
+    0,
+    1,
+    100,
+    "0x8000",
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x0062ebde",
+   "type": "u16",
+   "values": [
+    2891,
+    2891,
+    2891,
+    0,
+    1,
+    100,
+    "0x8000",
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x0062ebe0",
+   "type": "u16",
+   "values": [
+    4818,
+    4818,
+    4818,
+    0,
+    1,
+    100,
+    "0x8000",
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x0062ebe2",
+   "type": "u16",
+   "values": [
+    6746,
+    6746,
+    6746,
+    0,
+    1,
+    100,
+    "0x8000",
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x0062ebe4",
+   "type": "u16",
+   "values": [
+    3854,
+    3854,
+    3854,
+    0,
+    1,
+    100,
+    "0x8000",
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x0062241c",
+   "type": "u32",
+   "values": [
+    "0x276",
+    "0x276",
+    "0x276",
+    0,
+    1,
+    "0x4000",
+    "0x7fffffff",
+    "0xfffffd8a"
+   ]
+  }
+ ]
+}

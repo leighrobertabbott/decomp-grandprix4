@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x004238ac: ebp = L = [0x60384c] (0 -> 1 at 0x4238c0), eax = min([0x608164], L) (signed jle), cdq/shld/shl 14, idiv L. With L >= 0 the quotient is <= 2^14 from above and, for v >= -0x1ffff, >= -2^31 from below, so idiv never faults; a negative L (eax <= L < 0) or v < -0x1ffff with L = 1 overflows the quotient (the original's own #DE, 9/200 with fuzz). L includes 0 (the 'mov ebp,1' block). The other inputs (clamp limits 0x607ac8/0x607acc and the six value pairs 0x607ad0..0x607afc passed to 0x423883, a pure compare/neg clamp) only feed imul/shrd: full-range i32.",
+  "globals": [
+    {"addr": "0x00608164", "type": "i32", "lo": -131071, "hi": 2147483647},
+    {"addr": "0x0060384c", "type": "i32", "lo": 0, "hi": 2147483647},
+    {"addr": "0x00607ac8", "type": "i32"},
+    {"addr": "0x00607acc", "type": "i32"},
+    {"addr": "0x00607ad0", "type": "i32", "count": 12, "stride": 4}
+  ]
+}

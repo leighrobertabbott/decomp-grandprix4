@@ -1,0 +1,31 @@
+{
+ "_evidence": "[0x679d2c] is a nullable car pointer dereferenced by 0x0052197e after a null test (null about 1/4, else one of the 22 car records, never random); car byte +0x7f (0x66ff6f) drawn so the ==1 arm runs.",
+ "globals": [
+  {
+   "addr": "0x00679d2c",
+   "type": "u32",
+   "nullable": true,
+   "points_into": {
+    "base": "0x0066fef0",
+    "stride": "0x41c",
+    "lo": 0,
+    "hi": 21
+   }
+  },
+  {
+   "addr": "0x0066ff6f",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    1,
+    1,
+    2,
+    3,
+    "0x80",
+    "0xff"
+   ]
+  }
+ ]
+}

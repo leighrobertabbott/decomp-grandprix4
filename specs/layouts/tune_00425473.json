@@ -1,0 +1,7 @@
+{
+ "_evidence": "Scalars of 0x004257c9's callees: word 0x603afc (image 0x19) is a tuning constant - none of its 9 readers (0x425473 'cmp dx,[0x603afc]; jge' on the +0x68 gap, 0x42dc22, 0x42e783, 0x42e8e6, 0x42e97e, 0x430339, 0x430449, 0x43052f, 0x4307a9) stores to it - so it draws its image value in about a third of the cases and otherwise other signed thresholds; dword 0x623df6 is run-time state (0x4124ea stores a quotient there) used by 0x4255d4 as an imul/shrd 10 factor: any value. Nothing faults.",
+ "globals": [
+  {"addr": "0x603afc", "type": "u16", "values": ["0x19", "0x19", "0x19", 0, 1, "0x100", "0x7fff", "0x8000", "0xffe7"]},
+  {"addr": "0x623df6", "type": "i32"}
+ ]
+}

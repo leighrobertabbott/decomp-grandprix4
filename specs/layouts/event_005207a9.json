@@ -1,0 +1,12 @@
+{
+ "_evidence": "0x005207a9 logs an 8-byte event for the car [0x66d820] ('mov eax,[0x66d820]; or eax,eax; je' - a car record pointer 0x66fef0+k*0x41c, k 0..21, or null: nullable so the early exit occurs) into the ring [0x7a8e28, 0x7a8e2c) at offset [0x66d830]: 'mov ebx,[0x66d830]; add ebx,[0x7a8e28]', byte/word stores at [ebx]..[ebx+6], 'add ebx,8; cmp ebx,[0x7a8e2c]; jb; mov ebx,[0x7a8e28]' (wrap), 'sub ebx,[0x7a8e28]; mov [0x66d830],ebx'. The offset is the ring cursor the routine itself keeps, so it is small and non-negative: 0..0x38, with the ring from fill_005204d0 (base 0xa06000..0xa06040, end 0xa06040..0xa0607f, the unreferenced zero-initialised .data stretch at 0xa06000) every store lands in 0xa06000..0xa06080 and both sides of the wrap compare occur; a fuzzed offset stores outside any mapped ring (the 22 faults at 0x5207cf). The record bytes copied are u16 +0x6a (& 0x7fff), u8 +0x6c/+0x6d/+0x6e and u8 +0x6f (& 0x9f) of each of the 22 cars: plain copies, full range. Compose after state_00437888 (its 0x66d820 range 0..22 is replaced by 0..21 or null) and fill_005204d0.",
+ "globals": [
+  {"addr": "0x0066d820", "type": "u32", "points_into": {"base": "0x0066fef0", "stride": "0x41c", "lo": 0, "hi": 21}, "nullable": true},
+  {"addr": "0x0066d830", "type": "u32", "lo": 0, "hi": 56},
+  {"addr": "0x0066ff5a", "type": "u16", "count": 22, "stride": "0x41c"},
+  {"addr": "0x0066ff5c", "type": "u8", "count": 22, "stride": "0x41c"},
+  {"addr": "0x0066ff5d", "type": "u8", "count": 22, "stride": "0x41c"},
+  {"addr": "0x0066ff5e", "type": "u8", "count": 22, "stride": "0x41c"},
+  {"addr": "0x0066ff5f", "type": "u8", "count": 22, "stride": "0x41c"}
+ ]
+}

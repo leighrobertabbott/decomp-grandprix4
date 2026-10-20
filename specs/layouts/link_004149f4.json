@@ -1,0 +1,14 @@
+{
+ "_evidence": "Other car reached through car dword +0x110 (0x4257c9: 'mov ebx,[esi+0x110]; or ebx,ebx; je'), passed as ebx to 0x425473 / 0x4255d4 / 0x40dc8a / 0x426091: words +0x68/+0x98/+0x9a/+0x100/+0xda/+0xe2, bytes +0x9c/+0xcb/+0x21d, words +0x148..+0x14e are plain operands (0x425473's divisions are safe for any of them, see state_00425473), so the 0x228-byte block is random; its own +0x110 (read by 0x425849 for word +0xda when byte +0xcb bit 0 is set) is a nullable pointer to another such car.",
+ "size": 552,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x110",
+   "type": "ptr",
+   "size": 552,
+   "fill": "bytes",
+   "nullable": true
+  }
+ ]
+}

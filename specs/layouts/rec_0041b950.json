@@ -1,0 +1,17 @@
+{
+  "size": 548,
+  "_evidence": "0x0041b950 reads car-record bytes through esi, each only for the test shown: +0x72 (cmp 0), +0xfe bit 0x20 (0x10..0x3f gives both), +0x8d bit 0x10, +0x84 (cmp 4 only; 0..8 makes the equality frequent), word +0x1ae (zero test; the generic i16 draw is 0 in ~1/8), +0x6f bit 0x10, +0xff bit 4, +0xe6 bit 1, +0x1ce bit 8 (read-modify-write), +0x21c bit 0x20, and movsx word +0x9a (signed cmp with [0x624760]). Compares and bit ops only: no value can fault.",
+  "fields": [
+    {"off": 111, "type": "u8"},
+    {"off": 114, "type": "u8"},
+    {"off": 132, "type": "u8", "lo": 0, "hi": 8},
+    {"off": 141, "type": "u8"},
+    {"off": 154, "type": "i16"},
+    {"off": 230, "type": "u8"},
+    {"off": 254, "type": "u8", "lo": 16, "hi": 63},
+    {"off": 255, "type": "u8"},
+    {"off": 430, "type": "i16"},
+    {"off": 462, "type": "u8"},
+    {"off": 540, "type": "u8"}
+  ]
+}

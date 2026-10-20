@@ -1,0 +1,6 @@
+{
+ "_evidence": "22-byte slot-key table 0x62f916 (one byte per car slot: a network player key 0..31 or 0xff for an empty slot): 0x00445a0a scans it for al ('cmp al,0xff; je' first, then 'cmp al,[ecx+0x62f916]' for ecx 0..21) and returns the slot index; 0x00445f75 then stores 0xff into the found slot and indexes the 22-byte car table 0x7c2a48 with it; 0x4456c7/0x44557c read it too. Run-time state (written by those handlers), compared/stored only, so every byte is valid; entries draw keys 0..31 and 0xff (empty) so hits at every position, duplicate keys and misses all occur.",
+ "globals": [
+  {"addr": "0x0062f916", "type": "u8", "count": 22, "stride": 1, "values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, "0xff", "0xff", "0xff", "0xff", "0xff", "0xff", "0xff", "0xff"]}
+ ]
+}

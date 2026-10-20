@@ -1,0 +1,9 @@
+{
+ "_evidence": "Record at ebx for 0x00417f6b (the 0x300-stride records at 0x6380d8 walked by 0x417fc5; random background): 'mov eax,[ebx+0x1e0]; sar eax,0xb' and '[ebx+0x1e4] >> 11' become the position pair 0x623e30/0x623e38 that 0x4061ed walks the track ring with (0x405e19 side tests on the i16 record frame), and the raw dwords go to 0x967988/0x96798c for the 0x50c980 line walk. They are world coordinates of the i16 record frame << 11, i.e. -0x4000000..0x3fff7ff (as the car position dwords of car_004129fa and ring_00405a12's x/z domain); wilder values put x>>11 outside the ring geometry and the walk never ends (the observed timeouts at 0x406206/0x40621a/0x405e36). Every other byte is plain data for 0x41e156 (imul/shift).",
+ "size": 492,
+ "fill": "bytes",
+ "fields": [
+  {"off": "0x1e0", "type": "i32", "lo": -67108864, "hi": 67106815},
+  {"off": "0x1e4", "type": "i32", "lo": -67108864, "hi": 67106815}
+ ]
+}

@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x0051f796 clears and draws a grid into the 640x480 byte surface [0x874ef0] with pitch [0x8751c4]: 'mov edi,[0x874ef0]; mov ecx,0x12c00; rep stosd' clears 0x4b000 bytes (so the surface is exactly 0x4b000 bytes; its old contents are never read, fill bytes); rows 'mov eax,ebp; mul dword [0x8751c4]; add eax,[0x874ef0]; mov ecx,0xa0; rep stosd' for ebp = 0x70..0x170 step 0x20 write 640 bytes at row*pitch (last end 0x170*pitch + 640 <= 0x4b000 needs pitch <= 833); columns 'add edi,0xa0' + k*0x20 (k < 0xb, last column 0x1e0) with 480 'stosb; add edi,[0x8751c4]' steps reach 0x1e0 + 479*pitch < 0x4b000, i.e. pitch <= 640 (the surface's own width). The pitch is therefore drawn from 640 (the real 640-byte rows) and the narrower 0x1e0/0x200/0x100 strides; larger pitches overrun the 0x4b000-byte surface the routine itself clears (a fault in the original). No branch depends on the data (all loops have fixed counts).",
+ "globals": [
+  {"addr": "0x00874ef0", "type": "ptr", "size": 307200, "fill": "bytes"},
+  {"addr": "0x008751c4", "type": "u32", "values": [640, 640, "0x1e0", "0x200", "0x100"]}
+ ]
+}

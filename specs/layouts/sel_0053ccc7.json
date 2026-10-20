@@ -1,0 +1,44 @@
+{
+ "_evidence": "0x0053ccc7: cl = [0x82fd45] (0xff = nothing selected), then from esi = [0x82fd34] (the current menu header, set to the static menu 0x84300a of menu_0084300a, or 0) it checks esi for null and hops 'mov esi,[esi]' cl times, then patches byte +0x1f of the node reached (and 0x7f; or 0x40) without a null test. The menu has 13 items (item 13 links to 0), so cl = 1..13 marks an item, cl >= 15 (and cl = 0 = 256 hops) meets the null link and takes the 0x54e232 path, and a null header takes it at once. cl = 14 is excluded: it reaches the null link exactly after the last hop and the ORIGINAL faults at 0x53cce2 (callers keep the selection inside the menu). Compose after menu_0084300a, globals=layout only (fuzz overwrote the static links).",
+ "globals": [
+  {
+   "addr": "0x0082fd34",
+   "type": "u32",
+   "values": [
+    "0x84300a",
+    "0x84300a",
+    "0x84300a",
+    "0x84300a",
+    "0x84300a",
+    0
+   ]
+  },
+  {
+   "addr": "0x0082fd45",
+   "type": "u8",
+   "values": [
+    "0xff",
+    "0xff",
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    15,
+    16,
+    20,
+    "0x80",
+    "0xfe",
+    0
+   ]
+  }
+ ]
+}

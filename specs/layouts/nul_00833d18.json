@@ -1,0 +1,19 @@
+{
+ "_evidence": "0x0054d93a/0x0054d94a translate a string in place until the TRANSLATED byte is NUL ('lodsb; call 0x54d747/0x54d755; stosb; or al,al; jne'), so they terminate only if the tables map NUL to NUL: entry 0 of both translation tables (0x833d18, 0x833e18) is 0 in every state in which the game calls them. Overlay composed after xlat_00833d18 (the other 255 entries stay drawn).",
+ "globals": [
+  {
+   "addr": "0x00833d18",
+   "type": "u8",
+   "values": [
+    0
+   ]
+  },
+  {
+   "addr": "0x00833e18",
+   "type": "u8",
+   "values": [
+    0
+   ]
+  }
+ ]
+}

@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x0041dada reads the signed step count byte +0x136 (edx == 3) or +0x137 (edx == 2) of its start record edi (rec[0x8943a0,0x160,0..11]; bytes 0x8944d6/0x8944d7 + k*0x160) into [0x627828], then walks: q = 0x4074db(edi) < 0 with a negative count steps back (inc), q >= 0x4000 with a positive count steps forward (dec), otherwise it returns, so the walk is at most |count| <= 128 steps for ANY byte and every value is valid. The step rules (forward: past the lap end [0x866ecc] below the pit start [0x891500] subtract the wrap [0x866ec4], at or past the pit end [0x866ef8] clamp to pit end - 0x160; back: below the pit start, under the lap start [0x891504] add the wrap, else clamp at the pit start) stay in records 0..13 with ring_008943a0's lap start 0..4 and wrap 1..4 records composed under state_0040759e's lap end 6..8, pit start 9..10, pit end 12..14 (forward wrap lands >= lap end - 4 >= 2, backward wrap <= lap start - 1 + 4 <= 7, pit clamps <= 13), which also varies 0x4074db's record fields of records 0..14 and the positions. The count draws zero, +-1..4, +-16 and the extremes 0x7f/0x80 so both loops run, stop on the band and stop on an exhausted count.",
+ "globals": [
+  {"addr": "0x008944d6", "type": "u8", "count": 12, "stride": "0x160", "values": [0, 1, 2, 3, 4, 255, 254, 253, 252, 127, 128, 16, 240]},
+  {"addr": "0x008944d7", "type": "u8", "count": 12, "stride": "0x160", "values": [0, 1, 2, 3, 4, 255, 254, 253, 252, 127, 128, 16, 240]}
+ ]
+}

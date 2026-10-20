@@ -1,0 +1,11 @@
+{
+  "_evidence": "0x0043faf5 walks edi (records 0..10) forward by 0x160 until it equals esi (records 11..25) or a test fails, so it visits records 0..25 and reads record 26 through edi+0x160/+0x178 (0x43fab0: delta = w0[k+1] + w18[k+1] - w0[k] - w18[k], 16-bit). Per record (27): byte +0x73 (bit 0x40 set in about a quarter of the picks; bits 0x80/2 are RMW), signed byte +0x8c (negative in about a quarter; set to 0x40), words +0 and +0x18 in -0x300..0x300 so the delta spans both signs and magnitudes around the threshold [0x00627ac4] (0..0x200); byte 0x00627b65 zero or not. With ebp (spec -0x400..0x400) the 'delta xor ebp' sign test and the |ebp|>>1 compare go both ways. Only compares and RMW: nothing faults.",
+  "globals": [
+    {"addr": "0x00894413", "type": "u8", "count": 27, "stride": "0x160", "values": [0, 2, "0x80", "0x82", "0x40", 1, "0x3d", "0xff"]},
+    {"addr": "0x0089442c", "type": "u8", "count": 27, "stride": "0x160", "values": [0, 1, "0x40", "0x7f", "0x80", "0xff", 2, "0x10"]},
+    {"addr": "0x008943a0", "type": "i16", "count": 27, "stride": "0x160", "lo": -768, "hi": 768},
+    {"addr": "0x008943b8", "type": "i16", "count": 27, "stride": "0x160", "lo": -768, "hi": 768},
+    {"addr": "0x00627ac4", "type": "i32", "lo": 0, "hi": 512},
+    {"addr": "0x00627b65", "type": "u8", "values": [0, 0, 1, "0xff"]}
+  ]
+}

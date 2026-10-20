@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x0051f87e: 'pushal; mov esi,[0xa69878]; call 0x433c4c; mov [0xa6987c],eax; mov [0xa69880],edx; mov [0xa69884],ecx; popal'. 0x433c4c reads esi as a car record exactly as its own accepted spec does (esi:ptr[0x273]:layout=car_00431ffb): byte +0xfd is the slot (0x43207c: edi = slot*0x420 + [0x866f08] + 0x160, so 0..2 keeps edi on the records rec_00433c4c varies), byte +0x7e the profile selector 0..3 (index into the 4-pointer table 0x62a970), the rest random. ptr_00a69878's plain 0x2a0 random bytes drew the slot 0..255, so 0x433c4c read records far outside the varied ring (unvaried zeros). Here [0xa69878] points at a car_00431ffb record (627 bytes); use it in place of ptr_00a69878, composed with state_00431ffb+state_004059ef+geom_008943a0+rec_00433c4c as for 0x433c4c.",
+ "globals": [
+  {"addr": "0x00a69878", "type": "ptr", "size": 627, "fill": "layout=car_00431ffb"}
+ ]
+}

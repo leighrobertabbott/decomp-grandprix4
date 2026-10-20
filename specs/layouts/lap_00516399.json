@@ -1,0 +1,139 @@
+{
+ "_evidence": "0x00516399 (lap/sector timing display state; compose after state_0044334d+cars_0042504d+sel_0051634b): esi = [0x679d30] (a car record 0..21), then car byte +0x82 bits 8/0x10 select the mode, dword +0x28 and +0x38 ('cmp [esi+0x38],0x10000000; je': the no-time sentinel), and byte +0x74 (the sector 0..2: 'mov cl,[esi+0x74]' indexes the three-dword arrays +0x20 and +0x2c, 'cmp [esi+ebx*4+0x2c],0x20000000; je' and 'cmp eax,0x10000000; je' on +0x20[i]: sentinels). The random byte background of cars_0042504d gives +0x74 values 3..255 (indices into the next fields/records, never sentinels) and never the sentinels, so for all 22 cars: +0x74 in 0..2, +0x82 mixing bits 8/0x10, +0x20..+0x28 and +0x38 drawing 0x10000000 often, +0x2c..+0x34 drawing 0x20000000 often, plus ordinary times. Only cmp/sub/mov read them, so nothing faults.",
+ "globals": [
+  {
+   "addr": "0x66ff72",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    8,
+    "0x18",
+    "0x10",
+    "0x08",
+    "0x18",
+    "0xff",
+    "0xe7"
+   ]
+  },
+  {
+   "addr": "0x66ff64",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    1,
+    2
+   ]
+  },
+  {
+   "addr": "0x66ff10",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x10000000",
+    "0x10000000",
+    0,
+    1,
+    "0x12345",
+    "0x7fffffff",
+    "0xffffffff",
+    "0x20000000"
+   ]
+  },
+  {
+   "addr": "0x66ff14",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x10000000",
+    "0x10000000",
+    0,
+    1,
+    "0x12345",
+    "0x7fffffff",
+    "0xffffffff",
+    "0x20000000"
+   ]
+  },
+  {
+   "addr": "0x66ff18",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x10000000",
+    "0x10000000",
+    0,
+    1,
+    "0x12345",
+    "0x7fffffff",
+    "0xffffffff",
+    "0x20000000"
+   ]
+  },
+  {
+   "addr": "0x66ff1c",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x20000000",
+    "0x20000000",
+    0,
+    1,
+    "0x12345",
+    "0x10000000",
+    "0xfffffff0"
+   ]
+  },
+  {
+   "addr": "0x66ff20",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x20000000",
+    "0x20000000",
+    0,
+    1,
+    "0x12345",
+    "0x10000000",
+    "0xfffffff0"
+   ]
+  },
+  {
+   "addr": "0x66ff24",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x20000000",
+    "0x20000000",
+    0,
+    1,
+    "0x12345",
+    "0x10000000",
+    "0xfffffff0"
+   ]
+  },
+  {
+   "addr": "0x66ff28",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x10000000",
+    "0x10000000",
+    0,
+    "0x5000",
+    "0xffffffff",
+    "0x20000000"
+   ]
+  }
+ ]
+}

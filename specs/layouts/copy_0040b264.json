@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x0040b264 copies three state blocks back to back with 'rep movsb' to EDI: 0x007ad890..0x007adb4c (700 bytes), 0x007c28bc..0x007c3ae4 (4648 bytes) and 0x0066d7a4..0x006975bc (171544 bytes), then returns the byte count. A byte copy accepts every pattern, so every source byte is varied (as u32 words: 175 + 1162 + 42886); with the zero image blocks a wrong source range would copy zeros and still match.",
+  "globals": [
+    {"addr": "0x007ad890", "type": "u32", "count": 175, "stride": 4},
+    {"addr": "0x007c28bc", "type": "u32", "count": 1162, "stride": 4},
+    {"addr": "0x0066d7a4", "type": "u32", "count": 42886, "stride": 4}
+  ]
+}

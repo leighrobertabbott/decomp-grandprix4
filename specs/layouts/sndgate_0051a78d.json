@@ -1,0 +1,9 @@
+{
+ "_evidence": "Guard bytes of the sound frame driver 0x0051a78d (compose last, after the channel/sample layouts). 'test byte [0x88f6e1],0xff; jne ret': written only 0xff/0 by 0x51889e/0x5188af (the ramp updater's busy flag) -> {0 (mostly), 0xff}. 'test byte [0x852d6a],0xff; jne ret': the pause byte, written only by 'xor ..,0x80' (0x521de7/0x521e01) and 'mov ..,0' (0x521e99/0x5223da) -> {0 (mostly), 0x80}. 'cmp byte [0x7ad868],0; je' (twice): the sound-enable byte (chan_005188f5: {0,1,0xff}); nonzero runs 0x519d72, 0x51935b, 0x51a7e0, 0x51a87e, 0x51f277, zero with 'test byte [0x95404c],0xff; jne' == 0 runs 0x51a729 and 0x51915c. [0x95404c] is the sound-off byte (the game writes only 0 and 0x80, image 0x80; snd_0095404c). Plain byte tests: every value is valid. Values are synthetic.",
+ "globals": [
+  {"addr": "0x0088f6e1", "type": "u8", "values": [0, 0, 0, "0xff"]},
+  {"addr": "0x00852d6a", "type": "u8", "values": [0, 0, 0, "0x80"]},
+  {"addr": "0x007ad868", "type": "u8", "values": [0, 0, 1, "0xff"]},
+  {"addr": "0x0095404c", "type": "u8", "values": [0, 0, "0x80"]}
+ ]
+}

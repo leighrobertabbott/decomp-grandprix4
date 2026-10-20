@@ -1,0 +1,87 @@
+{
+  "_evidence": "Car inputs of the force solver that 0x00405552 bisects through 0x4054e6 -> 0x4057cf -> 0x404f99 (22 car records at 0x66fef0, stride 0x41c; esi is one of them). 0x4057cf: dword +0x98 ('test; jns; neg; sar 8', floored at 0x80000 into [0x603084]; 0x4054e6 also scales it as the divisor, floored at 0x1000) and word +0xb2 (movzx, fild: the multiplier of the +0x284 force) - at the static zero +0x284 was |0/0| = the integer indefinite in every case, so 0x4054e6 returned a constant and the bisection never moved; 0x404f99 reads words +0xa2/+0xb2/+0xb8/+0xba/+0x10e (movzx, imul/shrd: the 0x602d70 drive term) and byte +0xe5 (test 1; jne). No division by these: 0x4054e6's 'idiv' divides by max(scaled +0x98, 0x1000) a dividend below 2^41 (quotient < 2^29), the x87 divides are masked. +0x98 in +-2^30 (0x40563c fills 0..0x3f000000), the words and the byte any value. 0x602d84/0x602d88 are the segment pointers 0x404ed0/0x404f33 dereference after a null test: 0x43dbdc stores edi in both before 'call 0x405552', 0x40563c stores 0 - so they are 0 or edi (alias_reg). [0x602d68]/[0x602d6c] are Q14 gains of the 0x602d70 term ('imul; shrd 0xe' at 0x40522b/0x405235), referenced only by 0x404f99 and never written (image 0x4000 = 1.0): engine_00413606's full-range values (mostly tiny) shifted the term to 0 in every case, so they are pinned near unity here (any value is valid; there is no division).",
+  "globals": [
+    {
+      "addr": "0x0066ff88",
+      "type": "i32",
+      "count": 22,
+      "stride": "0x41c",
+      "lo": -1073741824,
+      "hi": 1073741824
+    },
+    {
+      "addr": "0x0066ff92",
+      "type": "u16",
+      "count": 22,
+      "stride": "0x41c"
+    },
+    {
+      "addr": "0x0066ffa2",
+      "type": "u16",
+      "count": 22,
+      "stride": "0x41c"
+    },
+    {
+      "addr": "0x0066ffa8",
+      "type": "u16",
+      "count": 22,
+      "stride": "0x41c"
+    },
+    {
+      "addr": "0x0066ffaa",
+      "type": "u16",
+      "count": 22,
+      "stride": "0x41c"
+    },
+    {
+      "addr": "0x0066fffe",
+      "type": "u16",
+      "count": 22,
+      "stride": "0x41c"
+    },
+    {
+      "addr": "0x0066ffd5",
+      "type": "u8",
+      "count": 22,
+      "stride": "0x41c"
+    },
+    {
+      "addr": "0x00602d84",
+      "type": "u32",
+      "values": [
+        0
+      ],
+      "alias_reg": "edi"
+    },
+    {
+      "addr": "0x00602d88",
+      "type": "u32",
+      "values": [
+        0
+      ],
+      "alias_reg": "edi"
+    },
+    {
+      "addr": "0x00602d68",
+      "type": "u32",
+      "values": [
+        "0x4000",
+        "0x4000",
+        "0x4000",
+        "0x2000",
+        "0x6000"
+      ]
+    },
+    {
+      "addr": "0x00602d6c",
+      "type": "u32",
+      "values": [
+        "0x4000",
+        "0x4000",
+        "0x4000",
+        "0x2000",
+        "0x6000"
+      ]
+    }
+  ]
+}

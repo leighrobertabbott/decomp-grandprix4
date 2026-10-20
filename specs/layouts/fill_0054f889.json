@@ -1,0 +1,11 @@
+{
+ "_evidence": "Block pointer [0x83e498] used as the rep movsb source/destination of 0x0054f889/0x0054f89c (0xf70 bytes, the size of the 0x7ab760 block they copy); unmapped under fuzz.",
+ "globals": [
+  {
+   "addr": "0x0083e498",
+   "type": "ptr",
+   "size": 3952,
+   "fill": "bytes"
+  }
+ ]
+}

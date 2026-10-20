@@ -1,0 +1,132 @@
+{
+ "_evidence": "0x0040d389 (edi = link record 0..7 of the 0x160-byte ring at 0x8943a0; overlay after state_0040d19f, no fuzz so the startup-initialised scale 0x6f2bdc = pi/2^31 and the image constant 0x6f2b04 = 16384.0 stay exact). Record fields of records 0..7 (count 8, stride 0x160; the +0x44 links of records 0..31, as 0x4062b1 reads [edx+0x44] for any ring record edx): dword +0x44 is the cursor (or ebx 0 -> immediate exit at 0x40d38f): 0 in 1/5, else a record pointer 2..5; signed bytes +0x7c = s in 0..2 and +0x7d = e, e in 6..11 or -128/-5/-1 (movsx; 'cmp e,s; jl exit' at 0x40d3cb takes both sides). With e >= s the walk 0x40d19f gets edi' = cursor + s*0x160 - 0x2c0 = record 0..5 and ebx' = cursor + (e+3)*0x160 = record 11..19, exactly state_0040d19f's domain (edi' rec 0..7, ebx' rec 11..19, ebx' - edi' >= 4 records, so the 'jne' walk terminates and records 8..10 are always walked). The axis angle: [0x868582] sign selects dword +0x104 + 0x40000000 or +0x110 - 0x40000000, fild * pi/2^31, fsincos, *16384, fistp cos -> [0x62780c], sin -> [0x627810]; state_0040d19f's straight track along +x needs A in +-0x1000 and B in 0x3c00..0x4000 (|cos| <= 1/4: within 14.4 degrees of 90), so +0x104 is i32 in +-0x09000000 (12.7 degrees) and +0x110 is u32 in 0x77000000..0x89000000 (0x80000000 +- the same), i.e. the link record heads along the track it links to. The origin (0x40d17c of edi with al=0 -> [0x6277f8]/[0x6277fc]/[0x627800]) is the edge point of record 0..7 of state_0040d19f's track, so Ox lies in -2^25..8*2^25 and record 10 is always past it (no exhausted walk); first-walked record ahead of or behind Ox gives both the clc exit (0x40d484/0x40d4a9 jae) and the stc stores. [0x627804] = edi is the record of 0x40d19f's tail: +0x100/+0x10c u32 0..2^20 and +0x108/+0x114 i16 as rec_0040d19f. 0x4062b1 (twice: eax = [0x62d2d8] or edi, edx = [0x62d2d4]) reads dword [edx+0x44] when edx and eax lie on opposite sides of the pit start [0x891500], so [0x62d2d4] and [0x62d2d8] are ring record pointers 0..31 and [0x891500] a record pointer 0..30 (both sides for edi and edx); [0x866ed8] (jl compare of the distance) is +-0x4000 and [0x866ec4] (wrap subtracted) 1..32 records, plain integer arithmetic, so both 'jl' and 'jle' outcomes of 0x40d3b7/0x40d3bb occur.",
+ "globals": [
+  {
+   "addr": "0x8943e4",
+   "type": "u32",
+   "count": 32,
+   "stride": "0x160",
+   "values": [
+    "0x0",
+    "0x894660",
+    "0x8947c0",
+    "0x894920",
+    "0x894a80"
+   ]
+  },
+  {
+   "addr": "0x89441c",
+   "type": "u8",
+   "count": 8,
+   "stride": "0x160",
+   "values": [
+    0,
+    1,
+    2
+   ]
+  },
+  {
+   "addr": "0x89441d",
+   "type": "u8",
+   "count": 8,
+   "stride": "0x160",
+   "values": [
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    "0x80",
+    "0xfb",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x8944a4",
+   "type": "i32",
+   "count": 8,
+   "stride": "0x160",
+   "lo": -150994944,
+   "hi": 150994944
+  },
+  {
+   "addr": "0x8944b0",
+   "type": "u32",
+   "count": 8,
+   "stride": "0x160",
+   "lo": 1996488704,
+   "hi": 2298478592
+  },
+  {
+   "addr": "0x8944a0",
+   "type": "u32",
+   "count": 8,
+   "stride": "0x160",
+   "lo": 0,
+   "hi": 1048576
+  },
+  {
+   "addr": "0x8944a8",
+   "type": "i16",
+   "count": 8,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8944ac",
+   "type": "u32",
+   "count": 8,
+   "stride": "0x160",
+   "lo": 0,
+   "hi": 1048576
+  },
+  {
+   "addr": "0x8944b4",
+   "type": "i16",
+   "count": 8,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x0062d2d4",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 31
+   }
+  },
+  {
+   "addr": "0x0062d2d8",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 31
+   }
+  },
+  {
+   "addr": "0x00891500",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 30
+   }
+  },
+  {
+   "addr": "0x00866ed8",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "addr": "0x00866ec4",
+   "type": "u32",
+   "lo": 352,
+   "hi": 11264
+  }
+ ]
+}

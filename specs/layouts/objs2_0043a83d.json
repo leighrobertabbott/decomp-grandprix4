@@ -1,0 +1,317 @@
+{
+ "_evidence": "Object-record fields for 0x0043a83d (compose after state_0043acb6, whose random byte background covers the 64 0x78-byte records at 0x63bd7c, and after objs_0043a83d, whose [0x607abc]/[0x607ac0] point at two of them). 0x43a83d hands the pair to 0x43a785 (eax/edx) and each record in turn to 0x43a32a (esi), which were accepted on obj_0043a785 / obj_0043ac7f records: positions +0/+4/+8 in +-0x20000, velocities +0x18/+0x1c/+0x20 in +-0x8000, weight +0x48 in +-0xffff (q = (w_a<<14)/(w_a+w_b) in 0x43a785: a wild pair overflows the idiv), radius +0x68 0..0x2000, car index +0x6c and shape index +0x6d 0..21 (the 22 cars / the 22 0x5d8-byte shape blocks). Restated here for all 64 records: with state_0043acb6's full-range positions the 0x43a32a box (shape points +-0x40000 minus the object position, rotated) always fell in one quadrant, so its 'every side updated' clc exit (0x43a901/0x43a957 fall-through, the 0x43a81e calls) never occurred in 529 cases. Shape blocks (compose after shape_006099c0): 0x43a32a forms each point of the object's shape block (0x6099c0 + (+0x6d)*0x5d8, points from +0x38, 0x14 bytes each, count +0x18 1..8) minus the block header +0/+4/+8, plus for kinds 1/2 the eight box-corner offsets of the image tables 0x607dc0/0x607e40 (+-0x4555 / +-0x4400), rotates it by the 0x6232a8 body and lets 0x43a148 update one x-side and one y-side extreme by sign; it returns clc only when all four sides were updated. shape_006099c0 draws the header as any i32 (and points +-0x40000), so point - header was one huge vector and every rotated corner fell in one quadrant. In the game header and points are the same shape's coordinates (the points lie around the header), so here the header draws +-0x4000 and the point coordinates +-0x8000 (inside shape_006099c0's ranges): box corners and point sets then straddle both axes in a share of the cases. The two object bodies 0x623038 and 0x623108: 0x438c1f (which also stores the pair in [0x607abc]/[0x607ac0] just before 0x43a83d runs) builds them from the two objects with 0x402225, so their matrices +0x58..+0x98 (0x623090.., 0x623160..) are rotation matrices; 0x43a83d multiplies each with the 0x6231d8 body (0x4020ef into 0x6232a8), and their static zero made every rotated shape point 0 (one quadrant, the clc exit unreachable). Drawn as finite entries in [-1,1] (as view_00609860 does for the other bodies; multiply/fistp only).",
+ "globals": [
+  {
+   "addr": "0x63bd7c",
+   "count": 64,
+   "stride": "0x78",
+   "type": "i32",
+   "lo": -131072,
+   "hi": 131072
+  },
+  {
+   "addr": "0x63bd80",
+   "count": 64,
+   "stride": "0x78",
+   "type": "i32",
+   "lo": -131072,
+   "hi": 131072
+  },
+  {
+   "addr": "0x63bd84",
+   "count": 64,
+   "stride": "0x78",
+   "type": "i32",
+   "lo": -131072,
+   "hi": 131072
+  },
+  {
+   "addr": "0x63bd94",
+   "count": 64,
+   "stride": "0x78",
+   "type": "i32",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x63bd98",
+   "count": 64,
+   "stride": "0x78",
+   "type": "i32",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x63bd9c",
+   "count": 64,
+   "stride": "0x78",
+   "type": "i32",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x63bdc4",
+   "count": 64,
+   "stride": "0x78",
+   "type": "i32",
+   "lo": -65535,
+   "hi": 65535
+  },
+  {
+   "addr": "0x63bde4",
+   "count": 64,
+   "stride": "0x78",
+   "type": "i32",
+   "lo": 0,
+   "hi": 8192
+  },
+  {
+   "addr": "0x63bde8",
+   "count": 64,
+   "stride": "0x78",
+   "type": "u8",
+   "lo": 0,
+   "hi": 21
+  },
+  {
+   "addr": "0x63bde9",
+   "count": 64,
+   "stride": "0x78",
+   "type": "u8",
+   "lo": 0,
+   "hi": 21
+  },
+  {
+   "addr": "0x6099c0",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "addr": "0x6099c4",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "addr": "0x6099c8",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "addr": "0x6099f8",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x6099fc",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a00",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a0c",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a10",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a14",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a20",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a24",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a28",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a34",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a38",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a3c",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a48",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a4c",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a50",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a5c",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a60",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a64",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a70",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a74",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a78",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a84",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a88",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x609a8c",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x5d8",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x00623090",
+   "type": "f64",
+   "count": 9,
+   "stride": 8,
+   "lo": -1,
+   "hi": 1
+  },
+  {
+   "addr": "0x00623160",
+   "type": "f64",
+   "count": 9,
+   "stride": 8,
+   "lo": -1,
+   "hi": 1
+  }
+ ]
+}

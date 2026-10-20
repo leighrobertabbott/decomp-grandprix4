@@ -1,0 +1,33 @@
+{
+ "_evidence": "Records 15..33 of the 0x8943a0 segment ring for the 0x40759e/0x41ec08 fields that state_0040759e bounds only on records 0..14 (compose after state_0040759e). In the 0x43624f/0x40f6d0/0x43552d chains the car segment and its 0x41eacf neighbours (E-1..E+2, the pit-end successor) reach records up to 23, whose fields were static zero. Same per-record domain and proof as state_0040759e: 0x41eacf forms A = max(0x40000 - (esi*sx(+0x14)>>14), 0x10) with |esi| < 2^24 (edx clamped by (u16 +0x60/+0x62 - 0x100)<<8 in 0x41ec08), so +0x14 in -128..128 keeps A in 0x20000..0x60000 and |A-B|/A <= 2; D = [+0xf4] - fistp(+0x150*2^-28*esi), so +0xf4 in -2^28..2^28 keeps |D-C| < 2^30 and the 0x41eba5 idiv quotient below 2^31. 0x4074db: ebp = max(0x40000 - (r2*sx(+0x14)>>14), 0x1000) and a clamped numerator (never faults); angle dword +0xe4 (fild * pi/2^31, fsincos) and +0x150 (fild) any i32. Synthetic draws only.",
+ "globals": [
+  {
+   "addr": "0x895854",
+   "type": "i16",
+   "count": 19,
+   "stride": "0x160",
+   "lo": -128,
+   "hi": 128
+  },
+  {
+   "addr": "0x895924",
+   "type": "i32",
+   "count": 19,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x895934",
+   "type": "i32",
+   "count": 19,
+   "stride": "0x160",
+   "lo": -268435456,
+   "hi": 268435456
+  },
+  {
+   "addr": "0x895990",
+   "type": "i32",
+   "count": 19,
+   "stride": "0x160"
+  }
+ ]
+}

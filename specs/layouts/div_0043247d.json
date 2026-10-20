@@ -1,0 +1,6 @@
+{
+  "_evidence": "Overlay for 0x0043247d (compose after state_00432372+temp_00602b50+state_0043247d). Block 0x43254d needs ebp = [0x602b54] (4960..9040) < eax = 0x4323c5's (2495..3005) + 0x432372(clamp([0x602b50], 0..0x1900)), i.e. a 0x432372 term above ~2000: (x*[0x602a4c] >> 6) div [0x602a40], *1000, div [0x62ee04] (or edx+1) clamped to 20000. state_00432372 draws the divisor [0x602a40] uniformly in 513..0xffffffff, so it is almost always huge and the term 0 (the block never ran). Here the divisor draws small valid values (>= 513, the original's no-#DE bound from state_00432372: x*M >> 38 <= 511) about half the time, plus large ones, so both 'cmp ebp,eax; jge' outcomes occur.",
+  "globals": [
+    {"addr": "0x00602a40", "type": "u32", "values": [513, 513, 600, 1000, 4096, "0x10000", "0x1000000", "0x7fffffff", "0xffffffff"]}
+  ]
+}

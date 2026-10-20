@@ -1,0 +1,70 @@
+{
+ "_evidence": "0x00431881 with esi fixed to car 0 (0x66fef0; compose after ring_004317ae+state_00431838, which make the segment pointer car+0x1c = 0x66ff0c and the walk coherent): dword +0x1a0 (cmp 0; jl, both signs), byte +0x203 (bit 0), words +0x90/+0x94 (difference jns both ways), +0xe and +0x18 (0x431838 thresholds), byte +0xe5 (bit 0) of car 0; for the 32 segment records the walk and the segment pointer can reach: byte +0x51 (bits 0x20, 4, 2 - drawn with 0x20 set in most picks so the later tests run) and word +0 (added to the angle in 0x431838). All plain values; nothing faults. Bytes +0xcb, +0xcc and +0x230 are read-modify-write flags (or) of car 0, plain draws.",
+ "globals": [
+  {
+   "addr": "0x00670090",
+   "type": "i32"
+  },
+  {
+   "addr": "0x006700f3",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0066ff80",
+   "type": "i16"
+  },
+  {
+   "addr": "0x0066ff84",
+   "type": "i16"
+  },
+  {
+   "addr": "0x0066fefe",
+   "type": "i16"
+  },
+  {
+   "addr": "0x0066ff08",
+   "type": "i16"
+  },
+  {
+   "addr": "0x0066ffd5",
+   "type": "u8"
+  },
+  {
+   "addr": "0x008943f1",
+   "type": "u8",
+   "count": 32,
+   "stride": "0x160",
+   "values": [
+    "0x26",
+    "0x24",
+    "0x22",
+    "0x20",
+    "0x27",
+    "0x25",
+    "0x23",
+    "0x21",
+    "0xff",
+    0,
+    "0x06"
+   ]
+  },
+  {
+   "addr": "0x008943a0",
+   "type": "i16",
+   "count": 32,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x0066ffbb",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0066ffbc",
+   "type": "u8"
+  },
+  {
+   "addr": "0x00670120",
+   "type": "u8"
+  }
+ ]
+}

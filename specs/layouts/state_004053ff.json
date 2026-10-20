@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x004053ff (with state_00405489 composed first for 0x60309c/a0/a4/a8 and the positive rate 0x603854 in 32..65535): sub of dwords 0x00602dd4 - 0x00602dbc and imul by dword 0x0062d294, each followed by shrd 14, are plain i32 arithmetic valid for every value. The only fault is the final idiv: dividend = (X*[0x603854])>>9 with X any i32 and [0x603854] <= 65535 gives |dividend| < 2^38, and the divisor ecx = max(sx word +0xb2, 0x200) >= 0x200, so |quotient| < 2^29: no #DE for any value of these three globals.",
+  "globals": [
+    {"addr": "0x00602dd4", "type": "i32"},
+    {"addr": "0x00602dbc", "type": "i32"},
+    {"addr": "0x0062d294", "type": "i32"}
+  ]
+}

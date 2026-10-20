@@ -1,0 +1,8 @@
+{
+  "size": 80,
+  "fill": "bytes",
+  "_evidence": "Block addressed by pointer global 0x609744 as read by 0x00422ac2: only dword +0x4c ('mov eax,[eax+0x4c]; test eax,0x14280; je; test eax,0xfffe1c3f; jne') - the gate passes when at least one of 0x80/0x200/0x4000/0x10000 is set and nothing outside 0x1e3c0. Random bytes passed it about 1 time in 2^20, so +0x4c draws passing sets (single bits, 0x4280, 0x14280, the full 0x1e3c0, 0x10080) and failing ones (0, allowed bits without a 0x14280 bit: 0x40/0x100/0x8000, and outside bits 1/0x400/0x20000/0x80000000 alone or with a passing bit). Any value is valid (bit tests only); the other bytes are unread.",
+  "fields": [
+    {"off": "0x4c", "type": "u32", "values": ["0x80", "0x200", "0x4000", "0x10000", "0x4280", "0x14280", "0x1e3c0", "0x10080", "0x2280", 0, "0x40", "0x100", "0x8000", "0x1", "0x400", "0x20000", "0x80000000", "0x14281", "0x20080"]}
+  ]
+}

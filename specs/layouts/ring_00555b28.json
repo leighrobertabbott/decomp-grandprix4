@@ -1,0 +1,20 @@
+{
+ "_evidence": "0x00555b28 runs the accepted pair routine 0x555941 (edi = record, ebx = the next record) over two do-while walks of the 0x160-byte track ring at 0x8943a0 that end only on equality ('add edi,0x160; cmp edi,[end]; jne'): records 0.. up to the lap end [0x866ecc], then from the pit start [0x891500] (ebx = +0x160) up to the pit end [0x866ef8]. So both ends are record-aligned and above their start (an end at or below the start never matches and walks off the array; the game's pit lane runs forward from its start): lap end records 1..26, pit start 0..15 and pit end 16..32 (start strictly below end, at most 32 pair calls). The walks touch records 0..32; 0x555941 reads their words +0xd4/+0xd6/+0xdc/+0xde and dwords +0xf0/+0xf8/+0x104/+0x110/+0x118/+0x11c/+0x120/+0x124 (writes +0x104/+0x110 and the words +0x128..+0x12e), all varied here (any value is valid for its FILD/FPATAN/FISTP and compares, as its own acceptance on random records shows; the angle scale double 0x6f29d4 = 32768/pi is a constant). The ring records are zero in the image.",
+ "globals": [
+  {"addr": "0x00866ecc", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 1, "hi": 26}},
+  {"addr": "0x00891500", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 15}},
+  {"addr": "0x00866ef8", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 16, "hi": 32}},
+  {"addr": "0x00894474", "type": "u16", "count": 33, "stride": "0x160"},
+  {"addr": "0x00894476", "type": "u16", "count": 33, "stride": "0x160"},
+  {"addr": "0x0089447c", "type": "u16", "count": 33, "stride": "0x160"},
+  {"addr": "0x0089447e", "type": "u16", "count": 33, "stride": "0x160"},
+  {"addr": "0x00894490", "type": "u32", "count": 33, "stride": "0x160"},
+  {"addr": "0x00894498", "type": "u32", "count": 33, "stride": "0x160"},
+  {"addr": "0x008944a4", "type": "u32", "count": 33, "stride": "0x160"},
+  {"addr": "0x008944b0", "type": "u32", "count": 33, "stride": "0x160"},
+  {"addr": "0x008944b8", "type": "u32", "count": 33, "stride": "0x160"},
+  {"addr": "0x008944bc", "type": "u32", "count": 33, "stride": "0x160"},
+  {"addr": "0x008944c0", "type": "u32", "count": 33, "stride": "0x160"},
+  {"addr": "0x008944c4", "type": "u32", "count": 33, "stride": "0x160"}
+ ]
+}

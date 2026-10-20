@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x00406b0a compares edi (a segment record) unsigned with the pit start [0x00891500] (jb: else exit) and each next record ebx with the pit end [0x00866ef8] (jae: exit); neither is dereferenced, so full-range u32 values give both outcomes against the generated record addresses. Its callee 0x00406303 subtracts the record points from the position dwords 0x006278c0/0x006278c8 (fild) and offsets the heading dword +0xec by 0x006278ac; all three are car state (static 0 in the image), full-range i32 is fault-free (wrapping integer math, fpatan/fistp with masked exceptions). 0x629f08/0x629f10 are only written.",
+  "globals": [
+    {"addr": "0x00891500", "type": "u32"},
+    {"addr": "0x00866ef8", "type": "u32"},
+    {"addr": "0x006278c0", "type": "i32"},
+    {"addr": "0x006278c8", "type": "i32"},
+    {"addr": "0x006278ac", "type": "i32"}
+  ]
+}

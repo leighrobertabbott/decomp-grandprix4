@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x0052f429: 'call 0x54d755' translates al through the 256-byte table 0x833e18 (zero in the image, filled at start-up from CharLowerA by 0x54d70c; any byte is a valid entry, see xlat_00833e18), then 'sub al,0x61; movzx ecx,al; jecxz' - a translated 'a' gives n = 0 and the jecxz exit (0x52f43a taken), which the zero image table (n = 0x9f) never reached - and counts the set bits among the low n bits of [0x81e5d4] ('shr ebx,1; jae; inc eax; dec ecx; jne'). Entries are drawn from 'a' (often), other letters b..z (n = 1..25, partial masks), and bytes below 'a' or above 'z' (n wraps to 0x80..0xff: the whole mask); the mask dword is random. Plain data: every value is valid.",
+ "globals": [
+  {"addr": "0x00833e18", "type": "u8", "count": 256, "stride": 1, "values": ["0x61", "0x61", "0x61", "0x62", "0x63", "0x65", "0x68", "0x6d", "0x71", "0x78", "0x7a", "0x7b", "0xe1", "0x5f", "0x20", "0x00"]},
+  {"addr": "0x0081e5d4", "type": "u32"}
+ ]
+}

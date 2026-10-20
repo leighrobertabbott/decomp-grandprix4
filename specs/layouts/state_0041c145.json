@@ -1,0 +1,98 @@
+{
+  "_evidence": "0x0041c145 (ebx = 0x6380d8, compose last: it re-bounds fields that earlier family layouts leave wider). It stores a = ((+0x48 - +0x1a0)*K)>>14 at +0x25c and b = ((+0x348 - +0x4a0)*K)>>14 at +0x55c (K = [0x6013d4]), runs 0x41bc3a/0x41bd56/0x41bbef/0x41befb/0x41c027/0x41befb/0x41c00c, then for each wheel e = ([0x623b84] sar 1) + a|b + [+4|+0x304] and divides 'idiv [0x623af4]' on (e<<5, 32-bit)*K and 'idiv [0x6013d4]' on e<<14 (cdq/shld). K is the positive gain written by 0x4112e3 (image 0x4555) and divides unconditionally here, so it is never 0 (state_0041befb's 0 pick #DE'd at 0x41c1d7): 0x1000..0x8000. The dwords +0x48/+0x1a0/+0x348/+0x4a0 (0x638120/0x638278/0x638420/0x638578) in +-2^18 keep |a|,|b| <= 2^20 as 0x41befb's idiv needs (state_0041befb), +4/+0x304 (0x6380dc/0x6383dc) in +-2^20; +0x264/+0x564 (0x63833c/0x63863c) are only subtracted (any i32). [0x623b84] is written by 0x41bbef as a weighted mean of T = ([0x6258ac]*[0x623b6c])>>14 and -(a+b): [0x6258ac] comes from 0x41bc3a/0x41bd56 clamped to +-[0x6258b4], so [0x6258b4] goes back to +-2^19 (div_0041bc3a widens it to full range, which also overflowed 0x41bd28's (x<<19) idiv at 0x41bd3b) and the 0x41bc3a divisor [0x623b6c] is +-0x2001..0x10000 (|d| >= 0x2001 for 0x41bc3a's first idiv, |d| <= 2^16 so |T| <= 2^21): then |e| < 2^22, |(e<<5)*K / [0x623af4]| < 2^30 with [0x623af4] >= 0x1000 (state_0041befb) and |(e<<14)/K| < 2^24: no #DE. Wider values are the original's own overflow. 0x41c027 (called before the second 0x41befb) writes B = [0x623b8c] = min(|d|*G1>>14 + |v|*G2>>14, [0x6013bc]) with d the wheel-pair difference (state_0041befb: +-2^22 each, |d| <= 2^24), v = ([0x62474c]*[0x623b68]>>14)*[0x623bc4|0x623bcc]>>14 and gains G picked by the sign of v and by [0x638d30] >= 0x3000 (cmp/jl): [0x6013bc] (car limit from 0x4112e3, image 0) is 0..0x20000 so B covers 0x41befb's domain 0..0x20000 instead of the constant 0, [0x638d30] (state, compared with 0x3000) 0..0x6000, [0x623b68] (gain written by 0x41bb36) +-0x10000 so |v| <= 2^23 and the sum cannot overflow into a negative B. The gains 0x623bc0..0x623bcc (never written) and 0x623bd8..0x623bec (setup values from 0x4104b8) stay as in the image. 0x41c00c then copies [0x623b90] into +4/+0x304 before they are read.",
+  "globals": [
+    {
+      "addr": "0x006013d4",
+      "type": "u32",
+      "values": [
+        "0x1000",
+        "0x2000",
+        "0x4555",
+        "0x4555",
+        "0x8000"
+      ]
+    },
+    {
+      "addr": "0x006258b4",
+      "type": "i32",
+      "lo": -524288,
+      "hi": 524288
+    },
+    {
+      "addr": "0x00623b6c",
+      "type": "u32",
+      "values": [
+        "0x2001",
+        "0x4000",
+        "0x8000",
+        "0x10000",
+        "0xffffdfff",
+        "0xffffc000",
+        "0xffff8000",
+        "0xffff0000"
+      ]
+    },
+    {
+      "addr": "0x00638120",
+      "type": "i32",
+      "lo": -262144,
+      "hi": 262144
+    },
+    {
+      "addr": "0x00638278",
+      "type": "i32",
+      "lo": -262144,
+      "hi": 262144
+    },
+    {
+      "addr": "0x00638420",
+      "type": "i32",
+      "lo": -262144,
+      "hi": 262144
+    },
+    {
+      "addr": "0x00638578",
+      "type": "i32",
+      "lo": -262144,
+      "hi": 262144
+    },
+    {
+      "addr": "0x006380dc",
+      "type": "i32",
+      "lo": -1048576,
+      "hi": 1048576
+    },
+    {
+      "addr": "0x006383dc",
+      "type": "i32",
+      "lo": -1048576,
+      "hi": 1048576
+    },
+    {
+      "addr": "0x0063833c",
+      "type": "i32"
+    },
+    {
+      "addr": "0x0063863c",
+      "type": "i32"
+    },
+    {
+      "addr": "0x006013bc",
+      "type": "i32",
+      "lo": 0,
+      "hi": 131072
+    },
+    {
+      "addr": "0x00638d30",
+      "type": "i32",
+      "lo": 0,
+      "hi": 24576
+    },
+    {
+      "addr": "0x00623b68",
+      "type": "i32",
+      "lo": -65536,
+      "hi": 65536
+    }
+  ]
+}

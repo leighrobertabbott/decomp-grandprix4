@@ -1,0 +1,111 @@
+{
+ "_evidence": "Globals of 0x0041e500 / 0x0041e49e. Word 0x7ad89e (cmp 2 jge, signed) is the movzx index of the dword table 0x602ab8 (5 image entries 3300..2500, followed by 0x602acc = 250); any u16 index stays in .data (<= 0x642ab4), and 0..5 plus 0xffff/0x8000 cover both compare sides. Byte 0x7ad8af (cmp 0), 0x7c2ea9 (cmp 0x80) and 0x66d88c (cmp 5; test / cmp 6) draw the equal and unequal values. The clamp 10000..30000 of |limit-+0x9a|*[0x62d290]>>14 + [0x62d274] hits all three sides with the gain in 0..0x8000 (and a negative one) and the offset 0..40000; [0x601d58] (byte*gain>>14 vs a word) and the clock 0x66d814 draw small, Q14 and extreme values; 0x6039f0, 0x66d844, 0x602acc and the table entries are any i32. imul/shrd/add/compares only: nothing faults.",
+ "globals": [
+  {
+   "addr": "0x007ad89e",
+   "type": "u16",
+   "values": [
+    "0x0",
+    "0x1",
+    "0x2",
+    "0x3",
+    "0x4",
+    "0x5",
+    "0xffff",
+    "0x8000"
+   ]
+  },
+  {
+   "addr": "0x007ad8af",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    255
+   ]
+  },
+  {
+   "addr": "0x007c2ea9",
+   "type": "u8",
+   "values": [
+    "0x80",
+    "0x80",
+    "0x0",
+    "0x7f",
+    "0x44"
+   ]
+  },
+  {
+   "addr": "0x0066d88c",
+   "type": "u8",
+   "values": [
+    0,
+    5,
+    5,
+    6,
+    1,
+    255
+   ]
+  },
+  {
+   "addr": "0x00601d58",
+   "type": "u32",
+   "values": [
+    "0x4000",
+    "0x10000",
+    "0x400000",
+    "0x0",
+    "0xffffc000",
+    "0x7fffffff",
+    "0x80000000",
+    "0x1234567"
+   ]
+  },
+  {
+   "addr": "0x0062d290",
+   "type": "u32",
+   "values": [
+    "0x0",
+    "0x100",
+    "0x1000",
+    "0x4000",
+    "0x8000",
+    "0xffffc000"
+   ]
+  },
+  {
+   "addr": "0x0062d274",
+   "type": "i32",
+   "lo": 0,
+   "hi": 40000
+  },
+  {
+   "addr": "0x0066d814",
+   "type": "u32",
+   "values": [
+    "0x0",
+    "0x64",
+    "0xffffff9c",
+    "0x3e8",
+    "0x7fffffff",
+    "0x80000000",
+    "0x12345"
+   ]
+  },
+  {
+   "addr": "0x006039f0",
+   "type": "i32"
+  },
+  {
+   "addr": "0x0066d844",
+   "type": "i32"
+  },
+  {
+   "addr": "0x00602ab8",
+   "type": "i32",
+   "count": 6,
+   "stride": 4
+  }
+ ]
+}

@@ -1,0 +1,54 @@
+{
+ "_evidence": "Inputs of the pushal thunk 0x51d1df (behind 0x51d1d0; byte-identical twin 0x51d26d behind 0x51d25e) that draws one 2-D overlay element: ebp = element group, 'mov ebx,[ebp*4+0x890a74]; add ebx,0x8904d4; shl edx,4; add ebx,edx' = record edx of the group (0x890a74 is a constant table of 35 byte offsets 0..0x550 into the 90 16-byte records 0x8904d4..0x890a73; the spec draws ebp 0..34 and edx 0..4 so every record address stays inside the record table: callers use ebp 0..0x22 and edx 0..8 only inside groups that have that many records). With [0x7ad869] == 0 (the software path; the game stores 0xff at 0x508ad0 and tests it for zero everywhere) it reads the record's +8 index k (image values 0..6) and the 8-byte pointer pairs 0x890498 + 8k (constant: (0x88fe1c|0x88fe18|0x88fe20|0x874ee4|0x88fe24|0x88fe28, 0x890494|0x8751c4)): '[[0x89049c+8k]] -> [0x8904d0]' and 'cmp [[0x890498+8k]],-1; jne'. The cells are run-time state: 0x88fe18..0x88fe28 are set to -1 by 0x51cb6a.. and to loaded values by 0x51cbc9.. (here -1 in half the cases, else small values), 0x874ee4 is a buffer base (0 at 0x512b1b, set at 0x525e74; compared only), 0x890494/0x8751c4 any dword (copied only). With [0x7ad869] != 0 the record address goes to [0xa69878], ebx (0..40, the element records 0x88ff50 + 32*ebx that callers pass, 0x88ff50..0x890470) and eax (frame 0..15) to [0xa6987c]/[0xa69880], and the compiled renderer 0x4a96a0 runs: it reads only the constant records and calls 0x4a7f40 for record indexes 3/4 (table 0x64ae34 = -1) or > 6, which returns at once while the quad batch [0xa5ec1c] is null (its image value; no COM call is reached on this path: 0x4a96a0 -> _ftol 0x5daabc / 0x4a7f40 only). [0x7ad844] (the gate byte of 0x51d1d0/0x51d25e) is 0xff in half the cases.",
+ "globals": [
+  {
+   "addr": "0x007ad844",
+   "type": "u8",
+   "values": [
+    "0xff",
+    "0xff",
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x007ad869",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0088fe18",
+   "type": "u32",
+   "count": 5,
+   "stride": 4,
+   "values": [
+    "0xffffffff",
+    "0xffffffff",
+    0,
+    1,
+    5
+   ]
+  },
+  {
+   "addr": "0x00874ee4",
+   "type": "u32",
+   "values": [
+    "0xffffffff",
+    0,
+    "0x00a00000"
+   ]
+  },
+  {
+   "addr": "0x00890494",
+   "type": "u32"
+  },
+  {
+   "addr": "0x008751c4",
+   "type": "u32"
+  }
+ ]
+}

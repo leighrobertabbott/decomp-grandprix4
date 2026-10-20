@@ -1,0 +1,205 @@
+{
+ "_evidence": "0x0040d19f (from 0x40d389: edi = link + (b7c-2)*0x160, ebx = link + (b7d+3)*0x160 with b7d >= b7c, i.e. ebx = edi + k*0x160, k >= 4) walks segment records edi, edi+0x160, ... until ebx (jne: any other ebx never terminates) and for each computes the edge point of 0x40d17c (side = byte 0x627808 xor sign of byte 0x868582: 0x40ce7b/0x40ceb0 height fistp(+0x150*2^-28*((w+0x50)<<8)) + [+0xf4], 0x40cf40/0x40cf52 x = +0xf0 + fistp(cos(+0xec)*-+e), z = +0xf8 + fistp(-sin(+0xec)*-+e), e = (w+0x50)<<8 with w = +0x60/+0x62), then d4 = (x-[0x6277f8])*[0x62780c] - (z-[0x627800])*[0x627810] and d8 = (x-Ox)*[0x627810] + (z-Oz)*[0x62780c] (>>14). It stops at the first d8 >= 0; a first record with d8 >= 0 returns clc, otherwise it interpolates between the last negative and the first non-negative record with idiv ((-f0)<<14)/(d8-f0) and, from the record [0x627804], idiv (min(|d4|,c)<<14)/c. If no record crosses (exhausted walk) the divisor is 1 and (-f0)<<14 overflows for |f0| >= 2^17 (#DE), so the caller's window must bracket the crossing. Domain (spec edi = record 0..7, ebx = record 11..19, so k >= 4 and records 8..10 are always walked): a coherent straight track along +x - record k has x dword +0xf0 in k*2^25..k*2^25+2^16 and z dword +0xf8 in +-2^16, lateral offsets (any width words and angle) at most 2^24; the axis ([0x62780c], [0x627810]) is a near-unit vector within about 15 degrees of +x (A in +-0x1000, B in 0x3c00..0x4000, the fistp(sin/cos*16384) values of 0x40d389), the origin Ox in -2^25..9*2^25 and Oz in +-2^16. Then d8 is increasing along the walk, record 10 always has d8 >= 2^24*0.75 - 2^24*0.25 > 0 (no exhausted walk, so block 0x40d2a3 is unreachable in valid states), Ox below the first record gives the clc exit, and every product and quotient fits (|d8 - f0| < 2^31, interpolation quotient 0..2^14). Heights (+0xf4, +0x150) and [0x6277fc] are any i32, byte 0x627808 and 0x868582 any (both sides), the [0x627804] record is rec_0040d19f.",
+ "globals": [
+  {
+   "addr": "0x00627808",
+   "type": "u8"
+  },
+  {
+   "addr": "0x00868582",
+   "type": "u8"
+  },
+  {
+   "addr": "0x006277f8",
+   "type": "i32",
+   "lo": -33554432,
+   "hi": 301989888
+  },
+  {
+   "addr": "0x00627800",
+   "type": "i32",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x006277fc",
+   "type": "i32"
+  },
+  {
+   "addr": "0x0062780c",
+   "type": "i32",
+   "lo": -4096,
+   "hi": 4096
+  },
+  {
+   "addr": "0x00627810",
+   "type": "i32",
+   "lo": 15360,
+   "hi": 16384
+  },
+  {
+   "addr": "0x00627804",
+   "type": "ptr",
+   "size": 280,
+   "fill": "layout=rec_0040d19f"
+  },
+  {
+   "addr": "0x894400",
+   "type": "u16",
+   "count": 20,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894402",
+   "type": "u16",
+   "count": 20,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x89448c",
+   "type": "i32",
+   "count": 20,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894494",
+   "type": "i32",
+   "count": 20,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8944f0",
+   "type": "i32",
+   "count": 20,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894498",
+   "type": "i32",
+   "count": 20,
+   "stride": "0x160",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x894490",
+   "type": "i32",
+   "lo": 0,
+   "hi": 65536
+  },
+  {
+   "addr": "0x8945f0",
+   "type": "i32",
+   "lo": 33554432,
+   "hi": 33619968
+  },
+  {
+   "addr": "0x894750",
+   "type": "i32",
+   "lo": 67108864,
+   "hi": 67174400
+  },
+  {
+   "addr": "0x8948b0",
+   "type": "i32",
+   "lo": 100663296,
+   "hi": 100728832
+  },
+  {
+   "addr": "0x894a10",
+   "type": "i32",
+   "lo": 134217728,
+   "hi": 134283264
+  },
+  {
+   "addr": "0x894b70",
+   "type": "i32",
+   "lo": 167772160,
+   "hi": 167837696
+  },
+  {
+   "addr": "0x894cd0",
+   "type": "i32",
+   "lo": 201326592,
+   "hi": 201392128
+  },
+  {
+   "addr": "0x894e30",
+   "type": "i32",
+   "lo": 234881024,
+   "hi": 234946560
+  },
+  {
+   "addr": "0x894f90",
+   "type": "i32",
+   "lo": 268435456,
+   "hi": 268500992
+  },
+  {
+   "addr": "0x8950f0",
+   "type": "i32",
+   "lo": 301989888,
+   "hi": 302055424
+  },
+  {
+   "addr": "0x895250",
+   "type": "i32",
+   "lo": 335544320,
+   "hi": 335609856
+  },
+  {
+   "addr": "0x8953b0",
+   "type": "i32",
+   "lo": 369098752,
+   "hi": 369164288
+  },
+  {
+   "addr": "0x895510",
+   "type": "i32",
+   "lo": 402653184,
+   "hi": 402718720
+  },
+  {
+   "addr": "0x895670",
+   "type": "i32",
+   "lo": 436207616,
+   "hi": 436273152
+  },
+  {
+   "addr": "0x8957d0",
+   "type": "i32",
+   "lo": 469762048,
+   "hi": 469827584
+  },
+  {
+   "addr": "0x895930",
+   "type": "i32",
+   "lo": 503316480,
+   "hi": 503382016
+  },
+  {
+   "addr": "0x895a90",
+   "type": "i32",
+   "lo": 536870912,
+   "hi": 536936448
+  },
+  {
+   "addr": "0x895bf0",
+   "type": "i32",
+   "lo": 570425344,
+   "hi": 570490880
+  },
+  {
+   "addr": "0x895d50",
+   "type": "i32",
+   "lo": 603979776,
+   "hi": 604045312
+  },
+  {
+   "addr": "0x895eb0",
+   "type": "i32",
+   "lo": 637534208,
+   "hi": 637599744
+  }
+ ]
+}

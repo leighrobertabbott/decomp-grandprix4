@@ -1,0 +1,9 @@
+{
+  "_evidence": "Texture entry passed in eax to 0x0051c59a (the caller 0x51c5fd passes 0x6975ec + k*0x20, an entry of the 0x20-byte texture table): 'movzx ecx,word [esi+4]' = width W and 'movzx ebp,word [esi+6]' = height H of level 0, then 'mov esi,[esi]' = the level pointer array (levels_0051c59a). The inner loop is 'loop' on ecx and the row loop 'dec ebp; jne', so W = 0 or H = 0 would run 2^32 times (never a real texture) and are excluded. After each level W and H are halved with a floor of 1 ('shr ecx,1; cmp ecx,1; jge'). Rows are 0x100 bytes apart, so W <= 0x100; H is bounded to 1..0x10 to keep each level inside its 0x1000-byte buffer and the case short (edges 1 and the maxima are drawn; W < 0x80 or H < 0x80 makes the 'mov ecx/ebp,1' floors run). No other entry bytes are read.",
+  "size": 32,
+  "fields": [
+    {"off": 0, "type": "ptr", "size": 32, "fill": "layout=levels_0051c59a"},
+    {"off": 4, "type": "u16", "lo": 1, "hi": 256},
+    {"off": 6, "type": "u16", "lo": 1, "hi": 16}
+  ]
+}

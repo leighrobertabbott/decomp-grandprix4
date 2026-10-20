@@ -27,4 +27,4 @@ void __cdecl FUN_0043cdcc(gp4::Regs* r) {
     r->eax = result;
     r->eflags = (r->eflags & ~0x8d5u) | flags;
 }
-GP4_IMPL(0x0043cdcc, FUN_0043cdcc, "regs(eax:u32[0..4]) -> (eax, cf, pf, af, zf, sf, of)")
+GP4_IMPL(0x0043cdcc, FUN_0043cdcc, "regs(eax:u32[0..4]) -> (eax, cf, pf, af, zf, sf, of); globals=layout=words_0062d210")

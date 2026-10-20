@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x00412604 copies the rate dword [0x7ad8b8] (S) into 0x603854/0x60384c and derives: 0x4126bc (0x10000+S/2)/max(S,1), 0x1f40*S>>16, 0x147ae14/S (unsigned div: S != 0), (S<<14)/0xa00 and (0xa00<<14)/S (idiv, edx = 0), the table index clamp(S>>8, 10..0x20) into 0x603348 (signed jle/jge), [0x6247bc]*S>>16 (imul/shrd), then 0x4124ea ((S<<20)/[0x6013d8] with edx = S>>12) and 0x4125ce (ecx = ceil(((S<<16) idiv 0x80)/2^16), then S idiv ecx). Writers: 0x530012/0x54b212 store 0x4126e2([0x7ad810]) = (n/2 + 0x10000)/max(n,1), i.e. 1..0x10000, and 0x40ce15 the constant [0x625a44] (0xa00, only reader 0x40ce15). S = 0x10000 (n <= 1) gives low16(S) = 0, ecx = 0 and #DE in 0x4125ce, so S is drawn 1..0xffff: both clamp sides (S < 0xa00, S > 0x20ff) and the middle occur, every divisor is nonzero and S>>12 <= 0xf stays below state_004124ea's divisor 0x6013d8 >= 0x21. [0x6247bc] is any i32 (imul/shrd only).",
+  "globals": [
+    {"addr": "0x007ad8b8", "type": "u32", "lo": 1, "hi": 65535},
+    {"addr": "0x006247bc", "type": "i32"}
+  ]
+}

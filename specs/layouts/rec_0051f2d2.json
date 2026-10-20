@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x0051f2d2 reads the 8-byte record at 0x94c004 through ebx ('mov ebx,0x94c004'): 'movzx edx,word [ebx+6]', 'movzx eax,word [ebx+4]', 'or edx,eax' (flags out), 'mov eax,[ebx]'. fuzz:i32 only varied the directly addressed dword +0, so the words +4/+6 (0x94c008/0x94c00a) kept their image value. Plain loads: every value is valid; the word draws include zero for both so the 'or' gives ZF=1 as well as SF=1 (bit 15 of +6).",
+ "globals": [
+  {"addr": "0x0094c004", "type": "u32"},
+  {"addr": "0x0094c008", "type": "u16", "values": [0, 0, 1, "0x7fff", "0x8000", "0xffff", "0x1234", "0xa5c3", "0x00ff"]},
+  {"addr": "0x0094c00a", "type": "u16", "values": [0, 0, 1, "0x7fff", "0x8000", "0xffff", "0x4321", "0x5a3c", "0xff00"]}
+ ]
+}

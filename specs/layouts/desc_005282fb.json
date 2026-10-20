@@ -1,0 +1,9 @@
+{
+ "_evidence": "Animation descriptor addressed by +4 of a 0x81cd91 record (anim_005282fb), read by 0x005282fb only when the record's frame advances: 'cmp eax,[edi+0x10]; jbe' (last frame, unsigned) against the incremented frame (+0xc of the record, 0..4), 'mov eax,[edi+0xc]' (first frame, written back as the restart frame) and 'test dword [edi+0x14],0x100; je' (bit 0x100 picks the end state 3, else 0). Last 0..4 and first 0..3 so frame+1 <= last both ways; the flag dword has bit 0x100 in half the draws, other bits mixed. Other bytes zero (never read).",
+ "size": 24,
+ "fields": [
+  {"off": "0xc", "type": "u32", "lo": 0, "hi": 3},
+  {"off": "0x10", "type": "u32", "lo": 0, "hi": 4},
+  {"off": "0x14", "type": "u32", "values": [0, 1, "0x10", "0xfeff", "0x100", "0x101", "0x1100", "0xffffffff"]}
+ ]
+}

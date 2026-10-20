@@ -1,0 +1,9 @@
+{
+  "_evidence": "The object records [0x9658fc] walked by 0x51c5fd (the caller 0x51c058 sets [0x9658fc] = file block + 4, count = word [block]); 0x20-byte records ('add esi,0x20'), up to the 4 that recs_0051c5fd's count 1..4 reaches. Per record: 'mov ax,[esi+0x1a]' stored in word [0x9679c2] and tested with 4 and 0x20 (values give both, either and neither bit set), 'movzx eax,word [esi+0x12]' = index into the 0x9e1b20 slot words (0..63, the 64 words slots_0051cc50 varies; a slot of 0xffff skips the call). Other record bytes are random and unread.",
+  "size": 128,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x12", "type": "u16", "count": 4, "stride": "0x20", "lo": 0, "hi": 63},
+    {"off": "0x1a", "type": "u16", "count": 4, "stride": "0x20", "values": ["0x24", "0x24", "0x2c", "0xffff", "0x04", "0x20", 0, "0xffdb"]}
+  ]
+}

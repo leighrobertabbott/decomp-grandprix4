@@ -1,0 +1,18 @@
+{
+  "_evidence": "Runtime state read by 0x0043e26c's callees that the accepted spec left at image values (direct-address writers found for each): 0x601314 and 0x60131c are setup-derived rpm thresholds (fistp at 0x41132d/0x4112ea from the f64 setup values 0x62ed10/0x62ed20), compared signed with the i16 rpm word +0x62 (0x415efe 'cmp eax,[0x60131c]; jl', 0x415bb0/0x415c68/0x415d02 clamps): 0..0x7fff. 0x603140 is the 257-word curve table written by 0x404a90 with values clamped to 0..0x4000 and read by 0x404c4f..0x404e5c with an index clamped to 0..0x100: u16 0..0x4000. 0x603858 = ([0x603854] << 14) idiv 0xa00 (0x412659, rate 1..0xffff): 0..0x19000. 0x603a00/0x603a04 (0x415a18/0x415a3d, clamped sums; read 0x415c33 add/sar/imul): any i32. 0x624794/0x624798 = 0x10000000 idiv (0x4000 - c) / idiv c (0x4123ee/0x412402): 0x4000..0x10000000. 0x62d28c (0x40cacd quotient, imul only): 0..0x7fffffff. 0x63b834 (a time, [0x66d844] + 0xfa0 at 0x443bbc; sub clock, clamp, imul): any i32. 0x679d30 is the player car pointer (cmp esi,[0x679d30] equality tests, writers 0x409bb9/0x5230ec store car records): equal to esi in about half the cases, else a car record 0..21. 0x7c2a48 is a 22-byte per-car flag table (or 0x80 at 0x514958; compares/tests 0x408f2a/0x409b22): any u8. Word +0x26 of segment records 0..31 (0x8943c6 + k*0x160; 0x41cfb0/0x41cfbd interpolate it with +0x186, 0x41b28a movsx): any i16. None of these is a divisor or index in the reached code (compares, add/sar, imul/shrd).",
+  "globals": [
+    {"addr": "0x00601314", "type": "i32", "lo": 0, "hi": 32767},
+    {"addr": "0x0060131c", "type": "i32", "lo": 0, "hi": 32767},
+    {"addr": "0x00603140", "type": "u16", "count": 257, "lo": 0, "hi": 16384},
+    {"addr": "0x00603858", "type": "i32", "lo": 0, "hi": 102400},
+    {"addr": "0x00603a00", "type": "i32"},
+    {"addr": "0x00603a04", "type": "i32"},
+    {"addr": "0x00624794", "type": "i32", "lo": 16384, "hi": 268435456},
+    {"addr": "0x00624798", "type": "i32", "lo": 16384, "hi": 268435456},
+    {"addr": "0x0062d28c", "type": "i32", "lo": 0, "hi": 2147483647},
+    {"addr": "0x0063b834", "type": "i32"},
+    {"addr": "0x00679d30", "type": "u32", "alias_reg": "esi", "points_into": {"base": "0x0066fef0", "stride": "0x41c", "lo": 0, "hi": 21}},
+    {"addr": "0x007c2a48", "type": "u8", "count": 22},
+    {"addr": "0x008943c6", "type": "i16", "count": 32, "stride": "0x160"}
+  ]
+}

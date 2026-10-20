@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x004209ae divides (div ebp, edx = 0) each of the four dwords 0x00622930..0x0062293c, clamped to >= 0 (cmp 0 / jge), by dword 0x006228b0 into esi+0x2ec..+0x2f8. 0x6228b0 is a sample count (image value 4; 0x4208f3 compares the ring counter 0x00622918 with it and wraps by 0x20), so it is 1..32 - zero would #DE, and with edx = 0 any nonzero divisor gives a fitting quotient. The four dividends are full-range i32 (both clamp outcomes). 0x622918 only feeds 'cmp ebp,[0x622918]; jle' to the next instruction (no effect); 0..40 takes both directions.",
+  "globals": [
+    {"addr": "0x006228b0", "type": "u32", "lo": 1, "hi": 32},
+    {"addr": "0x00622918", "type": "i32", "lo": 0, "hi": 40},
+    {"addr": "0x00622930", "type": "i32", "count": 4, "stride": 4}
+  ]
+}

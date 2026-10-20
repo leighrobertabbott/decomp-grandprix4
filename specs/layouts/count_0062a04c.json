@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x00444917 runs a do-while over the count [0x62a04c] (dec; jnz): 0 or negative wraps to 2^32 iterations, which the game never does; the count of debris parts is 1..16. Compose after state_0042458b (which draws it -2..16 for another reader).",
+ "globals": [
+  {
+   "addr": "0x0062a04c",
+   "type": "u32",
+   "lo": 1,
+   "hi": 16
+  }
+ ]
+}

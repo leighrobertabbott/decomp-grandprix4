@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x0042456e compares the object's mask dword [esi+0x4c] with its cached slot 0x6098c0+idx*4 (idx = byte +0x6d, 0..21 per rec_0042453d) and only rebuilds the bounding data (0x42453d, which stores the mask into that slot, then 0x424553) when they differ (je skips). The 22 slot dwords are drawn from the same list as rec_0042453d's +0x4c (0, 1, 2, 0x80, 0x200, 0x4000, 0x10000), so the cached value matches in about one case in seven and differs otherwise: both outcomes. Compose after state_0042458b (the rebuild chain's own state).",
+  "globals": [
+    {"addr": "0x006098c0", "type": "u32", "count": 22, "stride": 4, "values": [0, 1, 2, "0x80", "0x200", "0x4000", "0x10000"]}
+  ]
+}

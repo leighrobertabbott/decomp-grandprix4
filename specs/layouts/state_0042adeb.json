@@ -1,0 +1,17 @@
+{
+  "_evidence": "Globals of 0x0042adeb (spec without fuzz). [0x603ea0] is the look-ahead record step added to the car's segment pointer (0x42adf7/0x42ae13): written only as 0x160 or 0 (0x42bf4d/0x42bf62) then +0x2c0 (0x42c01c), so one of 0, 0x160, 0x2c0, 0x420 (edi stays a record: the pit-end clamp and the lap wrap by [0x866ec4] keep it inside the ring). Word [0x603d9c] (written by 0x42b0be/0x42b306..) is a lateral target, only added/subtracted (16-bit): any i16. Word [0x604406] is the second sign word of 0x42e494 ('xor dx,[0x604406]; jns', 'test; jns'): any i16 (0x604404 comes from state_0042bb90). Words +0x60/+0x62 of segment records 0..15 (0x894400/0x894402 + k*0x160: the start records 0..12 plus up to three steps) are the lane limits feeding 0x6269ac/0x6269b0: any i16. The gains 0x601b44 (0x17a), 0x601b48 (0x4000), 0x601b4c (0x8000), 0x601b50 (0x1000), 0x601b54 (0x4000), 0x601b6c (0x6666) and word 0x603b58 (0x50) are never written: image values in most picks plus 0, small, negative and large values (imul/shrd and compares only; 0x42ad15/0x42adb2 replace a zero divisor by 1 and bound their quotients), so the clamps at 0x42ae9f..0x42af03 and the compares at 0x42afb8/0x42afde/0x42aff2/0x42b016 (block 0x42afe2) go both ways.",
+  "globals": [
+    {"addr": "0x00603ea0", "type": "u32", "values": [0, "0x160", "0x2c0", "0x420"]},
+    {"addr": "0x00603d9c", "type": "i16"},
+    {"addr": "0x00604406", "type": "i16"},
+    {"addr": "0x00894400", "type": "i16", "count": 16, "stride": "0x160"},
+    {"addr": "0x00894402", "type": "i16", "count": 16, "stride": "0x160"},
+    {"addr": "0x00601b44", "type": "u32", "values": ["0x17a", "0x17a", "0x17a", 0, "0x1000", "0xffff8000", "0x7fffffff"]},
+    {"addr": "0x00601b48", "type": "u32", "values": ["0x4000", "0x4000", "0x4000", 0, 1, "0x20000", "0xffffc000"]},
+    {"addr": "0x00601b4c", "type": "u32", "values": ["0x8000", "0x8000", "0x8000", 0, "0x2000", "0x40000", "0xffff0000"]},
+    {"addr": "0x00601b50", "type": "u32", "values": ["0x1000", "0x1000", "0x1000", 0, "0x10000", "0xfffff000"]},
+    {"addr": "0x00601b54", "type": "u32", "values": ["0x4000", "0x4000", "0x4000", 0, "0x40000", "0xffffc000"]},
+    {"addr": "0x00601b6c", "type": "u32", "values": ["0x6666", "0x6666", "0x6666", 0, "0x1000", "0x10000", "0x40000"]},
+    {"addr": "0x00603b58", "type": "u16", "values": ["0x50", "0x50", "0x50", 0, "0x7fff", "0x8000", "0x400"]}
+  ]
+}

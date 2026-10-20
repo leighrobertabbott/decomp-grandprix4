@@ -1,0 +1,12 @@
+{
+ "_evidence": "Car record (esi) for 0x00414562: byte +0x235 (cmp 3; jb: below 3 skips to clc) draws 0..5 and 0xff so both sides occur often; above it, 0x00414439 reads the position dwords +0/+4 and the nullable target pointer +0x128 exactly as ptr_00414439 (positions -0x4000000..0x3fff7ff so 0x401315's neg/div cannot fault; null takes its stc exit with eax/edx unchanged), then the distance in edx is compared with [0x6224fc] (signed, fuzz:i32) and the angle in ax minus word +0xe (sub/neg, cmp 0x4000 jge) - word +0xe is any i16. Nothing else is read; the remaining bytes are random.",
+ "size": 573,
+ "fill": "bytes",
+ "fields": [
+  {"off": 0, "type": "i32", "lo": -67108864, "hi": 67106815},
+  {"off": 4, "type": "i32", "lo": -67108864, "hi": 67106815},
+  {"off": "0xe", "type": "i16"},
+  {"off": "0x128", "type": "ptr", "size": 64, "fill": "layout=pos_00405cf8", "nullable": true},
+  {"off": "0x235", "type": "u8", "values": [0, 1, 2, 3, 3, 4, 5, 255]}
+ ]
+}

@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00441a78 dereferences the pointer global [0x0086850c] (reads +0x100 and nearby): null/unset in the image, so it is drawn as a pointer to a fresh 0x110-byte buffer of random bytes.",
+ "globals": [
+  {"addr": "0x0086850c", "type": "ptr", "size": 272, "fill": "bytes"}
+ ]
+}

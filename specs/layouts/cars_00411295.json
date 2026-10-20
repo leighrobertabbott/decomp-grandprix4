@@ -1,0 +1,11 @@
+{
+  "_evidence": "0x00411295 runs on the player car esi = [0x679d30] (order_00418f8f: any of the 22 records at 0x66fef0, stride 0x41c), so per-car fields must vary for all 22 records (state_0041104f covers cars 0..5 only): byte +0xcd (0x66ffbd; 'or byte [esi+0xcd],1' RMW at 0x4112cf), bytes +0x230/+0x231 (0x670120/0x670121; read-modify-written by 0x41104f) any u8, and the three queue slot bytes +0x2b8..+0x2ba (0x6701a8..0x6701aa) that 0x418fd0 scans with cl = 9+1 = 0xa ('cmp byte [ebx+esi+0x2b8],0; je' free slot, 'cmp cl,[...]; jne' already queued): drawn from 0 (free), 0xa (queued), 3/0x13 (other codes, as car_00411109) and 0xff. Compose with clock_0066d814 for the race clock 0x66d814 that 0x418fd0 copies into the due time. Tests/compares and stores only.",
+  "globals": [
+    {"addr": "0x0066ffbd", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x00670120", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x00670121", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x006701a8", "type": "u8", "count": 22, "stride": "0x41c", "values": [0, 0, "0xa", 3, "0x13", "0xff"]},
+    {"addr": "0x006701a9", "type": "u8", "count": 22, "stride": "0x41c", "values": [0, 0, "0xa", 3, "0x13", "0xff"]},
+    {"addr": "0x006701aa", "type": "u8", "count": 22, "stride": "0x41c", "values": [0, 0, "0xa", 3, "0x13", "0xff"]}
+  ]
+}

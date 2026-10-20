@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x0051c45c does 'cdq; div 3' on [0x96a374]; values >= 0x40000000 overflow the 32-bit quotient after its scaling, so the game range is 0..0x3fffffff.",
+ "globals": [
+  {
+   "addr": "0x0096a374",
+   "type": "u32",
+   "lo": 0,
+   "hi": 1073741823
+  }
+ ]
+}

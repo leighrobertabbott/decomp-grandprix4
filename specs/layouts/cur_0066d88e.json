@@ -1,0 +1,33 @@
+{
+ "_evidence": "Car cursor word [0x66d88e]: 0x00435280 advances it as a byte offset into the 22-record car array (esi = 0x66fef0 + word; next record, wrapping to 0x66fef0 at the end; 'sub esi,0x66fef0; mov [0x66d88e],si'), so it is always k*0x41c for k = 0..21; 0x0044552d checksums the 0x107 dwords of that car record (and-ed with the read-only mask table 0x62ad7c, a never-written constant: no layout) into byte 0x8914e2. The word was zero in the image (only car 0 summed); it draws every record offset. Compose after carbg_0066fef0 (random car bytes) so every summed dword is varied.",
+ "globals": [
+  {
+   "addr": "0x0066d88e",
+   "type": "u16",
+   "values": [
+    0,
+    1052,
+    2104,
+    3156,
+    4208,
+    5260,
+    6312,
+    7364,
+    8416,
+    9468,
+    10520,
+    11572,
+    12624,
+    13676,
+    14728,
+    15780,
+    16832,
+    17884,
+    18936,
+    19988,
+    21040,
+    22092
+   ]
+  }
+ ]
+}

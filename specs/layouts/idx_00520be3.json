@@ -1,0 +1,39 @@
+{
+ "_evidence": "0x00520be3 picks slot = [0x679b34 + 4*i] (or [0x679b9c + 4*i] when it exceeds [0x679b24 + 4*i], signed jle) with i = [0x679b44], and passes it as eax to 0x520b65, whose slot index must be 0..3 (idx_00520b65). The index i is a ring-position slot 0..3 like the ones idx_00520b65 bounds; the three 4-dword tables hold slot indices 0..3 so both jle outcomes occur.",
+ "globals": [
+  {
+   "addr": "0x00679b44",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3
+   ]
+  },
+  {
+   "addr": "0x00679b24",
+   "type": "i32",
+   "count": 4,
+   "stride": 4,
+   "lo": 0,
+   "hi": 3
+  },
+  {
+   "addr": "0x00679b34",
+   "type": "i32",
+   "count": 4,
+   "stride": 4,
+   "lo": 0,
+   "hi": 3
+  },
+  {
+   "addr": "0x00679b9c",
+   "type": "i32",
+   "count": 4,
+   "stride": 4,
+   "lo": 0,
+   "hi": 3
+  }
+ ]
+}

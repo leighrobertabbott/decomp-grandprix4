@@ -1,0 +1,11 @@
+{
+ "_evidence": "Count [0x96a368] of the do-while (dec/jne) sum loop in 0x0051c007: 1..8 (0 wraps to 2^32).",
+ "globals": [
+  {
+   "addr": "0x0096a368",
+   "type": "u32",
+   "lo": 1,
+   "hi": 8
+  }
+ ]
+}

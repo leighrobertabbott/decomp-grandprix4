@@ -1,0 +1,9 @@
+{
+ "_evidence": "0x0040d9e6 copies the pit start [0x891500], pit-entry record [0x866f00] and pit-exit record [0x866f04] into the cursors 0x604424/0x604428/0x60442c that 0x0040d8a5 walks (so these sources take exactly the domains state_0040d8a5 gives the cursors: pit start record 12..15, entry 0..3, exit 1..3 against its lap end 4..10), then walks edi from [0x891500] by 0x160 until it EQUALS the pit end [0x866ef8] (cmp/jne at 0x40da58), reading word +0x7a (row index, imul 8 + 0x604435: writes words +4/+6 of that row) and word +0x1a & 0x7ff (0x405985 input) of every pit record. The pit end must be record-aligned and strictly above the pit start or the walk runs off the array (fuzzed pointers: the 300 s timeout); record 16..20 keeps every visited record in 12..19, whose +0x7a rows 0..7 and +0x1a words state_0040d8a5 sets/varies. Compose after state_0040d8a5.",
+ "globals": [
+  {"addr": "0x00891500", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 12, "hi": 15}},
+  {"addr": "0x00866ef8", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 16, "hi": 20}},
+  {"addr": "0x00866f00", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 3}},
+  {"addr": "0x00866f04", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 1, "hi": 3}}
+ ]
+}

@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x004098fd: movzx edi, word [0x62d256]; imul edi,0x160; neg; add edi,[0x866ecc] - edi is the ring record w records before the lap-end sentinel (the following 'cmp edi,0x8943a0; jae' jumps to the next instruction either way, so no wrap is applied); it then reads words [edi+0x16]/[edi+0x18] and passes edi to 0x408c3e, whose accepted domain is edi = record 0..11 of 0x8943a0. [0x62d256] is a track-header word (0x40c6d8 copies it from the track file +0x64), a record count back from the lap end, so on a real track edi stays inside the lap: w <= E where the lap end [0x866ecc] is record E = 6..8 in ring_00405a12 (composed before this). w is drawn 0..6 (<= E in every case; w = 0 is the sentinel record itself, inside the callee's 0..11). A larger w puts edi below 0x8943a0 (unmapped / outside the ring) and the original faults. Bytes 0x66d909..0x66d91f: the per-car flag bytes or-ed with 0x80 at [((b&0x3f)-1) + 0x66d90a] (b = byte [esi+0x7c]); plain u8 state, every value valid (flags_0066d909's reasoning), varied for the slots -1..21 only - 0x66d920.. (bit flags) and 0x66d936.. (level indices into 0x6f2c3e that 0x441166 copies to car +0x7f, which lvl_00431d1f keeps 0..5) are read by the 0x408c3e chain and keep their state.",
+  "globals": [
+    {"addr": "0x0062d256", "type": "u16", "lo": 0, "hi": 6},
+    {"addr": "0x0066d909", "type": "u8", "count": 23}
+  ]
+}

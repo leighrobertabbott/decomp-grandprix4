@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x005324cc unpacks the 5 bytes 0x827f69..0x827f6d ('lodsb', 4 x 'mov ah,al; and ah,0xc0; and byte [edi],0x3f; or byte [edi],ah; inc edi; rol al,2') into bits 6/7 of the 20 per-driver bytes 0x7c2a48..0x7c2a5b; 0x5324a4 packs them the other way. The packed block is state (zero in the image, written by 0x5324a4's stosb), fuzz:i32 varied only its first 4 bytes. Here the 5 bytes are random (every 2-bit pair pattern occurs); use with drv22_0052d402 (the 22+1 per-driver bytes random, so the kept low 6 bits and the replaced high bits both show). Plain byte RMW, every value is valid.",
+ "globals": [
+  {"addr": "0x00827f69", "type": "u8", "count": 5, "stride": 1}
+ ]
+}

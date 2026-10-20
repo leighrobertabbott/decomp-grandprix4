@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x0054972f / 0x00549c8a: 'mov edi,0x831cfd; mov ecx,6; repne scasb' finds the key in the 6-slot record (cur_00549849), then 'mov eax,5; sub eax,ecx; shl eax,2; add eax,0x831d1c (resp. 0x831d34); mov eax,[eax]' loads the slot's dword from a 6-entry table (miss: 0x6318 resp. 0). The two tables are .data words that no instruction writes (only these two and 0x5493af read 0x831d1c by index; 0x831d34 only here), so the game sees their image values; fuzz:i32 varied only the first dword of each. Here all 6 dwords of both tables (0x831d1c..0x831d33, 0x831d34..0x831d4b) are random u32 (synthetic, not the image's), so a wrong index, stride or table shows; plain loads, every value is valid.",
+ "globals": [
+  {"addr": "0x00831d1c", "type": "u32", "count": 6, "stride": 4},
+  {"addr": "0x00831d34", "type": "u32", "count": 6, "stride": 4}
+ ]
+}

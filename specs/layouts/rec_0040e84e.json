@@ -1,0 +1,16 @@
+{
+  "size": 720,
+  "_evidence": "Car record at esi for 0x0040e84e and its callees 0x43b974/0x418fd0: bytes +0xfe (bit 2: early exit; draws mostly clear), word +0x60 (0..0x2000, compared with dword 0x602a6c and the lap difference <<6), signed bytes +0x136 and +0x198 (jge), the signed table byte +0x199+(+0x136 & 0xff) (256 bytes, compared with signed +0x70), +0x7c (1..22, a car number: 0x43b974's key ((b-1)&0x3f ^1)+1 is its team-mate's number), the 0x418fd0 slots +0x2b8..+0x2ba, and the read-modify-write bytes +0x71/+0x230/+0xfe. Every pattern is valid (byte compares and in-buffer indexing only); the ranges just make the nested conditions before the 0x43b974 search hold often enough to reach its CF=1 tests.",
+  "fields": [
+    {"off": "0x60", "type": "u16", "lo": 0, "hi": 8192},
+    {"off": "0x70", "type": "i8"},
+    {"off": "0x71", "type": "u8"},
+    {"off": "0x7c", "type": "u8", "lo": 1, "hi": 22},
+    {"off": "0xfe", "type": "u8", "values": [0, 1, "0x80", "0xfb", "0x04", "0x0b"]},
+    {"off": "0x136", "type": "i8"},
+    {"off": "0x198", "type": "i8"},
+    {"off": "0x199", "type": "i8", "count": 256, "stride": 1},
+    {"off": "0x230", "type": "u8"},
+    {"off": "0x2b8", "type": "u8", "count": 3, "stride": 1, "values": [0, 0, 1, 5, "0x0c", "0xff"]}
+  ]
+}

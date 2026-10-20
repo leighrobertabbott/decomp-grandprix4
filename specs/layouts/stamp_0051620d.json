@@ -1,0 +1,11 @@
+{
+  "_evidence": "0x0051620d: 'mov esi,[0x679d30]; call 0x40814e; jae; mov eax,1; mov [0xa6987c],eax'. 0x40814e reads the stamp dword [esi+0x1d4] ('test ..,-1; je' -> clc) and otherwise 'neg eax; add eax,[0x66d814]; jns' (CF = race clock minus stamp negative). With ptr_00679d30 the stamp was a random dword and the clock 0x66d814 (read only by the callee) kept its image value, so the expiry test never compared realistic times. Buffer part: a 0x41c-byte car record of random bytes with the stamp +0x1d4 drawn from zero (not stamped), times inside the clock_0066d814 range 0..0x10000 (both sides of the clock) and sign-boundary values. Global part: [0x679d30] points at such a record (the selected car; any separate record is valid, nothing else is dereferenced). Compose as fuzz:i32+layout=clock_0066d814+stamp_0051620d.",
+  "size": 1052,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x1d4", "type": "u32", "values": [0, 0, 1, "0x4000", "0x8000", "0xc000", "0x10000", "0x7fffffff", "0x80000000", "0xffffffff"]}
+  ],
+  "globals": [
+    {"addr": "0x00679d30", "type": "ptr", "size": "0x41c", "fill": "layout=stamp_0051620d"}
+  ]
+}

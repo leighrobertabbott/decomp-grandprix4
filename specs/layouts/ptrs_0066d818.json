@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x513982/0x5139ed walk 'mov esi,0x66d818; mov ebx,0x66d830; test dword [esi],-1; je; sub|add dword [esi],0x66feec; add esi,4; cmp esi,ebx; jb' over the six car-pointer dwords 0x66d818..0x66d82f (0x66d820/0x66d828/0x66d82c are the car pointers compared by 0x437888; all six are rebased like the car links, so they are car pointers 0x66fef0+k*0x41c or null in the game and saved offsets k*0x41c+4 in a save slot). Reached through esi, so fuzz:i32 left them at the zero image (only the null branch ran). Drawn zero in ~3/8 of the picks (both je outcomes), car pointers, saved offsets and wild dwords: add/sub never fault.",
+ "globals": [
+  {"addr": "0x0066d818", "type": "u32", "count": 6, "stride": 4, "values": [0, 0, 0, "0x66fef0", "0x67030c", 4, "0x420", "0xffffffff"]}
+ ]
+}

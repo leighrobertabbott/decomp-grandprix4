@@ -1,0 +1,6 @@
+{
+  "_evidence": "Car byte +0xcc (0x66ffbc + k*0x41c, 22 cars) tested with 4 by 0x0043a785 on the car path (jne skips the single-axis response): full-range bytes so both outcomes occur. The gains 0x608018/0x60801c (imul/shrd only) come from fuzz:i32.",
+  "globals": [
+    {"addr": "0x0066ffbc", "type": "u8", "count": 22, "stride": "0x41c"}
+  ]
+}

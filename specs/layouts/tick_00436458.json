@@ -1,0 +1,46 @@
+{
+ "_evidence": "Mode bytes and command-ring state of the race tick 0x00436458 (compose LAST). 'test byte [0x852d8c],0xff; je' (replay/network mode: 0x434594+0x44226c vs 0x4420b2) then 'test byte [0x852d98],2; jne' and 'cmp byte [0x6f29a1],0; je': fuzz:i32 left these bytes nonzero almost always (0x43646a block and the 0x4420b2 branch unreached); drawn 0/0/1/0xff, 0/2/3/0xff, 0/0/1. 0x4420b2 (deferred: wild offsets faulted 17/200) writes a time-stamped record at 0x630238 + [0x630230] unless the offset is >= 0x7c28 (jge skip) and stores the new end offset (eax - 0x630238 >= 0) back: so [0x630230] is 0..0x7c28 (the edge 0x7c28 takes the skip); [0x62ff64] points to the 9 car-mask dwords (masks_004420b2). Compose after the 0x433d8d/0x434594/0x4343f3/0x432dcf families and the 0x44226c layouts (clock_0066d814+list_0044214c+state_00433ff8+cursor_0063022c).",
+ "globals": [
+  {
+   "addr": "0x00852d8c",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x00852d98",
+   "type": "u8",
+   "values": [
+    0,
+    2,
+    3,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x006f29a1",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x00630230",
+   "type": "u32",
+   "lo": 0,
+   "hi": 31784
+  },
+  {
+   "addr": "0x0062ff64",
+   "type": "ptr",
+   "size": 36,
+   "fill": "layout=masks_004420b2"
+  }
+ ]
+}

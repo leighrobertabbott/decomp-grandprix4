@@ -1,0 +1,1797 @@
+{
+ "_evidence": "Upper-case map at 0x833d18 as the game builds it: 0x0054d70c loops al = 0..255 storing (stosb, edi from 0x833d18) the result of the thunk 0x5a4978 = jmp [0x5f0308] = user32!CharUpperA(al) (a char argument with a zero high word, so CharUpperA converts that one character). The image holds zeros (filled at start-up). Values are derived from the API's documented behaviour for the Windows-1252 ANSI code page, mirroring lower_00833e18 (CharLowerA, filled by the second loop of the same routine): a-z -> A-Z, 0x9a/0x9c/0x9e -> -0x10, 0xff -> 0x9f, 0xe0..0xfe except 0xf7 -> -0x20; every other byte (NUL, '.', '?', digits, '_') maps to itself. Read by 0x0054d747 (mov al,[al+0x833d18]); 0x00536031 compares folded extension characters with it and tests the folded table byte for '?'. One field per byte (a single value each).",
+ "globals": [
+  {
+   "addr": "0x00833d18",
+   "type": "u8",
+   "values": [
+    "0x00"
+   ]
+  },
+  {
+   "addr": "0x00833d19",
+   "type": "u8",
+   "values": [
+    "0x01"
+   ]
+  },
+  {
+   "addr": "0x00833d1a",
+   "type": "u8",
+   "values": [
+    "0x02"
+   ]
+  },
+  {
+   "addr": "0x00833d1b",
+   "type": "u8",
+   "values": [
+    "0x03"
+   ]
+  },
+  {
+   "addr": "0x00833d1c",
+   "type": "u8",
+   "values": [
+    "0x04"
+   ]
+  },
+  {
+   "addr": "0x00833d1d",
+   "type": "u8",
+   "values": [
+    "0x05"
+   ]
+  },
+  {
+   "addr": "0x00833d1e",
+   "type": "u8",
+   "values": [
+    "0x06"
+   ]
+  },
+  {
+   "addr": "0x00833d1f",
+   "type": "u8",
+   "values": [
+    "0x07"
+   ]
+  },
+  {
+   "addr": "0x00833d20",
+   "type": "u8",
+   "values": [
+    "0x08"
+   ]
+  },
+  {
+   "addr": "0x00833d21",
+   "type": "u8",
+   "values": [
+    "0x09"
+   ]
+  },
+  {
+   "addr": "0x00833d22",
+   "type": "u8",
+   "values": [
+    "0x0a"
+   ]
+  },
+  {
+   "addr": "0x00833d23",
+   "type": "u8",
+   "values": [
+    "0x0b"
+   ]
+  },
+  {
+   "addr": "0x00833d24",
+   "type": "u8",
+   "values": [
+    "0x0c"
+   ]
+  },
+  {
+   "addr": "0x00833d25",
+   "type": "u8",
+   "values": [
+    "0x0d"
+   ]
+  },
+  {
+   "addr": "0x00833d26",
+   "type": "u8",
+   "values": [
+    "0x0e"
+   ]
+  },
+  {
+   "addr": "0x00833d27",
+   "type": "u8",
+   "values": [
+    "0x0f"
+   ]
+  },
+  {
+   "addr": "0x00833d28",
+   "type": "u8",
+   "values": [
+    "0x10"
+   ]
+  },
+  {
+   "addr": "0x00833d29",
+   "type": "u8",
+   "values": [
+    "0x11"
+   ]
+  },
+  {
+   "addr": "0x00833d2a",
+   "type": "u8",
+   "values": [
+    "0x12"
+   ]
+  },
+  {
+   "addr": "0x00833d2b",
+   "type": "u8",
+   "values": [
+    "0x13"
+   ]
+  },
+  {
+   "addr": "0x00833d2c",
+   "type": "u8",
+   "values": [
+    "0x14"
+   ]
+  },
+  {
+   "addr": "0x00833d2d",
+   "type": "u8",
+   "values": [
+    "0x15"
+   ]
+  },
+  {
+   "addr": "0x00833d2e",
+   "type": "u8",
+   "values": [
+    "0x16"
+   ]
+  },
+  {
+   "addr": "0x00833d2f",
+   "type": "u8",
+   "values": [
+    "0x17"
+   ]
+  },
+  {
+   "addr": "0x00833d30",
+   "type": "u8",
+   "values": [
+    "0x18"
+   ]
+  },
+  {
+   "addr": "0x00833d31",
+   "type": "u8",
+   "values": [
+    "0x19"
+   ]
+  },
+  {
+   "addr": "0x00833d32",
+   "type": "u8",
+   "values": [
+    "0x1a"
+   ]
+  },
+  {
+   "addr": "0x00833d33",
+   "type": "u8",
+   "values": [
+    "0x1b"
+   ]
+  },
+  {
+   "addr": "0x00833d34",
+   "type": "u8",
+   "values": [
+    "0x1c"
+   ]
+  },
+  {
+   "addr": "0x00833d35",
+   "type": "u8",
+   "values": [
+    "0x1d"
+   ]
+  },
+  {
+   "addr": "0x00833d36",
+   "type": "u8",
+   "values": [
+    "0x1e"
+   ]
+  },
+  {
+   "addr": "0x00833d37",
+   "type": "u8",
+   "values": [
+    "0x1f"
+   ]
+  },
+  {
+   "addr": "0x00833d38",
+   "type": "u8",
+   "values": [
+    "0x20"
+   ]
+  },
+  {
+   "addr": "0x00833d39",
+   "type": "u8",
+   "values": [
+    "0x21"
+   ]
+  },
+  {
+   "addr": "0x00833d3a",
+   "type": "u8",
+   "values": [
+    "0x22"
+   ]
+  },
+  {
+   "addr": "0x00833d3b",
+   "type": "u8",
+   "values": [
+    "0x23"
+   ]
+  },
+  {
+   "addr": "0x00833d3c",
+   "type": "u8",
+   "values": [
+    "0x24"
+   ]
+  },
+  {
+   "addr": "0x00833d3d",
+   "type": "u8",
+   "values": [
+    "0x25"
+   ]
+  },
+  {
+   "addr": "0x00833d3e",
+   "type": "u8",
+   "values": [
+    "0x26"
+   ]
+  },
+  {
+   "addr": "0x00833d3f",
+   "type": "u8",
+   "values": [
+    "0x27"
+   ]
+  },
+  {
+   "addr": "0x00833d40",
+   "type": "u8",
+   "values": [
+    "0x28"
+   ]
+  },
+  {
+   "addr": "0x00833d41",
+   "type": "u8",
+   "values": [
+    "0x29"
+   ]
+  },
+  {
+   "addr": "0x00833d42",
+   "type": "u8",
+   "values": [
+    "0x2a"
+   ]
+  },
+  {
+   "addr": "0x00833d43",
+   "type": "u8",
+   "values": [
+    "0x2b"
+   ]
+  },
+  {
+   "addr": "0x00833d44",
+   "type": "u8",
+   "values": [
+    "0x2c"
+   ]
+  },
+  {
+   "addr": "0x00833d45",
+   "type": "u8",
+   "values": [
+    "0x2d"
+   ]
+  },
+  {
+   "addr": "0x00833d46",
+   "type": "u8",
+   "values": [
+    "0x2e"
+   ]
+  },
+  {
+   "addr": "0x00833d47",
+   "type": "u8",
+   "values": [
+    "0x2f"
+   ]
+  },
+  {
+   "addr": "0x00833d48",
+   "type": "u8",
+   "values": [
+    "0x30"
+   ]
+  },
+  {
+   "addr": "0x00833d49",
+   "type": "u8",
+   "values": [
+    "0x31"
+   ]
+  },
+  {
+   "addr": "0x00833d4a",
+   "type": "u8",
+   "values": [
+    "0x32"
+   ]
+  },
+  {
+   "addr": "0x00833d4b",
+   "type": "u8",
+   "values": [
+    "0x33"
+   ]
+  },
+  {
+   "addr": "0x00833d4c",
+   "type": "u8",
+   "values": [
+    "0x34"
+   ]
+  },
+  {
+   "addr": "0x00833d4d",
+   "type": "u8",
+   "values": [
+    "0x35"
+   ]
+  },
+  {
+   "addr": "0x00833d4e",
+   "type": "u8",
+   "values": [
+    "0x36"
+   ]
+  },
+  {
+   "addr": "0x00833d4f",
+   "type": "u8",
+   "values": [
+    "0x37"
+   ]
+  },
+  {
+   "addr": "0x00833d50",
+   "type": "u8",
+   "values": [
+    "0x38"
+   ]
+  },
+  {
+   "addr": "0x00833d51",
+   "type": "u8",
+   "values": [
+    "0x39"
+   ]
+  },
+  {
+   "addr": "0x00833d52",
+   "type": "u8",
+   "values": [
+    "0x3a"
+   ]
+  },
+  {
+   "addr": "0x00833d53",
+   "type": "u8",
+   "values": [
+    "0x3b"
+   ]
+  },
+  {
+   "addr": "0x00833d54",
+   "type": "u8",
+   "values": [
+    "0x3c"
+   ]
+  },
+  {
+   "addr": "0x00833d55",
+   "type": "u8",
+   "values": [
+    "0x3d"
+   ]
+  },
+  {
+   "addr": "0x00833d56",
+   "type": "u8",
+   "values": [
+    "0x3e"
+   ]
+  },
+  {
+   "addr": "0x00833d57",
+   "type": "u8",
+   "values": [
+    "0x3f"
+   ]
+  },
+  {
+   "addr": "0x00833d58",
+   "type": "u8",
+   "values": [
+    "0x40"
+   ]
+  },
+  {
+   "addr": "0x00833d59",
+   "type": "u8",
+   "values": [
+    "0x41"
+   ]
+  },
+  {
+   "addr": "0x00833d5a",
+   "type": "u8",
+   "values": [
+    "0x42"
+   ]
+  },
+  {
+   "addr": "0x00833d5b",
+   "type": "u8",
+   "values": [
+    "0x43"
+   ]
+  },
+  {
+   "addr": "0x00833d5c",
+   "type": "u8",
+   "values": [
+    "0x44"
+   ]
+  },
+  {
+   "addr": "0x00833d5d",
+   "type": "u8",
+   "values": [
+    "0x45"
+   ]
+  },
+  {
+   "addr": "0x00833d5e",
+   "type": "u8",
+   "values": [
+    "0x46"
+   ]
+  },
+  {
+   "addr": "0x00833d5f",
+   "type": "u8",
+   "values": [
+    "0x47"
+   ]
+  },
+  {
+   "addr": "0x00833d60",
+   "type": "u8",
+   "values": [
+    "0x48"
+   ]
+  },
+  {
+   "addr": "0x00833d61",
+   "type": "u8",
+   "values": [
+    "0x49"
+   ]
+  },
+  {
+   "addr": "0x00833d62",
+   "type": "u8",
+   "values": [
+    "0x4a"
+   ]
+  },
+  {
+   "addr": "0x00833d63",
+   "type": "u8",
+   "values": [
+    "0x4b"
+   ]
+  },
+  {
+   "addr": "0x00833d64",
+   "type": "u8",
+   "values": [
+    "0x4c"
+   ]
+  },
+  {
+   "addr": "0x00833d65",
+   "type": "u8",
+   "values": [
+    "0x4d"
+   ]
+  },
+  {
+   "addr": "0x00833d66",
+   "type": "u8",
+   "values": [
+    "0x4e"
+   ]
+  },
+  {
+   "addr": "0x00833d67",
+   "type": "u8",
+   "values": [
+    "0x4f"
+   ]
+  },
+  {
+   "addr": "0x00833d68",
+   "type": "u8",
+   "values": [
+    "0x50"
+   ]
+  },
+  {
+   "addr": "0x00833d69",
+   "type": "u8",
+   "values": [
+    "0x51"
+   ]
+  },
+  {
+   "addr": "0x00833d6a",
+   "type": "u8",
+   "values": [
+    "0x52"
+   ]
+  },
+  {
+   "addr": "0x00833d6b",
+   "type": "u8",
+   "values": [
+    "0x53"
+   ]
+  },
+  {
+   "addr": "0x00833d6c",
+   "type": "u8",
+   "values": [
+    "0x54"
+   ]
+  },
+  {
+   "addr": "0x00833d6d",
+   "type": "u8",
+   "values": [
+    "0x55"
+   ]
+  },
+  {
+   "addr": "0x00833d6e",
+   "type": "u8",
+   "values": [
+    "0x56"
+   ]
+  },
+  {
+   "addr": "0x00833d6f",
+   "type": "u8",
+   "values": [
+    "0x57"
+   ]
+  },
+  {
+   "addr": "0x00833d70",
+   "type": "u8",
+   "values": [
+    "0x58"
+   ]
+  },
+  {
+   "addr": "0x00833d71",
+   "type": "u8",
+   "values": [
+    "0x59"
+   ]
+  },
+  {
+   "addr": "0x00833d72",
+   "type": "u8",
+   "values": [
+    "0x5a"
+   ]
+  },
+  {
+   "addr": "0x00833d73",
+   "type": "u8",
+   "values": [
+    "0x5b"
+   ]
+  },
+  {
+   "addr": "0x00833d74",
+   "type": "u8",
+   "values": [
+    "0x5c"
+   ]
+  },
+  {
+   "addr": "0x00833d75",
+   "type": "u8",
+   "values": [
+    "0x5d"
+   ]
+  },
+  {
+   "addr": "0x00833d76",
+   "type": "u8",
+   "values": [
+    "0x5e"
+   ]
+  },
+  {
+   "addr": "0x00833d77",
+   "type": "u8",
+   "values": [
+    "0x5f"
+   ]
+  },
+  {
+   "addr": "0x00833d78",
+   "type": "u8",
+   "values": [
+    "0x60"
+   ]
+  },
+  {
+   "addr": "0x00833d79",
+   "type": "u8",
+   "values": [
+    "0x41"
+   ]
+  },
+  {
+   "addr": "0x00833d7a",
+   "type": "u8",
+   "values": [
+    "0x42"
+   ]
+  },
+  {
+   "addr": "0x00833d7b",
+   "type": "u8",
+   "values": [
+    "0x43"
+   ]
+  },
+  {
+   "addr": "0x00833d7c",
+   "type": "u8",
+   "values": [
+    "0x44"
+   ]
+  },
+  {
+   "addr": "0x00833d7d",
+   "type": "u8",
+   "values": [
+    "0x45"
+   ]
+  },
+  {
+   "addr": "0x00833d7e",
+   "type": "u8",
+   "values": [
+    "0x46"
+   ]
+  },
+  {
+   "addr": "0x00833d7f",
+   "type": "u8",
+   "values": [
+    "0x47"
+   ]
+  },
+  {
+   "addr": "0x00833d80",
+   "type": "u8",
+   "values": [
+    "0x48"
+   ]
+  },
+  {
+   "addr": "0x00833d81",
+   "type": "u8",
+   "values": [
+    "0x49"
+   ]
+  },
+  {
+   "addr": "0x00833d82",
+   "type": "u8",
+   "values": [
+    "0x4a"
+   ]
+  },
+  {
+   "addr": "0x00833d83",
+   "type": "u8",
+   "values": [
+    "0x4b"
+   ]
+  },
+  {
+   "addr": "0x00833d84",
+   "type": "u8",
+   "values": [
+    "0x4c"
+   ]
+  },
+  {
+   "addr": "0x00833d85",
+   "type": "u8",
+   "values": [
+    "0x4d"
+   ]
+  },
+  {
+   "addr": "0x00833d86",
+   "type": "u8",
+   "values": [
+    "0x4e"
+   ]
+  },
+  {
+   "addr": "0x00833d87",
+   "type": "u8",
+   "values": [
+    "0x4f"
+   ]
+  },
+  {
+   "addr": "0x00833d88",
+   "type": "u8",
+   "values": [
+    "0x50"
+   ]
+  },
+  {
+   "addr": "0x00833d89",
+   "type": "u8",
+   "values": [
+    "0x51"
+   ]
+  },
+  {
+   "addr": "0x00833d8a",
+   "type": "u8",
+   "values": [
+    "0x52"
+   ]
+  },
+  {
+   "addr": "0x00833d8b",
+   "type": "u8",
+   "values": [
+    "0x53"
+   ]
+  },
+  {
+   "addr": "0x00833d8c",
+   "type": "u8",
+   "values": [
+    "0x54"
+   ]
+  },
+  {
+   "addr": "0x00833d8d",
+   "type": "u8",
+   "values": [
+    "0x55"
+   ]
+  },
+  {
+   "addr": "0x00833d8e",
+   "type": "u8",
+   "values": [
+    "0x56"
+   ]
+  },
+  {
+   "addr": "0x00833d8f",
+   "type": "u8",
+   "values": [
+    "0x57"
+   ]
+  },
+  {
+   "addr": "0x00833d90",
+   "type": "u8",
+   "values": [
+    "0x58"
+   ]
+  },
+  {
+   "addr": "0x00833d91",
+   "type": "u8",
+   "values": [
+    "0x59"
+   ]
+  },
+  {
+   "addr": "0x00833d92",
+   "type": "u8",
+   "values": [
+    "0x5a"
+   ]
+  },
+  {
+   "addr": "0x00833d93",
+   "type": "u8",
+   "values": [
+    "0x7b"
+   ]
+  },
+  {
+   "addr": "0x00833d94",
+   "type": "u8",
+   "values": [
+    "0x7c"
+   ]
+  },
+  {
+   "addr": "0x00833d95",
+   "type": "u8",
+   "values": [
+    "0x7d"
+   ]
+  },
+  {
+   "addr": "0x00833d96",
+   "type": "u8",
+   "values": [
+    "0x7e"
+   ]
+  },
+  {
+   "addr": "0x00833d97",
+   "type": "u8",
+   "values": [
+    "0x7f"
+   ]
+  },
+  {
+   "addr": "0x00833d98",
+   "type": "u8",
+   "values": [
+    "0x80"
+   ]
+  },
+  {
+   "addr": "0x00833d99",
+   "type": "u8",
+   "values": [
+    "0x81"
+   ]
+  },
+  {
+   "addr": "0x00833d9a",
+   "type": "u8",
+   "values": [
+    "0x82"
+   ]
+  },
+  {
+   "addr": "0x00833d9b",
+   "type": "u8",
+   "values": [
+    "0x83"
+   ]
+  },
+  {
+   "addr": "0x00833d9c",
+   "type": "u8",
+   "values": [
+    "0x84"
+   ]
+  },
+  {
+   "addr": "0x00833d9d",
+   "type": "u8",
+   "values": [
+    "0x85"
+   ]
+  },
+  {
+   "addr": "0x00833d9e",
+   "type": "u8",
+   "values": [
+    "0x86"
+   ]
+  },
+  {
+   "addr": "0x00833d9f",
+   "type": "u8",
+   "values": [
+    "0x87"
+   ]
+  },
+  {
+   "addr": "0x00833da0",
+   "type": "u8",
+   "values": [
+    "0x88"
+   ]
+  },
+  {
+   "addr": "0x00833da1",
+   "type": "u8",
+   "values": [
+    "0x89"
+   ]
+  },
+  {
+   "addr": "0x00833da2",
+   "type": "u8",
+   "values": [
+    "0x8a"
+   ]
+  },
+  {
+   "addr": "0x00833da3",
+   "type": "u8",
+   "values": [
+    "0x8b"
+   ]
+  },
+  {
+   "addr": "0x00833da4",
+   "type": "u8",
+   "values": [
+    "0x8c"
+   ]
+  },
+  {
+   "addr": "0x00833da5",
+   "type": "u8",
+   "values": [
+    "0x8d"
+   ]
+  },
+  {
+   "addr": "0x00833da6",
+   "type": "u8",
+   "values": [
+    "0x8e"
+   ]
+  },
+  {
+   "addr": "0x00833da7",
+   "type": "u8",
+   "values": [
+    "0x8f"
+   ]
+  },
+  {
+   "addr": "0x00833da8",
+   "type": "u8",
+   "values": [
+    "0x90"
+   ]
+  },
+  {
+   "addr": "0x00833da9",
+   "type": "u8",
+   "values": [
+    "0x91"
+   ]
+  },
+  {
+   "addr": "0x00833daa",
+   "type": "u8",
+   "values": [
+    "0x92"
+   ]
+  },
+  {
+   "addr": "0x00833dab",
+   "type": "u8",
+   "values": [
+    "0x93"
+   ]
+  },
+  {
+   "addr": "0x00833dac",
+   "type": "u8",
+   "values": [
+    "0x94"
+   ]
+  },
+  {
+   "addr": "0x00833dad",
+   "type": "u8",
+   "values": [
+    "0x95"
+   ]
+  },
+  {
+   "addr": "0x00833dae",
+   "type": "u8",
+   "values": [
+    "0x96"
+   ]
+  },
+  {
+   "addr": "0x00833daf",
+   "type": "u8",
+   "values": [
+    "0x97"
+   ]
+  },
+  {
+   "addr": "0x00833db0",
+   "type": "u8",
+   "values": [
+    "0x98"
+   ]
+  },
+  {
+   "addr": "0x00833db1",
+   "type": "u8",
+   "values": [
+    "0x99"
+   ]
+  },
+  {
+   "addr": "0x00833db2",
+   "type": "u8",
+   "values": [
+    "0x8a"
+   ]
+  },
+  {
+   "addr": "0x00833db3",
+   "type": "u8",
+   "values": [
+    "0x9b"
+   ]
+  },
+  {
+   "addr": "0x00833db4",
+   "type": "u8",
+   "values": [
+    "0x8c"
+   ]
+  },
+  {
+   "addr": "0x00833db5",
+   "type": "u8",
+   "values": [
+    "0x9d"
+   ]
+  },
+  {
+   "addr": "0x00833db6",
+   "type": "u8",
+   "values": [
+    "0x8e"
+   ]
+  },
+  {
+   "addr": "0x00833db7",
+   "type": "u8",
+   "values": [
+    "0x9f"
+   ]
+  },
+  {
+   "addr": "0x00833db8",
+   "type": "u8",
+   "values": [
+    "0xa0"
+   ]
+  },
+  {
+   "addr": "0x00833db9",
+   "type": "u8",
+   "values": [
+    "0xa1"
+   ]
+  },
+  {
+   "addr": "0x00833dba",
+   "type": "u8",
+   "values": [
+    "0xa2"
+   ]
+  },
+  {
+   "addr": "0x00833dbb",
+   "type": "u8",
+   "values": [
+    "0xa3"
+   ]
+  },
+  {
+   "addr": "0x00833dbc",
+   "type": "u8",
+   "values": [
+    "0xa4"
+   ]
+  },
+  {
+   "addr": "0x00833dbd",
+   "type": "u8",
+   "values": [
+    "0xa5"
+   ]
+  },
+  {
+   "addr": "0x00833dbe",
+   "type": "u8",
+   "values": [
+    "0xa6"
+   ]
+  },
+  {
+   "addr": "0x00833dbf",
+   "type": "u8",
+   "values": [
+    "0xa7"
+   ]
+  },
+  {
+   "addr": "0x00833dc0",
+   "type": "u8",
+   "values": [
+    "0xa8"
+   ]
+  },
+  {
+   "addr": "0x00833dc1",
+   "type": "u8",
+   "values": [
+    "0xa9"
+   ]
+  },
+  {
+   "addr": "0x00833dc2",
+   "type": "u8",
+   "values": [
+    "0xaa"
+   ]
+  },
+  {
+   "addr": "0x00833dc3",
+   "type": "u8",
+   "values": [
+    "0xab"
+   ]
+  },
+  {
+   "addr": "0x00833dc4",
+   "type": "u8",
+   "values": [
+    "0xac"
+   ]
+  },
+  {
+   "addr": "0x00833dc5",
+   "type": "u8",
+   "values": [
+    "0xad"
+   ]
+  },
+  {
+   "addr": "0x00833dc6",
+   "type": "u8",
+   "values": [
+    "0xae"
+   ]
+  },
+  {
+   "addr": "0x00833dc7",
+   "type": "u8",
+   "values": [
+    "0xaf"
+   ]
+  },
+  {
+   "addr": "0x00833dc8",
+   "type": "u8",
+   "values": [
+    "0xb0"
+   ]
+  },
+  {
+   "addr": "0x00833dc9",
+   "type": "u8",
+   "values": [
+    "0xb1"
+   ]
+  },
+  {
+   "addr": "0x00833dca",
+   "type": "u8",
+   "values": [
+    "0xb2"
+   ]
+  },
+  {
+   "addr": "0x00833dcb",
+   "type": "u8",
+   "values": [
+    "0xb3"
+   ]
+  },
+  {
+   "addr": "0x00833dcc",
+   "type": "u8",
+   "values": [
+    "0xb4"
+   ]
+  },
+  {
+   "addr": "0x00833dcd",
+   "type": "u8",
+   "values": [
+    "0xb5"
+   ]
+  },
+  {
+   "addr": "0x00833dce",
+   "type": "u8",
+   "values": [
+    "0xb6"
+   ]
+  },
+  {
+   "addr": "0x00833dcf",
+   "type": "u8",
+   "values": [
+    "0xb7"
+   ]
+  },
+  {
+   "addr": "0x00833dd0",
+   "type": "u8",
+   "values": [
+    "0xb8"
+   ]
+  },
+  {
+   "addr": "0x00833dd1",
+   "type": "u8",
+   "values": [
+    "0xb9"
+   ]
+  },
+  {
+   "addr": "0x00833dd2",
+   "type": "u8",
+   "values": [
+    "0xba"
+   ]
+  },
+  {
+   "addr": "0x00833dd3",
+   "type": "u8",
+   "values": [
+    "0xbb"
+   ]
+  },
+  {
+   "addr": "0x00833dd4",
+   "type": "u8",
+   "values": [
+    "0xbc"
+   ]
+  },
+  {
+   "addr": "0x00833dd5",
+   "type": "u8",
+   "values": [
+    "0xbd"
+   ]
+  },
+  {
+   "addr": "0x00833dd6",
+   "type": "u8",
+   "values": [
+    "0xbe"
+   ]
+  },
+  {
+   "addr": "0x00833dd7",
+   "type": "u8",
+   "values": [
+    "0xbf"
+   ]
+  },
+  {
+   "addr": "0x00833dd8",
+   "type": "u8",
+   "values": [
+    "0xc0"
+   ]
+  },
+  {
+   "addr": "0x00833dd9",
+   "type": "u8",
+   "values": [
+    "0xc1"
+   ]
+  },
+  {
+   "addr": "0x00833dda",
+   "type": "u8",
+   "values": [
+    "0xc2"
+   ]
+  },
+  {
+   "addr": "0x00833ddb",
+   "type": "u8",
+   "values": [
+    "0xc3"
+   ]
+  },
+  {
+   "addr": "0x00833ddc",
+   "type": "u8",
+   "values": [
+    "0xc4"
+   ]
+  },
+  {
+   "addr": "0x00833ddd",
+   "type": "u8",
+   "values": [
+    "0xc5"
+   ]
+  },
+  {
+   "addr": "0x00833dde",
+   "type": "u8",
+   "values": [
+    "0xc6"
+   ]
+  },
+  {
+   "addr": "0x00833ddf",
+   "type": "u8",
+   "values": [
+    "0xc7"
+   ]
+  },
+  {
+   "addr": "0x00833de0",
+   "type": "u8",
+   "values": [
+    "0xc8"
+   ]
+  },
+  {
+   "addr": "0x00833de1",
+   "type": "u8",
+   "values": [
+    "0xc9"
+   ]
+  },
+  {
+   "addr": "0x00833de2",
+   "type": "u8",
+   "values": [
+    "0xca"
+   ]
+  },
+  {
+   "addr": "0x00833de3",
+   "type": "u8",
+   "values": [
+    "0xcb"
+   ]
+  },
+  {
+   "addr": "0x00833de4",
+   "type": "u8",
+   "values": [
+    "0xcc"
+   ]
+  },
+  {
+   "addr": "0x00833de5",
+   "type": "u8",
+   "values": [
+    "0xcd"
+   ]
+  },
+  {
+   "addr": "0x00833de6",
+   "type": "u8",
+   "values": [
+    "0xce"
+   ]
+  },
+  {
+   "addr": "0x00833de7",
+   "type": "u8",
+   "values": [
+    "0xcf"
+   ]
+  },
+  {
+   "addr": "0x00833de8",
+   "type": "u8",
+   "values": [
+    "0xd0"
+   ]
+  },
+  {
+   "addr": "0x00833de9",
+   "type": "u8",
+   "values": [
+    "0xd1"
+   ]
+  },
+  {
+   "addr": "0x00833dea",
+   "type": "u8",
+   "values": [
+    "0xd2"
+   ]
+  },
+  {
+   "addr": "0x00833deb",
+   "type": "u8",
+   "values": [
+    "0xd3"
+   ]
+  },
+  {
+   "addr": "0x00833dec",
+   "type": "u8",
+   "values": [
+    "0xd4"
+   ]
+  },
+  {
+   "addr": "0x00833ded",
+   "type": "u8",
+   "values": [
+    "0xd5"
+   ]
+  },
+  {
+   "addr": "0x00833dee",
+   "type": "u8",
+   "values": [
+    "0xd6"
+   ]
+  },
+  {
+   "addr": "0x00833def",
+   "type": "u8",
+   "values": [
+    "0xd7"
+   ]
+  },
+  {
+   "addr": "0x00833df0",
+   "type": "u8",
+   "values": [
+    "0xd8"
+   ]
+  },
+  {
+   "addr": "0x00833df1",
+   "type": "u8",
+   "values": [
+    "0xd9"
+   ]
+  },
+  {
+   "addr": "0x00833df2",
+   "type": "u8",
+   "values": [
+    "0xda"
+   ]
+  },
+  {
+   "addr": "0x00833df3",
+   "type": "u8",
+   "values": [
+    "0xdb"
+   ]
+  },
+  {
+   "addr": "0x00833df4",
+   "type": "u8",
+   "values": [
+    "0xdc"
+   ]
+  },
+  {
+   "addr": "0x00833df5",
+   "type": "u8",
+   "values": [
+    "0xdd"
+   ]
+  },
+  {
+   "addr": "0x00833df6",
+   "type": "u8",
+   "values": [
+    "0xde"
+   ]
+  },
+  {
+   "addr": "0x00833df7",
+   "type": "u8",
+   "values": [
+    "0xdf"
+   ]
+  },
+  {
+   "addr": "0x00833df8",
+   "type": "u8",
+   "values": [
+    "0xc0"
+   ]
+  },
+  {
+   "addr": "0x00833df9",
+   "type": "u8",
+   "values": [
+    "0xc1"
+   ]
+  },
+  {
+   "addr": "0x00833dfa",
+   "type": "u8",
+   "values": [
+    "0xc2"
+   ]
+  },
+  {
+   "addr": "0x00833dfb",
+   "type": "u8",
+   "values": [
+    "0xc3"
+   ]
+  },
+  {
+   "addr": "0x00833dfc",
+   "type": "u8",
+   "values": [
+    "0xc4"
+   ]
+  },
+  {
+   "addr": "0x00833dfd",
+   "type": "u8",
+   "values": [
+    "0xc5"
+   ]
+  },
+  {
+   "addr": "0x00833dfe",
+   "type": "u8",
+   "values": [
+    "0xc6"
+   ]
+  },
+  {
+   "addr": "0x00833dff",
+   "type": "u8",
+   "values": [
+    "0xc7"
+   ]
+  },
+  {
+   "addr": "0x00833e00",
+   "type": "u8",
+   "values": [
+    "0xc8"
+   ]
+  },
+  {
+   "addr": "0x00833e01",
+   "type": "u8",
+   "values": [
+    "0xc9"
+   ]
+  },
+  {
+   "addr": "0x00833e02",
+   "type": "u8",
+   "values": [
+    "0xca"
+   ]
+  },
+  {
+   "addr": "0x00833e03",
+   "type": "u8",
+   "values": [
+    "0xcb"
+   ]
+  },
+  {
+   "addr": "0x00833e04",
+   "type": "u8",
+   "values": [
+    "0xcc"
+   ]
+  },
+  {
+   "addr": "0x00833e05",
+   "type": "u8",
+   "values": [
+    "0xcd"
+   ]
+  },
+  {
+   "addr": "0x00833e06",
+   "type": "u8",
+   "values": [
+    "0xce"
+   ]
+  },
+  {
+   "addr": "0x00833e07",
+   "type": "u8",
+   "values": [
+    "0xcf"
+   ]
+  },
+  {
+   "addr": "0x00833e08",
+   "type": "u8",
+   "values": [
+    "0xd0"
+   ]
+  },
+  {
+   "addr": "0x00833e09",
+   "type": "u8",
+   "values": [
+    "0xd1"
+   ]
+  },
+  {
+   "addr": "0x00833e0a",
+   "type": "u8",
+   "values": [
+    "0xd2"
+   ]
+  },
+  {
+   "addr": "0x00833e0b",
+   "type": "u8",
+   "values": [
+    "0xd3"
+   ]
+  },
+  {
+   "addr": "0x00833e0c",
+   "type": "u8",
+   "values": [
+    "0xd4"
+   ]
+  },
+  {
+   "addr": "0x00833e0d",
+   "type": "u8",
+   "values": [
+    "0xd5"
+   ]
+  },
+  {
+   "addr": "0x00833e0e",
+   "type": "u8",
+   "values": [
+    "0xd6"
+   ]
+  },
+  {
+   "addr": "0x00833e0f",
+   "type": "u8",
+   "values": [
+    "0xf7"
+   ]
+  },
+  {
+   "addr": "0x00833e10",
+   "type": "u8",
+   "values": [
+    "0xd8"
+   ]
+  },
+  {
+   "addr": "0x00833e11",
+   "type": "u8",
+   "values": [
+    "0xd9"
+   ]
+  },
+  {
+   "addr": "0x00833e12",
+   "type": "u8",
+   "values": [
+    "0xda"
+   ]
+  },
+  {
+   "addr": "0x00833e13",
+   "type": "u8",
+   "values": [
+    "0xdb"
+   ]
+  },
+  {
+   "addr": "0x00833e14",
+   "type": "u8",
+   "values": [
+    "0xdc"
+   ]
+  },
+  {
+   "addr": "0x00833e15",
+   "type": "u8",
+   "values": [
+    "0xdd"
+   ]
+  },
+  {
+   "addr": "0x00833e16",
+   "type": "u8",
+   "values": [
+    "0xde"
+   ]
+  },
+  {
+   "addr": "0x00833e17",
+   "type": "u8",
+   "values": [
+    "0x9f"
+   ]
+  }
+ ]
+}

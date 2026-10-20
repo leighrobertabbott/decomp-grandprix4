@@ -1,0 +1,22 @@
+{
+  "_evidence": "Dword table behind pointer global 0x0062a048 (set by 0x00444899 from edx together with its entry count 0x0062a04c, checked against 0x400). 0x004225c0 reads [esi+ebx*4] at 0x004225dc (test with 0x7fffff) and 0x004225e1 (test with 0x14280) and may store 0 at 0x004225f2, for ebx = 0 .. [0x0062a05c]-1. state_004225c0 bounds that count to 1..16, so 16 dwords (64 bytes) cover every read. Unconstrained u32 draws (0, 1, 2, -1, small, 16-bit, random) give entries with the low 23 bits clear (je taken), with a 0x14280 bit set (jne taken) and with neither (reaches the threshold compare).",
+  "size": 64,
+  "fields": [
+    {"off": 0,  "type": "u32"},
+    {"off": 4,  "type": "u32"},
+    {"off": 8,  "type": "u32"},
+    {"off": 12, "type": "u32"},
+    {"off": 16, "type": "u32"},
+    {"off": 20, "type": "u32"},
+    {"off": 24, "type": "u32"},
+    {"off": 28, "type": "u32"},
+    {"off": 32, "type": "u32"},
+    {"off": 36, "type": "u32"},
+    {"off": 40, "type": "u32"},
+    {"off": 44, "type": "u32"},
+    {"off": 48, "type": "u32"},
+    {"off": 52, "type": "u32"},
+    {"off": 56, "type": "u32"},
+    {"off": 60, "type": "u32"}
+  ]
+}

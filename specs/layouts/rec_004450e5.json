@@ -1,0 +1,8 @@
+{
+ "_evidence": "Inputs of the replay record writer 0x004450e5 (and its wrappers 0x444c1c/0x444c89/0x444d00/0x444d4f; compose after state_0041104f+flags_00408f7b+carx_0042fe2f+stream_0062d1a0): for the car [0x66d820] (null or one of records 0..5, state_0041104f) it copies words +0xf6 and +0x10e of the car into the 10-byte stream record at [0x62d1a0] (+5/+7) and the byte [0x66d8b4] into +9. The car words are run-time state (zero in the image) and are drawn uniformly over i16 for all 22 records; [0x66d8b4] (the mode/flag word's low byte) is any u8. Only copies: nothing faults.",
+ "globals": [
+  {"addr": "0x66ffe6", "type": "i16", "count": 22, "stride": "0x41c", "lo": -32768, "hi": 32767},
+  {"addr": "0x66fffe", "type": "i16", "count": 22, "stride": "0x41c", "lo": -32768, "hi": 32767},
+  {"addr": "0x66d8b4", "type": "u8", "lo": 0, "hi": 255}
+ ]
+}

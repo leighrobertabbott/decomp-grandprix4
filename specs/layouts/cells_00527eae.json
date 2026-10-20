@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x00527eae: `mov eax,[0x81cd58]; imul eax,eax,4; add eax,0x81c0b8; mov edi,eax; mov eax,[edi]` reads one handle cell of the 808-dword table 0x81c0b8..0x81cd58 (one per frame record of 0x8174f8, whose capacity is (0x81c0b8-0x8174f8)/0x18 = 808); the index is the frame number stored by 0x5280ac/0x527dee/0x5280e2 (0x527dee bounds it by the frame count [0x8174f4] <= 808), so 0..807 (larger values read past the table: invalid). A nonzero cell is passed to 0x53888e, which reads slot (h & 0x3ff) at 0x829cac (+0xc in use, +4 compared with the key h >> 10). Handles are made by 0x5387dc as slot[0] | ([0x82fcb4] << 10) with the key counter 2..0x3fffff stored in slot +4: cells draw zero (no handle) or handles with keys 2..4 and 0x3fffff over low and high slots; overlaying slot +4 (0x829cb0, all 1024 slots) with keys 2..5 makes the key match (cell kept, eax -1) and mismatch/free slot (cell cleared) both occur. Compose after slots_005388ed (it varies +0xc in use / free).",
+  "globals": [
+    {"addr": "0x0081cd58", "type": "u32", "lo": 0, "hi": 807},
+    {"addr": "0x0081c0b8", "type": "u32", "count": 808, "stride": 4, "values": [0, 0, "0x801", "0xc03", "0x1002", "0x13ff", "0xffffffff"]},
+    {"addr": "0x00829cb0", "type": "u32", "count": 1024, "stride": "0x18", "values": [2, 3, 4, 5]}
+  ]
+}

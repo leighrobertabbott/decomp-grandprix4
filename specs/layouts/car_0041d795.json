@@ -1,0 +1,8 @@
+{
+  "_evidence": "esi of 0x0041d795: car record prefix (0x266 bytes), background random (fill bytes: position dwords +0, +4, +0xc, +0x10, +0x14 are copied/added, no pointer or divisor). Byte +0x25e is the car's object slot: imul 0x78 + 0x63bd7c selects one of the 64 object records (recs_0063bd7c, ecx 0..63 walk in 0x42506e), whose dwords +0..+0x14 are written and +0x18..+0x20 rotated in place, so it is drawn 0..63; random bytes made it address 192 nonexistent records past the array.",
+  "size": 614,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x25e", "type": "u8", "lo": 0, "hi": 63}
+  ]
+}

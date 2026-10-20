@@ -1,0 +1,7 @@
+{
+ "_evidence": "The eax buffer of 0x50cfc2 (in the game the fixed array 0x62ac78 that 0x41f02b fills with four corner coordinates: (dim*cos/sin >> 14) + ([0x62283c] << 8)): dwords +0/+4/+8/+0xc are read ('mov eax,[esi]; sar eax,8; imul [0x73d198]'), +0..+0x1c are written. Corners near the road (see shade_0050cfc2): i32 within +-0xc0000, so the scaled column v reaches both sides of the 64-entry window and every lookup stays inside its block.",
+ "size": 64,
+ "fields": [
+  {"off": 0, "type": "i32", "count": 4, "stride": 4, "lo": -786432, "hi": 786432}
+ ]
+}

@@ -1,0 +1,10 @@
+{
+ "_evidence": "0x0051c6c3: zeroes the six dword bins 0x937de8..0x937dfc ('mov [eax*4+0x937de8],0; inc eax; loop', ecx = 6), then 'movzx ebx, word [0x34d*2 + 0x9e1b20]' (= word 0x9e21ba), 'cmp bx,-1; je' skips; otherwise 'add ebx,0x6975ec': the word is the byte offset of a 0x20-byte entry of the texture table 0x6975ec (0x51c058 copies 0x20-byte entries and stores edi-0x6975ec in 0x9e1b20[], 0x51bfb6 resets every word to 0xffff, as in tex_0051c690), so it is 0xffff or k*0x20 and entries 0..2 are drawn. Entry +0 'mov esi,[ebx]' is the texel pointer (read directly with lodsb, rows 'add esi,0x100' apart), word +4 the width W ('movzx ecx': the inner 'loop' count) and word +6 the row count H ('movzx ebp; ... dec ebp; jne'): W = 0 or H = 0 run 2^32 times and are never a real texture, so W is 1..256 (row stride 0x100) and H 1..16, touching at most (H-1)*0x100 + W <= 0x1000 bytes of a distinct 0x1000-byte buffer per entry. total = ebx counts W*H (1..4096) and is the 'idiv ebx' divisor with edx = 0 and eax = bin << 14 <= 2^26, so the quotient fits. Each texel b increments dword [0x937de8 + (uint8)(b-0x12)*4] (the 'cmp al,8; jb' is a no-op: both paths reach the inc), so texels are drawn from 0x12..0x19 in about 3/4 of the bytes (u8 set fill) and as any byte otherwise; every index 0..255 stays in writable .data (0x937de8..0x9381e4), and the bins above the six cleared ones (0x937e00 + 4k, k = 0..249) are varied so their increments are checked.",
+ "globals": [
+  {"addr": "0x009e21ba", "type": "u16", "values": ["0xffff", 0, 0, "0x20", "0x40"]},
+  {"addr": "0x006975ec", "type": "ptr", "count": 3, "stride": "0x20", "size": "0x1000", "fill": "u8{0x12,0x13,0x14,0x15,0x16,0x17,0x18,0x19}"},
+  {"addr": "0x006975f0", "type": "u16", "count": 3, "stride": "0x20", "lo": 1, "hi": 256},
+  {"addr": "0x006975f2", "type": "u16", "count": 3, "stride": "0x20", "lo": 1, "hi": 16},
+  {"addr": "0x00937e00", "type": "u32", "count": 250, "stride": 4}
+ ]
+}

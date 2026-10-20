@@ -1,0 +1,37 @@
+{
+ "_evidence": "0x00432f18 / 0x432c21: [0x866f08] is a track-segment address (record 0..3 of the 0x160-stride array at 0x8943a0; it is only subtracted, never dereferenced here), [0x62d2b0] a flag (zero/nonzero selects the extra +0x160 in 0x432c03), [0x62787c]/[0x627880] the signed thresholds for word +0x66 (static 0x1e00/0x1800, varied -64..64 against +-64 words so both jge outcomes occur).",
+ "globals": [
+  {
+   "addr": "0x00866f08",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 3
+   }
+  },
+  {
+   "addr": "0x0062d2b0",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    1,
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x0062787c",
+   "type": "i32",
+   "lo": -64,
+   "hi": 64
+  },
+  {
+   "addr": "0x00627880",
+   "type": "i32",
+   "lo": -64,
+   "hi": 64
+  }
+ ]
+}

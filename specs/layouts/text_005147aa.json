@@ -1,0 +1,67 @@
+{
+ "_evidence": "esi text line of the table file 0x891ce0 parsed by 0x0051488e (one 0x5147aa call per item list). 0x5147aa loops: 0x5146e8 skips blanks/tabs and returns the next byte; ',' -> loop; ';' or CR -> 0x5146f2 reads up to and including the next LF and returns (the only exit); '\"' -> 0x514734 copies bytes to edi until the next '\"' (at most 0x101); '+', '-' or '0'..'9' (signed compares, so bytes >= 0x80 are not digits) -> dec esi, 0x5147a3/0x514748: optional sign, then 0x5146e8 and EVERY byte up to the next ',', CR, LF, space or tab counts as a digit (dec esi leaves the terminator for the loop), stosb; 'D'/'d' -> dec esi, 0x514705: D then B/b then a blank/tab gives clc with esi on the blank, anything else 'sub esi,2' + stc leaving esi on the D, and both 'jae 0x5147aa' and 'jmp 0x5147aa' return to the loop, so a D/d not followed by B/b + blank is re-read forever (the original never terminates: the game's file only holds 'DB ' directives; block 0x5147ee is reachable only in that non-terminating case); any other byte -> 0x514734 copies the following bytes up to a '\"'. So text without a final ';'/CR..LF, with an unterminated number (e.g. digits followed by ';') or with an unclosed string runs off the buffer. The line is built from 4-byte slots, each a u32 whose little-endian bytes are one complete token that returns the parser to a token boundary inside the slot: commas and blanks, 'DB '/'db\\t'/'Db '/'dB\\t' directives, numbers each ending in a terminator ('12, ', '-5  ', '+ 9 ', '-\\t3 ', '-,  ' (sign then any byte), '5\\n\" ' (LF terminator, then the LF starts a string closed by '\"')), quoted strings (including control bytes and 0x7f) and other-byte strings closed by '\"' on both sides of every compare ('/' ':' 'A' 'B' 'C' 'E' 'c' 'e' '!' '*' '.' 0x80 0xff LF), plus ';\\n' (an early end). Slots 0..14 draw from those, slot 15 always ends the line (';\\n', CR LF, ';x\\n', CR..LF, '5\\r\\n', ',;\\n', '\\t\\r\\n', ';\"\\n'), so every case terminates inside the 64 bytes and the strings copied to edi total at most 30 bytes. Values are synthetic.",
+ "size": 64,
+ "fields": [
+  {
+   "off": 0,
+   "type": "u32",
+   "count": 15,
+   "stride": 4,
+   "values": [
+    "0x2020202c",
+    "0x202c2020",
+    "0x202c2c09",
+    "0x20202020",
+    "0x20204244",
+    "0x20096264",
+    "0x9206244",
+    "0x2c094264",
+    "0x2c204244",
+    "0x202c3231",
+    "0x20202037",
+    "0x20200930",
+    "0x20202c39",
+    "0x2020352d",
+    "0x2039202b",
+    "0x202c302d",
+    "0x2009352b",
+    "0x2033092d",
+    "0x20202c2d",
+    "0x20220a35",
+    "0x22626122",
+    "0x20202222",
+    "0x227f0122",
+    "0x20202241",
+    "0x20202242",
+    "0x20227978",
+    "0x2020222f",
+    "0x2020223a",
+    "0x20202243",
+    "0x20202245",
+    "0x20202263",
+    "0x20202265",
+    "0x202022ff",
+    "0x20202280",
+    "0x2020220a",
+    "0x20202221",
+    "0x2020222a",
+    "0x2020222e",
+    "0x20200a3b"
+   ]
+  },
+  {
+   "off": "0x3c",
+   "type": "u32",
+   "values": [
+    "0x20200a3b",
+    "0x20200a0d",
+    "0x200a783b",
+    "0xa09200d",
+    "0x200a0d35",
+    "0x200a3b2c",
+    "0x200a0d09",
+    "0x200a223b"
+   ]
+  }
+ ]
+}

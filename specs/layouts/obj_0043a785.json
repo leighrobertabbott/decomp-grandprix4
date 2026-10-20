@@ -1,0 +1,9 @@
+{
+  "_evidence": "Collision-object records passed in eax and edx to 0x0043a785 (0x43a83d passes the pair [0x607ac0]/[0x607abc]): dword +0x48 is the object's weight; q = (w_a << 14) / (w_a + w_b) ('cdq; shld/shl 14; idiv', divisor 1 when the sum is zero). With both weights in -0xffff..0xffff, |w_a<<14| < 2^30, so the quotient fits for every nonzero sum and for the zero-sum fallback (a wild weight pair overflows the idiv in the original); the range edges make w_b = -w_a (zero sum, block 0x43a79a) occur in a few percent of the cases. Byte +0x6c is the car index (0x66fef0 + idx*0x41c; 22 cars: 0..21), byte +0x6f bit 1 selects the car path (random). Other bytes random; the same layout serves both records (edx's is only read at +0x48).",
+  "size": 120,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x48", "type": "i32", "lo": -65535, "hi": 65535},
+    {"off": "0x6c", "type": "u8", "lo": 0, "hi": 21}
+  ]
+}

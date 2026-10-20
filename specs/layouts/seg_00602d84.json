@@ -1,0 +1,16 @@
+{
+ "_evidence": "[0x00602d84] is a segment-record pointer (null or a record of the 0x160-byte array at 0x8943a0, records 0..25) read by 0x00425c87; fuzzed it is wild and every non-null case faults.",
+ "globals": [
+  {
+   "addr": "0x00602d84",
+   "type": "u32",
+   "nullable": true,
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 25
+   }
+  }
+ ]
+}

@@ -1,0 +1,17 @@
+{
+  "_evidence": "Overlay (compose LAST on esi, after car_0042ba87+car_0040ea09+car_00428bea) for 0x0042f47f, whose deep path (0x42f5c1..0x42f6ca) needs a chain of ~10 tests to pass: each tested field draws from values that pass and fail. Byte +0xfe bit 6 and +0xcc bit 4 (exit tests 0x42f47f/0x42f48c) clear in most picks; +0x161 (bit 7 path 0x42f4a9, bit 3 path 0x42f52e, bit 3 RMW at 0x42f691/0x42f6cc) mixes all four combinations; word +0x100 (movzx, 'cmp [0x62ac54]=0x2c00; jge') below and above; byte +0x415 (the car's position 2*i, car_0040ea09) from {0,2,0x28,0xff} so 'al = +0x415 + 2 == other +0x415' (0x42f5b5, other cars from cars_0042f47f {2,4,0x2a,1,0x10}) matches in about 1/4 (0xff+2 wraps to 1); word +0x68 (lap distance, i16 lead esi - other: js / 'cmp [0x603b12]=0x19; jge') from 0..32 in steps of 8 plus the extremes on both cars; word +0x9a (speed; 'esi - other < [0x603b80]=0x300' at 0x42f4cd, '< [0x603b7e]=-16' at 0x42f632, and v in the speed term) from 0x1000..0x5000 against the other cars' 0x1100..0x6000 plus extremes; byte +0x9c bit 1 (0x42f5df: either car's selects 0x40dc8a) clear in 2/3; word +0xe2 (lateral position: esi - other must lie in [[0x603b7c]=0x60, [0x603b7a]=0x200]) from 0..0x300 against the other cars' {0,0x100,extremes}. Segment pointer +0x1c: segblk_0042f47f. Only compares, 16/32-bit arithmetic and imul: no value faults.",
+  "size": 1056,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x1c", "type": "ptr", "size": 464, "fill": "layout=segblk_0042f47f"},
+    {"off": "0xfe", "type": "u8", "values": [0, 0, 0, 0, "0x40", "0xff", "0x10", "0xbf", "0x08"]},
+    {"off": "0xcc", "type": "u8", "values": [0, 0, 0, 0, "0x10", "0xff", "0xef", "0x20"]},
+    {"off": "0x161", "type": "u8", "values": [0, 0, 0, "0x80", "0x88", "0x08", "0x08", "0x7f", "0xff", "0x77"]},
+    {"off": "0x100", "type": "u16", "values": [0, "0x100", "0x1000", "0x2bff", "0x2c00", "0xffff", "0x8000"]},
+    {"off": "0x415", "type": "u8", "values": [0, 2, "0x28", "0xff"]},
+    {"off": "0x68", "type": "u16", "values": [0, 8, 16, 24, 32, "0x7fff", "0x8000"]},
+    {"off": "0x9a", "type": "u16", "values": ["0x1000", "0x2000", "0x3000", "0x4000", "0x5000", "0x7fff", "0x8000", "0xff00"]},
+    {"off": "0x9c", "type": "u8", "values": [0, 0, 0, 0, 2, "0xff"]},
+    {"off": "0xe2", "type": "u16", "values": ["0x80", "0x100", "0x180", "0x200", "0x300", 0]}
+  ]
+}

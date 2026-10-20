@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x0040b060 loads the segment-record pointer [0x00866f08] (a record of the 0x160-stride array at 0x008943a0: 0x40cb38 reads it at +0x18c0 = 18 records on, 0x432c21 subtracts it from car segment pointers and divides by 0x160) and ors bits 1 and 2 into byte +0x12 of it and the next five records (ax 5..0, jns). Fuzzed values were wild pointers (327/328 faults). Domain: record-aligned pointer to record 0..20, so the six records stay within records 0..25, whose bytes +0x12 (0x008943b2 + k*0x160) are varied (any value; the flags come from the final sub ax,1).",
+  "globals": [
+    {"addr": "0x00866f08", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 20}},
+    {"addr": "0x008943b2", "type": "u8", "count": 26, "stride": "0x160"}
+  ]
+}

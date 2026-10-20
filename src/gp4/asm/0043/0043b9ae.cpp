@@ -27,4 +27,4 @@ void __cdecl FUN_0043b9ae(gp4::Regs* r) {
     // eax is saved and restored around the body
     r->eflags = (r->eflags & ~0x8d5u) | flags;
 }
-GP4_IMPL(0x0043b9ae, FUN_0043b9ae, "regs(esi:ptr[0x84]:bytes) -> (cf, pf, af, zf, sf, of)")
+GP4_IMPL(0x0043b9ae, FUN_0043b9ae, "regs(esi:ptr[0x84]:bytes) -> (cf, pf, af, zf, sf, of); globals=layout=flags_0066d909")

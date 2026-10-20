@@ -1,0 +1,25 @@
+{
+ "_evidence": "Bit 0x78 bytes of the 0x510e2d bitmaps read by 0x0051d5f2 (0x8245af wanted, 0x8910e4 state), zero in the image: drawn so wanted=1/state=0 occurs.",
+ "globals": [
+  {
+   "addr": "0x008245af",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    "0xff",
+    "0xfe"
+   ]
+  },
+  {
+   "addr": "0x008910e4",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    "0xff",
+    "0xfe"
+   ]
+  }
+ ]
+}

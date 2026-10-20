@@ -1,0 +1,10 @@
+{
+ "_evidence": "Text-edit record at edi for 0x0054defe (caller chain 0x54dd7a -> 0x54ded0 -> 0x54dedb, 0x54defe; +0 text start, +4 end pointer E = the address of the terminating 0, +8 cursor, +0xc capacity end - only 0x54dd7a reads +0xc). 'mov esi,[edi]' (0x54df08, 0x54dfb4) and 'mov edx,[edi]' (0x54dfe4) read the start; 0x54e12a/0x54e13f move the bytes up to [edi+4] inclusive and adjust it ('add/sub [edi+4],eax'), 0x54dfc0 'mov esi,[edi+4]; dec esi; cmp byte [esi],0x14; jge' scans back from E - 1, so E must be the terminator's address (text_0054defe keeps the 0 at 0xa20040 and E = 0xa20040). The cursor +8 is only compared ('cmp edx,[edi+8]; jae' unsigned, 'cmp esi,[edi+8]; jl' signed) and adjusted ('add [edi+8],eax', 'sub [edi+8],edx'), never dereferenced. The text lives at the fixed unreferenced bss block 0xa20000 (as buf_0054e12a): start = 0xa20000 + 0..0x40 (0x40 = empty text), cursor = 0xa20000 + 0..0x40 (inside the text or, when below the start, still only compared). +0xc and other bytes are random (never read here).",
+ "size": 16,
+ "fill": "bytes",
+ "fields": [
+  {"off": 0, "type": "u32", "points_into": {"base": "0xa20000", "stride": 1, "lo": 0, "hi": 64}},
+  {"off": 4, "type": "u32", "values": ["0xa20040"]},
+  {"off": 8, "type": "u32", "points_into": {"base": "0xa20000", "stride": 1, "lo": 0, "hi": 64}}
+ ]
+}

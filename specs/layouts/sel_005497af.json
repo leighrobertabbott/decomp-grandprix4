@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x005497af: 'movzx eax,byte [0x831d64]; cmp eax,5; jb; mov eax,4' then 'call [eax*4+0x5497cc]': handler 0 (0x5497e1) copies the 6 bytes 0x831d0d -> 0x831cfd (rep movsb), 1 (0x5497f9) copies 0x831d13 -> 0x831cfd, 2 (0x549811) copies 0x831d07 -> 0x831cfd, 3 (0x549829) fills 0x831cfd..0x831d02 with 0xff and clears the dword 0x831d03, 4 (and every byte >= 5) is a bare ret. A fuzzed selector byte almost always lands on the ret, and the record bytes are zero in the image, so the copies/fills were barely visible. The selector draws 0..6 and 0xff (every handler and the clamp) and the 35 bytes 0x831cfd..0x831d1f (destination record, cursor dword 0x831d03 and the three source records) are random: plain byte copies/stores, every pattern valid.",
+ "globals": [
+  {"addr": "0x00831d64", "type": "u8", "values": [0, 1, 2, 3, 4, 5, 6, "0xff"]},
+  {"addr": "0x00831cfd", "type": "u8", "count": 35, "stride": 1}
+ ]
+}

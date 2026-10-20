@@ -1,0 +1,13 @@
+{
+ "_evidence": "Message record at esi for 0x005408d4 ('mov bl,[esi]; inc esi; call 0x53eeb7'): byte +0 is the flag bl (0x53eeb7 'or bl,bl; je' stores the line number to [0x83059f] when nonzero), the rest is the format string that 0x54d7c0 expands into the log line: 'lodsb; or al,al; je end', code 4 = escape (0x54d834 reads the decimal handler number - it resets eax per digit, so the last digit counts -, 'inc esi' skips one separator, handlers 0..4 from the table 0x54d7ac), other codes below 0x14 copy [0x833f98+4*code] bytes starting at the code byte (lengths 0..5 here: 'dec esi; rep movsb', so their payload bytes are copied, never parsed), bytes >= 0x14 are stored. A random record faulted the original in 42 of 200 cases (escape handler 0 'mov eax,[[0x833f1c]+4n]' with the image's null table pointer, and handlers 3/4 dereference a literal address / an unloaded text pointer). Domain: +1 is an escape (code 4) in about a third of the cases, then +2 = handler '0' or '1' (0x54d856 / 0x54d86d: the dword [[0x833f1c]+4n] formatted as unsigned or signed decimal by 0x54dad5, log_005408d4 points [0x833f1c] at an 8-dword table), +3 a separator, +4 the item digit n 0..7, +5 a separator; otherwise +1 is a plain character, a 1/2/5-byte colour code or the terminator, and +2..+5 are then ordinary text. +6..+0x2f are tokens from plain characters, digits, colour codes 1,2,3,5,8,0xd,0x10,0x11,0x13 and NUL (never code 4, whose handlers 2..4 need the unloaded text/string tables); +0x30..+0x40 are NUL, so whatever payload lengths come before, the scan ends inside the record and the expanded text (at most 0x2f bytes, or + 11 digits for one escape) stays inside the 0x48-byte log line or the next one. Values are synthetic.",
+ "size": 65,
+ "fields": [
+  {"off": 0, "type": "u8", "values": [0, 0, 1, "0xff"]},
+  {"off": 1, "type": "u8", "values": [4, 4, 4, "0x41", "0x7a", 1, "0x10", 8, 0]},
+  {"off": 2, "type": "u8", "values": ["0x30", "0x31"]},
+  {"off": 3, "type": "u8", "values": ["0x2c", "0x20"]},
+  {"off": 4, "type": "u8", "values": ["0x30", "0x31", "0x32", "0x33", "0x34", "0x35", "0x36", "0x37"]},
+  {"off": 5, "type": "u8", "values": ["0x2c", "0x2e", "0x41"]},
+  {"off": 6, "type": "u8", "count": 42, "stride": 1, "values": ["0x41", "0x61", "0x20", "0x2e", "0x30", "0x39", "0x7e", "0x80", "0xe9", "0xff", "0x14", 1, 2, 3, 5, 8, "0xd", "0x10", "0x11", "0x13", 0]}
+ ]
+}

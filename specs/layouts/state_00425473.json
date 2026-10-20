@@ -1,0 +1,33 @@
+{
+ "_evidence": "Globals of 0x00425473 (compose after state_00426091, which supplies the 0x426091 cache pair, the gain 0x62d28c and the 513-dword table 0x63a194). [0x603854] is the rate: idiv of sx(+0xda) << 17 (|dividend| <= 2^32) by it fits int32 for every divisor >= 3 or <= -3 (+-1 and -2 overflow), then s / q (q nonzero, |s| < 2^30) and s' / ((clamped + d)*2 or 1) cannot overflow. The game's rate is positive (0x412604 copies [0x7ad8b8] = 1..0xffff, rate_007ad8b8), which makes the sign-mirrored blocks 0x425518/0x425521/0x425526 unreachable in play (q2 = s/q1 has the sign of the rate when sign(da) = sign(s)); the list also holds -3, -0x800 and -0x8000 only so those blocks are executed and compared on inputs the original handles without fault. Positive picks 3 (the smallest valid), 0x20, 0x800, 0x8000 (small q1 -> the 0x4000 clamp), 0x1234, 0xffff. [0x603b66] (distance threshold, jl) is <= 0 in most picks so equal-distance cases pass the gate; [0x603afc] and [0x623e02] stay with fuzz:i32.",
+ "globals": [
+  {
+   "addr": "0x00603854",
+   "type": "u32",
+   "values": [
+    3,
+    "0x20",
+    "0x800",
+    "0x8000",
+    "0xffff",
+    "0x1234",
+    "0xfffffffd",
+    "0xfffff800",
+    "0xffff8000"
+   ]
+  },
+  {
+   "addr": "0x00603b66",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    "0xffff",
+    "0x8000",
+    1,
+    "0x100",
+    "0x7fff"
+   ]
+  }
+ ]
+}

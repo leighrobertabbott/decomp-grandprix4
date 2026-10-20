@@ -1,0 +1,12 @@
+{
+ "_evidence": "0x0055a9f8 (standalone globals layout): the only dereference is 'mov edi,[0x866f00]; mov ax,[edi+0x1a]' (pit-entry record of the 0x160-byte ring at 0x8943a0; the word is masked with 0x7ff into 0x86856a), so the entry cursor is a record address 0..25 and the words +0x1a of those records are varied (ring_0040aec5 left them at their static values). Everything else is arithmetic on record addresses: q1 = (lap end [0x866ecc] - entry + exit [0x866f04] - lap start [0x891504]) / 0x160 and q2 = (pit end [0x866ef8] - pit start [0x891500]) / 0x160, each 'div cx' guarded by 'shr edx,16; cmp dx,0x160; jb' (a negative difference has dx = 0xffff and takes the stc path 0x55aa31/0x55aa4e instead of dividing), then (movsx q1 << 14) / q2 under the same guard (q2 = 0 always takes stc). ring_0040aec5's coherent pit geometry (pit end 12..14 above pit start 9..10) made q2 positive in every case, so 0x55aa4e was never reached. The cursors here are record addresses with overlapping ranges (lap start 0..2, lap end 4..25, entry/exit/pit start/pit end 0..25), so every difference takes both signs and q2 = 0, q2 small and q2 > q1/4 all occur. The guarded divisions never fault (dx < cx before every div), so every value is valid.",
+ "globals": [
+  {"addr": "0x00891504", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 2}},
+  {"addr": "0x00866ecc", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 4, "hi": 25}},
+  {"addr": "0x00866f00", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 25}},
+  {"addr": "0x00866f04", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 25}},
+  {"addr": "0x00891500", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 25}},
+  {"addr": "0x00866ef8", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 25}},
+  {"addr": "0x008943ba", "type": "u16", "count": 26, "stride": "0x160"}
+ ]
+}

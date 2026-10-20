@@ -1,0 +1,77 @@
+{
+ "_evidence": "Menu header as read by the menu value save/compare/restore routines 0x0053ddbb/0x0053de6f/0x0053df39 (ebx = [0x82fd34]): dword +0 is the first item ('mov ebx,[ebx]; or ebx,ebx; je' walks the +0 links, so 0 = a menu without items), and from +0x28 a table of 6-byte entries {u16 count, u32 buffer} ended by a zero count ('cmp word [ebx],0; jne', 'movzx ecx,word [ebx]; mov esi|edi,[ebx+2]'; then rep movsb (save/restore) or a cmpsb/dec ecx/jne loop (compare); 'add ebx,6'). Real menus in .data carry 0..2 such entries (e.g. headers 0x83e782, 0x83f0aa, 0x843849, 0x846e40 have counts in the tens to hundreds and static buffers; 0x84300a has none). Here: the item link points at the real static item chain of menu 0x84300a (all 13 items, from item 6, only item 13, or none) so menu_0084300a/mitems_0053ddbb vary the items; up to three entries (count 0 ends the table early, the u16 at +0x3a is the zero terminator) with counts 1..0x100, each buffer a separate 0x100-byte read/writable buffer so no copy or compare leaves it. Buffer bytes come mostly from {0,1,2,0x41} so the compare routine sees equal and different bytes (both directions of its je).",
+ "size": 64,
+ "fields": [
+  {
+   "off": 0,
+   "type": "u32",
+   "values": [
+    "0x843040",
+    "0x843040",
+    "0x843040",
+    "0x8430fe",
+    "0x843224",
+    0
+   ]
+  },
+  {
+   "off": "0x28",
+   "type": "u16",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    5,
+    8,
+    16,
+    "0x40",
+    "0xff",
+    "0x100"
+   ]
+  },
+  {
+   "off": "0x2a",
+   "type": "ptr",
+   "size": 256,
+   "fill": "u8{0,1,2,0x41}"
+  },
+  {
+   "off": "0x2e",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    1,
+    4,
+    7,
+    "0x20",
+    "0x100"
+   ]
+  },
+  {
+   "off": "0x30",
+   "type": "ptr",
+   "size": 256,
+   "fill": "u8{0,1,2,0x41}"
+  },
+  {
+   "off": "0x34",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    2,
+    3,
+    "0x11",
+    "0x100"
+   ]
+  },
+  {
+   "off": "0x36",
+   "type": "ptr",
+   "size": 256,
+   "fill": "u8{0,1,2,0x41}"
+  }
+ ]
+}

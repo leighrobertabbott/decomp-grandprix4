@@ -1,0 +1,11 @@
+{
+  "_evidence": "ebx block of 0x0055268f (an entry the caller 0x0055278a walks; only these dwords are read): +0x50 'mov ecx,[ebx+0x50]; cmp ecx,-1; jne' is -1 (no table: [edi+0x90] = [ebx+0x54]) or a pointer to a count-prefixed dword table; points_into with base 0xffffffff and stride 0xa20001 yields exactly -1 (k = 0) or 0x00a20000 (k = 1), the table tab_0055268f lays out (compose it in globals). +0x54 any dword (copied on the -1 path, overwritten otherwise). +0x58 'mov eax,[ebx+0x58]; inc eax' on the bit-0 path: values 0..16 hit every in-table index and the count clamp, -1/-2 (eax <= 0) and 0x7fffffff (inc overflows to negative) the '< 1' clamp, 0x80000000/0x12345678 the large-index clamp. +0x60 'test [ebx+0x60],1' / 'test [ebx+0x60],2': every combination of bits 0/1, with and without high bits. The rest of the 0x68-byte block is random background (never read).",
+  "size": 104,
+  "fill": "bytes",
+  "fields": [
+    {"off": 80, "type": "u32", "points_into": {"base": "0xffffffff", "stride": "0xa20001", "lo": 0, "hi": 1}},
+    {"off": 84, "type": "u32"},
+    {"off": 88, "type": "u32", "values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, "0xffffffff", "0xfffffffe", "0x7fffffff", "0x80000000", "0x12345678"]},
+    {"off": 96, "type": "u32", "values": [0, 1, 2, 3, "0xfffffffc", "0xfffffffd", "0xfffffffe", "0xffffffff", "0x80000010", "0x12345679"]}
+  ]
+}

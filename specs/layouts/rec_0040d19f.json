@@ -1,0 +1,26 @@
+{
+ "size": 280,
+ "_evidence": "Record read by the tail of 0x0040d19f through [0x00627804] (the caller 0x40d389 stores its segment record there): dwords +0x100 / +0x10c are the clamp/divisor of the final idiv ((min(|eax|,ecx)<<14)/ecx with xor edx,edx), valid for 0..2^20 (0 is replaced by 1; a negative dword would overflow the idiv), words +0x108 / +0x114 any i16 (shl 6, imul/shrd).",
+ "fields": [
+  {
+   "off": "0x100",
+   "type": "u32",
+   "lo": 0,
+   "hi": 1048576
+  },
+  {
+   "off": "0x108",
+   "type": "i16"
+  },
+  {
+   "off": "0x10c",
+   "type": "u32",
+   "lo": 0,
+   "hi": 1048576
+  },
+  {
+   "off": "0x114",
+   "type": "i16"
+  }
+ ]
+}

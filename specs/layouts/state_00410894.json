@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x00410894 runs 0x00410841 for channels ecx = 0..3. Per channel: x = dword [0x00601d7c+4c]; (x<<10)/[0x00601d9c+4c] and (x<<6)/[esi+0x2cc+4c] are unsigned div with edx = x>>22 resp. x>>26, then [0x00601df4+4c] - sum - [esi+0x2dc+4c] is stored to [esi+0x33c+4c]. A zero divisor or a divisor <= the high part is #DE in the original, so the domain keeps x in 0..0x3fffff (edx = 0 for both, as the 22-bit magnitudes these channels hold) and the divisors nonzero (a list from 1 to 0xffffffff so quotients range from x<<10 down to 0); 0x601df4 is plain.",
+  "globals": [
+    {"addr": "0x00601d7c", "type": "u32", "count": 4, "stride": 4, "lo": 0, "hi": 4194303},
+    {"addr": "0x00601d9c", "type": "u32", "count": 4, "stride": 4, "values": [1, 2, 3, "0x40", "0x400", "0x10000", "0x12345", "0x7fffffff", "0xffffffff"]},
+    {"addr": "0x00601df4", "type": "u32", "count": 4, "stride": 4}
+  ]
+}

@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x0041b035 integrates the 22 slots (byte esi+0x202 0..21, rec_00418c68; *0x60) of the f64 table 0x6020b0..0x6028ef (positions +0..+0x10, velocities +0x30..+0x40) for N = max(1, D/d) sub-steps with D = dword 0x60384c (the frame time step copied from 0x603854 by 0x418138; Q16, scaled by the image constant 2^-16 at 0x6f2a1c) and d = dword 0x6028f0 (image 0x80). Both divisions are 'xor edx,edx; idiv' of the unsigned D: d = 0 is the original's #DE, D >= 2^31 with N = 1 overflows the second idiv, and N is the loop count (dec ecx; jne), so D is 0..0x800 (a step of up to 1/32 s; keeps N <= 2048 within the instruction budget) and d draws small, image, large and negative divisors (negative or > D quotients take the N = 1 clamp at 0x41b051), never 0. The table entries are finite f64 -1000..1000 and the three coefficient rows 0x6028f4/0x602900/0x623ea0 (fild dwords, image 131072/32768/32768, 2097152/2097152/393216, 0) are i32 within +-2^22; unstable combinations overflow to inf/NaN, which the masked x87 (FPU 0x037F) handles without faulting. The f64 constants 0x6f2a1c/0x6f2a24/0x6f2a54 keep their image values (use globals=layout=, not fuzz).",
+ "globals": [
+  {"addr": "0x0060384c", "type": "i32", "lo": 0, "hi": 2048},
+  {"addr": "0x006028f0", "type": "u32", "values": ["0x1", "0x2", "0x3", "0x5", "0x7", "0x10", "0x80", "0x80", "0x100", "0x7fffffff", "0xffffffff", "0xfffffffb", "0x80000000"]},
+  {"addr": "0x006020b0", "type": "f64", "count": 264, "stride": 8, "lo": -1000, "hi": 1000},
+  {"addr": "0x006028f4", "type": "i32", "count": 3, "stride": 4, "lo": -4194304, "hi": 4194304},
+  {"addr": "0x00602900", "type": "i32", "count": 3, "stride": 4, "lo": -4194304, "hi": 4194304},
+  {"addr": "0x00623ea0", "type": "i32", "count": 3, "stride": 4, "lo": -4194304, "hi": 4194304}
+ ]
+}

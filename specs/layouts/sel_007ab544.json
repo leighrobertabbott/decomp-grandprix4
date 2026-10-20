@@ -1,0 +1,6 @@
+{
+ "_evidence": "Byte [0x7ab544] = selected controller preset, an index into the 8 0x34-byte entries at 0x7ab5b4 (Keyboard, Joypad, Joystick, Wheel, 4 user slots; entry 8 at 0x7ab754 is other data). 0x0052d8fa: 'movzx eax,byte [0x7ab544]; imul eax,eax,0x34; add eax,0x7ab5c6; rep movsw (6)' reads the key words +0x12..+0x1d of that entry; 0x0052d927 is the reverse copy, 0x0052b942 copies entry eax (0..7). Writers store only 0..7: 'mov byte [0x7ab544],0' (0x52b5bc, 0x52be4f, 0x52c4e6, 0x534844), 2 (0x52b7ec, 0x52bd6e), xlat of the 2-byte table 0x81dca3 with al&1 (0x52bdc4), and al from 0x52b748 (4..7, -1 is not stored, 0x52b6c6). So the domain is 0..7 (every preset; an index past 7 would read driver names, which no caller produces). Compose with presets_007ab5b4 (all 8 entries and the working block 0x7ab548..0x7ab56b varied).",
+ "globals": [
+  {"addr": "0x007ab544", "type": "u8", "lo": 0, "hi": 7}
+ ]
+}

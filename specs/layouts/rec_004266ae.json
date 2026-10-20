@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x004266ae tests dword [esi+0xbc] (je 0x4266d0 stores 0x10) and otherwise stores min(movzx word [esi+0x100], 0x1d55) (jle at 0x4266c7). The lists make the zero dword and both sides of the 0x1d55 clamp likely; no other bytes are read.",
+  "size": 272,
+  "fields": [
+    {"off": "0xbc", "type": "u32", "values": [0, 0, 1, "0x7fffffff", "0xffffffff", "0x12345678"]},
+    {"off": "0x100", "type": "u16", "values": [0, "0x10", "0x1d54", "0x1d55", "0x1d56", "0x8000", "0xffff"]}
+  ]
+}

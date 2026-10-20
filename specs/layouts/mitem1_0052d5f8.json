@@ -1,0 +1,64 @@
+{
+ "_evidence": "NOT SUFFICIENT ON ITS OWN (L51, 2026-10-20): every edx==2 run of 0x52d5f8 calls user32!PostMessageA through 0x46ae90 (0x53d4f9 reaches it on both arms: 0x549d12->0x52cbb3 msg 0x404 when [0x81e4fc]!=0, else 0x549e2c msg 0x407 + Sleep(4)), and 0x46ae90 then pumps messages (0x5086b0: PeekMessageA/GetMessageA/TranslateMessage/DispatchMessageA). The oracle models none of these, so every case is 'external' until the lead adds models; this family was checked only with a probe-local model (PostMessageA -> 1, PeekMessageA -> 0). Menu item list of the live menu [0x82fd34] as walked by 0x53d23c (accepted, mlist_0053d23c: +0 next, +0x1e bit 0x10 animates, +0x26 script cursor -> mcur_0053d23c, sets +0x1f bit 0x40) and by the 0x53d4f9 loop at 0x53d53f: 'mov esi,[esi]; or esi,esi; je' (0 ends: acyclic, up to 3 items, next nullable), 'test byte [esi+0x1f],0x40; jne' or [0x81e4fb]==0xff selects an item, then 'and byte [esi+0x1f],0xbf', al=[esi+0xc], ebx=[esi+0xe], 0x4fddd0(item) (reads [0xaa2d38]: null/0x667108 return at once; else +0xc and +0x1f&0x30 for the sprite list) and 'call [esi+0x16]' - the item handler. Handlers here are the bare-ret routines 0x53b297 and 0x53ddba that the static menu headers (0x8479ae, 0x84300a, 0x83f0aa, ...) carry as their own +0x20/+0x24 handlers, so any item may be selected without running another menu's code; +0xe is a real 8-byte cell (what real handlers read through 0x539944). +0x1f mixes bit 0x40 set/clear with other bits; the rest random. Item 1.",
+ "size": 48,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": 0,
+   "type": "ptr",
+   "size": 48,
+   "fill": "layout=mitem2_0052d5f8",
+   "nullable": true
+  },
+  {
+   "off": "0xe",
+   "type": "ptr",
+   "size": 8,
+   "fill": "bytes"
+  },
+  {
+   "off": "0x16",
+   "type": "u32",
+   "values": [
+    "0x53b297",
+    "0x53ddba"
+   ]
+  },
+  {
+   "off": "0x1e",
+   "type": "u8",
+   "values": [
+    0,
+    "0x10",
+    "0x10",
+    "0x11",
+    "0x30",
+    "0xef"
+   ]
+  },
+  {
+   "off": "0x1f",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x40",
+    "0x40",
+    "0x41",
+    "0x80",
+    "0xc0",
+    "0xbf",
+    "0xff",
+    "0x30",
+    "0x70",
+    "0x10"
+   ]
+  },
+  {
+   "off": "0x26",
+   "type": "ptr",
+   "size": 16,
+   "fill": "layout=mcur_0053d23c"
+  }
+ ]
+}

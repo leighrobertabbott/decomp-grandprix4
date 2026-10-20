@@ -1,0 +1,9 @@
+{
+ "_evidence": "0x005295e0 makes two short byte lists strictly increasing: count byte [0x81d1fa] with entries 0x81d1fc.. and count byte [0x81d223] with entries 0x81d224.. ('movzx ecx,[count]; cmp ecx,2; jb skip; sub ecx,1' then per pair 'mov al,[ebx-1]; cmp al,[ebx]; jb keep; inc al; mov [ebx],al'). Its callers 0x529408/0x52a545 wire three menu items to each list's entries +0..+2 and loop the count up to 3, so the counts are 0..3 (0/1 skip the pass; a count of 4 still stays inside the list area before 0x81d228) and the first four entries of each list are drawn from small values with equal, rising and falling neighbours plus the 0xff wrap of 'inc al'. Only bytes, no index/pointer use: every value is valid.",
+ "globals": [
+  {"addr": "0x0081d1fa", "type": "u8", "values": [0, 1, 2, 2, 3, 3, 3, 4]},
+  {"addr": "0x0081d1fc", "type": "u8", "count": 4, "values": [0, 1, 2, 3, 5, 9, "0xfe", "0xff"]},
+  {"addr": "0x0081d223", "type": "u8", "values": [0, 1, 2, 2, 3, 3, 3, 4]},
+  {"addr": "0x0081d224", "type": "u8", "count": 4, "values": [0, 1, 2, 3, 5, 9, "0xfe", "0xff"]}
+ ]
+}

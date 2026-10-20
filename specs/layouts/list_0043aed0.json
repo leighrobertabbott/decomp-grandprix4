@@ -1,0 +1,99 @@
+{
+ "_evidence": "0x0043aed0 scans objects ecx = 0x16..[0x6097ec] (inclusive, skipped when [0x6097ec] < 0x16) of the 64 0x78-byte object records at 0x63bd7c (compose after ring_008943a0+words_008943a0+bytes_0063bcfc). [0x6097ec] is written only by 0x43ad95 as the highest active object index (0x16..0x3f from the 0x63bcfc flags, or a car index < 0x16), so 0..63; a larger bound reads records past the array and stores past the 42-entry result list 0x607ba0 (the 20/200 faults of fuzz:i32). Per object: flag byte [0x63bcfc+ecx] (cmp 0; je) is zero in half the picks; dword +0x64 is the object's ring offset (edi = +0x64 + 0x8943a0, compared with the pit start [0x891500] and dereferenced by 0x40460a and at +0x16/+0x60/+0x62), so it draws k*0x160 for records 0..31; dwords +0/+8 are the object position (0x40460a subtracts the record's words +4/+8 << 11) - any i32. Ring records 0..31: words +0 (cos-table angle after abs/shr 2), +4, +8 are any i16 (the other words come from ring_008943a0/words_008943a0). [0x607b98] (static 0x300, never written) is the |dx>>8 - word +0x16| threshold (signed jl): 0..0x10000 keeps both sides.",
+ "globals": [
+  {
+   "addr": "0x006097ec",
+   "type": "i32",
+   "lo": 0,
+   "hi": 63
+  },
+  {
+   "addr": "0x00607b98",
+   "type": "i32",
+   "lo": 0,
+   "hi": 65536
+  },
+  {
+   "addr": "0x0063bcfc",
+   "type": "u8",
+   "count": 64,
+   "stride": 1,
+   "values": [
+    0,
+    0,
+    1,
+    255
+   ]
+  },
+  {
+   "addr": "0x0063bde0",
+   "type": "u32",
+   "count": 64,
+   "stride": "0x78",
+   "values": [
+    "0x0",
+    "0x160",
+    "0x2c0",
+    "0x420",
+    "0x580",
+    "0x6e0",
+    "0x840",
+    "0x9a0",
+    "0xb00",
+    "0xc60",
+    "0xdc0",
+    "0xf20",
+    "0x1080",
+    "0x11e0",
+    "0x1340",
+    "0x14a0",
+    "0x1600",
+    "0x1760",
+    "0x18c0",
+    "0x1a20",
+    "0x1b80",
+    "0x1ce0",
+    "0x1e40",
+    "0x1fa0",
+    "0x2100",
+    "0x2260",
+    "0x23c0",
+    "0x2520",
+    "0x2680",
+    "0x27e0",
+    "0x2940",
+    "0x2aa0"
+   ]
+  },
+  {
+   "addr": "0x0063bd7c",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78"
+  },
+  {
+   "addr": "0x0063bd84",
+   "type": "i32",
+   "count": 64,
+   "stride": "0x78"
+  },
+  {
+   "addr": "0x008943a0",
+   "type": "i16",
+   "count": 32,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x008943a4",
+   "type": "i16",
+   "count": 32,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x008943a8",
+   "type": "i16",
+   "count": 32,
+   "stride": "0x160"
+  }
+ ]
+}

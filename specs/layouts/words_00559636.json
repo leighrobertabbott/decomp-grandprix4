@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x559636 copies the 50 words at 0x8705e8..0x87064b to 0x921ffc; they are zero in the image (state), so any u16 values make the copy visible.",
+ "globals": [
+  {
+   "addr": "0x008705e8",
+   "type": "u16",
+   "count": 50,
+   "stride": 2
+  }
+ ]
+}

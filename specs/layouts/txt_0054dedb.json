@@ -1,0 +1,52 @@
+{
+ "_evidence": "0x0054dedb removes the newlines of the text-edit buffer: esi = [edi] text, lodsb until NUL; at each 0x0a it calls 0x54e13f (delete at edx, eax = 1) and pulls the cursor [edi+8] back when it lies after the newline. 0x54e13f only deletes before the end pointer [edi+4], so a newline at or past the end would be found forever: in every valid state the end pointer lies past the text. Record: text at the fixed unused bss block 0xa20000 (64 chars from newline/letters/space, NUL at 0xa20040), end pointer 0xa20040..0xa20048, cursor 0..80 into the text.",
+ "size": 16,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": 0,
+   "type": "u32",
+   "values": [
+    "0x00a20000"
+   ]
+  },
+  {
+   "off": 4,
+   "type": "u32",
+   "lo": "0x00a20040",
+   "hi": "0x00a20048"
+  },
+  {
+   "off": 8,
+   "type": "u32",
+   "points_into": {
+    "base": "0x00a20000",
+    "stride": 1,
+    "lo": 0,
+    "hi": 80
+   }
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x00a20000",
+   "type": "u8",
+   "count": 64,
+   "stride": 1,
+   "values": [
+    "0x0a",
+    "0x41",
+    "0x42",
+    "0x41",
+    "0x20"
+   ]
+  },
+  {
+   "addr": "0x00a20040",
+   "type": "u8",
+   "values": [
+    0
+   ]
+  }
+ ]
+}

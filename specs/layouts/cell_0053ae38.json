@@ -1,0 +1,10 @@
+{
+ "_evidence": "Value cells read by the menu-item draw handler 0x53ae38 (compose AFTER menu_0084300a+mitems_0053ddbb+sel_007ab544, which vary the same dwords more widely, and with anim_0052822a). 'mov ebx,[esi+0xe]; call 0x539944' reads the cell at ebx as byte/word/dword/none by [esi+0xd]&3 (jump table 0x539960: 0x539974 movzx byte, 0x539979 movzx word, 0x53997e dword, 0x539982 eax=0); 'add eax,[esi+0x26]; mov edx,eax; call 0x527eee': 0x527eee ('imul eax,eax,0x18; add eax,0x8174f8; mov ebx,[esi]' at 0x527f05) indexes the frame table without a bound check when [0x81cd90] != 0. The table holds 808 records of 0x18 bytes (0x8174f8..0x8187e8; 808 = 0x328 is the bound 0x52800e checks with 'cmp eax,0x328; jae', and the loader bound 'cmp eax,[0x8174f4]; jb' at 0x527dee), so the game keeps cell + [esi+0x26] <= 807; larger values fault at 0x527f05 (the 10/200 invalid cases of m174's v3). The later 'inc edx' frame is bounds-checked by 0x52800e. Items using this handler: the static menu 0x84300a items 6-13 (0x8430fe..0x843224, stride 0x2a, cell 0x7ab544, +0x26 = 0..7 in the image; its items 1-5 have +0x26 = the next item's link 0x84xxxx, which always faults at 0x527f05, so they never reach this handler) and the image items whose +0x16 draw handler is 0x53ae38: 0x83ef4a (cell 0x823690, +0x26 = 0x22b = 555, dword width), 0x84050c (cell 0x81d33a), 0x847696 (cell 0x81d33e), 0x84facb (cell 0x81d336) (+0x26 = 0, dword width). So [0x7ab544] is drawn 0..800, [0x823690] 0..252 and the three 0x81d33x cells 0..807, every width then stays inside the table. 0x81e4f8 (cell of items 1-5) is not read on any valid path. Values are synthetic.",
+ "globals": [
+  {"addr": "0x007ab544", "type": "u32", "lo": 0, "hi": 800},
+  {"addr": "0x00823690", "type": "u32", "lo": 0, "hi": 252},
+  {"addr": "0x0081d336", "type": "u32", "lo": 0, "hi": 807},
+  {"addr": "0x0081d33a", "type": "u32", "lo": 0, "hi": 807},
+  {"addr": "0x0081d33e", "type": "u32", "lo": 0, "hi": 807}
+ ]
+}

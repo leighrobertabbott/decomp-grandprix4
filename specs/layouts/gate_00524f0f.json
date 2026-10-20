@@ -1,0 +1,46 @@
+{
+ "_evidence": "0x005249bb: 'test byte [0x852d94],0xff; je' then 0x00524f0f: 'test byte [0x66d7a4],0xff; jns' (sign bit: 0x510ec4, whose callee 0x51d15f is a bare ret, sets byte 0x934e90 and tests 'cmp byte [0x7ad869],0; je' - a branch to the next instruction whose flags the final shl overwrites, but the byte is state and is varied too), else 'cmp dword [0x679bdc],0; jne' (zero: 0x510eda sets bit 5 of byte +0x83 of the car [0x679d30], a car record from order_00418f8f), and finally 'shl byte [0x852d94],2'. Byte flags and a dword zero test, all plain state: 0x852d94 and 0x66d7a4 drawn from {0,1,0x80,0xff} (zero / sign set and clear), 0x679bdc zero in about half the cases. Every value is valid.",
+ "globals": [
+  {
+   "addr": "0x00852d94",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    "0x80",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0066d7a4",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    "0x80",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x00679bdc",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0x80000000",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x007ad869",
+   "type": "u8",
+   "values": [
+    0,
+    "0xff",
+    1
+   ]
+  }
+ ]
+}

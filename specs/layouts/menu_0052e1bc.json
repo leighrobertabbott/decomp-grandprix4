@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x0052e1bc's head cell 0x845192 (unaligned dword; zero in the image, set at run time to the menu item list) points at the first node of chain_0052e1bc (16 linked 0x40-byte nodes). Overrides cell_00845192's two-node list, which the five-step walk at 0x52e247 ran off (faulting the original).",
+ "globals": [
+  {
+   "addr": "0x00845192",
+   "type": "ptr",
+   "size": "0x400",
+   "fill": "layout=chain_0052e1bc"
+  }
+ ]
+}

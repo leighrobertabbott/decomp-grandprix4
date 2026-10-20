@@ -1,0 +1,76 @@
+{
+ "_evidence": "Menu option bytes of the 0x52bae5 group (0x52bb48/0x52bbae/0x52bc14/0x52bc7a). Each walker reads its setting 'mov al,[0x81d60f|0x81d610|0x81d611|0x81d612]' (any byte: it only indexes the 256-byte table 0x81dc63 via 0x52bd00's 'movzx eax,al', so all values are valid) and the first three compare it with their last-seen copy 'cmp al,[0x81d634|0x81d635|0x81d636]; je' (alias: equal in about half the cases, so both the skip and the copy-and-call path run). The changed flags 0x81d617/0x81d61c/0x81d61e are written 1/0 by the code; 0x81d61c and 0x81d61e are also read back ('cmp byte [..],0; jne') when the second 0x52bd00 call returns CF=1 and leaves them unwritten, so their entry values mix zero and nonzero (0x81d617 is only written; the mix shows whether a store happened).",
+ "globals": [
+  {
+   "addr": "0x0081d60f",
+   "type": "u8",
+   "lo": 0,
+   "hi": 255
+  },
+  {
+   "addr": "0x0081d610",
+   "type": "u8",
+   "lo": 0,
+   "hi": 255
+  },
+  {
+   "addr": "0x0081d611",
+   "type": "u8",
+   "lo": 0,
+   "hi": 255
+  },
+  {
+   "addr": "0x0081d612",
+   "type": "u8",
+   "lo": 0,
+   "hi": 255
+  },
+  {
+   "addr": "0x0081d634",
+   "type": "u8",
+   "alias": "0x0081d60f"
+  },
+  {
+   "addr": "0x0081d635",
+   "type": "u8",
+   "alias": "0x0081d610"
+  },
+  {
+   "addr": "0x0081d636",
+   "type": "u8",
+   "alias": "0x0081d611"
+  },
+  {
+   "addr": "0x0081d617",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    "0x80",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0081d61c",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0x80",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0081d61e",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0x80",
+    "0xff"
+   ]
+  }
+ ]
+}

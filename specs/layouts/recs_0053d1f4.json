@@ -1,0 +1,9 @@
+{
+ "_evidence": "Record list walked by 0x0053d1f4 through [esi+0x18] (list_0053d1f4): 'cmp word [edi],0x15; jb' continues while a record's type word +0 is below 0x15, each step stores the next bit of edx:eax ('shr edx,1; rcr eax,1; sbb bl,bl; mov [edi+2],bl') into byte +2 and moves 'add edi,0xc'. Eight 12-byte records: the words of records 0..6 are drawn from 0..0x1f (about two thirds below 0x15, so walks of every length 0..7 occur) and record 7's word (+0x54) is always >= 0x15 so every walk ends inside the 0x60-byte buffer (the game's lists are terminated; an unterminated walk runs off the buffer). Other bytes random (byte +2 is overwritten, the rest unread).",
+ "size": 96,
+ "fill": "bytes",
+ "fields": [
+  {"off": 0, "type": "u16", "count": 7, "stride": "0xc", "lo": 0, "hi": 31},
+  {"off": "0x54", "type": "u16", "lo": 21, "hi": 65535}
+ ]
+}

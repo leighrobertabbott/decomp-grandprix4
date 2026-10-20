@@ -1,0 +1,39 @@
+{
+ "_evidence": "Texture records at [0x965904] walked by 0x0051c48d (stride 0x20, [0x96a368] <= 8 of them, so 0x100 bytes): 'movzx eax,word [esi+4]' / 'movzx eax,word [esi+6]' (two sizes halved per level, 'shr dword [..],1; cmp dword [..],1; jge' clamps them to >= 1: drawn from {0,1,2,3,0x10,0xff,0x100,0xffff} so the clamp is taken from the first level on and only after several halvings), 'mov eax,[esi]; sub eax,[0x965900]' (the record's texel pointer, only split into low byte / rest and overwritten with the level-table pointer: any value is valid, random background). Other bytes are not read (random background).",
+ "size": 256,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": 4,
+   "type": "u16",
+   "count": 8,
+   "stride": "0x20",
+   "values": [
+    "0",
+    "1",
+    "2",
+    "3",
+    "0x10",
+    "0xff",
+    "0x100",
+    "0xffff"
+   ]
+  },
+  {
+   "off": 6,
+   "type": "u16",
+   "count": 8,
+   "stride": "0x20",
+   "values": [
+    "0",
+    "1",
+    "2",
+    "3",
+    "0x10",
+    "0xff",
+    "0x100",
+    "0xffff"
+   ]
+  }
+ ]
+}

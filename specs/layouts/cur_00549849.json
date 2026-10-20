@@ -1,0 +1,32 @@
+{
+ "_evidence": "0x00549849 (edx = 2 path): 'mov eax,[esi+0x26]; mov edi,0x831cfd; mov ecx,6; repne scasb' looks the key byte up in the 6-byte slot record 0x831cfd; found at k: [0x831d03] = k and slot k = 0xff; not found: 'mov ebx,[0x831d03]; add ebx,0x831cfd; mov [ebx],al' stores the key at the cursor, then cursor+1 wrapping 6 -> 0. The cursor dword 0x831d03 is therefore a slot index kept in 0..5 by this routine and its siblings (0x549829 resets it to 0 with all slots 0xff); a larger value writes outside the record (fuzz faulted at 0x54989c). Domain: cursor 0..5 with 5 weighted (the wrap block 0x5498a9), slots from {1,2,3,4,0xff} (0xff = empty, as 0x549829 leaves them) so a key drawn from the same set is found at various positions or not at all.",
+ "globals": [
+  {
+   "addr": "0x00831d03",
+   "type": "u32",
+   "values": [
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "5",
+    "5"
+   ]
+  },
+  {
+   "addr": "0x00831cfd",
+   "type": "u8",
+   "count": 6,
+   "stride": 1,
+   "values": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "0xff"
+   ]
+  }
+ ]
+}

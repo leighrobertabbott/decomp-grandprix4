@@ -1,0 +1,90 @@
+{
+ "_evidence": "Segment links and flags for the ring geometry of ring_00405a12 (compose after it: globals=layout=...+ring_00405a12+links_00405a12). 0x4059d2 (called by 0x4059ef, 0x406123, 0x4129fa): when edi >= [0x891500] (pit records) it loads edi = [edi+0x44] unconditionally, otherwise a zero link takes the stc exit and a nonzero one is followed; the callers then read byte [edi+0x1b] (test 0x20) and walk or update from the new edi, so a zero link on a pit record faults in the original at address 0x1b and never occurs in the game. ring_00405a12 puts the pit start [0x891500] at record 9 or 10, so records 0..8 take 0 (about a fifth) or a link, records 9..25 always a link; link targets are records 0..11, the start records for which ring_00405a12 proves the 0x405c9a/0x405d05 walks stay inside records 0..14. Bytes +0x1b (bit 0x20 both ways) and +0x48 (0x405e6e/0x405f77: and al,3) are plain draws; words +0x00, +0x16, +0x18 (0x4030c6, 0x409416 via [esi+0x1b8] = edi and the next record +0x160/+0x176/+0x178) and +0x60, +0x62 (0x405e45, 0x405efa/0x405e6e, 0x403b19/0x403b3f also read the next record's +0x1c0/+0x1c2) are full-range draws: they only feed imul/shrd, sub/add and the 0x403d10 idiv, whose divisor is forced nonzero and whose dividend (16-bit difference << 14) cannot overflow. 27 records cover every edi+0x1c2 read of a record 0..25.",
+ "globals": [
+  {
+   "addr": "0x008943e4",
+   "type": "u32",
+   "count": 9,
+   "stride": "0x160",
+   "values": [
+    0,
+    0,
+    0,
+    "0x8943a0",
+    "0x894500",
+    "0x894660",
+    "0x8947c0",
+    "0x894920",
+    "0x894a80",
+    "0x894be0",
+    "0x894d40",
+    "0x894ea0",
+    "0x895000",
+    "0x895160",
+    "0x8952c0"
+   ]
+  },
+  {
+   "addr": "0x895044",
+   "type": "u32",
+   "count": 17,
+   "stride": "0x160",
+   "values": [
+    "0x8943a0",
+    "0x894500",
+    "0x894660",
+    "0x8947c0",
+    "0x894920",
+    "0x894a80",
+    "0x894be0",
+    "0x894d40",
+    "0x894ea0",
+    "0x895000",
+    "0x895160",
+    "0x8952c0"
+   ]
+  },
+  {
+   "addr": "0x008943bb",
+   "type": "u8",
+   "count": 26,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x008943e8",
+   "type": "u8",
+   "count": 26,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x008943a0",
+   "type": "i16",
+   "count": 27,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x008943b6",
+   "type": "i16",
+   "count": 27,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x008943b8",
+   "type": "i16",
+   "count": 27,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x00894400",
+   "type": "u16",
+   "count": 27,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x00894402",
+   "type": "u16",
+   "count": 27,
+   "stride": "0x160"
+  }
+ ]
+}

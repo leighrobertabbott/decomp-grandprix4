@@ -1,0 +1,30 @@
+{
+ "_evidence": "Block pool of 0x00538921 (remove slot eax's block): 0x53873a sets the used end [0x82fcac] to the pool base and clears the 0x400 slots of 0x18 bytes at 0x829cac; the allocator 0x538800 gives a slot start +8 = [0x82fcac] and length +0xc, then advances [0x82fcac] by the length, so every block satisfies start + length <= [0x82fcac]. 0x538921 reads slot eax +8/+0xc, moves [start+len, [0x82fcac]) down to start with rep movsb (ecx = end - (start+len), je skips 0) and, for each of the 0x400 slots, tests +0xc != 0 and +8 >= start (unsigned) before subtracting the length. The pool is modelled by the unreferenced zero-initialised .data stretch at 0xa06000 (as in dlog_00537f02): starts from {0xa06000,0xa06040,0xa06100,0xa06200,0xa06300}, lengths from {0,0,0x10,0x40,0x100} (0 = free slot), used end 0xa06400, so start+len <= end for every slot (the count is never negative; 0 when start 0xa06300 with length 0x100) and the copy stays inside 0xa06000..0xa06400, whose bytes vary. The image has zero slots, so the in-use and start>=target branches never ran.",
+ "globals": [
+  {
+   "addr": "0x00829cb4",
+   "type": "u32",
+   "count": 1024,
+   "stride": "0x18",
+   "values": ["0xa06000", "0xa06040", "0xa06100", "0xa06200", "0xa06300"]
+  },
+  {
+   "addr": "0x00829cb8",
+   "type": "u32",
+   "count": 1024,
+   "stride": "0x18",
+   "values": [0, 0, "0x10", "0x40", "0x100"]
+  },
+  {
+   "addr": "0x0082fcac",
+   "type": "u32",
+   "values": ["0xa06400"]
+  },
+  {
+   "addr": "0x00a06000",
+   "type": "u8",
+   "count": 1024,
+   "stride": 1
+  }
+ ]
+}

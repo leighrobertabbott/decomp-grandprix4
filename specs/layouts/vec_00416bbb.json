@@ -1,0 +1,9 @@
+{
+  "_evidence": "Record behind ebx for 0x00416bbb: dword +0x1c (abs, signed max with the floor [0x603498]) and the vector dwords +0x18/+0x40 (imul squares summed with add/adc, 64-bit root by the accepted 0x40113f, then 'idiv ebp' of (-x18<<22) and (x40<<22) by the root (1 when zero) - |x| <= root so the quotient fits for every pattern, including roots >= 2^31 seen as negative divisors - and 'div ebp' of |root|<<18 by the bound or by (|root|>>14)+1, which always exceeds the high dword). Every bit pattern is valid (both earlier distributions ran 200/200); the value lists make the coverage cases occur together: both vector dwords zero (root 0 -> ebp=1), huge pairs (0x80000000/0x7fffffff/+-0x40000000: root >= 2^31, the 'neg' block), small and large +0x1c (abs block, the floor taking over, bound <= |root|>>14 and the 0x400000 clamp). Writes go to +0x17c..+0x18c and +0x2ac (buffer 0x2b4).",
+  "size": 692,
+  "fields": [
+    {"off": "0x18", "type": "u32", "values": [0, 0, 0, 1, "0xffffffff", "0x40000000", "0xc0000000", "0x80000000", "0x7fffffff", "0x12345", "0xfffe1234", "0x3fffffff", "0x5a827999", "0x9876543"]},
+    {"off": "0x1c", "type": "u32", "values": [0, 1, "0xffffffff", "0x100", "0xffffff00", "0x10000", "0x7fffffff", "0x80000000", "0x40000", "0xfffc0000", "0x12345678", "0xc0000"]},
+    {"off": "0x40", "type": "u32", "values": [0, 0, 0, 1, "0xffffffff", "0x40000000", "0xc0000000", "0x80000000", "0x7fffffff", "0x12345", "0xfffe1234", "0x3fffffff", "0x5a827999", "0x9876543"]}
+  ]
+}

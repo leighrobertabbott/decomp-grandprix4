@@ -1,0 +1,7 @@
+{
+ "_evidence": "A front-end control object as stored in the control-object table 0xb3d52c (indexed by id & 0xffff, see session_004fd1a0), for the path of 0x5b79d0 (show/hide control, reached through 0x5b4da0 from the menu-to-control walks 0x4fd260/0x4fd3f0 and 0x503460). For an id above 0xffff 0x5b79d0 does 'mov ecx,[eax*4+0xb3d52c]; call 0x5bfbf0' and 'mov ecx,[edi]; call 0x5c0160' without a null test: 0x5bfbf0 reads +0x14c (null -> return 0, so 0x5bf820 is skipped) and 0x5c0160 reads +0x174 and +0x170 (null child lists -> return without writing). For an id up to 0xffff it does 'test eax,eax; je' then 'cmp dword [eax+0x30],0xb; je' (skip) before a virtual call [vtbl+0x60]; +0x30 = 0xb keeps an object that a low id would also select on that skip path, since a generated object has no vtable. Everything else zero: an object with no child lists.",
+ "size": 384,
+ "fields": [
+  {"off": "0x30", "type": "u32", "values": ["0xb"]}
+ ]
+}

@@ -1,0 +1,13 @@
+{
+ "_evidence": "Scalar inputs of 0x0041c228 (compose LAST after the accepted list ending in state_0041c145). Never-written tuning constants (no other instruction refers to them; 0x601468 is also only read by 0x4112e3), each drawn as its image value in about half the cases and otherwise other values: the curve selector [0x62f24c] (image 2) indexes the 3-entry pointer table 0x62f250 (static pointers to the 0x411891 curve tables 0x62f260/0x62f2f0/0x62f380, kept), so it draws 0..2 (a larger index would load a non-table dword as the table pointer); the Q14 gains 0x62f238 (0x4000) and 0x601a88/0x601a8c (0x22c026) are imul/shrd 14 factors (any value); the f64 0x601468 (image 0x40679798b827fa1a, about 188.74) is a fmul factor, drawn from its exact image dwords or from other finite doubles by pairing low dwords {0xb827fa1a, 0} with high dwords {0x40679798, 0x40590000, 0x3ff00000, 0xc0590000}. The f64 factors 0x6013c0/0x6013c8 are written by 0x4112e3 (reciprocals of car constants; zero in the image) and drawn finite in -1..1. The x87 chain is fild/fmul/fistp (an out-of-range product stores the masked integer indefinite) and 0x411891 bounds its own index: nothing faults.",
+ "globals": [
+  {"addr": "0x62f24c", "type": "u32", "values": [2, 2, 2, 0, 1]},
+  {"addr": "0x62f238", "type": "u32", "values": ["0x4000", "0x4000", "0x4000", 0, "0x2000", "0x8000", "0x7fffffff", "0x80000000", "0xffffc000"]},
+  {"addr": "0x601a88", "type": "u32", "values": ["0x22c026", "0x22c026", "0x22c026", 0, "0x4000", "0x7fffffff", "0x80000000", "0xffffffff"]},
+  {"addr": "0x601a8c", "type": "u32", "values": ["0x22c026", "0x22c026", "0x22c026", 0, "0x4000", "0x7fffffff", "0x80000000", "0xffffffff"]},
+  {"addr": "0x6013c0", "type": "f64", "lo": -1, "hi": 1},
+  {"addr": "0x6013c8", "type": "f64", "lo": -1, "hi": 1},
+  {"addr": "0x601468", "type": "u32", "values": ["0xb827fa1a", "0xb827fa1a", 0]},
+  {"addr": "0x60146c", "type": "u32", "values": ["0x40679798", "0x40679798", "0x40679798", "0x40590000", "0x3ff00000", "0xc0590000"]}
+ ]
+}

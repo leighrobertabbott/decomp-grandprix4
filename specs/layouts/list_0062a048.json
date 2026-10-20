@@ -1,0 +1,12 @@
+{
+  "_evidence": "Family layout for the entry table at [0x62a048] (tbl_004225c0: 16 dwords), its count [0x62a05c] and the record table [0x62a058] (recs_0062a058: 16 x 16 bytes). Every loop over them (0x004225c0, 0x00422501, 0x00422604) is a do-while 'inc ebx; cmp ebx,[0x62a05c]; jne', so a count of 0 runs 2^32 iterations and faults; both writers store max(1,[0x62a04c]) (0x00422670, 0x004245fb), so the count is 1..16 here and every [esi+ebx*4] / [edi+ebx*16] stays inside the buffers. 0x00422501 tests each entry against the mask [0x62a054] (free u32: zero and nonzero ANDs) and takes the signed max of 0x4224be's distance (+0x300 for 0x14280 entries) to the point 0x62a064/68/6c (plain i32).",
+  "globals": [
+    {"addr": "0x0062a048", "type": "ptr", "size": 64, "fill": "layout=tbl_004225c0"},
+    {"addr": "0x0062a054", "type": "u32"},
+    {"addr": "0x0062a058", "type": "ptr", "size": 256, "fill": "layout=recs_0062a058"},
+    {"addr": "0x0062a05c", "type": "u32", "lo": 1, "hi": 16},
+    {"addr": "0x0062a064", "type": "i32"},
+    {"addr": "0x0062a068", "type": "i32"},
+    {"addr": "0x0062a06c", "type": "i32"}
+  ]
+}

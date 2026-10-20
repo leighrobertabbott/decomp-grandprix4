@@ -1,0 +1,17 @@
+{
+  "_evidence": "0x0043ec1a runs [0x0062ac48] times (je skips a zero count; the caller 0x0043ff93 and 0x0040aadb store small segment counts, e.g. 2(+1) or a word & 0x7ff), calling the accepted 0x0043ebc2 with eax = [0x0062ac64] + i*[0x0062ac68] (any value: 0x0043eb86 clamps |eax| >= 0x240 before its idiv) and edi = the current segment record, starting at [0x00626990] (the caller stores the pit-start/[0x00891504] record there). The callee reads words +0x14 (nonzero -> idiv 2^24 by it, safe for every nonzero i16), +0x60 and +0x62 and writes +0x52/+0x54/+0xc8. Then edi advances one 0x160 record: with byte 0x0086857a set it stops below [0x00866ef8]; otherwise the lap-end/pit-start/pit-end/wrap advance of 0x00403557 (same as ring_004317ae). Domain: record-aligned pointers into the array at 0x008943a0 (start 0..29, lap end 4..26, pit start 0..30, pit end 1..32) and a wrap distance of 1..4 records (never more than the lap end), so every visited record is 0..31 for any count (checked by enumerating both walks for 40 steps); count 0..40. Words +0x14 use -3..3 as body_0043ebc2 (both sides of the zero test), +0x60/+0x62 are unconstrained.",
+  "globals": [
+    {"addr": "0x0062ac48", "type": "i32", "lo": 0, "hi": 40},
+    {"addr": "0x0062ac64", "type": "i32"},
+    {"addr": "0x0062ac68", "type": "i32"},
+    {"addr": "0x0086857a", "type": "u8"},
+    {"addr": "0x00626990", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 29}},
+    {"addr": "0x00866ecc", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 4, "hi": 26}},
+    {"addr": "0x00891500", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 30}},
+    {"addr": "0x00866ef8", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 1, "hi": 32}},
+    {"addr": "0x00866ec4", "type": "u32", "values": ["0x160", "0x2c0", "0x420", "0x580"]},
+    {"addr": "0x008943b4", "type": "i16", "count": 32, "stride": "0x160", "lo": -3, "hi": 3},
+    {"addr": "0x00894400", "type": "u16", "count": 32, "stride": "0x160"},
+    {"addr": "0x00894402", "type": "u16", "count": 32, "stride": "0x160"}
+  ]
+}

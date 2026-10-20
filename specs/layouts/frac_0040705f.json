@@ -1,0 +1,11 @@
+{
+ "_evidence": "Overlay for 0x0040705f after state_0040705f: the two f64 inputs 0x627950/0x627958 are 'fld; fmul [0x6f2b04] (16384.0); fistp' and the callers store them either as clamp(x,0,m)/m or as int32 * 2^-14 (0x407ffb, unbounded int), so after the fistp esi/ebx are any int32, the indefinite 0x80000000 included (|x| >= 2^17). They are drawn as bit patterns: a random low dword (mantissa noise) under high dwords for 0, 0.25, 0.5, 0.75, 1, -1, ~0.1, ~0.95 (fractions), 1000, -1000, 131071 (int32 near 2^31 after the scale), 2^31 and +-1e6 (indefinite): every pattern is a finite double, the fistp never faults. Large esi together with the indefinite ebx (whose product with a word difference of an odd multiple of 0x4000 puts c4 next to 0x80000000) reaches the signed-overflow clamp 0x407267 'esi - c4 < 0 with esi >= c4', which the generic mix hits about once in 10^4 cases. Words +0x158/+0x2b8 of the next record (0x8944f8/0x894658) add the pairs 1/0x4001, 0x1000/0x5000, 0x2000/0x6000 and 0x4000/0x8000 to state_0040705f's list (zero still about a third), since only their difference and zero tests matter.",
+ "globals": [
+  {"addr": "0x00627950", "type": "u32", "values": [0, "0x12345678", "0x9abcdef0", "0xfffff000"]},
+  {"addr": "0x00627954", "type": "u32", "values": [0, "0x3fd00000", "0x3fe00000", "0x3fe80000", "0x3ff00000", "0xbff00000", "0x3fb99999", "0x3fee6666", "0x408f4000", "0xc08f4000", "0x40ffffe0", "0x41e00000", "0x412e8480", "0xc12e8480"]},
+  {"addr": "0x00627958", "type": "u32", "values": [0, "0x12345678", "0x9abcdef0", "0xfffff000"]},
+  {"addr": "0x0062795c", "type": "u32", "values": [0, "0x3fd00000", "0x3fe00000", "0x3fe80000", "0x3ff00000", "0xbff00000", "0x3fb99999", "0x3fee6666", "0x408f4000", "0xc08f4000", "0x40ffffe0", "0x41e00000", "0x412e8480", "0xc12e8480"]},
+  {"addr": "0x008944f8", "type": "u16", "values": [0, 0, 0, 0, 0, 0, 1, "0x1000", "0x2000", "0x4000", "0x3fff", "0x7fff", "0x8000", "0xc000", "0xffff", "0xe000"]},
+  {"addr": "0x00894658", "type": "u16", "values": [0, 0, 0, 0, 0, 0, "0x4001", "0x5000", "0x6000", "0x8000", "0x7fff", "0x3fff", "0xc000", "0x4000", "0x0001", "0x2000"]}
+ ]
+}

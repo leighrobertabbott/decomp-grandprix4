@@ -1,0 +1,61 @@
+{
+ "_evidence": "0x0051e2e2 (compose after bits_006f2d90+ctl_007ab548; this layout redraws the two control bytes it reads): 'mov bl,[0x7ab558]; call 0x51e2b5' then 'mov bl,[0x7ab559]; cmp bl,[0x7ab558]; je' (both bytes are drawn from overlapping lists, so they are equal in about a ninth of the cases and the second call also sees codes 2/3) and a second 0x51e2b5 call. 0x51e2b5: 'cmp bl,2; jne; test byte [0x679d1b],0x10' / 'cmp bl,3; jne; test byte [0x679d1c],2' (jne stc), any other code calls 0x51ddda (bits_006f2d90: table entry 0xff -> CF, else the flag bit). So the codes are drawn from 2 and 3 (often) and other bytes, and the two flag bytes 0x679d1b/0x679d1c (run-time state, zero in the image) over values with bit 4 / bit 1 both set and clear. Plain byte compares and bit tests: every value is valid.",
+ "globals": [
+  {
+   "addr": "0x007ab558",
+   "type": "u8",
+   "values": [
+    2,
+    2,
+    3,
+    3,
+    0,
+    1,
+    6,
+    "0x20",
+    "0x27",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x007ab559",
+   "type": "u8",
+   "values": [
+    2,
+    3,
+    3,
+    2,
+    1,
+    7,
+    "0x21",
+    "0x80",
+    0,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x00679d1b",
+   "type": "u8",
+   "values": [
+    0,
+    "0x10",
+    "0xef",
+    "0xff",
+    1,
+    "0x12"
+   ]
+  },
+  {
+   "addr": "0x00679d1c",
+   "type": "u8",
+   "values": [
+    0,
+    2,
+    "0xfd",
+    "0xff",
+    1,
+    3
+   ]
+  }
+ ]
+}

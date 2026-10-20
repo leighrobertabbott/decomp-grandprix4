@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x00422632: ecx = [0x0062a05c], edi = 0x0060932c, rep stosb clears ecx bytes. The count is the only input. Both callers (0x0042267a, 0x00424605) store max(1, [0x0062a04c]) there, and 0x00444899 checks that entry count against 0x400, the size of the byte table 0x0060932c..0x0060972b (and of the dword table 0x0060832c..0x0060932b before it). Counts 0..0x3ff keep every store inside the table (0 is the harmless empty rep); unbounded fuzz:i32 counts ran off the end of .data and faulted in the original.",
+  "globals": [
+    {"addr": "0x0062a05c", "type": "u32", "lo": 0, "hi": 1023}
+  ]
+}

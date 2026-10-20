@@ -1,0 +1,15 @@
+{
+  "_evidence": "0x00411f9f computes eleven (0x145f0*N >> 8) / D with mul then unsigned div: numerators N are dwords 0x60133c, 0x601344, 0x601348, 0x60134c, 0x601350, 0x601358, 0x60136c (any u32) and divisors D are dwords 0x601380, 0x60137c, 0x601384. edx = (0x145f0*N) >> 40 <= 0x145 for every N, so the quotient fits exactly when D > 0x145: divisors are 0x146..0xffffffff (fuzzed zero/small divisors #DE'd in 8 of 11 cases).",
+  "globals": [
+    {"addr": "0x0060133c", "type": "u32"},
+    {"addr": "0x00601344", "type": "u32"},
+    {"addr": "0x00601348", "type": "u32"},
+    {"addr": "0x0060134c", "type": "u32"},
+    {"addr": "0x00601350", "type": "u32"},
+    {"addr": "0x00601358", "type": "u32"},
+    {"addr": "0x0060136c", "type": "u32"},
+    {"addr": "0x0060137c", "type": "u32", "lo": 326, "hi": 4294967295},
+    {"addr": "0x00601380", "type": "u32", "lo": 326, "hi": 4294967295},
+    {"addr": "0x00601384", "type": "u32", "lo": 326, "hi": 4294967295}
+  ]
+}

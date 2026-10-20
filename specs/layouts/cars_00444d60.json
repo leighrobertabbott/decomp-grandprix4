@@ -1,0 +1,11 @@
+{
+ "_evidence": "Car fields of the 22 car records at 0x66fef0 (stride 0x41c) for 0x00444d60 (compose LAST, after carbg_0066fef0 + the 0x40f6d0 list + carno_0066ff6c): 0x445130 picks the car whose byte +0x7c matches the stream record (0x445267 loop over the 22 records) and 0x444d60 then runs the car-reset chain 0x40f6d0 on it, i.e. the globals-form equivalent of the pointer layouts car_004129fa+rec_00412b88 that 0x40f6d0 was accepted with. Dwords +0/+4 (0x66fef0/0x66fef4) are the car position read by the walks 0x405cf8/0x405d65 and 0x4041dd: -0x4000000..0x3fff7ff (the i16 record frame <<11, so every walk stops inside records 0..14 of ring_00405a12). Dword +0x1c (0x66ff0c) is the car's segment record: 0x40f702 loads it as edi for 0x4048da/0x43624f->0x406dbb, which on a pit record loads edi = [edi+0x44] (0x406de6) and then reads [edi+0xd4] at 0x4067ea; it draws records 0..12 of 0x8943a0 as rec_00412b88 does (inside the coherent ring_00405a12/links_00405a12 geometry). cars_0066fef0, composed last in v2, redrew the pit start [0x891500] and [0x866f00] over records 0..26 and broke that geometry (pit start = lap end = record 7: the 3 faults at 0x4067ea, edi = 0), so it is not used here. Byte +0xfd (grid row 0..2), byte +0x7e (kinds 0..3 / 0xff) and word +0x96 (any i16) as rec_00412b88. Every other car byte comes from carbg_0066fef0 (car_004129fa: all bytes plain u8 draws).",
+ "globals": [
+  {"addr": "0x66fef0", "type": "i32", "count": 22, "stride": "0x41c", "lo": -67108864, "hi": 67106815},
+  {"addr": "0x66fef4", "type": "i32", "count": 22, "stride": "0x41c", "lo": -67108864, "hi": 67106815},
+  {"addr": "0x66ff0c", "type": "u32", "count": 22, "stride": "0x41c", "values": ["0x8943a0", "0x894500", "0x894660", "0x8947c0", "0x894920", "0x894a80", "0x894be0", "0x894d40", "0x894ea0", "0x895000", "0x895160", "0x8952c0", "0x895420"]},
+  {"addr": "0x66ff6e", "type": "u8", "count": 22, "stride": "0x41c", "values": [0, 1, 2, 3, 3, 2, 255]},
+  {"addr": "0x66ff86", "type": "i16", "count": 22, "stride": "0x41c"},
+  {"addr": "0x66ffed", "type": "u8", "count": 22, "stride": "0x41c", "lo": 0, "hi": 2}
+ ]
+}

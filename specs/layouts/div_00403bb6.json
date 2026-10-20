@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x00403bb6 (and its twin 0x00403c4c) read three scalars. [0x601b34] is the 14-bit fraction imul-ed by the accepted interpolators 0x403b19/0x403b3f (movzx words +0x60/+0x1c0 or +0x62/+0x1c2 of the edi block, sub, imul, shrd 14): every writer stores a sign-extended word (0x40373b/0x4036ca/0x4037a9/0x412938/0x42b88b: movsx [esi+0x66]), so it is i16-range; with |word difference| < 2^16 the interpolated bound stays within +-2^18. [0x622358] is the band floor (signed jge compare, image value 0x80, only these two readers): +-2^17 covers both compare outcomes on both branches. [0x622354] is the divisor of 'div dword' on edx:eax = |ecx - edge| << 14 (shld/shl): image value 0x500 and never written (xref: only 0x403bb6/0x403c4c read it). With the callers' register domain (eax/ecx within +-2^23: the 0x40373b/0x429162 callers pass sums of sign-extended track words through 0x403938, ecx = movsx [esi+0x90] or a 0x429131 offset), |ecx - edge| < 2^25, so any divisor >= 0x100 keeps the quotient below 2^31 (no #DE); the values include the real 0x500 plus small and huge divisors so the signed 'cmp eax,0x80000; jle' clamp goes both ways. The idiv path divides a sign-extended dword by eax-edge (forced to 1 when zero); -1 with INT_MIN cannot occur (the inside band makes |num| <= |divisor|<<14 with divisor -1 only when ecx-edge is -1 or 0).",
+  "globals": [
+    {"addr": "0x00622354", "type": "u32", "values": ["0x500", "0x500", "0x500", "0x100", "0x2000", "0x4000", "0x10000", "0x1000000", "0x7fffffff", "0xffffffff"]},
+    {"addr": "0x00622358", "type": "i32", "lo": -131072, "hi": 131072},
+    {"addr": "0x00601b34", "type": "i32", "lo": -32768, "hi": 32767}
+  ]
+}

@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x00437d47 'idiv ecx' at 0x437ea1 divides (sat * [0x629e78]) << 9 (imul then shld/shl 9: 64-bit) by the dword [0x629e6c], where sat is A - D clamped to magnitude [0x629e7c] by the unsigned jb compares at 0x437e70/0x437e81. 0x629e6c, 0x629e78 and 0x629e7c are tuning constants read only by this function and never written (image 0x1000, 0xe000, 0x1800); fuzzed values made the original #DE (zero divisor or quotient overflow: 39/200 invalid). Domain around the image values: divisor magnitude >= 0x800 (0x1000 twice, 0x800, 0x4000, 0x10000, 0x7fffffff, -0x1000, -0x800), gain -0x10000..0x10000, limit 0..0x10000, so |sat*gain| <= 2^32 and |quotient| <= 2^32*2^9/2^11 = 2^30: no #DE; both clamp outcomes on both signs occur (A = D = 0 whenever word 0x629dce is 0). Words 0x629dce/0x629dd0/0x629dd2 are i16 (movsx; 0x629dce<<8 and the 0x629ddc>>8 component keep 0x4388ac's vector within +-2^23, so its sqrt/idiv normalisation cannot fault). Everything else (gains 0x629e74/0x629e80/0x629e88/0x629e8c/0x629f34/0x629f38, the 20-entry tables at 0x629f44/0x629f6c/0x629f94/0x629fe4, indexed by ebx 0..19) only feeds imul/shrd, unsigned compares and masks: fuzz:i32 underneath.",
+ "globals": [
+  {"addr": "0x00629e6c", "type": "u32", "values": ["0x1000", "0x1000", "0x800", "0x4000", "0x10000", "0x7fffffff", "0xfffff000", "0xfffff800"]},
+  {"addr": "0x00629e78", "type": "i32", "lo": -65536, "hi": 65536},
+  {"addr": "0x00629e7c", "type": "u32", "lo": 0, "hi": 65536},
+  {"addr": "0x00629dce", "type": "i16"},
+  {"addr": "0x00629dd0", "type": "i16"},
+  {"addr": "0x00629dd2", "type": "i16"}
+ ]
+}

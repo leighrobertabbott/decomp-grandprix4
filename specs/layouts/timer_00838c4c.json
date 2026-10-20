@@ -1,0 +1,8 @@
+{
+  "_evidence": "Performance-counter timer state read by 0x0054e6af (and 0x54e628/0x54e665): frequency dword [0x838c4c] and start qword [0x838c54]/[0x838c58]; 0x54e6af computes ((QPC - start) << 16) / [0x838c4c] with `cmp ebx,edx; jbe` guarding the overflow (returns 0x40000000), so no value faults it. [0x838c4c] is written only by 0x54e59e (QueryPerformanceFrequency into 0x838c4c, then `cmp dword [0x838c50],0; jne error`: a nonzero 32-bit frequency); drawn from real counter rates (ACPI 3579545, PIT 1193182, 1 MHz, 4x ACPI). Bigger rates are valid too but with the stub's counter (2^32 + up to 2^40, +1..50000 per call) they would let a poll up to limit 0x20300 run for ~10^5 calls, beyond the instruction cap; these rates keep every non-saturated fraction above any poll limit in practice (delta*65536/rate >= 0x20300 needs delta >= 2^25), while delta >= rate*2^16 (most cases at 1193182, some at 14318180) takes the 0x40000000 branch, so both timer results occur. The start is an earlier counter sample (0x54e615 stores QPC there): low dword any, high dword 0 or 1 (below the stub's counter, whose high dword is >= 1). The current sample 0x838c5c/0x838c60 is written by the QPC thunk before it is read: not an input.",
+  "globals": [
+    {"addr": "0x00838c4c", "type": "u32", "values": [3579545, 1193182, 1000000, 14318180]},
+    {"addr": "0x00838c54", "type": "u32"},
+    {"addr": "0x00838c58", "type": "u32", "values": [0, 0, 1]}
+  ]
+}

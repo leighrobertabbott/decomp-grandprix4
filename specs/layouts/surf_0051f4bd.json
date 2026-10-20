@@ -1,0 +1,17 @@
+{
+ "_evidence": "0x0051f4bd fills a rectangle in the surface [0x874ee4] with pitch [0x8751c4]: a 0x1100-byte surface and a 64..128 pitch keep the fill inside it.",
+ "globals": [
+  {
+   "addr": "0x00874ee4",
+   "type": "ptr",
+   "size": 4352,
+   "fill": "bytes"
+  },
+  {
+   "addr": "0x008751c4",
+   "type": "u32",
+   "lo": 64,
+   "hi": 128
+  }
+ ]
+}

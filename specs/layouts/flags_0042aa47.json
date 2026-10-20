@@ -1,0 +1,105 @@
+{
+ "_evidence": "Byte +0x92 of the 0x8943a0 segment records for 0x0042aa47 (compose after ring_00405a12+links_00405a12): 0x42aa8e/0x42aa97 test bit 0 then bit 1 of [edi+0x92] (edi = rec 0..25), selecting the 0x4038a0 path (bit 0), the 0x4038ec / 0x42ac09 path (bit 1 only) or the exit (neither). Every other reader in the image tests only bit 3 (0x405a12/0x405a70/0x405c9a/0x405d05/0x405da9/0x4061ed/0x406262/0x427140/0x438548: test byte [edi+0x92],8, the ring_00405a12 boundary bit; the bit 0/1 readers 0x413064/0x4136b1/0x4266dc/0x429fcd/0x43569a are not reached from 0x42aa47), so the values keep bit 3 exactly as ring_00405a12 proves the walks need it: always set on the boundary records 0, 6..10, 12..14, free on 1..5 and 11, and clear (the image value) on records 15..25, and only vary bits 0/1 (and the untested high bits) so bit 1 set with bit 0 clear, bit 0 set and neither all occur. [0x603c28] is the imul factor of 0x42a963 (imul dword, shrd 0x1c, clamp 8..0x1ff): any i32. Byte [0x868582] is the direction sign the 0x4038a0/0x4038ec chain tests with jns (0x431efb/0x431ffb negate the entry result): any u8.",
+ "globals": [
+  {
+   "addr": "0x00894432",
+   "type": "u8",
+   "values": [
+    "0x08",
+    "0x0a",
+    "0x0b",
+    "0x09",
+    "0x8a",
+    "0xff",
+    "0x0f",
+    "0xfa"
+   ]
+  },
+  {
+   "addr": "0x00894c72",
+   "type": "u8",
+   "count": 5,
+   "stride": "0x160",
+   "values": [
+    "0x08",
+    "0x0a",
+    "0x0b",
+    "0x09",
+    "0x8a",
+    "0xff",
+    "0x0f",
+    "0xfa"
+   ]
+  },
+  {
+   "addr": "0x008954b2",
+   "type": "u8",
+   "count": 3,
+   "stride": "0x160",
+   "values": [
+    "0x08",
+    "0x0a",
+    "0x0b",
+    "0x09",
+    "0x8a",
+    "0xff",
+    "0x0f",
+    "0xfa"
+   ]
+  },
+  {
+   "addr": "0x00894592",
+   "type": "u8",
+   "count": 5,
+   "stride": "0x160",
+   "values": [
+    0,
+    "0x02",
+    "0x0a",
+    "0x01",
+    "0x08",
+    "0xf7",
+    "0xff",
+    "0xf5"
+   ]
+  },
+  {
+   "addr": "0x00895352",
+   "type": "u8",
+   "values": [
+    0,
+    "0x02",
+    "0x0a",
+    "0x01",
+    "0x08",
+    "0xf7",
+    "0xff",
+    "0xf5"
+   ]
+  },
+  {
+   "addr": "0x008958d2",
+   "type": "u8",
+   "count": 11,
+   "stride": "0x160",
+   "values": [
+    0,
+    "0x01",
+    "0x02",
+    "0x03",
+    "0x82",
+    "0xf5",
+    "0xf6",
+    "0xf7"
+   ]
+  },
+  {
+   "addr": "0x00603c28",
+   "type": "i32"
+  },
+  {
+   "addr": "0x00868582",
+   "type": "u8"
+  }
+ ]
+}

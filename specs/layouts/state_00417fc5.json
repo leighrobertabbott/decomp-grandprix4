@@ -1,0 +1,14 @@
+{
+ "_evidence": "0x00417fc5 walks the four 0x300-byte records at 0x6380d8 (ebx, 'add ebx,0x300; cmp ebx,0x638cd8; jb'): byte +0x2e bit 5 (state_004178e0 varies it) and the low byte of the shifted mask [esi+0x240] (< 0x20) gate each record; 'fld qword [ebx+0x290]; fmul qword [0x6f2b14] (262144.0); fistp' then '|v| >= [0x627b80]' (unsigned jb) gates the call. +0x290 is a finite f64 drawn in -512..512 so |v| = |x|*2^18 falls on both sides of the threshold dword [0x627b80] (image 0x2000000, varied 0..0x4000000); 'sub; imul [0x627b84]; shrd 0x1c; cmp [0x627b88]; jle' clamps the level from above: the multiplier (image 0x4000) is varied +-0x10000 and the cap (image 7) +-0x1000, so both clamp outcomes occur (imul/shrd cannot fault). The callee 0x417f6b reads +0x1e0/+0x1e4 of the record as world coordinates of the i16 record frame << 11 (-0x4000000..0x3fff7ff, see rec_00417f6b: wilder values send the 0x4061ed ring walk off the geometry and it never ends) and 0x41e156 copies dwords +0x4c/+0x50/+0x54 into the Q14 matrix product of 0x401adc (any i32). The 0x50c980 skid-line walk then runs with its renderer state (0x88fdd7, 0x64594c, 0x7ad869, 0x65e428, 0xa53ad0) as in the image.",
+ "globals": [
+  {"addr": "0x00638368", "type": "f64", "count": 4, "stride": "0x300", "lo": -512, "hi": 512},
+  {"addr": "0x006382b8", "type": "i32", "count": 4, "stride": "0x300", "lo": -67108864, "hi": 67106815},
+  {"addr": "0x006382bc", "type": "i32", "count": 4, "stride": "0x300", "lo": -67108864, "hi": 67106815},
+  {"addr": "0x00638124", "type": "i32", "count": 4, "stride": "0x300"},
+  {"addr": "0x00638128", "type": "i32", "count": 4, "stride": "0x300"},
+  {"addr": "0x0063812c", "type": "i32", "count": 4, "stride": "0x300"},
+  {"addr": "0x00627b80", "type": "u32", "lo": 0, "hi": 67108864},
+  {"addr": "0x00627b84", "type": "i32", "lo": -65536, "hi": 65536},
+  {"addr": "0x00627b88", "type": "i32", "lo": -4096, "hi": 4096}
+ ]
+}

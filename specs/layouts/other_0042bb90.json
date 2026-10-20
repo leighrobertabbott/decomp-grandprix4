@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x0042bb90 reads only the word [ebx+0x9a] of the second car record (0x0042bc0b sub, 0x0042bd0f movsx add, 0x0042bd4f movsx sub); any i16 is valid.",
+  "size": 164,
+  "fields": [
+    {"off": 154, "type": "i16"}
+  ]
+}

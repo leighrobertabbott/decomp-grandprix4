@@ -1,0 +1,10 @@
+{
+ "_evidence": "Engine/car record at esi for 0x00405254 (random background: the 0x404f99 chain only reads words +0xb2/+0xb8 and flag bytes as imul factors, as in 0x413606's ptr:bytes spec). +0x98: 'test; jns; neg; sar 8; cmp 0x80000; jge' clamps |v|>>8 from below to 0x80000 and the result is the idiv divisor ebp, so any i32 is valid (full range: both signs, both sides of 2^27). +0xac: |v| (neg) times [0x6f2bec] (|m| <= 0x7fff, engine_00413606), shld/shl 6, idiv ebp >= 0x80000: the quotient fits 32 bits only while |v|*|m|*64 < 2^31*2^19, so |v| < 2^28 (both signs) is the valid domain (larger magnitudes #DE in the original). +0x2cc..+0x2d8: 'xor edx,edx; shld edx,eax,6; shl eax,6; div dword [esi+ecx*4+0x2cc]' with eax = [0x60309c+4i], a value 0x404f99 has just computed (any u32, so edx = x>>26 reaches 63): the quotient fits only for a divisor >= 64, so the divisors are drawn from 64..0xffffffff (a zero or small divisor is #DE). +0x32c..+0x338 are outputs.",
+ "size": 856,
+ "fill": "bytes",
+ "fields": [
+  {"off": "0x98", "type": "i32", "lo": -2147483648, "hi": 2147483647},
+  {"off": "0xac", "type": "i32", "lo": -268435455, "hi": 268435455},
+  {"off": "0x2cc", "type": "u32", "count": 4, "stride": 4, "values": [64, 65, "0x100", "0x400", "0x10000", "0x12345", "0x7fffffff", "0x80000000", "0xffffffff"]}
+ ]
+}

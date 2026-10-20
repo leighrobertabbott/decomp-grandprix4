@@ -1,0 +1,9 @@
+{
+ "_evidence": "Record ebx of 0x00519bb2: the caller 0x51935b passes ebx = 0x418901(esi) = 0x625abc + [esi+0x202]*0xa8 (a 0xa8-byte per-car record; 0x9c bytes cover every read). 0x519bb2 reads only 'test dword [ebx+4],2; je' (any dword: bit 1 both ways) and 'mov edx,[ebx+0x94]; mul edx; mov ebp,0x3a98; div ebp' - the dword +0x94 is the engine speed the caller clamps to 0x1f4..0x4650 for its own pitch arithmetic (0x51947f), so it is drawn 0..0xffff (beyond both clamps, and below 0x310 where the quotient ecx < 0x100 takes the 'jge 0x519c31' fall-through to the 0x100 floor); with eng_00519bb2's tables eax = (([0x88fc98+4i] * [0x88fcb8+4i]) >> 14) < 2^26, so edx of 'mul' is < 2^26*0xffff/2^32 < 0x3a98 and the div never overflows. The callees (0x51f27f, 0x51f263 -> 0x518545) do not read ebx. Other bytes random.",
+ "size": 156,
+ "fill": "bytes",
+ "fields": [
+  {"off": 4, "type": "u32"},
+  {"off": "0x94", "type": "u32", "lo": 0, "hi": 65535}
+ ]
+}

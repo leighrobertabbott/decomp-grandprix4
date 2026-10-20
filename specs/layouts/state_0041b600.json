@@ -1,0 +1,93 @@
+{
+ "_evidence": "0x0041b600 (compose after state_0041b950+state_00411109, which give the rev word [0x623c34] +-0x400000, so x = [0x623c34]>>8 is +-0x4000, the selector bytes 0x622424/0x62fb4a and 0x7c2ea9): the three spans '(x - off + span) or (x - off); cdq; shld edx,eax,0xe; shl eax,0xe; idiv dword [d]' (0x41b652 d = [0x6039e8], 0x41b677 d = [0x62fb80], 0x41b68d d = [0x601318]) need a nonzero divisor with |dividend| < d*2^17 or the original #DEs; the image holds rev-band constants (offsets 4000/11000/0, spans 1000/2000, floor 9000) and 0x601318 is zero until set at run time, so the spans are drawn 1..0x10000 and the offsets 0x6039e4/0x62fb7c/0x601314 and the floor [0x62fb4c] (cmp/jge clamp of x when 0x622424 and esi+0x6f bit 0) in +-0x8000: |dividend| <= 0x4000+0x8000+0x10000 < 2^17 for every pick. 0x41b773 'sub edx,[0x601328]; jns; neg edx; cmp edx,[0x6258a4]; jl' divides only when 0 < edx < [0x6258a4] (quotient 0..0x3fff), so [0x6258a4] (image 2048) is any i32 drawn -0x100..0x10000 and [0x601328] is an offset in +-0x8000 (a wild one makes edx = 0x80000000, which the jl lets through to a #DE). The curve call 0x411891 uses the table 0x62ee98 (lo 0, hi 35, scale 0.002 in the image): its 36 f64 samples are varied (finite 0..1000; lo/hi/scale stay); the f64 scale [0x6013f0] (image 550.0) is varied 0..1000 and the floor [0x62ee90] (image 13750) 0..0x10000 against the fistp result (indefinite on overflow, no fault); [0x601e98] (image 0x4000) and word [0x62d204] are imul factors (any). The table's first dword (lo, a target global that globals=fuzz would randomise) is pinned to 0..4 as in table_00411891: a wild lo makes 0x411891 interpolate at negative indices below the table, which the game's table (lo 0) never does.",
+ "globals": [
+  {
+   "addr": "0x006039e4",
+   "type": "i32",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x006039e8",
+   "type": "i32",
+   "lo": 1,
+   "hi": 65536
+  },
+  {
+   "addr": "0x0062fb7c",
+   "type": "i32",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x0062fb80",
+   "type": "i32",
+   "lo": 1,
+   "hi": 65536
+  },
+  {
+   "addr": "0x00601314",
+   "type": "i32",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x00601318",
+   "type": "i32",
+   "lo": 1,
+   "hi": 65536
+  },
+  {
+   "addr": "0x00601328",
+   "type": "i32",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x0062fb4c",
+   "type": "i32",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "addr": "0x006258a4",
+   "type": "i32",
+   "lo": -256,
+   "hi": 65536
+  },
+  {
+   "addr": "0x0062ee98",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4
+  },
+  {
+   "addr": "0x0062eea8",
+   "type": "f64",
+   "count": 36,
+   "stride": 8,
+   "lo": 0,
+   "hi": 1000
+  },
+  {
+   "addr": "0x006013f0",
+   "type": "f64",
+   "lo": 0,
+   "hi": 1000
+  },
+  {
+   "addr": "0x0062ee90",
+   "type": "i32",
+   "lo": 0,
+   "hi": 65536
+  },
+  {
+   "addr": "0x00601e98",
+   "type": "i32"
+  },
+  {
+   "addr": "0x0062d204",
+   "type": "u16"
+  }
+ ]
+}

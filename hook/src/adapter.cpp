@@ -16,7 +16,7 @@ struct HookInfo {
 // entry: [esp] = HookInfo*, [esp+4] = caller's return address; machine state = original inputs
 __declspec(naked) void regs_adapter() {
     __asm {
-        lea esp, [esp-0x68]         // preserve incoming EFLAGS before saving them
+        lea esp, [esp-0x110]        // gp4::Regs; preserve incoming EFLAGS before saving them
         mov [esp+0x00], eax
         mov [esp+0x04], ebx
         mov [esp+0x08], ecx
@@ -26,13 +26,19 @@ __declspec(naked) void regs_adapter() {
         mov [esp+0x18], ebp
         pushfd
         pop dword ptr [esp+0x1C]
-        mov eax, [esp+0x68]          // HookInfo*
-        mov ecx, [eax+4]             // st_in: pop x87 inputs into Regs.st[0..]
+        mov eax, [esp+0x110]         // HookInfo*
+        mov ecx, [eax+4]             // st_in: pop x87 inputs into Regs.st[0..] and st_xin[0..]
         xor edx, edx
+        mov dword ptr [esp+0x108], 0 // st_xin_mask
+        mov dword ptr [esp+0x10C], 0 // st_xout_mask
     l_in:
         cmp edx, ecx
         jge d_in
+        fld st(0)
         fstp qword ptr [esp+0x20+edx*8]
+        lea ebx, [edx+edx*4]
+        fstp tbyte ptr [esp+0x68+ebx*2]  // full precision copy
+        bts dword ptr [esp+0x108], edx
         inc edx
         jmp l_in
     d_in:
@@ -43,13 +49,19 @@ __declspec(naked) void regs_adapter() {
         push ecx
         call dword ptr [eax]
         add esp, 4
-        mov eax, [esp+0x68]
-        mov ecx, [eax+8]             // st_out: push Regs.st[n-1] .. st[0]
+        mov eax, [esp+0x110]
+        mov ecx, [eax+8]             // st_out: push st[n-1] .. st[0] (80-bit where st_xout_mask says)
     l_out:
         test ecx, ecx
         jz d_out
         dec ecx
+        bt dword ptr [esp+0x10C], ecx
+        jc l_ext
         fld qword ptr [esp+0x20+ecx*8]
+        jmp l_out
+    l_ext:
+        lea edx, [ecx+ecx*4]
+        fld tbyte ptr [esp+0xB8+edx*2]
         jmp l_out
     d_out:
         push dword ptr [esp+0x1C]
@@ -61,7 +73,7 @@ __declspec(naked) void regs_adapter() {
         mov edi, [esp+0x14]
         mov ebp, [esp+0x18]
         mov eax, [esp+0x00]
-        lea esp, [esp+0x6C]          // Regs + HookInfo* (lea: must not touch the restored flags)
+        lea esp, [esp+0x114]         // Regs + HookInfo* (lea: must not touch the restored flags)
         ret
     }
 }

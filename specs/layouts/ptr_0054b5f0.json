@@ -1,0 +1,21 @@
+{
+ "_evidence": "0x54b5f0 (enabled when [0x7aafdb] != 0) copies, for every driver byte of 0x7c2a48 with bit 7 set and bit 6 clear, the 0x18-byte record at [0x8334bf] + ((byte&0x3f)-1)*0x18 (index 0..62 -> at most 0x5e8+0x18 bytes) to the name table 0x7c2b3c. [0x8334bf] is null in the image (set when the source names load): a 0x600-byte random buffer.",
+ "globals": [
+  {
+   "addr": "0x008334bf",
+   "type": "ptr",
+   "size": "0x600",
+   "fill": "bytes"
+  },
+  {
+   "addr": "0x007aafdb",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    1,
+    1
+   ]
+  }
+ ]
+}

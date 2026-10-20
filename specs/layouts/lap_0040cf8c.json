@@ -1,0 +1,25 @@
+{
+ "_evidence": "Lap geometry overlay for the 0x406ebc/0x40cf8c family (0x0040cfc9, 0x0040d106; compose after ring_00405a12+links_00405a12, whose coherent ring has lap start [0x891504] = 0x8943a0 (image), lap end [0x866ecc] records 6..8, pit start 9..10, pit end 12..14). The scans 0x406b6c/0x406c6d (via 0x406d4b) step with the lap/pit advance that subtracts the lap length [0x866ec4] at the lap end below the pit start and adds it below the lap start; the static 0 made the backward scan read record -1 and the forward scan run past the lap end. A closed lap needs [0x866ec4] = lap end - lap start, so the lap end is pinned to record 8 (inside ring_00405a12's 6..8) with the length 0xb00 (as ring_0040aec5). 0x40cf8c folds a record difference d: |d| >= [0x866ed8] (signed 'cmp; jl') subtracts the lap length, then 'idiv' by the constant 0x160 (no #DE), so the half-lap threshold [0x866ed8] draws 0..0x2400 (both sides of every |d| <= 0x2260 between records 0..25).",
+ "globals": [
+  {
+   "addr": "0x00866ecc",
+   "type": "u32",
+   "values": [
+    "0x894ea0"
+   ]
+  },
+  {
+   "addr": "0x00866ec4",
+   "type": "u32",
+   "values": [
+    "0xb00"
+   ]
+  },
+  {
+   "addr": "0x00866ed8",
+   "type": "i32",
+   "lo": 0,
+   "hi": 9216
+  }
+ ]
+}

@@ -1,0 +1,11 @@
+{
+ "_evidence": "Player-car inputs of 0x0040f8d9 (compose LAST, after carbg_0066fef0 + the 0x4056c9 list + lanes_00429fcd + state_0041242f). esi = [0x679d30] is the player's car, one of the 22 records at 0x66fef0 (order_00418f8f; state_0040f898 had made it a 32-byte root buffer for 0x40f898, so car byte +0x234 read zero from an unmapped page and only run entry 0 was ever used), and 'cmp esi,[0x679d2c]; jne' skips the body unless the viewed car is the player's: 0x679d2c equals it in about half the cases (alias). Car byte +0x234 is the car's current run id (copied from segment byte +0x2a/+0x8d by 0x4266dc/0x429fcd) and indexes the 16-byte run entries 0x6269b8 + id*0x10 (word +0 -> 0x602d7c, dwords +8/+0xc -> 0x602d84/0x602d88): lanes_00429fcd varies 96 entries, so ids draw 0..95. Car byte +0x1cd is the gear count that 0x40f833's 'add cl,1; cmp cl,[esi+0x1cd]; jle' loop runs to (0x41034e stores 7): a value of 0x7f never ends (cl wraps through the negatives), so it draws 0..7; the gear bytes +0x1c6.. come from carbg_0066fef0 (0x41242f masks and clamps them). Word 0x66d8b4 ('test 0x200; je': the mode bit) and byte 0x66d7a4 ('test; jne' skips everything) take both outcomes.",
+ "globals": [
+  {"addr": "0x679d30", "type": "u32", "points_into": {"base": "0x66fef0", "stride": "0x41c", "lo": 0, "hi": 21}},
+  {"addr": "0x679d2c", "type": "u32", "alias": "0x679d30"},
+  {"addr": "0x670124", "type": "u8", "count": 22, "stride": "0x41c", "lo": 0, "hi": 95},
+  {"addr": "0x6700bd", "type": "u8", "count": 22, "stride": "0x41c", "lo": 0, "hi": 7},
+  {"addr": "0x66d8b4", "type": "u16", "values": ["0x200", "0x200", "0x0", "0xffff", "0x1ff", "0x8200"]},
+  {"addr": "0x66d7a4", "type": "u8", "values": [0, 0, 0, 1, "0xff"]}
+ ]
+}

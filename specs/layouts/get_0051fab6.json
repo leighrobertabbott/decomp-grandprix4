@@ -1,0 +1,17 @@
+{
+ "_evidence": "0x0051fab6 calls the getters 0x51f991/0x51f997/0x51f99d ('mov eax,[0xa95a08]' / '[0xa96ad4]' / '[0xa95b9c]'; ret), so the three dwords are read only through callees (globals=fuzz never reached them); eax ends as the last one. Run-time state, any u32 valid; all three vary and differ, so the return shows which getter ran last.",
+ "globals": [
+  {
+   "addr": "0x00a95a08",
+   "type": "u32"
+  },
+  {
+   "addr": "0x00a96ad4",
+   "type": "u32"
+  },
+  {
+   "addr": "0x00a95b9c",
+   "type": "u32"
+  }
+ ]
+}

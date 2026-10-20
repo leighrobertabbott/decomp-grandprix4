@@ -1,0 +1,378 @@
+{
+ "_evidence": "Gate overlay for 0x004431cf, composed AFTER the 0x4097c7 chain layouts (the 0x408c3e list + state_00431ffb + start_004098fd) and the gate callee layouts. 0x51f1d4 -> 0x520023: with byte [0x7ad8b2] == 0xff it counts the bytes of the 22-entry car-number table 0x7c2a48 with bit 7 set (the flagged cars 0x520054 copies into the list 0x66d8f4) and returns CF=1 for two or more, which makes 0x4431cf exit ('jb' at 0x4431e7; image: 0x7ad8b2 = 0, table 1..22 unflagged, so CF was always 0): [0x7ad8b2] draws {0xff,0,1,2} and each table byte keeps its car number k (1..22, as in the image) with bit 7 set in a third of the draws (k or k|0x80: the 0x409b17/0x408f1c key searches of the chain then miss a flagged entry and fall back to index 0, no fault). 0x4431b3 is the 16-bit LCG word [0x66d8c4] (x*5, (x>>2)&0x3f gives the list index; static image 0x11 gave index 21 every time): any u16. 'cmp ax,[0x66d8f0]; jge' compares the 0..22 active-car count of 0x44303b with a signed word limit: drawn 0..40 so both outcomes occur. [0x66d8ec] is the car-list length (order_00675958: 2..22, the sort helper never ends below 2): the 0..63 index is compared with it (jge). Per-car counter bytes [((code & 0x3f)-1) + 0x66ec4a] (code from the list 0x66d8f4, list_00443278 values give indices -1..21 and 62) are counts_0066ec49's run-time counters, here over 0x66ec49..0x66ec88; [0x7c2e98] is the signed limit they are compared with after +2 (jge): 0..300 so both outcomes occur. Byte [0x7c2ea9] == 0x44 (cmp; jne) selects the 0x4432db check: drawn {0x44,0x44,0x80,0,0x40} (the chain's own layouts never drew 0x44). 0x43b920 scans car +0x7a bit 7 from car 1 or 2 ([0x7aafd4] 0..1): state_0043b920's bit_scan pattern is reapplied last so the no-free-car (stc) exit is reached; random bytes elsewhere in the car records come from cars_0066fef0 as before. To reach the deep gates in more cases (each gate exits on one side): byte [0x7c2e75] (cmp 0; je - nonzero exits at once; the chain then runs only its 0x4097fd path, as in the game when this check passes) draws {0,0,0,1}, and the unsigned threshold [0x62d238] of 'cmp [0x66d8cc]; jb' draws {0,0,0,1,0xffffffff} against the fuzzed [0x66d8cc] (0 never below, 0xffffffff almost always). Funnel biasing (all values inside the domains the chain layouts already draw): the LCG word [0x66d8c4] draws seeds whose index ((x*5)>>2)&0x3f is 0,1,2,3,5,12,16,21,63,... and the list length [0x66d8ec] {22,22,20,16,8,2}, so 'cmp eax,[0x66d8ec]; jge' goes both ways often; flag bytes 0x66d909..0x66d91f {0,0,0,1,0x40,0x80,0xff} (bit 7 exits at 0x443242). The no-free-car exit of 0x43b920 (every car +0x7a bit 7 clear, bit_scan all-clear mode) needs 0x44303b's active count (cars with +0x7a bit 7 clear minus those whose removal is due: +0x8d bit 6, +0xff bit 6, +0xf0 != 0 and [0x66d814]-[+0xf0] >= 0, which call 0x408742 instead of counting) below 14 and below [0x66d8f0]: car bytes +0x8d (0x66ff7d) {0x40,0x42,0xc0,0xff,0x40,0}, +0xff (0x66ffef) {0x40,0xff,0x40,0}, due times +0xf0 (0x66ffe0) {1,1,1000,0} and the clock [0x66d814] {0x7ffffff0, 0x10000, 1000, 0} (0 makes no car due, so the count >= 14 exit still occurs) make many cars due in most draws (plain flag/time values, as cars_004436f9/flags_00408f7b, no fault).",
+ "globals": [
+  {
+   "addr": "0x007c2e75",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x0062d238",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x007ad8b2",
+   "type": "u8",
+   "values": [
+    "0xff",
+    0,
+    1,
+    2
+   ]
+  },
+  {
+   "addr": "0x7c2a48",
+   "type": "u8",
+   "values": [
+    1,
+    1,
+    129
+   ]
+  },
+  {
+   "addr": "0x7c2a49",
+   "type": "u8",
+   "values": [
+    2,
+    2,
+    130
+   ]
+  },
+  {
+   "addr": "0x7c2a4a",
+   "type": "u8",
+   "values": [
+    3,
+    3,
+    131
+   ]
+  },
+  {
+   "addr": "0x7c2a4b",
+   "type": "u8",
+   "values": [
+    4,
+    4,
+    132
+   ]
+  },
+  {
+   "addr": "0x7c2a4c",
+   "type": "u8",
+   "values": [
+    5,
+    5,
+    133
+   ]
+  },
+  {
+   "addr": "0x7c2a4d",
+   "type": "u8",
+   "values": [
+    6,
+    6,
+    134
+   ]
+  },
+  {
+   "addr": "0x7c2a4e",
+   "type": "u8",
+   "values": [
+    7,
+    7,
+    135
+   ]
+  },
+  {
+   "addr": "0x7c2a4f",
+   "type": "u8",
+   "values": [
+    8,
+    8,
+    136
+   ]
+  },
+  {
+   "addr": "0x7c2a50",
+   "type": "u8",
+   "values": [
+    9,
+    9,
+    137
+   ]
+  },
+  {
+   "addr": "0x7c2a51",
+   "type": "u8",
+   "values": [
+    10,
+    10,
+    138
+   ]
+  },
+  {
+   "addr": "0x7c2a52",
+   "type": "u8",
+   "values": [
+    11,
+    11,
+    139
+   ]
+  },
+  {
+   "addr": "0x7c2a53",
+   "type": "u8",
+   "values": [
+    12,
+    12,
+    140
+   ]
+  },
+  {
+   "addr": "0x7c2a54",
+   "type": "u8",
+   "values": [
+    13,
+    13,
+    141
+   ]
+  },
+  {
+   "addr": "0x7c2a55",
+   "type": "u8",
+   "values": [
+    14,
+    14,
+    142
+   ]
+  },
+  {
+   "addr": "0x7c2a56",
+   "type": "u8",
+   "values": [
+    15,
+    15,
+    143
+   ]
+  },
+  {
+   "addr": "0x7c2a57",
+   "type": "u8",
+   "values": [
+    16,
+    16,
+    144
+   ]
+  },
+  {
+   "addr": "0x7c2a58",
+   "type": "u8",
+   "values": [
+    17,
+    17,
+    145
+   ]
+  },
+  {
+   "addr": "0x7c2a59",
+   "type": "u8",
+   "values": [
+    18,
+    18,
+    146
+   ]
+  },
+  {
+   "addr": "0x7c2a5a",
+   "type": "u8",
+   "values": [
+    19,
+    19,
+    147
+   ]
+  },
+  {
+   "addr": "0x7c2a5b",
+   "type": "u8",
+   "values": [
+    20,
+    20,
+    148
+   ]
+  },
+  {
+   "addr": "0x7c2a5c",
+   "type": "u8",
+   "values": [
+    21,
+    21,
+    149
+   ]
+  },
+  {
+   "addr": "0x7c2a5d",
+   "type": "u8",
+   "values": [
+    22,
+    22,
+    150
+   ]
+  },
+  {
+   "addr": "0x0066d8f0",
+   "type": "i16",
+   "lo": 0,
+   "hi": 40
+  },
+  {
+   "addr": "0x0066ec49",
+   "type": "u8",
+   "count": 64,
+   "values": [
+    0,
+    1,
+    2,
+    7,
+    "0x30",
+    "0x62",
+    "0x63",
+    "0x64",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x007c2e98",
+   "type": "i32",
+   "lo": 0,
+   "hi": 300
+  },
+  {
+   "addr": "0x007c2ea9",
+   "type": "u8",
+   "values": [
+    "0x44",
+    "0x44",
+    "0x80",
+    0,
+    "0x40"
+   ]
+  },
+  {
+   "addr": "0x007aafd4",
+   "type": "u8",
+   "lo": 0,
+   "hi": 1
+  },
+  {
+   "addr": "0x00670386",
+   "type": "u8",
+   "count": 23,
+   "stride": "0x41c",
+   "pattern": "bit_scan",
+   "bit": 128
+  },
+  {
+   "addr": "0x0066d8c4",
+   "type": "u16",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    10,
+    13,
+    "0x11",
+    "0x33",
+    "0x1234",
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x0066d8ec",
+   "type": "u32",
+   "values": [
+    22,
+    22,
+    20,
+    16,
+    8,
+    2
+   ]
+  },
+  {
+   "addr": "0x0066d909",
+   "type": "u8",
+   "count": 23,
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0x40",
+    "0x80",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0066ff7d",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x40",
+    "0x42",
+    "0xc0",
+    "0xff",
+    "0x40",
+    0
+   ]
+  },
+  {
+   "addr": "0x0066ffef",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x40",
+    "0xff",
+    "0x40",
+    0
+   ]
+  },
+  {
+   "addr": "0x0066ffe0",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    1,
+    1,
+    1000,
+    0
+   ]
+  },
+  {
+   "addr": "0x0066d814",
+   "type": "u32",
+   "values": [
+    "0x7ffffff0",
+    "0x10000",
+    1000,
+    0
+   ]
+  }
+ ]
+}

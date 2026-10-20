@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x00520cf4 (one-shot copy, called at the end of 0x520d54 and other savers): 'cmp byte [0x85306c],0; jne done' then rep movsb of the 0xa41 bytes 0x7c30a3..0x7c3ae3 to 0x85306d and 'mov byte [0x85306c],0xff'. The flag draws 0 in half the picks (copy runs) and nonzero otherwise (skipped); the source block is any pattern (a byte copy never faults), so all 0xa41 bytes vary.",
+ "globals": [
+  {"addr": "0x0085306c", "type": "u8", "values": [0, 0, "0xff", 1]},
+  {"addr": "0x007c30a3", "type": "u8", "count": 2625, "stride": 1}
+ ]
+}

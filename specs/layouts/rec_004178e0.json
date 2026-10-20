@@ -1,0 +1,11 @@
+{
+  "size": 236,
+  "_evidence": "0x004178e0 reads through esi: dword +0x40 (test 0x14280 selects the 0x601dc4/0x601dc8 multiplier), signed byte +0xe4 (cmp 2 jl / cmp 5 jle: 2..5 is the early exit), byte +0x7a bit 0x20 (selects which record dwords are averaged) and read-modify-writes bytes +0x80/+0x81. Compares and bit ops only: every value is valid; full-range draws hit all three +0xe4 outcomes and both +0x40 outcomes.",
+  "fields": [
+    {"off": 64, "type": "u32"},
+    {"off": 122, "type": "u8"},
+    {"off": 128, "type": "u8"},
+    {"off": 129, "type": "u8"},
+    {"off": 228, "type": "i8"}
+  ]
+}

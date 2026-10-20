@@ -50,4 +50,4 @@ void __cdecl FUN_0040f629(gp4::Regs* r) {
     r->edx = high;
     r->eflags = (r->eflags & ~0x8d5u) | flags;
 }
-GP4_IMPL(0x0040f629, FUN_0040f629, "regs(esi:ptr[0x380]:bytes) -> (eax, edx, cf, pf, af, zf, sf, of); globals=layout=state_004125ce")
+GP4_IMPL(0x0040f629, FUN_0040f629, "regs(esi:ptr[0x380]:bytes) -> (eax, edx, cf, pf, af, zf, sf, of); globals=layout=state_0040f629; cases=200")

@@ -1,0 +1,7 @@
+{
+  "size": 522,
+  "_evidence": "Car block at eax (= esi) for 0x00418cdd: only byte +0x202 is read, by 0x418901, which returns the car's 0xa8-byte record 0x625abc + b*0xa8 (22 cars, so b is 0..21 and the read-modify-writes stay in the table, as rec_00418c68).",
+  "fields": [
+    {"off": "0x202", "type": "u8", "lo": 0, "hi": 21}
+  ]
+}

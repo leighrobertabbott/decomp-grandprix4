@@ -1,0 +1,17 @@
+{
+ "_evidence": "Two never-written engine gains (compose after state_0041b600 and state_0041bd28, which draw them as unbounded i32). [0x601e98] (image 0x4000, a Q14 unit gain) is read only by 0x41b600's 'imul dword [0x601e98]; shrd eax,edx,0xe' at 0x41b7b0; [0x601e84] (image 0x26327) only by 0x41b852's 'imul dword [0x601e84]; shrd eax,edx,6; sar edx,6' at 0x41b883 and 0x41bd28's 'imul [0x601e84]; shrd 20' at 0x41bd4b (a scan of the game's instructions finds these three reads and no store to either dword). 0x41b852 then does 'idiv ebp' at 0x41b8a6 with ebp = max([0x623c34] sar 8, 0x400) >= 2^10, so the quotient fits only while |T*K84| < 2^47, T = 0x41b600's result. T is a chain of Q14 products of the curve value max(fistp(curve*0x34d/0x358*[0x6013f0]), [0x62ee90]) <= 2^20 (state_0041b600: table samples and scale 0..1000, floor 0..0x10000) by the factor ecx <= 0xffff, K98, [0x602bf4] (0..0x4000), word [0x62d204] and car word +0xf6: |T| <= 2^20 * 4 * (K98/2^14) * 1 * 4 * 4. With K98 and K84 random dwords (v6 case 74 of 0x4198c7: K98 0x708fe945 wrapped T to 0xd0203dfa, K84 0x58c9a8ba) the idiv #DEs at 0x41b8a6, which the game cannot do with its constants. Domain: K98 0..0x8000 (|T| <= 2^27) and K84 0..0x40000 (both contain their image values; |T*K84| <= 2^45 < 2^47), so 0x41b8a6 never faults; 0x41bd28's use is a 64-bit product with no branch on it (cannot fault).",
+ "globals": [
+  {
+   "addr": "0x00601e98",
+   "type": "u32",
+   "lo": 0,
+   "hi": 32768
+  },
+  {
+   "addr": "0x00601e84",
+   "type": "u32",
+   "lo": 0,
+   "hi": 262144
+  }
+ ]
+}

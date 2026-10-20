@@ -1,0 +1,27 @@
+{
+ "_evidence": "Bounded lateral-profile dwords for 0x41ec08 standalone (compose last, after ring_008943a0+records_008943a0+multiply_0040ce7b+words_008943a0), records -1..33. 0x41ec08 clamps the lateral position: esi = edx, or the bound (u16 +0x60/+0x62 - 0x100) << 8 when edx is beyond it, so |esi| <= 0xfeff00 < 2^24. 0x41eacf then forms A_k = max(0x40000 - (esi*sx(+0x14)>>14), 0x10) for E-1, E, E+1 with +0x14 any i16 (ring_008943a0 keeps that domain), so 0x10 <= A_k <= 0x40000 + 2^25 and |A_j - A_k|/A_j <= 2113535; and D_k = [+0xf4] - fistp(+0x150 * c * esi) with c = f64 [0x6f2a04] in -1e-8..1e-8 (multiply_0040ce7b). 0x41eba5 divides (A_j - A_k)*(D_k - D_j) by max(A_j, 0x10) with idiv, so the quotient fits only if |D_k - D_j| * 2113535 < 2^31: +0xf4 in -128..128 and +0x150 in -1024..1024 give |fistp| <= 1024*1e-8*2^24 < 172, |D| <= 300, |D_k - D_j| <= 600, |q| < 1.27e9. (With +0x14 bounded to +-128 as in state_0040759e, much larger D are valid; that domain is exercised through the 0x40729a/0x4075d0/0x40759e chains with trackfar_008943a0.) The start-line path (records 0, lap end-2, lap end-1: 0x41e910) sets A = 0x40000 for all three, so its quotient is 0 and the 12 table dwords 0x6279fc.. are any i32. 0x41ed24's lerp of +0x150 / next +0x150 is fild/fmul/fistp only. Previously all these were static zero, so every 0x41eba5 numerator was 0. Synthetic draws only.",
+ "globals": [
+  {
+   "addr": "0x894334",
+   "type": "i32",
+   "count": 35,
+   "stride": "0x160",
+   "lo": -128,
+   "hi": 128
+  },
+  {
+   "addr": "0x894390",
+   "type": "i32",
+   "count": 35,
+   "stride": "0x160",
+   "lo": -1024,
+   "hi": 1024
+  },
+  {
+   "addr": "0x006279fc",
+   "type": "i32",
+   "count": 12,
+   "stride": 4
+  }
+ ]
+}

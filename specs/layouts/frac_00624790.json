@@ -1,0 +1,6 @@
+{
+ "_evidence": "Dword 0x00624790 is a Q14 split point of the unit 0..0x4000: 0x004123c6 stores its two reciprocals [0x624794] = 0x10000000 / (0x4000 - x) and [0x624798] = 0x10000000 / x (mov eax,0x10000000; xor edx,edx; idiv), and 0x00425e19 uses them as the scales of the two sides of 0x603d40 - x (negative side * [0x624798], non-negative side * [0x624794]), so the game keeps x strictly inside the unit: 1..0x3fff. x = 0 or 0x4000 is the only #DE (2^28 by any other nonzero divisor fits), which is exactly the 2 faults of fuzz:i32. Compose last (it only narrows this field).",
+ "globals": [
+  {"addr": "0x00624790", "type": "i32", "lo": 1, "hi": 16383}
+ ]
+}

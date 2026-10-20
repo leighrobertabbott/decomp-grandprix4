@@ -1,0 +1,9 @@
+{
+ "_evidence": "0x00852d30 is a car record pointer (null or one of the 22 records of 0x66fef0): 0x00442ed6/0x0040faab test it for null and read bytes +0x7a/+0x80/+0x81 of the car. Fuzzed it is wild. The car bytes are drawn plainly for all 22 records.",
+ "globals": [
+  {"addr": "0x00852d30", "type": "u32", "nullable": true, "points_into": {"base": "0x0066fef0", "stride": "0x41c", "lo": 0, "hi": 21}},
+  {"addr": "0x0066ff6a", "type": "u8", "count": 22, "stride": "0x41c"},
+  {"addr": "0x0066ff70", "type": "u8", "count": 22, "stride": "0x41c"},
+  {"addr": "0x0066ff71", "type": "u8", "count": 22, "stride": "0x41c"}
+ ]
+}

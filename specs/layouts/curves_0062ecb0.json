@@ -1,0 +1,14 @@
+{
+  "_evidence": "The two adjacent 3-sample curve tables of the car-performance block read by 0x0040fb47/0x0040fb95 through 0x00411891 (edx = 0x62ecb0 and 0x62ecd8; same shape as table_00411891: dword +0 lo, dword +4 hi, f64 +8 input scale, f64 samples from +0x10). Each table is 0x28 bytes (0x62ecd8 - 0x62ecb0; static lo 0, hi 2, scale ~0.105, samples 3.05/2.78/2.5 and 1799/2202/2360), so lo and hi are drawn 0..2 in any order: idx >= hi reads sample hi, lo <= idx < hi interpolates idx/idx+1 <= hi, idx < lo reads sample 0, and every sample read stays inside its own table. The scale is a finite -0.05..0.5 so idx = floor(x*scale) for the 0..254 inputs falls below lo, inside and above hi. Samples of 0x62ecd8 are finite -5000..5000; samples of 0x62ecb0 are the divisor of 0x40fb95's fdivp, drawn 0.25..8 (finite, nonzero; a zero would only give the masked inf/indefinite). The input limit 0x62ec6c (cmp eax(0..255),[lim]; jle, then max(.,1)) is drawn 0..255 (static 20; 0x4112e3 reads it as a performance parameter) so the clamp and the floor of 1 both occur. All are writable .data parameters of the car-performance block (0x62ec20.. read by 0x4112e3), varied rather than trusted at their static values; nothing faults.",
+  "globals": [
+    {"addr": "0x0062ecb0", "type": "i32", "lo": 0, "hi": 2},
+    {"addr": "0x0062ecb4", "type": "i32", "lo": 0, "hi": 2},
+    {"addr": "0x0062ecb8", "type": "f64", "lo": -0.05, "hi": 0.5},
+    {"addr": "0x0062ecc0", "type": "f64", "count": 3, "stride": 8, "lo": 0.25, "hi": 8},
+    {"addr": "0x0062ecd8", "type": "i32", "lo": 0, "hi": 2},
+    {"addr": "0x0062ecdc", "type": "i32", "lo": 0, "hi": 2},
+    {"addr": "0x0062ece0", "type": "f64", "lo": -0.05, "hi": 0.5},
+    {"addr": "0x0062ece8", "type": "f64", "count": 3, "stride": 8, "lo": -5000, "hi": 5000},
+    {"addr": "0x0062ec6c", "type": "i32", "lo": 0, "hi": 255}
+  ]
+}

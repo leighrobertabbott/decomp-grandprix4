@@ -1,0 +1,6 @@
+{
+ "_evidence": "Background for the 22 car records at 0x66fef0 (stride 0x41c, 22*0x41c = 0x5a68 bytes = 5786 dwords, ending exactly at the order list 0x675958): every byte of every car is a plain random draw, the globals-form equivalent of the all-u8 / 'fill: bytes' background of the car pointer layouts (car_004129fa: every byte a u8 draw; car_0041e500: fill bytes). Compose it FIRST: the car fields that must be bounded (segment pointer +0x1c, positions +0/+4, car numbers +0x7c, indices) are pinned by the layouts composed after it (e.g. carno_0066ff6c, cars_00444d60), which win on overlap. It only makes the flag/counter bytes the callees test or read-modify-write take both states instead of the static zero image.",
+ "globals": [
+  {"addr": "0x66fef0", "type": "u32", "count": 5786, "stride": 4}
+ ]
+}

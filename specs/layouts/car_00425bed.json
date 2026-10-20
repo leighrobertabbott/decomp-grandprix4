@@ -1,0 +1,9 @@
+{
+  "_evidence": "Car record behind esi for 0x00425bed's null-segment path: 'mov ecx,[esi+0x11c]' and 'mov ebp,[esi+0x11e]' read overlapping dwords (the i16 half-widths +0x11c/+0x11e plus the next word +0x120 in the high halves), and the divisor is d11c + d11e + 0x200. With both words in -0x80..0x400 the low half of that sum is 0x100..0xa00, so it is never 0 or -1 whatever the high words hold (no #DE, no INT_MIN/-1 overflow); byte +0x163 bit 5 selects the numerator. All other bytes random.",
+  "size": 368,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x11c", "type": "i16", "lo": -128, "hi": 1024},
+    {"off": "0x11e", "type": "i16", "lo": -128, "hi": 1024}
+  ]
+}

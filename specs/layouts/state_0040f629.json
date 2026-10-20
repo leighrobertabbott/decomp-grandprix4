@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x0040f629 calls 0x00426a66, which multiplies by the dword [0x0062d28c] (zero in the image, computed by 0x0040c6d8 at 0x0040cacd: game state, varied as full i32) and writes [0x006037fc]; it then adds [0x006037fc] and does cdq/idiv by [0x00603854]. As in state_004125ce the divisor is 1..65535 (positive, so no zero divide and no quotient overflow for a sign-extended 32-bit dividend). [0x00601eb4] = 0x3333 is an initialised constant that no code writes (only 0x0040f629 references it) and is not varied.",
+  "globals": [
+    {"addr": "0x00603854", "type": "u32", "lo": 1, "hi": 65535},
+    {"addr": "0x0062d28c", "type": "i32"}
+  ]
+}

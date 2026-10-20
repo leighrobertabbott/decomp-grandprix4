@@ -1,0 +1,11 @@
+{
+  "_evidence": "0x0042882e: when byte [esi+0xca]&4 is clear it computes (movsx word [esi+0xb4] << 24) / [0x603854] (|dividend| <= 2^39): divisors 257..65535 keep |q| < 2^31 (0 is the image value and the original's #DE); otherwise (word*[esi+0x98]) / [0x601334] with [0x601334] in 64..131071 (positive car dimension, see recs_006380d8) and |[esi+0x98]| < 2^22 (rec_0042882e). [0x603854] also scales the stored result (imul/shrd 24). The base values 0x625894/0x625898 and blend targets 0x62589c/0x6258a0, the clamp gain 0x603c24 and the callee 0x4261cc gains 0x602b4c/0x62d2e0 only feed imul/shrd/compares: plain i32.",
+  "globals": [
+    {"addr": "0x00603854", "type": "i32", "lo": 257, "hi": 65535},
+    {"addr": "0x00601334", "type": "i32", "lo": 64, "hi": 131071},
+    {"addr": "0x00625894", "type": "i32", "count": 4, "stride": 4},
+    {"addr": "0x00603c24", "type": "i32"},
+    {"addr": "0x00602b4c", "type": "i32"},
+    {"addr": "0x0062d2e0", "type": "i32"}
+  ]
+}

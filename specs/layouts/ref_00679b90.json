@@ -1,0 +1,6 @@
+{
+ "_evidence": "Reference heading word [0x679b90] read by 0x00526f21 ('mov ax,word [edi]; sub ax,word [0x679b90]; jns; neg ax; cmp ax,0x4000; jb' and the same for the record [0x679d28] at 0x526f6f) when it runs as a callee (e.g. of 0x00550d0b, whose own referenced globals do not include it, so fuzz:i32 never varied it there and every case compared against its image value). It is a 16-bit angle only subtracted from record headings (word +0 of the 0x160-byte ring records, full u16 range in ring2_00526f21): drawn as a full random u16 so the difference falls on both sides of the 0x4000 quarter turn with both signs, i.e. the marker word [0x875e92] the caller tests becomes 0 and 0x8000. Plain arithmetic: every value is valid.",
+ "globals": [
+  {"addr": "0x00679b90", "type": "u16"}
+ ]
+}

@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x00445a2c (and the same test in 0x0044557c at 0x44569f): movzx eax, byte [0x7ab022]; bt dword [0x62f8c8], eax. A register bit offset makes bt address dword [0x62f8c8 + (eax >> 5)*4], so a byte index 0..255 reads the 256-bit string 0x62f8c8..0x62f8e7 (8 dwords). The string is run-time state (0x00445b9a/0x00446058 maintain it next to the bts on 0x62f8c0) and the index byte is written by several handlers (0x4456c7, 0x445d60, 0x53f64d): every bit pattern and every index 0..255 is valid (bt cannot fault inside the string).",
+ "globals": [
+  {"addr": "0x007ab022", "type": "u8", "lo": 0, "hi": 255},
+  {"addr": "0x0062f8c8", "type": "u32", "count": 8, "stride": 4}
+ ]
+}

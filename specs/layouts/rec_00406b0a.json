@@ -1,0 +1,10 @@
+{
+  "size": 133,
+  "_evidence": "0x00406b0a reads only the signed bytes +0x7c (first offset) and +0x7d (last offset) and the dword +0x44 of the segment record at edi (after cmp edi,[0x891500] jb). +0x44 is a link to another segment record (0 -> je 0x406b56 exit, so it is nullable); the walk visits link + k*0x160 for k = sx(+0x7c)..sx(+0x7d) (js exits when +0x7d < +0x7c; at most 256 records) and 0x00406303 reads edi+0xd4..+0x12b and ebx = edi+0x160 at +0xd4..+0xfb of each. Both bytes are full-range i8, so the link is a buffer of random record bytes reaching 128 records back and 129 forward: bias 0xb000 (128*0x160), size 0x16130 (0xb000 + 0xb000 + 0x130). Every value pattern of the records is valid for 0x406303 (fild/fpatan/fistp, masked FPU)."
+  ,
+  "fields": [
+    {"off": "0x44", "type": "ptr", "size": "0x16130", "fill": "bytes", "bias": "0xb000", "nullable": true},
+    {"off": "0x7c", "type": "i8"},
+    {"off": "0x7d", "type": "i8"}
+  ]
+}

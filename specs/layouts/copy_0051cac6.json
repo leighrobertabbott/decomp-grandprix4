@@ -1,0 +1,9 @@
+{
+ "_evidence": "0x0051cac6 reads 16 words from 0x811aa8 ('lodsw'; 'cmp ax,-1; je' skips the slot) and for each used slot k copies entry ax of the word tables 0x9e1b20/0x9e2920 and the dword table 0xa6c600 to entry 0x42d+k ('push word [eax*2+0x9e1b20] ... pop word [ebx*2+0x9e1b20]', ebx = 0x42d..0x43c) and sets bit k of the mask stored to 0x811a8c. fuzz:i32 varied only the first dword of each. The slot words are 0xffff (empty) in about a quarter of the cases, else a source entry in 0..0x3ff (the texture slots below the copy area at 0x42d; values spread over the range), and the source entries 0..0x3ff of the three tables are random (copied verbatim), so a wrong index, width or skipped slot changes memory. Every index stays inside its table.",
+ "globals": [
+  {"addr": "0x00811aa8", "type": "u16", "count": 16, "stride": 2, "values": ["0xffff", "0xffff", "0xffff", "0xffff", 0, 1, 2, 7, "0x10", "0x55", "0x100", "0x1ff", "0x2aa", "0x3fe", "0x3ff", 3]},
+  {"addr": "0x009e1b20", "type": "u16", "count": 1024, "stride": 2},
+  {"addr": "0x009e2920", "type": "u16", "count": 1024, "stride": 2},
+  {"addr": "0x00a6c600", "type": "u32", "count": 1024, "stride": 4}
+ ]
+}

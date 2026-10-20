@@ -1,0 +1,8 @@
+{
+  "_evidence": "Globals of 0x00435945 (overlay after engine_00413606). 'idiv dword [0x6013ac]' at 0x43598c divides movsx word +0x6a * (movzx byte +0x1d0 << 6) (|num| < 2^29) and the same dword is the unsigned clamp of the final |quotient| (jb): it is ROUND([0x62ee78]*[0x6f29bc]) stored by 0x4112e3 (zero only in the image, before setup), a positive gain, so 1..0x8000 (0 is the original's #DE, which engine_00413606's full-range draw hit). 'idiv ebp' (100) at 0x435978 divides byte +0x178 (or 0) * [0x603464]: [0x603464] is read only here (static 0x2000, never written); +-0x1000000 keeps 255*x/100 far inside int32 (wild values overflowed: the 23 timeouts/faults). [0x603858] (0x4358f8's imul factor, written by 0x412604 as (S<<14)/0xa00 with the rate S in 1..0xffff) is 0..0x6666. The last idiv (|ebx| forced >= 1, |num| <= 2^30) cannot fault.",
+  "globals": [
+    {"addr": "0x006013ac", "type": "i32", "lo": 1, "hi": 32768},
+    {"addr": "0x00603464", "type": "i32", "lo": -16777216, "hi": 16777216},
+    {"addr": "0x00603858", "type": "i32", "lo": 0, "hi": 26214}
+  ]
+}

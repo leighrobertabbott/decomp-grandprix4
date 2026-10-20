@@ -1,0 +1,26 @@
+{
+ "_evidence": "Slot words 0x9e1b20 + 2*idx read by 0x0051cc50 (idx from the dwords at 0x9e1798): 0xffff = empty or a k*0x20 offset into the 0x6975ec table.",
+ "globals": [
+  {
+   "addr": "0x009e1b20",
+   "type": "u16",
+   "count": 64,
+   "stride": 2,
+   "values": [
+    "0xffff",
+    "0xffff",
+    0,
+    "0x20",
+    "0x40"
+   ]
+  },
+  {
+   "addr": "0x009e1798",
+   "type": "u32",
+   "count": 10,
+   "stride": 4,
+   "lo": 0,
+   "hi": 63
+  }
+ ]
+}

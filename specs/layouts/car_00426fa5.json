@@ -1,0 +1,43 @@
+{
+ "size": 398,
+ "_evidence": "Car record (esi) for 0x00426fa5: word +0x90 (the default result stored to +0x186), bytes +0x8d (bit 1) and +0x9c (bit 4) gate the body (random background: both states), dwords +0/+4 are positions copied to 0x623e30/0x623e38 (any value). Dword +0x1c is the car's current track-segment pointer (never null in the game; compared with the pit start [0x891500] and, in the pit, dereferenced for +0x44), so it draws a record address 0..25 of the 0x160-stride array at 0x8943a0, as in cars_0066fef0.",
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x1c",
+   "type": "u32",
+   "values": [
+    "0x8943a0",
+    "0x894500",
+    "0x894660",
+    "0x8947c0",
+    "0x894920",
+    "0x894a80",
+    "0x894be0",
+    "0x894d40",
+    "0x894ea0",
+    "0x895000",
+    "0x895160",
+    "0x8952c0",
+    "0x895420",
+    "0x895580",
+    "0x8956e0",
+    "0x895840",
+    "0x8959a0",
+    "0x895b00",
+    "0x895c60",
+    "0x895dc0",
+    "0x895f20",
+    "0x896080",
+    "0x8961e0",
+    "0x896340",
+    "0x8964a0",
+    "0x896600"
+   ]
+  },
+  {
+   "off": "0x90",
+   "type": "i16"
+  }
+ ]
+}

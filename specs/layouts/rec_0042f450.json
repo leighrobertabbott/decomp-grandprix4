@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x0042f450 (esi = car record): edi = dword [esi+0x1c] (current track segment) and 'test byte [edi+0x51], 0x80'; set: or byte [esi+0x21c],1; clear: if byte +0x21c bit 0 is set, clear it and call 0x42a0cf, which adds movsx word [esi+0xb6] to eax ([0x6223e8]) and clamps it to [0x6223f4]..0x7fff. +0x1c is a real 0x58-byte buffer (random bytes, so bit 7 of +0x51 takes both values), the other fields vary fully.",
+  "size": 548,
+  "fields": [
+    {"off": "0x1c", "type": "ptr", "size": 88, "fill": "bytes"},
+    {"off": "0xb6", "type": "i16"},
+    {"off": "0x21c", "type": "u8"}
+  ]
+}

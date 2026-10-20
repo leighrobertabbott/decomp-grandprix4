@@ -1,0 +1,31 @@
+{
+ "_evidence": "Engine regime for multi-pass runs of 0x004198c7 (compose after state_0041bd56 and state_0041bd28, which draw these for single-function domains). The rev limits [0x623c2c] (image 0x6400 = 100 rpm << 8) and [0x623c30] (image 0x4e2000 = 20000 rpm << 8) have no store in the game's code (0x41bd56's cmp/mov at 0x41bd60..0x41be2e only read them), so they keep their image values here. The revs [0x623c34] are clamped into [low, high] by 0x41bd56 (0x41be19..0x41be33, then 'sar 8' to car word +0x62, which 0x417774 reloads '<< 8'): drawn between the limits. state_0041bd56's +-0x1000 for all three left revs >> 8 at +-16, so 0x41b852's divisor max(revs >> 8, 0x400) sat at its 0x400 floor every pass and the drive torque [0x62474c] reached 1.2M..4.9M, past what 0x41bd28's 'idiv dword [0x6013a8]' at 0x41bd3b can divide ((A - B) << 19 by the inertia: the quotient needs |A - B| < 2^12 * I; probe cases 8 and 160 of the composed 0x4198c7 spec #DE'd there with I = 0x130). The inertia [0x6013a8] is 0x4112e3's 'fistp' of car data ([0x62ed40] 0.05 * [0x601420]^2 * [0x601470] * 256 = 304 = 0x130 in the image, which 0x41bb95 compares with 0x130): a positive car constant, drawn 0x100..0x400 (state_0041bd28's list also held 0x7fffffff and negative values that no car produces).",
+ "globals": [
+  {
+   "addr": "0x00623c2c",
+   "type": "i32",
+   "values": [
+    "0x6400"
+   ]
+  },
+  {
+   "addr": "0x00623c30",
+   "type": "i32",
+   "values": [
+    "0x4e2000"
+   ]
+  },
+  {
+   "addr": "0x00623c34",
+   "type": "i32",
+   "lo": 25600,
+   "hi": 5120000
+  },
+  {
+   "addr": "0x006013a8",
+   "type": "u32",
+   "lo": 256,
+   "hi": 1024
+  }
+ ]
+}

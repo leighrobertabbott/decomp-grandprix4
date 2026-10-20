@@ -1,0 +1,8 @@
+{
+  "_evidence": "Overlay for edi of 0x0042f16d (compose AFTER seg_0042d665, which supplies the random background and byte +0xa9 for the callee 0x42d665). 0x42f2a6 loads word [edi+0x18], negates it when negative (jns) and compares it signed with the constant [0x603ec8] = 1024 (jge 0x42f3c6): random words were below 1024 in magnitude only 3% of the time, so the 0x42d665 call path was rarely reached. Values: 0, +-100, +-1023, +-1024, 0x7fff and 0x8000 (neg leaves -32768, which is < 1024). Byte +0x51 (0x42f353 test 0x80) stays random. Compare only: nothing faults.",
+  "size": 184,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x18", "type": "u16", "values": [0, 0, "0x64", "0xff9c", "0x3ff", "0xfc01", "0x400", "0xfc00", "0x7fff", "0x8000"]}
+  ]
+}

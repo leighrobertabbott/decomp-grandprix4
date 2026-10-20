@@ -1,0 +1,53 @@
+{
+ "_evidence": "Fixed working record 0x639204 (0x420 bytes, car-shaped) and the scalars of 0x00412af5. The record is ebx of 0x412a3d (flag bits of +0x9c/+0xcb/+0xfe/+0x163/+0x122 RMW-copied from the caller's car, byte +0xfd and dwords +0/+4 copied), then esi of 0x4129e0 (dwords +0/+4 += (([0x601354]>>8) * [0x623ef4 / 0x623ef8]) >> 6), 0x4129fa and 0x40373b, so it has the car_004129fa domain: every byte a plain u8 draw (flag tests/RMW, words +0x66/+0x90/+0x10a any i16; the pointers +0x1c/+0x1b8 are written by 0x412a25/0x4322a6 before they are read; the position dwords come from the caller's car). [0x601354] is the car dimension ROUND([0x62edc8]*[0x601408]) of 0x4112e3 (about 0x11b01 from the static setup): 0..0x20000. [0x623ef4]/[0x623ef8] are stored by 0x41d8ab as (int)(short), i.e. i16 heading cos/sin: |offset| <= 0x200*0x8000>>6 = 0x40000. [0x601ba5] (movzx -> eax of 0x403721 -> the 0x403938 mode) is written only by 0x41368e (7) and 0x4136b1 (0x403a1e: 0..7), so 0..7. Put this layout first: the ring/link layouts that follow do not overlap 0x639204..0x639623. Also varied: word +0x14 of ring records 0..26 (0x8943b4 + k*0x160; 0x409244 imul factor and the clamped (>= 0x10) idiv divisor term, any i16) and byte [0x868582] (test 0xff; jns side select of 0x403938 mode 7, any u8). Remaining static reads are constants: the cos table 0x7c5c5c (image) and [0x603baa] (0x380, never written).",
+ "globals": [
+  {
+   "addr": "0x00639204",
+   "type": "u8",
+   "count": 1056,
+   "stride": 1
+  },
+  {
+   "addr": "0x00601354",
+   "type": "i32",
+   "lo": 0,
+   "hi": 131072
+  },
+  {
+   "addr": "0x00623ef4",
+   "type": "i32",
+   "lo": -32768,
+   "hi": 32767
+  },
+  {
+   "addr": "0x00623ef8",
+   "type": "i32",
+   "lo": -32768,
+   "hi": 32767
+  },
+  {
+   "addr": "0x00601ba5",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ]
+  },
+  {
+   "addr": "0x008943b4",
+   "type": "i16",
+   "count": 27,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x00868582",
+   "type": "u8"
+  }
+ ]
+}

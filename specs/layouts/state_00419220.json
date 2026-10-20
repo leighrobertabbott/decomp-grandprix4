@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x00419220 uses ebx = 0x006380d8 (four 0x300-byte records): fild dword +0x86c / fmul qword +0x880 (record 2, i.e. 0x00638944 / 0x00638958) and fild +0xb6c / fmul +0xb80 (record 3, 0x00638c44 / 0x00638c58), fistp then abs (test/jns/neg). Ints in -30000..30000 times doubles in -2..2 keep both products well inside int32 (no indefinite) with both signs, so the neg paths and the weighted division (rec_00419220) stay fault-free.",
+  "globals": [
+    {"addr": "0x00638944", "type": "i32", "lo": -30000, "hi": 30000},
+    {"addr": "0x00638958", "type": "f64", "lo": -2, "hi": 2},
+    {"addr": "0x00638c44", "type": "i32", "lo": -30000, "hi": 30000},
+    {"addr": "0x00638c58", "type": "f64", "lo": -2, "hi": 2}
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "_evidence": "Segment words read by 0x00427760/0x00427579 through the stepped segment pointers of 0x00429c7f (edi = car +0x1c, ebx = car +0x1b8, both records 0..25 advanced up to four times with ring_008943a0's advance, which keeps every visited record in 0..31, and their next records up to 32): edi words +0 and +0xa (and the next record's +0x160/+0x16a), +0x60/+0x62 (and +0x1c0/+0x1c2, 0x427579: difference, je on zero, clamp to +-0x1000), ebx word +0x18 (and +0x178). All are 16-bit imul/shl/rcl/sub operands, so any value is valid; they vary for records 0..32. Compose after ring_008943a0+state_00427880.",
+  "globals": [
+    {"addr": "0x008943a0", "type": "i16", "count": 33, "stride": "0x160"},
+    {"addr": "0x008943aa", "type": "i16", "count": 33, "stride": "0x160"},
+    {"addr": "0x008943b8", "type": "i16", "count": 33, "stride": "0x160"},
+    {"addr": "0x00894400", "type": "u16", "count": 33, "stride": "0x160"},
+    {"addr": "0x00894402", "type": "u16", "count": 33, "stride": "0x160"}
+  ]
+}

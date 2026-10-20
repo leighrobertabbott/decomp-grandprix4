@@ -1,0 +1,29 @@
+{
+ "_evidence": "Overlay for 0x0042b740 (esi = car rec[0x66fef0,0x41c,0..21]; compose after cars_0066fef0+rel_0042c0c4). Car fields of all 22 records, zero in the image: byte +0x162 (0x670052; test 8 at 0x42b766: the 0x868582 sign test, block 0x42b76f), words +0xe and +0x142 (0x66fefe/0x670032: sub, movsx, imul [0x603c64], shrd 14 - the heading error whose sign and clamp form blocks 0x42b7ac..), word +0x174 (0x670064: signed 'cmp 0x40; jge', raised to 0x40 otherwise). Plain bit tests, 16-bit sub/imul/compare: every value is valid; full-range draws reach both sides of each test.",
+ "globals": [
+  {
+   "addr": "0x00670052",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x0066fefe",
+   "type": "i16",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x00670032",
+   "type": "i16",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x00670064",
+   "type": "i16",
+   "count": 22,
+   "stride": "0x41c"
+  }
+ ]
+}

@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x0040ad35 tests dword +0x2c of the 0x160-byte segment records at 0x008943a0 against 0x10 or 0x20 (chosen by the sign of byte 0x00868582), starting at [0x00866ecc]-0x580 (4 records back) and stepping back one record until a clear bit or until the pointer equals [0x00866f00]. Both pointers are record-aligned (records_008943a0: lap end 4..26, other end 0..24). When the start lies below the end pointer the original keeps walking below the array (it read record -1 at 0x0089426c and stops at the first clear bit); it never faults there, so instead of excluding those orders the +0x2c dwords of records -8..25 (0x008938cc + k*0x160) are all varied as full u32 (each test bit clear in half of the records, both loop exits common).",
+  "globals": [
+    {"addr": "0x00868582", "type": "u8"},
+    {"addr": "0x008938cc", "type": "u32", "count": 34, "stride": "0x160"},
+    {"addr": "0x00866ecc", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 4, "hi": 26}},
+    {"addr": "0x00866f00", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 24}}
+  ]
+}

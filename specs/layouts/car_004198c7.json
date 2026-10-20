@@ -1,0 +1,12 @@
+{
+ "_evidence": "Car overlay for 0x004198c7 (compose after rates_0041073d at the end of the car list). Word +0xa0 is the throttle: every store through the car pointer writes 0x4000 (0x408cdc, 0x41ae14, 0x435f60, 0x43e340, 0x43e4e1, 0x4405c9, 0x4407f8, 0x4409c0, 0x441135), 0 (0x41ae9f) or 0x41ae6c's ((edx - eax) << 14) / edx for 0 <= eax < edx (0..0x4000), so it is a Q14 fraction 0..0x4000. 0x41b852 reads it 'movzx edx, word [esi+0xa0]; imul edx; shrd 14' to scale the drive torque [0x623b78] into [0x62474c], which 0x41bd28 differences against the clutch torque and divides ('(A-B) << 19; idiv [0x6013a8]' at 0x41bd3b). The random car background made it up to 0xffff (probe of the composed 0x4198c7 spec, case 160: 0xfe1a, four times full throttle), giving A = 3.3M and a #DE there. Domain: u16 0..0x4000.",
+ "size": 1056,
+ "fields": [
+  {
+   "off": "0xa0",
+   "type": "u16",
+   "lo": 0,
+   "hi": 16384
+  }
+ ]
+}

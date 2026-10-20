@@ -1,0 +1,120 @@
+{
+ "_doc": "Lead-proven constant data: globals=fuzz:<kind> never overwrites addresses in these ranges (they keep their image values). Each entry needs evidence that no code writes the range.",
+ "ranges": [
+  {
+   "lo": "0x007c5c5c",
+   "hi": "0x007c8db0",
+   "evidence": "Q14 cosine/sine table read as [reg*2+0x7c5c5c] by the core; a scan of every function's instructions (662,847) for memory-destination operands into 0x7c5c5c..0x7c9c5c found a single store, at 0x51cb62 to 0x7c8db0, which is above this range."
+  },
+  {
+   "lo": "0x00608248",
+   "hi": "0x0060824c",
+   "evidence": "gain floor (0x20): no memory-destination instruction in any of the 662,847 analysed instructions addresses this range (lead scan 2026-10-21); read-only tuning constant / table"
+  },
+  {
+   "lo": "0x0060824c",
+   "hi": "0x00608250",
+   "evidence": "limit: no memory-destination instruction in any of the 662,847 analysed instructions addresses this range (lead scan 2026-10-21); read-only tuning constant / table"
+  },
+  {
+   "lo": "0x006258b8",
+   "hi": "0x006258bc",
+   "evidence": "clamp limit (0x20000): no memory-destination instruction in any of the 662,847 analysed instructions addresses this range (lead scan 2026-10-21); read-only tuning constant / table"
+  },
+  {
+   "lo": "0x00623af4",
+   "hi": "0x00623af8",
+   "evidence": "constant (0x1aec): no memory-destination instruction in any of the 662,847 analysed instructions addresses this range (lead scan 2026-10-21); read-only tuning constant / table"
+  },
+  {
+   "lo": "0x00608068",
+   "hi": "0x00608080",
+   "evidence": "six limits read by 0x41d645: no memory-destination instruction in any of the 662,847 analysed instructions addresses this range (lead scan 2026-10-21); read-only tuning constant / table"
+  },
+  {
+   "lo": "0x006f2cc4",
+   "hi": "0x006f2cdc",
+   "evidence": "6-entry level table: no memory-destination instruction in any of the 662,847 analysed instructions addresses this range (lead scan 2026-10-21); read-only tuning constant / table"
+  },
+  {
+   "lo": "0x00601f14",
+   "hi": "0x00601f18",
+   "evidence": "constant: no memory-destination instruction in any of the 662,847 analysed instructions addresses this range (lead scan 2026-10-21); read-only tuning constant / table"
+  },
+  {
+   "lo": "0x006f29ec",
+   "hi": "0x006f29f4",
+   "evidence": "double 2^-10: no memory-destination instruction in any of the 662,847 analysed instructions addresses this range (lead scan 2026-10-21); read-only tuning constant / table"
+  },
+  {
+   "lo": "0x00624814",
+   "hi": "0x00624818",
+   "evidence": "index step: no memory-destination instruction in any of the 662,847 analysed instructions addresses this range (lead scan 2026-10-21); read-only tuning constant / table"
+  },
+  {
+   "lo": "0x00603554",
+   "hi": "0x0060355c",
+   "evidence": "constants: no memory-destination instruction in any of the 662,847 analysed instructions addresses this range (lead scan 2026-10-21); read-only tuning constant / table"
+  },
+  {
+   "lo": "0x00601c38",
+   "hi": "0x00601c58",
+   "evidence": "constants 0x601c38..0x601c57: no memory-destination instruction in any of the 662,847 analysed instructions addresses this range (lead scan 2026-10-21); read-only tuning constant / table"
+  },
+  {
+   "lo": "0x006f2bf0",
+   "hi": "0x006f2bf4",
+   "evidence": "constant: no memory-destination instruction in any of the 662,847 analysed instructions addresses this range (lead scan 2026-10-21); read-only tuning constant / table"
+  },
+  {
+   "lo": "0x006f2bdc",
+   "hi": "0x006f2be4",
+   "evidence": "angle scale double written only by the startup routine 0x527476 (store at 0x5274d6), which the oracle runs before every case; constant afterwards"
+  },
+  {
+   "lo": "0x0088f572",
+   "hi": "0x0088f5b2",
+   "evidence": "word table 0..15 twice (nibble k&0xf) initialised in the image; read by 0x55ad9b ([reg*2+0x88f572]) and nothing else, and a scan of every function's instructions finds no memory write with a displacement in 0x88f560..0x88f5c0 (L29 proposal, lead scan)."
+  },
+  {
+   "lo": "0x0060200c",
+   "hi": "0x00602010",
+   "evidence": "floor/divisor dword (image 0x100) read by 0x41804b, 0x41cde4, 0x41e069, 0x41c838; a scan of every function finds writes only to the neighbouring 0x602004/0x602008, none to 0x60200c (k151 report, lead scan). Fuzzing it to 0 made 0x41cde4 divide by zero at 0x41ceb6/0x41cf41."
+  },
+  {
+   "lo": "0x00826e43",
+   "hi": "0x00826e5f",
+   "evidence": "shell-sort gap table (7 unaligned dwords 0x445,0x16c,0x79,0x28,0xd,4,1) read by 0x52f506; the only write anywhere near is 'mov byte [0x826e5f],0' at 0x52b3c8, just past the table (L35 proposal, lead scan)."
+  },
+  {
+   "lo": "0x006228b0",
+   "hi": "0x006228b4",
+   "evidence": "max sub-step batch (image 4); no instruction anywhere writes it (lead scan); L34: the game's step domain depends on it"
+  },
+  {
+   "lo": "0x00601e84",
+   "hi": "0x00601e88",
+   "evidence": "engine gain (image 0x26327) read by imul in 0x41b852/0x41bd28; no instruction writes it (lead scan)"
+  },
+  {
+   "lo": "0x00601e98",
+   "hi": "0x00601e9c",
+   "evidence": "engine gain (image 0x4000) read by imul in 0x41b600; no instruction writes it (lead scan)"
+  },
+  {
+   "lo": "0x00623c2c",
+   "hi": "0x00623c34",
+   "evidence": "rev limits (image 0x6400, 0x4e2000); no instruction writes them (lead scan, L34)"
+  },
+  {
+   "lo": "0x00607ec8",
+   "hi": "0x00607efc",
+   "evidence": "13-dword clipper edge table read only by 0x43981b/0x439822; L31 scan of 584,508 instructions found no writer"
+  },
+  {
+   "lo": "0x00875d8c",
+   "hi": "0x00875db4",
+   "evidence": "10-dword bit-mask table read as [reg*4+0x875d8c] by 0x5520a0/0x55218f (test only); every code reference within 0x40 bytes of the table is a read (test/movzx/and/or/mov reg), no immediate base for a block store (lead scan 2026-10-20; L46 scanned 612,795 instructions for stores)."
+  }
+ ]
+}

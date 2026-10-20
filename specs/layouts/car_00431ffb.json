@@ -1,0 +1,9 @@
+{
+  "_evidence": "Car record for 0x00431ffb: byte +0x7e is the profile selector (cmp 0; je, then an index into the 4-pointer table 0x62a970: 0..3), byte +0x26b bit 7 (test; je) comes from the random background, byte +0xfd is the car's slot (0x43207c: *0x420 added to the base), drawn 0..2 so the start stays inside the varied records.",
+  "size": 627,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x7e", "type": "u8", "values": [0, 1, 2, 3]},
+    {"off": "0xfd", "type": "u8", "values": [0, 1, 2]}
+  ]
+}

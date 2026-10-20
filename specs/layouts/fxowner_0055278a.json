@@ -1,0 +1,12 @@
+{
+ "_evidence": "Car-like owner object (esi) of the effect spawner 0x0055278a, as its callers 0x553784 / 0x552cfa (via 0x553854 / 0x552d1e.. on the car loop) pass it. Read by 0x55278a and its accepted callees: 'test byte [esi+0x7a],0x80; jne 0x552be0' (bit 7 set = no spawn, stc exit: drawn set in a third of the picks, clear otherwise so the spawn body runs); 0x4045d3 dwords +0/+4 and 0x402f8a dword +8 / words +0x12/+0x16 (stored to 0x934de8..0x934e88, and +0/+4 'sar 5' become the particle's x/z positions +0x18/+0x20); dwords +0xc/+0x10 (copied; their high words are the angles 0x551880 looks up in the constant Q14 cosine table 0x7c5c5c with index (|w|>>2)&0xfffe <= 0x3ffe: any value); dword +0x1c (copied to the particle +0x84, the ring record that 0x443dd1 -> 0x443de9/0x443e26 walks from, and passed as edi by 0x443db0 to 0x4049bf/0x402fcd, which read record words +0/+2/+0x162): a record address 0..11 of the 0x160-byte track array 0x8943a0 (view_00443de9 / car_00424878 domain); words +0x18/+0x66/+0x9a (0x4049bf/0x402fcd table index and imul) and +0xde (0x408323, flag 0x20 records: imul with (rand&0xff)<<6, shrd 14) are any i16 from the random background; byte +0x87 bit 6 selects record 0xb or 1 in 0x553784 (drawn both ways). Positions +0/+4 are a car position in +-2^24 (ownerpos_004440be): the particle x/z = (pos sar 5) + the rotated spawn offset (0x51eb1c over the Q14 matrix of 0x51e841: at most ~2^19.1 for the static templates' offsets <= 0x200 and the +0xde term <= 2^15 << 3), so |+0x18|,|+0x20| < 2^21, the range view_00443de9 proves the ring walk handles. Everything else is random bytes (the 0xe0 bytes cover the highest read, word +0xde).",
+ "size": 224,
+ "fill": "bytes",
+ "fields": [
+  {"off": 0, "type": "i32", "lo": -16777216, "hi": 16777216},
+  {"off": 4, "type": "i32", "lo": -16777216, "hi": 16777216},
+  {"off": "0x1c", "type": "u32", "points_into": {"base": "0x8943a0", "stride": "0x160", "lo": 0, "hi": 11}},
+  {"off": "0x7a", "type": "u8", "values": ["0x80", "0xff", 0, "0x7f", "0x40", 1]},
+  {"off": "0x87", "type": "u8", "values": ["0x40", "0xc0", "0x60", 0, "0x20", "0x80", "0xff", "0x1f"]}
+ ]
+}

@@ -1,0 +1,10 @@
+{
+ "_evidence": "Order-list walk 0x00522af6 (pushal; call 0x522a78; movzx edi,word [0x7a93a8]; or edi,edi; je out; ebx=0x675958; esi=0x16; loop 'mov al,[esi+ebx]; test al,0xff; jns next; call 0x522b2f; jb out; mov [ebx+0x15],al; next: inc esi; cmp esi,[0x66d8ec]; jl'). 0x522a78 first copies the count [0x66d8ec] to 0x934de4 and counts bytes with bit 7 set over 0x675958[0..count) with 'test ecx,ecx; je' + 'loop' (so the count must be a small unsigned value: a negative count loops 2^32 bytes), writing the word 0x7a93a8 read here. 0x522b2f scans the 22-byte window 0x675958+0..0x15 for a non-negative byte (none: CF=1 ends the walk). Every writer of [0x66d8ec] (0x520054: 2..22 entries, 0x522b58: 22) keeps it at most 22, so in the game the walk (index 0x16 up) is dormant code; instead of exempting it the count draws 0..48 (fault-free: the walk and the 0x522a78 count then read bytes 0x675958..0x675987, mapped memory - the bytes from 0x675970 are the low key dwords of the order list, varied here as bytes), so the loop, its jns skip, the CF=1 exit (window exhausted after enough flagged entries) and the 'count <= 0x16' / 'no flagged byte' exits (count 0..2 or all bytes non-negative) are all reached. Window bytes 0..21 and tail bytes 22..47 draw from car codes 0..22/0x3f/0x7f (non-negative) and flagged codes 0x80/0x81/0x96/0xc5/0xff (bit 7), biased to flagged in the tail so the window runs out. Use alone (order_00675958 would pin the count to 2..22 and overwrite 0x675970 as keys).",
+ "globals": [
+  {"addr": "0x0066d8ec", "type": "u32", "lo": 0, "hi": 48},
+  {"addr": "0x00675958", "type": "u8", "count": 22, "stride": 1,
+   "values": [0, 1, 2, 5, 9, 14, 17, 22, "0x3f", "0x7f", "0x80", "0x81", "0x96", "0xc5", "0xff", "0x80", "0x96", "0xff", "0x81", "0xc5"]},
+  {"addr": "0x0067596e", "type": "u8", "count": 26, "stride": 1,
+   "values": [0, 3, 11, 21, "0x7f", "0x80", "0x81", "0x96", "0xc5", "0xff", "0x80", "0x81", "0x96", "0xc5", "0xff"]}
+ ]
+}

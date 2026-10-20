@@ -1,0 +1,7 @@
+{
+  "size": 372,
+  "_evidence": "0x004124a4 reads only dword [esi+0x16c] (test/jne: zero becomes divisor 1 at 0x4124bc; signed cmp with |[0x601c70]| at 0x4124cf, then idiv). The generic i32 generator yields 0 in about 1/8 of the cases plus both signs. After the clamp eax <= ebp, so the quotient is bounded by |[0x601c6c]| (no #DE) for every value except [0x601c70] = 0x80000000, which 0x41246e (its only writer, -q with |q| < 2^31) never stores.",
+  "fields": [
+    {"off": 364, "type": "i32"}
+  ]
+}

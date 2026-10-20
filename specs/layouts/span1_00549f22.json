@@ -1,0 +1,50 @@
+{
+ "_evidence": "Dirty-rectangle band list split by 0x00549f22 (nodes built by 0x549db9 from [0x823480..0x82348c]: +0 next, +4 x0, +8 y0 = sort key/start, +0xc x1, +0x10 y1 = end; 0x549db9 keeps the list sorted by start). The routine walks the list from the cell 0x831d81 ('mov esi,[ebx]; mov edi,[esi]'), and when 'cmp [esi+0x10],[edi+8]; jb' finds an overlap pops a node from the free list [0x831d85] (empty: 0x54e232 then ret) that takes the overlap band [edi.start, min(ends)] with min x0 / max x1 (signed 'jl'/'jg'), trims esi to [s1, s2-1] and edi to the part past the band, frees the nodes that became empty ('jge' on end vs start) and runs the bubble pass 0x54a09f. Domain: every node has start <= end (a rectangle), values small and non-negative, starts non-decreasing along the chain: level k draws its start from {2k-2, 2k-1, 2k} and its end from {2k, 2k+1, 2k+2, 2k+4}, so neighbours overlap or not, may share a start (the trimmed first node becomes empty and is freed) and end before, at or after each other (both 'jg' outcomes, an equal end empties the second node); x0 from {0,8,16}, x1 from {16,24,40}. With such nodes the overlap band [s2, min(e1,e2)] is never empty, so the 'jge 0x54a031' fallthrough at 0x54a020 (block 0x54a022, which relinks a node already pushed on the free list) is not reached: it needs a node with end < start, which 0x549db9's callers do not build. Acyclic chain of up to 5 fresh nodes, each next nullable. Node 1.",
+ "size": 20,
+ "fields": [
+  {
+   "off": 4,
+   "type": "u32",
+   "values": [
+    "0",
+    "8",
+    "16"
+   ]
+  },
+  {
+   "off": 8,
+   "type": "u32",
+   "values": [
+    "0",
+    "1",
+    "2"
+   ]
+  },
+  {
+   "off": 12,
+   "type": "u32",
+   "values": [
+    "16",
+    "24",
+    "40"
+   ]
+  },
+  {
+   "off": 16,
+   "type": "u32",
+   "values": [
+    "2",
+    "3",
+    "4",
+    "6"
+   ]
+  },
+  {
+   "off": 0,
+   "type": "ptr",
+   "size": 20,
+   "fill": "layout=span2_00549f22",
+   "nullable": true
+  }
+ ]
+}

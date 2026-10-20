@@ -1,0 +1,9 @@
+{
+  "_evidence": "Overlay for car_0042a533 (esi and ebx of 0x0042a792): speed word +0x9a and the 32-bit distance +0xd0 (low word) / +0xd2 (high word) draw round values. On the zero/negative-gap path cx = ebx.9a + (gap*[0x623df6] >> 10) (= ebx.9a for a zero gap), dx:ax = cx*cx - esi.d0d2, and the 32-bit negate 'not dx; neg ax; jne; inc dx' (0x42a822) runs only when the low word is exactly zero, and 'cmp eax,0x1000; jl' (0x42a84a) only when the distance nearly equals cx^2; with speeds that are multiples of 0x100 (cx^2 high word 0, 1, 4, 16, 64, 256) and distances whose high word comes from the same squares (low word mostly 0) both occur. On the positive-gap path (ebx.d0d2 - esi.d0d2) >> 4 is negated with the same zero-low-word carry (0x42a8c2), which needs the difference to be a multiple of 2^20: high words that are multiples of 16 with equal low words give it. Other values in each list keep the generic cases. Arithmetic only (the idiv is bounded as in car_0042a533); nothing faults.",
+  "size": 549,
+  "fields": [
+    {"off": "0x9a", "type": "u16", "values": [0, "0x100", "0x200", "0x400", "0x800", "0x1000", "0xff00", "0x1234", "0x7fff"]},
+    {"off": "0xd0", "type": "u16", "values": [0, 0, 0, 1, "0x8000", "0xffff", "0x1234"]},
+    {"off": "0xd2", "type": "u16", "values": [0, 1, 4, "0x10", "0x40", "0x100", "0x1000", "0x7fff", "0xffff"]}
+  ]
+}

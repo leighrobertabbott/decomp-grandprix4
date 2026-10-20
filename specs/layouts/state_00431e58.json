@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x00431e58 walks the dword table at 0x0062a970 until an entry equals -1; each entry points to a group (group_00431e58). Two groups then the -1 sentinel at 0x0062a978 keep the walk bounded. Dword 0x00627894 is the imul/fild scale (|v| <= 0x4000 keeps the shrd result and the fpatan argument finite); the doubles 0x006f2bc4/0x006f2b9c/0x006f29d4 keep their image values.",
+  "globals": [
+    {"addr": "0x0062a970", "type": "ptr", "size": 136, "count": 2, "stride": 4, "fill": "layout=group_00431e58"},
+    {"addr": "0x0062a978", "type": "u32", "values": ["0xffffffff"]},
+    {"addr": "0x00627894", "type": "i32", "lo": -16384, "hi": 16384}
+  ]
+}

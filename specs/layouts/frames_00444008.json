@@ -1,0 +1,8 @@
+{
+  "_evidence": "Frame table reached through the 0xe0-byte animated record's +0x90 pointer (0x00444008): 'cmp eax,[ecx]; jbe' (0x444049) bounds the 1-based frame index by the u32 count at +0, then 'mov ax,[ecx+eax*4]' (0x444058) reads the low word of frame dword k. The index never exceeds max(count,1) (0x40150b returns 1..max(count,1); the sequential path resets to 1 above count), so count 0..32 keeps every read inside the 0x88-byte buffer (4*32+2 = 0x82); count 0 exercises the reset with both paths. Frame words are any bit pattern (fill bytes).",
+  "size": 136,
+  "fill": "bytes",
+  "fields": [
+    {"off": 0, "type": "u32", "lo": 0, "hi": 32}
+  ]
+}

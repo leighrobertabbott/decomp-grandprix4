@@ -1,0 +1,16 @@
+{
+ "_evidence": "Run list merged by 0x0054a057: the cell 0x831d81 holds the first node (its dword is the head link, so ebx = the cell acts as a pseudo node), each node of 0x14 bytes is +0 next, +4 and +0xc keys, +8 start and +0x10 end: adjacent nodes a,b merge when a+0x10 + 1 == b+8 and a+4 == b+4 and a+0xc == b+0xc (a takes b's end and next, b is pushed on the free list [0x831d85]). Acyclic chains of 0..5 nodes (each level a fresh buffer, next nullable, the last next 0); keys from small sets so a pair merges in about 1/12 of the pairs and each equality test fails on its own. Under fuzz:i32 the head was wild.",
+ "globals": [
+  {
+   "addr": "0x00831d81",
+   "type": "ptr",
+   "size": 20,
+   "fill": "layout=run1_0054a057",
+   "nullable": true
+  },
+  {
+   "addr": "0x00831d85",
+   "type": "u32"
+  }
+ ]
+}

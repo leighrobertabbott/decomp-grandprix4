@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x555f0a appends max(n,1) entries (n = word [esi] in 0..3, rec_00555f0a) through 0x555ea4, which asserts (int3 at 0x555ebe) that the slot address [0x965a2c]*8+0x965a30 is below 0x967968 (999 slots). A valid stream never trips that assertion, so the slot counter leaves room for the appends: [0x965a2c] <= 999-3 = 996; the values include 994/995/996 so the last slot 998 is filled exactly (it overrides idx_00965a2c's 0..998, which allows no repeat). The chain fields of ring records 0..31 that 0x555ea4 reads are varied: head word +0x98 (0x894438+k*0x160, 0 = empty chain so both the 'head == 0' and the link branch run) and tail word +0x9a (0x89443a+k*0x160, a slot index 0..998, so the link store at 0x965a36+tail*8 stays inside the table).",
+ "globals": [
+  {"addr": "0x00965a2c", "type": "u32", "values": [0, 1, 2, 5, 100, 500, 900, 990, 994, 995, 996]},
+  {"addr": "0x00894438", "type": "u16", "count": 32, "stride": "0x160", "values": [0, 0, 0, 1, 7, 500, 998]},
+  {"addr": "0x0089443a", "type": "u16", "count": 32, "stride": "0x160", "lo": 0, "hi": 998}
+ ]
+}

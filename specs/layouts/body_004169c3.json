@@ -1,0 +1,10 @@
+{
+  "_evidence": "ebx block of 0x004169c3 (0x2bc bytes; every other dword is written before it is read: +0x78/+0x7c, +0x18/+0x1c, +0x2ac, +0x2b0/+0x2b4, +0x30, +0x28 and 0x416981's +0x278..+0x290). Dword +0x00 is a full-turn angle (fild, * the startup scale 0x6f2bdc, fsincos): any i32, so it is drawn over the whole range (the accepted spec limited it to +-100000, a tiny arc). Dwords +0x40, +0x190 and +0x194 are i32 magnitudes: +0x190/+0x194 are rotated by the angle (0x401d41) into +0x18/+0x1c, then |(+0x40, +0x18)| is fistp'd into +0x2b0 and, when below [0x60349c], divided as (r << 14) idiv [0x60349c]. With |v| <= M the root is at most sqrt(3)*M, so M = 0x10000000 keeps it below 2^31 (a larger M lets fistp return the indefinite 0x80000000, whose << 14 overflows the idiv for a small positive divisor: the original's #DE); they are drawn -0x10000000..0x10000000, which also crosses the 0xc0000 floor 0x603498 and the 0x60349c threshold both ways. Unlisted bytes are zero and never read before written.",
+  "size": 700,
+  "fields": [
+    {"off": "0x0", "type": "i32"},
+    {"off": "0x40", "type": "i32", "lo": -268435456, "hi": 268435456},
+    {"off": "0x190", "type": "i32", "lo": -268435456, "hi": 268435456},
+    {"off": "0x194", "type": "i32", "lo": -268435456, "hi": 268435456}
+  ]
+}

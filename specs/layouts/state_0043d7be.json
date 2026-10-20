@@ -1,0 +1,63 @@
+{
+ "_evidence": "Globals for 0x0043d7be / 0x0043d909 (with car_0043d7be). [0x603854] is the positive rate (0x412604 copies [0x7ad8b8] = 1..0xffff there, rate_007ad8b8); the code takes its low word, bp = sar(lo16,1) rounded toward zero ('jns; add bp,1'), so rates >= 0x8000 give bp < 0 and both sign branches are game-reachable. The equality blocks need dx = 2d == -bp (bp >= 0) or == bp (bp < 0), with d = +-[0x6039bc]: rates 4/5 (bp 2) and 8/9 (bp 4), 0xfffb (lo16 -5 -> bp -2), 0xfff7 (-> -4) and 0xbfff (-> -0x2000) pair with [0x6039bc] = +-1, +-2, -0x1000 (both signs, as +0x71 bit 2 and the 0x43d909 neg flip the sign); the rest of both lists (0xa00, 0xffff, 1, 0x8000, 0x1234; 0, 0x7fff, -0x8000, 0x10) reach the idiv/stc/clamp paths. Every rate is 1..0xffff, so no input outside the game's domain; the idiv by the full low word is only reached with |dx| below half of it (dx is compared with bp = half the rate first), so the 16-bit quotient (dx:0)/lo16 fits and no case faults. [0x62d28c] (0x426a66 gain, imul/shrd) is zero in most picks (so [0x6037fc] = 0 and d is exact) and +-1, 0x4000, -0x8000 otherwise; [0x62786c] (0x425eca imul by the rate) is any i32. No other inputs.",
+ "globals": [
+  {
+   "addr": "0x00603854",
+   "type": "u32",
+   "values": [
+    4,
+    5,
+    8,
+    9,
+    "0xfffb",
+    "0xfffb",
+    "0xfff7",
+    "0xbfff",
+    "0xa00",
+    "0xffff",
+    1,
+    "0x8000",
+    "0x1234"
+   ]
+  },
+  {
+   "addr": "0x006039bc",
+   "type": "u16",
+   "values": [
+    "0xffff",
+    "0xffff",
+    "0xffff",
+    "0xfffe",
+    "0xfffe",
+    1,
+    1,
+    2,
+    "0xf000",
+    0,
+    "0x7fff",
+    "0x8000",
+    "0x10"
+   ]
+  },
+  {
+   "addr": "0x0062d28c",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    "0xffffffff",
+    "0x4000",
+    "0xffff8000"
+   ]
+  },
+  {
+   "addr": "0x0062786c",
+   "type": "i32"
+  }
+ ]
+}

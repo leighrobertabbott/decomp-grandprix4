@@ -1,0 +1,9 @@
+{
+ "_evidence": "Value bytes compared by 0x00529148 (compose after lists_005295e0, which varies the count bytes 0x81d1fa/0x81d223 and the entries 0x81d1fc..0x81d1ff / 0x81d224..0x81d227). ebx is one of the cells 0x81d1f2/0x81d1f3, 0x81d1fc..0x81d1ff, 0x81d224..0x81d228 (the spec set); 0x539944 reads the byte/word/dword at [ebx] (so up to 0x81d1f6, 0x81d202 and 0x81d22b), 'cmp al,[ebx-1]; jle' reads the previous cell (0x81d1f1/0x81d1f2, 0x81d1fb..0x81d1fe, 0x81d223..0x81d227), 'cmp byte [0x81d228],0' gates the cell 0x81d228, which is compared against [0x81d1f7] instead ('cmp al,[0x81d1f7]; jle' at 0x529186: block 0x52918c's fallthrough was never reached with fuzzed bytes). The cells hold small menu values (the image's are even numbers below 0x33), so 0x81d1f1..0x81d1f7 draw 0..0x32, 0x81d228 is zero or a value on both sides of them (and 0x80/0xff for the signed jle), 0x81d1fb and 0x81d200..0x81d202 any byte. Plain byte compares and copies: every value is valid. Values are synthetic.",
+ "globals": [
+  {"addr": "0x0081d1f1", "type": "u8", "count": 7, "lo": 0, "hi": 50},
+  {"addr": "0x0081d1fb", "type": "u8"},
+  {"addr": "0x0081d200", "type": "u8", "count": 3},
+  {"addr": "0x0081d228", "type": "u8", "values": [0, 0, 0, 1, 2, "0x10", "0x20", "0x2f", "0x31", "0x33", "0x40", "0x80", "0xff"]}
+ ]
+}

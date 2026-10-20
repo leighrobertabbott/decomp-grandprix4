@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x0054a61d: 'mov esi,0x7a97b2; mov edi,0x7c2a48; mov ecx,0x16; lodsb; test al,0x80; je; test byte [edi],0x80; je; cmp byte [0x7aafdb],0; je; or byte [edi],0xc0; inc edi; loop' - the 22 source bytes 0x7a97b2..0x7a97c7 are read through esi (fuzz:i32 only varied the first dword), so they are drawn here as full-range bytes (bit 7 set in about half: both lodsb outcomes per entry); the switch byte 0x7aafdb is 0 in half the picks (both outcomes of its je). Then 0x54ba6b 'mov al,[0x7aafd0]; inc al; and al,7; mov [0x7aafd0],al' advances the 3-bit counter: the counter byte (read only by the callee, so never varied) is full range (the and keeps any value valid; al and the flags are outputs). The flag table 0x7c2a48 comes from state_0043bcd4 (compose after it). Byte tests and stores only: nothing faults.",
+ "globals": [
+  {"addr": "0x007a97b2", "type": "u8", "count": 22, "stride": 1},
+  {"addr": "0x007aafdb", "type": "u8", "values": [0, 0, 0, 1, "0x80", "0xff"]},
+  {"addr": "0x007aafd0", "type": "u8"}
+ ]
+}

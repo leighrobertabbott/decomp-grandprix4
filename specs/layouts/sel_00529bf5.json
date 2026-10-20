@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x00529bf5 (pushal/popal wrapper) reads two selector bytes: 'test byte [0x81d22a],0x80; jne' at 0x529c0a and again at 0x529c4a (bit 7 clear: eax:edx:ebx = 0x24924800:0x49249249:0x492 for 0x53e58c and eax = 0x48 for 0x53d1f4, set: zeros) and 'cmp byte [0x7a8e0f],0xff; jne' at 0x529c22 (0xff: eax |= 3, else ebx |= 0x8800). Both are plain byte tests that only select the immediate masks passed to the list walkers 0x53e58c/0x53d1f4 through esi = 0x840fd2; nothing is dereferenced through them, so every byte value is valid: 0x81d22a any byte (bit 7 both ways), 0x7a8e0f from {0xff, 0xff, 0, 1, 0xfe} (equal to 0xff and on both sides of it). The list heads/nodes at 0x840fd2/0x840fea are deliberately NOT varied: they are image-initialised linked structures (fuzzing them makes every case fault in the original) and keep their static values.",
+ "globals": [
+  {"addr": "0x0081d22a", "type": "u8"},
+  {"addr": "0x007a8e0f", "type": "u8", "values": ["0xff", "0xff", "0", "1", "0xfe"]}
+ ]
+}

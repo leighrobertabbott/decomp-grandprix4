@@ -1,0 +1,47 @@
+{
+ "_evidence": "Overlay for 0x0042e191 (compose LAST, after walk_0042e06a, which supplies the found-car list 0x604294, [0x604280], word 0x603b28 and the car flag bytes +0x9c). Its walk 'mov edx,[0x607960]; cmp edx,[0x607964]; je ret' ... 'inc edx; cmp edx,[0x607964]; jne' over the car-pointer table 0x607968 has no ordering test, so a start above the end runs off the table (list_0042dfd2 draws the two independently: ~20% endless/faulting walks). Writers: 0x42f8bf appends cars at [0x607964]++ (the end is a count), 0x430d07 resets both to 0, and only this walk advances the start ('inc [0x607960]', once per visited entry), so start <= end in the game. Domain: start 0..2, end 2..4 (start == end: the je exit), slots 0..3 = cars 0..3 (the same cars walk_0042e06a's list/[0x604280] values name, so dup hits and [0x604280] matches occur), list entry 8 (spec edi 0..8) as walk_0042e06a's entries; word 0x604404 (sign test 'xor dx,[0x604404]; js', also written by 0x42dd4b's callees) any i16.",
+ "globals": [
+  {
+   "addr": "0x00607960",
+   "type": "i32",
+   "lo": 0,
+   "hi": 2
+  },
+  {
+   "addr": "0x00607964",
+   "type": "i32",
+   "lo": 2,
+   "hi": 4
+  },
+  {
+   "addr": "0x00607968",
+   "type": "u32",
+   "count": 4,
+   "stride": 4,
+   "values": [
+    "0x66fef0",
+    "0x67030c",
+    "0x670728",
+    "0x670b44"
+   ]
+  },
+  {
+   "addr": "0x006042b4",
+   "type": "u32",
+   "values": [
+    "0x66fef0",
+    "0x67030c",
+    "0x670728",
+    "0x670b44",
+    "0x67137c",
+    "0x671798",
+    "0x671bb4",
+    "0x671fd0"
+   ]
+  },
+  {
+   "addr": "0x00604404",
+   "type": "i16"
+  }
+ ]
+}

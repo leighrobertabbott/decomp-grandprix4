@@ -1,0 +1,176 @@
+{
+ "_evidence": "0x0053fdcc (one caller 0x53fc08) reads the performance counter through 0x54e733 (QueryPerformanceCounter; the oracle's stub gives now = 2^32 + rand(2^40) + 1..50000 per case, so now_hi is 1..256 (257 only on a carry) and now_lo random), stores it at 0x830004/08, then walks k = 0..21: 'mov edx,[ebx]; or edx,edx; je skip; cmp edx,[0xb1bb40]; je skip' (ebx = 0xb1b8d8 + 0x1c*k: slot id dword, 0 = free; [0xb1bb40] = 0xb1b8d8 + 22*0x1c is the current id) and 'sub eax,[esi]; sbb edx,[esi+4]' (esi = 0x83002b + 8*k, an unaligned qword stamp); it RETURNS ebx at the first slot with now - stamp > 0x4446390 (hi > 0 signed via jg, or hi == 0 and lo above via jbe), else 0 after 22 slots (0x53fe2c). Only fixed-address dwords are read, nothing is dereferenced: every value is valid. Domain: ids a table filled up to n slots (prefix n in {0,1,3,10,22}; ids from {1,2,3,3,3}) so both 'je skip' tests go both ways and the all-skipped return 0 occurs; current id from {0,1,2,3}. Stamp lows full-range. Stamp highs: one range PER SLOT, descending with k (slot k: 246-12k .. 257-12k, clamped at 0; slot 21: 0..5 includes 0 = never stamped): because the walk stops at the first stale slot, independent stamps around now_hi stop it after ~2 slots and the hi == 0 case (stamp_hi == now_hi with no borrow, or now_hi-1 with a borrow - one high value per case out of 256) is hit ~1-2 times per 200 cases; descending stamps make the walk skip future stamps (hi negative: jg not taken, jne taken) until the slot whose stamp straddles now_hi, so hi == 0 (0x53fe16) is reached ~9 times per 200 cases, besides stale returns (jg taken) and all-future walks. Not reachable with this counter model: 'jbe 0x53fe21' TAKEN at 0x53fe1b (hi == 0 and now_lo - stamp_lo <= 0x4446390, a slot stamped < 20 s before the seeded counter) needs a stamp correlated with the stub's per-case counter value, which no fixed-address layout can supply (~1.6% of the hi == 0 hits).",
+ "globals": [
+  {
+   "addr": "0x00b1b8d8",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x1c",
+   "prefix": [
+    0,
+    1,
+    3,
+    10,
+    22,
+    22,
+    22,
+    22
+   ],
+   "values": [
+    1,
+    2,
+    3,
+    3,
+    3
+   ]
+  },
+  {
+   "addr": "0x00b1bb40",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3
+   ]
+  },
+  {
+   "addr": "0x0083002b",
+   "type": "u32",
+   "count": 22,
+   "stride": 8
+  },
+  {
+   "addr": "0x83002f",
+   "type": "u32",
+   "lo": 246,
+   "hi": 257
+  },
+  {
+   "addr": "0x830037",
+   "type": "u32",
+   "lo": 234,
+   "hi": 245
+  },
+  {
+   "addr": "0x83003f",
+   "type": "u32",
+   "lo": 222,
+   "hi": 233
+  },
+  {
+   "addr": "0x830047",
+   "type": "u32",
+   "lo": 210,
+   "hi": 221
+  },
+  {
+   "addr": "0x83004f",
+   "type": "u32",
+   "lo": 198,
+   "hi": 209
+  },
+  {
+   "addr": "0x830057",
+   "type": "u32",
+   "lo": 186,
+   "hi": 197
+  },
+  {
+   "addr": "0x83005f",
+   "type": "u32",
+   "lo": 174,
+   "hi": 185
+  },
+  {
+   "addr": "0x830067",
+   "type": "u32",
+   "lo": 162,
+   "hi": 173
+  },
+  {
+   "addr": "0x83006f",
+   "type": "u32",
+   "lo": 150,
+   "hi": 161
+  },
+  {
+   "addr": "0x830077",
+   "type": "u32",
+   "lo": 138,
+   "hi": 149
+  },
+  {
+   "addr": "0x83007f",
+   "type": "u32",
+   "lo": 126,
+   "hi": 137
+  },
+  {
+   "addr": "0x830087",
+   "type": "u32",
+   "lo": 114,
+   "hi": 125
+  },
+  {
+   "addr": "0x83008f",
+   "type": "u32",
+   "lo": 102,
+   "hi": 113
+  },
+  {
+   "addr": "0x830097",
+   "type": "u32",
+   "lo": 90,
+   "hi": 101
+  },
+  {
+   "addr": "0x83009f",
+   "type": "u32",
+   "lo": 78,
+   "hi": 89
+  },
+  {
+   "addr": "0x8300a7",
+   "type": "u32",
+   "lo": 66,
+   "hi": 77
+  },
+  {
+   "addr": "0x8300af",
+   "type": "u32",
+   "lo": 54,
+   "hi": 65
+  },
+  {
+   "addr": "0x8300b7",
+   "type": "u32",
+   "lo": 42,
+   "hi": 53
+  },
+  {
+   "addr": "0x8300bf",
+   "type": "u32",
+   "lo": 30,
+   "hi": 41
+  },
+  {
+   "addr": "0x8300c7",
+   "type": "u32",
+   "lo": 18,
+   "hi": 29
+  },
+  {
+   "addr": "0x8300cf",
+   "type": "u32",
+   "lo": 6,
+   "hi": 17
+  },
+  {
+   "addr": "0x8300d7",
+   "type": "u32",
+   "lo": 0,
+   "hi": 5
+  }
+ ]
+}

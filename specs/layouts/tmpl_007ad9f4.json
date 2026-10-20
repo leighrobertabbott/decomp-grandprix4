@@ -1,0 +1,21 @@
+{
+ "_evidence": "0x43bc2f: header byte 0x601fa8 is the sub-record index 0..3 of a setup entry (circ_007adb50: 4 sub-records per entry; 0x40fbf3 compares it with 1 and 3), copied with the 0x38-byte row 0x7ad9f4 + idx*0x38 of the 4-row template table (0x7ad9f4 + 4*0x38 = 0x7adad4, the defaults header) into sub-record idx of entry (esi, [0x7ad894]). The 0xe0 template bytes are plain data (rep movsb): any value.",
+ "globals": [
+  {
+   "addr": "0x00601fa8",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    2,
+    3
+   ]
+  },
+  {
+   "addr": "0x007ad9f4",
+   "type": "u32",
+   "count": 56,
+   "stride": 4
+  }
+ ]
+}

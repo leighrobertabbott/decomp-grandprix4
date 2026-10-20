@@ -1,0 +1,38 @@
+{
+ "_evidence": "Globals of 0x004349dc that fuzz:i32 draws as random dwords (compose last): byte [0x7c2e75] 'cmp 0; je' (zero only 1/256 fuzzed; nonzero adds the +0xff bit 0 exit and selects the 0x1388/0x7d0 vs 0x4e20/0x2710 delays) drawn {0,0,1,0xff}; byte [0x66d88c] 'test 0xff; jne exit' at 0x434a37 (zero only 1/256 fuzzed) drawn zero in most picks. Compares only. Byte [0x7c2ea9] is sign-tested ('test 0xff; js' at 0x434acd): drawn {0x80,0x44,0,0x7f,0xff,0x81} so both signs occur (the earlier layouts never drew a negative value here).",
+ "globals": [
+  {
+   "addr": "0x007c2e75",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0066d88c",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x007c2ea9",
+   "type": "u8",
+   "values": [
+    "0x80",
+    "0x44",
+    0,
+    "0x7f",
+    "0xff",
+    "0x81"
+   ]
+  }
+ ]
+}

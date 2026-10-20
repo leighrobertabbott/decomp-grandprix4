@@ -1,0 +1,10 @@
+{
+  "_evidence": "Records (stride 0x14) behind pointer global 0x6097ac, walked by 0x00424011 for ecx < [0x6082b4] (<= 8 under state_00424011, so 8 records = 0xa0 bytes): dword +0xc is tested (nonzero skips the record, zero in half the picks), dwords +0/+4/+8 are fild-ed (plain i32; fistp overflow is masked).",
+  "size": 168,
+  "fields": [
+    {"off": 0, "type": "i32", "count": 8, "stride": 20},
+    {"off": 4, "type": "i32", "count": 8, "stride": 20},
+    {"off": 8, "type": "i32", "count": 8, "stride": 20},
+    {"off": 12, "type": "u32", "count": 8, "stride": 20, "values": [0, 0, 0, 1, "0xffffffff", "0x100"]}
+  ]
+}

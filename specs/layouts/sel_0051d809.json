@@ -1,0 +1,43 @@
+{
+ "_evidence": "0x0051d809 compares esi (a car record) with the selected cars [0x679d2c]/[0x679d30] (alias_reg esi, about half each), mode byte 0x7c2ea9 and car +0xe4 state (22 cars).",
+ "globals": [
+  {
+   "addr": "0x00679d2c",
+   "type": "u32",
+   "alias_reg": "esi"
+  },
+  {
+   "addr": "0x00679d30",
+   "type": "u32",
+   "alias_reg": "esi"
+  },
+  {
+   "addr": "0x007c2ea9",
+   "type": "u8",
+   "values": [
+    "0x80",
+    "0x80",
+    "0x7f",
+    "0x81",
+    0,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0066ffd4",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    3,
+    3,
+    3,
+    0,
+    1,
+    2,
+    4,
+    "0xff"
+   ]
+  }
+ ]
+}

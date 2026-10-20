@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x004083f2 (esi = a car record of the 22-record, 0x41c-stride array at 0x0066fef0; fixed here at record 1 = 0x0067030c so a list entry 0x41c hits the cmp ebx,esi / je exit) starts at byte [esi+0x7d] (0x00670389) into the u16 list at 0x0066fe3c and reads words from list+[+0x7d]+2 on, step 2. 0x4091b5 builds that list from the 22 record offsets k*0x41c with 0xffff terminators and 0x408f42 stores the entry's byte offset 2*i (i 0..21) in +0x7d, so +0x7d is even 0..42 and every word is an offset k*0x41c (k 0..21) or a negative terminator (or ax,ax / js exit). For each entry the record's byte +0x7a bit 7 (0x0066ff6a + k*0x41c) loops back, else word +0x68 of that record minus esi's +0x68 (0x0066ff58 + k*0x41c) is the clc result. All fields are bounded to the 22 records, so nothing reads outside the array.",
+  "globals": [
+    {"addr": "0x0066fe3c", "type": "u16", "count": 90, "stride": 2, "values": ["0xffff", "0xffff", "0xffff", "0xffff", "0x0", "0x41c", "0x838", "0xc54", "0x1070", "0x148c", "0x18a8", "0x1cc4", "0x20e0", "0x24fc", "0x2918", "0x2d34", "0x3150", "0x356c", "0x3988", "0x3da4", "0x41c0", "0x45dc", "0x49f8", "0x4e14", "0x5230", "0x564c"]},
+    {"addr": "0x00670389", "type": "u8", "values": [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42]},
+    {"addr": "0x0066ff6a", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ff58", "type": "i16", "count": 22, "stride": "0x41c"}
+  ]
+}

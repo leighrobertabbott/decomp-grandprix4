@@ -1,0 +1,27 @@
+{
+ "_evidence": "0x00520c5b (compose AFTER slot_00520b1b and idx_00520b65, which bound the pitch [0x6975c4] to 0x2d78/0x3000/0x3400 and the start row [0x679ba4] = 0x679b9c[2] to 0..3): [0x7a8e1c] is the 'loop' row count (ecx; 0 would mean 2^32 rows): 1..4, so the walk visits rows start..start+3 <= 6 and the callees get slot index ebp <= 6; [0x7a8e18] is replaced by a 0x20000-byte area (slots_00520c5b) big enough for slot 6 at the largest pitch; the clock [0x66d814] (inside the state block 0x66d810.. that slot_00520b1b varies) is drawn from {0,1,2,0x1234} so row times equal it or not. Nothing can fault: every row read and every callee slot access lies inside the area.",
+ "globals": [
+  {
+   "addr": "0x007a8e1c",
+   "type": "u32",
+   "lo": 1,
+   "hi": 4
+  },
+  {
+   "addr": "0x0066d814",
+   "type": "u32",
+   "values": [
+    "0",
+    "1",
+    "2",
+    "0x1234"
+   ]
+  },
+  {
+   "addr": "0x007a8e18",
+   "type": "ptr",
+   "size": 131072,
+   "fill": "layout=slots_00520c5b"
+  }
+ ]
+}

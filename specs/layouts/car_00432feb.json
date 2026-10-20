@@ -1,0 +1,12 @@
+{
+ "_evidence": "Car overlay for esi of 0x00432feb (compose LAST after rec_0043259c+car_004161fb+rec_00432f18+rec_00410894+rec_004087aa, which give the random background and the +0x1c segment / +0x7f level fields). The state machine dispatches on byte +0xe4 & 0xf (0, 9, 1, 2, 3, 4, 5, 8; others exit at 0x43303c): drawn 1 in half the picks (the long state-1 path 0x433082..0x4332c1) and otherwise every dispatched state plus 6 and 0xf1 (car_004161fb had no 4 or 9: 0x43300a/0x433026 never taken). State 1 then tests, each with a jne/je to the exit or a sub-path: +0xce bit 5 (0x433089: set -> 0x4334da), drawn clear in 3/4; +0x25f bit 0 (0x43308f, clear in 3/4) and bits 4/5 (0x4332d4, 0x433399, 0x4333bc) both ways; +0x26b bit 0 both ways (0x4330e1), and with bit 0 clear bit 1 set in a third (0x433177) and, with bits 0/1 clear, bit 7 set in most picks (0x4331a2); the sub-state byte +0x7e is compared with 0..5 (0x4331af/b5, 0x433211..21, 0x433256..7c): values 0..5 and 0xff (rec_00432f18 lacked 4 and 5); the speed word +0x9a is compared signed with 0x5e (0x433236), 0x1d5 (0x433148) and [0x62a95c]: values on both sides of each. All plain flag/state bytes and a word: every value is one the game's state machine stores, nothing is a pointer, index or divisor.",
+ "size": 1056,
+ "fields": [
+  {"off": "0xe4", "type": "u8", "values": [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 2, 3, 4, 5, 8, 9, 6, "0xf1"]},
+  {"off": "0xce", "type": "u8", "values": [0, 0, "0x10", "0x40", "0x8f", "0xdf", "0x20", "0xff"]},
+  {"off": "0x25f", "type": "u8", "values": [0, "0x10", "0x20", "0x30", 2, "0x12", 1, "0x31"]},
+  {"off": "0x26b", "type": "u8", "values": [1, "0x81", 3, "0x83", 2, "0x82", "0x80", "0x88", "0x80", 0]},
+  {"off": "0x7e", "type": "u8", "values": [0, 1, 2, 3, 4, 5, "0xff"]},
+  {"off": "0x9a", "type": "u16", "values": [0, "0x5d", "0x5e", "0x1d4", "0x1d5", "0x200", "0x600", "0x7fff", "0x8000", "0xffff"]}
+ ]
+}

@@ -1,0 +1,84 @@
+{
+ "_evidence": "0x004167da takes ebx = one of the four 0x300-byte records at 0x6380d8 (spec rec[0x6380d8,0x300,0..3]; cmp ebx,0x6386d8 / jb picks row edi=0 for records 0,1 and edi=4 for records 2,3 of the .text constant rows 0x416660 = {0x6666,0x6666} and 0x416668 = {0x1c6e6,0x1c6e6}). It and-s/or-s byte +0x2e bit 7 (random byte) and reads dwords +0x1bc (added to (eax*[0x6034a8])>>14<<14, *0x168 >>22), +0x1b4 (imul >>14 -> ecx), +0x1b0 (row*x >>28 -> ebp; later sin*x >>20), +0x1b8 (imul >>14), +0x1c0 (sar 6) and +0x1d8 (imul >>14); all are wrapping imul/shrd, so the only fault is 0x401315 seeing |x| or |y| = 0x80000000 (its neg overflows and the unsigned div by the other magnitude can overflow or index past the 0x7c7c60 table), which none of the drawn values produce. The flag test |atan2(eax2, ebp)*0x6666>>14| < 0x4000 (0x416880) needs eax2 small against a positive ebp: +0x1b4 draws 0 or small values often (ecx = 0 gives atan 0 for any ebp > 0), +0x1b0 moderate/large magnitudes of both signs plus 0/1/extremes, +0x1b8 Q14 factors 0/0.5/1/2/-1 and extremes; +0x1bc/+0x1c0/+0x1d8 are any i32. Compose after fuzz:i32 (the globals 0x6034a8/0x6f2bec stay fuzzed).",
+ "globals": [
+  {
+   "addr": "0x00638288",
+   "type": "u32",
+   "count": 4,
+   "stride": "0x300",
+   "values": [
+    "0x100000",
+    "0x400000",
+    "0x1000000",
+    "0x40000000",
+    "0xffc00000",
+    "0xf0000000",
+    "0x0",
+    "0x1",
+    "0x7fffffff",
+    "0x80000000",
+    "0x12345678"
+   ]
+  },
+  {
+   "addr": "0x0063828c",
+   "type": "u32",
+   "count": 4,
+   "stride": "0x300",
+   "values": [
+    "0x0",
+    "0x0",
+    "0x0",
+    "0x1",
+    "0x10",
+    "0x100",
+    "0x4000",
+    "0xffffc000",
+    "0xfffffff0",
+    "0x7fffffff",
+    "0x80000000",
+    "0x9abcdef"
+   ]
+  },
+  {
+   "addr": "0x00638290",
+   "type": "u32",
+   "count": 4,
+   "stride": "0x300",
+   "values": [
+    "0x0",
+    "0x4000",
+    "0x2000",
+    "0x8000",
+    "0xffffc000",
+    "0x7fffffff",
+    "0x80000000",
+    "0x1234567"
+   ]
+  },
+  {
+   "addr": "0x00638294",
+   "type": "i32",
+   "count": 4,
+   "stride": "0x300"
+  },
+  {
+   "addr": "0x00638298",
+   "type": "i32",
+   "count": 4,
+   "stride": "0x300"
+  },
+  {
+   "addr": "0x006382b0",
+   "type": "i32",
+   "count": 4,
+   "stride": "0x300"
+  },
+  {
+   "addr": "0x00638106",
+   "type": "u8",
+   "count": 4,
+   "stride": "0x300"
+  }
+ ]
+}

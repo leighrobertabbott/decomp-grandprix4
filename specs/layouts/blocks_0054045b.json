@@ -1,0 +1,26 @@
+{
+ "_evidence": "0x0054045b concatenates the blocks named by the static copy table 0x8306d0 ({source, count} pairs, null source ends it: 'mov esi,[ebx]; or esi,esi; je; mov ecx,[ebx+4]; rep movsb') into edi. The table itself is a fixed descriptor list and stays as in the image; the bytes of every source block are game state (a settings snapshot) reached only through esi, so they are varied here: 0x7ab020+1, 0xae6b64+4, 0x830029+1, 0xb1b8d8+0x268, 0x7c2a1c+0x16, 0x66d8be+8 (listed twice in the table), 0x8300db+0x480, 0x83059f+4, 0x830001+1, 0x7ad894+4, 0x7ad898+4, 0x7ad89e+2, 0x7ad8a0+2, 0x7ad8a2+2, 0x7ad8b4+1, 0x7ad8b5+1, 0x83055b+4, 0x7ad8b8+4, 0x7ad810+4, 0x7ab173+1, 0x7ad8b2+1, 0x7ab540+4, 0x7aafd6+2, 0x7c2b3c+0x210, 0x8307a4+4 (the terminator entry's count dword, which the table also copies; the terminator's null source is not touched). Byte copies: every pattern is valid; the 0x1000-byte edi buffer holds the 2385 copied bytes.",
+ "globals": [
+  {"addr": "0x007ab020", "type": "u8", "count": 1, "stride": 1},
+  {"addr": "0x00ae6b64", "type": "u8", "count": 4, "stride": 1},
+  {"addr": "0x00830029", "type": "u8", "count": 1, "stride": 1},
+  {"addr": "0x00b1b8d8", "type": "u8", "count": 616, "stride": 1},
+  {"addr": "0x007c2a1c", "type": "u8", "count": 22, "stride": 1},
+  {"addr": "0x0066d8be", "type": "u8", "count": 8, "stride": 1},
+  {"addr": "0x008300db", "type": "u8", "count": 1152, "stride": 1},
+  {"addr": "0x0083059f", "type": "u8", "count": 4, "stride": 1},
+  {"addr": "0x00830001", "type": "u8", "count": 1, "stride": 1},
+  {"addr": "0x007ad894", "type": "u8", "count": 8, "stride": 1},
+  {"addr": "0x007ad89e", "type": "u8", "count": 6, "stride": 1},
+  {"addr": "0x007ad8b4", "type": "u8", "count": 2, "stride": 1},
+  {"addr": "0x0083055b", "type": "u8", "count": 4, "stride": 1},
+  {"addr": "0x007ad8b8", "type": "u8", "count": 4, "stride": 1},
+  {"addr": "0x007ad810", "type": "u8", "count": 4, "stride": 1},
+  {"addr": "0x007ab173", "type": "u8", "count": 1, "stride": 1},
+  {"addr": "0x007ad8b2", "type": "u8", "count": 1, "stride": 1},
+  {"addr": "0x007ab540", "type": "u8", "count": 4, "stride": 1},
+  {"addr": "0x007aafd6", "type": "u8", "count": 2, "stride": 1},
+  {"addr": "0x007c2b3c", "type": "u8", "count": 528, "stride": 1},
+  {"addr": "0x008307a4", "type": "u8", "count": 4, "stride": 1}
+ ]
+}

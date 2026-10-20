@@ -1,0 +1,13 @@
+{
+ "_evidence": "Results 0x426091 caches with its (esi, ebx) key 0x603e84/0x603e88 (state_00426091 makes the key equal the registers in about half the cases, which skips the recomputation): [0x603e8c] = |0x10000000 / ebp| and [0x603e90] = the first 0x426031 result, both read by 0x426100 (imul/shrd only), so on a cache hit they are whatever an earlier call left: any i32.",
+ "globals": [
+  {
+   "addr": "0x00603e8c",
+   "type": "i32"
+  },
+  {
+   "addr": "0x00603e90",
+   "type": "i32"
+  }
+ ]
+}

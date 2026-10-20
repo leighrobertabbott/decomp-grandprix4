@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x0041242f divides [0x00679b48] << 6 (edx:eax via shld/shl 6) by ecx, a byte from the EDX table clamped to 16..80. The dword is zero in the image and written by 0x00412408 (fistp, game state). The quotient fits 32 bits for every divisor when the dword is below 2^30 (2^36 / 16 = 2^32), so 0..0x3fffffff excludes only inputs on which the original's div can raise #DE.",
+  "globals": [
+    {"addr": "0x00679b48", "type": "u32", "lo": 0, "hi": 1073741823}
+  ]
+}

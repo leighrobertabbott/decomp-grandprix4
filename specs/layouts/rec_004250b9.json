@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x004250b9 reads only the dword [esi+0x74] (mov ebp at 0x004250b9): -1 skips everything (je 0x004250f0), otherwise each of its four bytes is appended to the dword table 0x00609870 unless it is 0xff (je 0x004250e7). An unconstrained u32 draw mixes 0xffffffff (-1 and the directed constant), small negatives (upper bytes 0xff, low byte not), 0 and random values, so both outcomes of both byte tests are reached. Nothing else in the 0x7c-byte record is read.",
+  "size": 124,
+  "fields": [
+    {"off": 116, "type": "u32"}
+  ]
+}

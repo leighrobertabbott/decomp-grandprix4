@@ -1,0 +1,16 @@
+{
+ "_evidence": "Mode byte 0x86857c of the R3 stream decoders: 2 (active) in about half the cases.",
+ "globals": [
+  {
+   "addr": "0x0086857c",
+   "type": "u8",
+   "values": [
+    2,
+    2,
+    0,
+    1,
+    3
+   ]
+  }
+ ]
+}

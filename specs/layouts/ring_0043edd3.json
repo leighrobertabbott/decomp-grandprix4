@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x0043edd3 (edi = a track-segment record, spec rec[0x8943a0,0x160,0..25]) calls the accepted 0x0043fab0 twice; it reads words +0 and +0x18 of the record at edi and of the next record (+0x160, +0x178). Between the calls edi steps back one 0x160 record: at or above [0x00891500] (pit start, jb at 0x0043ede1) it is clamped to stay >= [0x00891500] (0x0043ede9..0x0043edf1), below it it wraps forward by [0x00866ec4] when it drops under [0x00891504] (the first lap record; jae at 0x0043ee05). Domain: record-aligned pointers into the array at 0x008943a0 (pit start 0..26, lap start 0..4) and a wrap distance of 1..20 records; enumerating every combination gives visited records 0..26 only (k = 0 with lap start 0 wraps to a valid record because the distance is >= 1), so words +0 and +0x18 of exactly those 27 records are unconstrained i16. Unrelated fixed globals and a random edi buffer never reached the >= and wrap paths.",
+  "globals": [
+    {"addr": "0x00891500", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 26}},
+    {"addr": "0x00891504", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 4}},
+    {"addr": "0x00866ec4", "type": "u32", "values": ["0x160", "0x2c0", "0x420", "0x580", "0x6e0", "0x840", "0x9a0", "0xb00", "0xc60", "0xdc0", "0xf20", "0x1080", "0x11e0", "0x1340", "0x14a0", "0x1600", "0x1760", "0x18c0", "0x1a20", "0x1b80"]},
+    {"addr": "0x008943a0", "type": "i16", "count": 27, "stride": "0x160"},
+    {"addr": "0x008943b8", "type": "i16", "count": 27, "stride": "0x160"}
+  ]
+}

@@ -1,0 +1,118 @@
+{
+ "_evidence": "Overlay for 0x0042fb30 (esi = car rec[0x66fef0,0x41c,0..21]; compose LAST, after the 0x42cd1e family list, state_0066d8c0, cand_0042faf5 and ring_0042c1f4). Every path is selected by car fields that were image zeros: byte +0x134 bits 4 (0x42fb30: clear it when [0x66d814] - dword +0x1ec >= 0, 0x42fb39..0x42fb55), 7 (0x42fb65: the +0x12c car first) and 6 (0x42fb8c / 0x42fbc5: the +0x130 car) draw all combinations; dword +0x1ec is zero (je) in 2/9, else small, large and negative values so the neg/add/js at 0x42fb4c sees both signs against the fuzzed [0x66d814]. Dwords +0x12c / +0x130 are car pointers handed in ebx to 0x42fa30 (compares them with the candidate table 0x6077e4) and to 0x42cd1e, which dereferences them as a car (+0x9c, +0xe2, ... at 0x42cd5e/0x42cd67): 0 or junk faults, and in the game they are valid whenever their +0x134 flag is set (0x431018 pairs the two cars: 'mov [esi+0x12c],ebx; mov [ebx+0x130],esi'), so they draw car records 0..5 like cand_0042faf5's table entries (0x66fef0 + j*0x41c). Word +0x1bc (0x42fc24 / 0x42fc7b: 0xffff skips, else + 0x66fef0 compared with ebx for the 0xffff reset) draws 0xffff or j*0x41c, mostly car 0, and the cand_0042faf5 candidate pointers 0x6077e4 (31 entries, the ebx 0x42fa52 returns) are redrawn from 0, car 0 (mostly) and car 1, so the 0x42fc3a / 0x42fc91 resets (ebx equal to the record +0x1bc names) occur instead of 1 in 7 picks; still only zero or car records, as the only writer 0x42a0fb leaves them. Byte +0x273 bit 6 (0x42fcc1 je) both ways; byte +0x12 bit 2 of the car's segment record ([esi+0x1c] = records 0..25 from cars_0066fef0; 0x42fcea) both ways. Flag bytes, compared dwords and valid car pointers only: nothing faults.",
+ "globals": [
+  {
+   "addr": "0x00670024",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    "0x10",
+    "0x40",
+    "0x80",
+    "0x50",
+    "0x90",
+    "0xc0",
+    "0xd0",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x006700dc",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    0,
+    1,
+    "0x100",
+    "0x10000",
+    "0x20000",
+    "0x7fffffff",
+    "0x80000000",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x0067001c",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x66fef0",
+    "0x67030c",
+    "0x670728",
+    "0x670b44",
+    "0x670f60",
+    "0x67137c"
+   ]
+  },
+  {
+   "addr": "0x00670020",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x66fef0",
+    "0x67030c",
+    "0x670728",
+    "0x670b44",
+    "0x670f60",
+    "0x67137c"
+   ]
+  },
+  {
+   "addr": "0x006700ac",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0xffff",
+    0,
+    0,
+    0,
+    "0x41c",
+    "0x838"
+   ]
+  },
+  {
+   "addr": "0x00670163",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    "0x40",
+    "0xff",
+    "0xbf"
+   ]
+  },
+  {
+   "addr": "0x008943b2",
+   "type": "u8",
+   "count": 26,
+   "stride": "0x160",
+   "values": [
+    0,
+    4,
+    "0xff",
+    "0xfb"
+   ]
+  },
+  {
+   "addr": "0x006077e4",
+   "type": "u32",
+   "count": 31,
+   "stride": 4,
+   "values": [
+    0,
+    "0x66fef0",
+    "0x66fef0",
+    "0x66fef0",
+    "0x67030c"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,9 @@
+{
+  "_evidence": "Segment record behind [ebx+8] for 0x00425bed (the caller 0x425cb3 also stores it to 0x602d84, the segment pointer of 0x404ed0): only the half-width words +0x60/+0x62 are read (movzx), and their sum is the divisor of 'idiv ebp' on (span-0x100/-0x200 or 0x100/0x200)<<14. Both are 0..0x400 (track half-widths; small values make the quotient leave 0..0x4000 on both sides so both clamps run) and +0x62 is at least 1 so the sum is never zero (a zero sum is the original's own #DE). Other bytes random.",
+  "size": 104,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x60", "type": "u16", "lo": 0, "hi": 1024},
+    {"off": "0x62", "type": "u16", "lo": 1, "hi": 1024}
+  ]
+}

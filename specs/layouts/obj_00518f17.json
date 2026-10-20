@@ -1,0 +1,49 @@
+{
+ "size": 32,
+ "fill": "bytes",
+ "_evidence": "0x00518f17 (object ebx relative to the camera): dx = (obj+0x10 sar 5) - [0x7a8dd4], dz = (obj+0x18 sar 5) - [0x7a8ddc] go to the angle routine 0x401315, whose 'div' faults only when dx or dz is exactly 0x80000000 (neg leaves it negative, the signed compare picks the wrong order and (x<<11)/small overflows): positions and camera coordinates come from value sets with no pair at that difference (s - c = 0x80000000 needs c = s + 0x80000000, absent for every s), which give dx = dz = 0 (the zero-sine fallback at 0x519029), small and near +-2^31 offsets. The first idiv (0x518f88) divides [0x88fcf0] << 14 by [0x88fcf0] + ((cos * (obj+8 >> 8)) >> 14), |cos| <= 0x4000: with [0x88fcf0] in 0x200000..0x7fffffff and obj+8 >> 8 <= 0xfffff the divisor is at least half the dividend's base (or wraps to about -2^31), so the quotient fits; <= 0 or small values fault (excluded). The second idiv divides dz << 11 (or dx << 11) by the Q14 cosine of the angle 0x401315 returned for that same pair, |cos| >= cos 45 deg, so it fits. obj+8 >> 8 spans 0 (below the 0x100 floor), 0xff, 0x100, 0x3e8, 0x1234 and up to 0xfffff; the angle +0xc any. 0x88fba4, 0x88fce0 and 0x679b5c stay fuzzed; the Q14 tables 0x7c5c5c.. are lead-proven constants (specs/constants.json) and keep their image values.",
+ "fields": [
+  {
+   "off": 8,
+   "type": "u32",
+   "values": [
+    0,
+    "0x80",
+    "0xff00",
+    "0x10000",
+    "0x3e800",
+    "0x123456",
+    "0xfffff00",
+    "0x8000000"
+   ]
+  },
+  {
+   "off": "0x10",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x1000",
+    "0x7fffffe0",
+    "0x80000000",
+    "0x12345678",
+    "0xffffffe0"
+   ]
+  },
+  {
+   "off": "0x18",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x1000",
+    "0x7fffffe0",
+    "0x80000000",
+    "0x12345678",
+    "0xffffffe0"
+   ]
+  }
+ ]
+}

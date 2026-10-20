@@ -1,0 +1,27 @@
+{
+ "_evidence": "Interpolation state 0x429431 reads, all written by its only caller path 0x4298e4 just before 'call 0x429431' (0x429b10): [0x601b20] = (edx & 0x3fff) at 0x429ac2/0x429ac8, the Q14 blend fraction 0..0x3fff that 0x4035f7/0x40362e/0x4035c3 take as eax (their accepted domain is i32 -0x4000..0x4000) and that is copied into 0x601b34; [0x601b24] = the record edi returned by the ring walker 0x429339 (0x429ae1), passed as edi to 0x4035f7/0x40362e/0x4035c3/0x403a1e/0x403938/0x403ab9, so a record pointer 0x8943a0 + k*0x160 with k 0..17 exactly as the callees' rec[0x8943a0,0x160,0..17] (0x4298e4's other writer 0x429982 stores a 0x43207c grid record, also inside that range); [0x601b28] = w16 + ((w176 - w16) * frac >> 14) (0x429af2..0x429b0b), the lerp of the signed words +0x16 of the record and its successor, so it lies between two i16 values: drawn -0x8000..0x7fff. It feeds 0x403938 (any i32) and then 0x403ab9, whose accepted domain (+-40000) contains it.",
+ "globals": [
+  {
+   "addr": "0x00601b20",
+   "type": "i32",
+   "lo": 0,
+   "hi": 16383
+  },
+  {
+   "addr": "0x00601b24",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 17
+   }
+  },
+  {
+   "addr": "0x00601b28",
+   "type": "i32",
+   "lo": -32768,
+   "hi": 32767
+  }
+ ]
+}

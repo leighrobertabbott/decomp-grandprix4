@@ -1,0 +1,9 @@
+{
+  "_evidence": "Overlay for 0x0054eaf7 (compose AFTER list_0054eaf7, which varies the head link 0x838c94, the node-3 link 0x838d06 and every flag byte +0x1f): the walk 'mov esi,[esi]' also reads the links of nodes 1, 2, 4 and 5 (cells 0x838cba, 0x838ce0, 0x838d2c, 0x838d52), which stayed at their image values (weak5: 0x838cba/0x838ce0/0x838d2c/0x838d52 unvaried). Each is drawn from its image successor (most often), a later node of the same static list (node stride 0x26: 0x838ce0, 0x838d06, 0x838d2c, 0x838d52, 0x838d78) or null, so the list length, and therefore the final 'rcr eax,1' shift count and which node a given eax bit lands on, varies at every link. Every link points strictly forward or is null, so with list_0054eaf7's forward links the walk is always an acyclic sublist ending on a null link. The last node's link 0x838d78 stays null (no later node in the list).",
+  "globals": [
+    {"addr": "0x00838cba", "type": "u32", "values": ["0x838ce0", "0x838ce0", "0x838ce0", "0x838d06", "0x838d52", 0]},
+    {"addr": "0x00838ce0", "type": "u32", "values": ["0x838d06", "0x838d06", "0x838d06", "0x838d2c", "0x838d78", 0]},
+    {"addr": "0x00838d2c", "type": "u32", "values": ["0x838d52", "0x838d52", "0x838d78", 0]},
+    {"addr": "0x00838d52", "type": "u32", "values": ["0x838d78", "0x838d78", 0]}
+  ]
+}

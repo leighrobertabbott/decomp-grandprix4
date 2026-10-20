@@ -1,0 +1,18 @@
+{
+  "_evidence": "Rear-wheel state read by 0x004193fa and the per-wheel updates it repeats (0x4168b6 -> 0x416b13/0x4169c3 -> 0x41743e/0x41724d -> 0x4171f9) on records 2/3 of 0x6380d8 (ebx = 0x6386d8 / 0x6389d8, stride 0x300). (1) [0x603688] is the iteration count copied to [0x6036bc] and decremented at 0x41959b (dec/jne 0x4194c9): only 0x4193fa references it and no code writes it (image value 5), and 0 would wrap to 2^32 iterations (timeouts), so i32 1..16. (2) +0x190/+0x194 (0x638868/0x63886c, 0x638b68/0x638b6c) are fild-ed at 0x4169ee/0x4169f4 and rotated by the angle [ebx] (= esi+0x3c via 0x4168b6) in 0x401d41 into +0x18/+0x1c; +0x40 (0x638718/0x638a18) is fild-ed by 0x416981/0x416a2e. sin(atan2(+0x18,+0x40)) is stored at +0x280 and 0x419220 multiplies it by +0x26c, so with +0x190/+0x194 at the static zero 0x60351c stayed 0 and 'cmp [0x60351c],[0x60150c]; jle' (0x419534) never fell through. Bounded to +-2^20 so sqrt(+0x40^2++0x18^2) (fistp +0x2b0) stays far below 2^31: an indefinite 0x80000000 there is below [0x60349c] and makes 'idiv [0x60349c]' at 0x416a5d #DE in the original. +0x40 comparable to +0x18 also puts the angle anywhere (full-range +0x40 from state_00416dec makes sin ~ 0). (3) +0x30 (0x638708/0x638a08) is read at 0x419415/0x41941b before 0x4169c3 rewrites it: any i32. (4) +0x1d8 and +0xe8 (0x6388b0/0x6387c0, 0x638bb0/0x638ac0): 0x41724d forms +0x270 = ((+0x1d8*+0xe8)>>14 * [0x62f880])>>14 (imul/shrd, no division) and the force scale 0x601478; at zero every force and +0x34 were 0, so [0x6036ac] (= rec2 +0x34 + rec3 +0x34) never went negative (0x41954c/0x419556 sign blocks). i32 +-2^15 each. (5) byte +0x2e (0x638706/0x638a06): 'and 0x7f' then 'or 0x80' when +0x26c >= [0x601500]; other bits persist: any u8. (6) [0x601500] (only read by 0x41724d, 'cmp eax,[0x601500]; jl', image 0x3d00) and [0x6034c0] (only read by 0x4192a8, 'cmp eax,[0x6034c0]; jl' with eax in 0..0x200, image 8) are thresholds: i32 0..0x10000 and 0..0x200 give both outcomes. (7) [0x60349c] (image 0x100) is the 0x4169c3 divisor 'cmp +0x2b0,[0x60349c]; jge; idiv': with 0 <= +0x2b0 < 2^22 any value is valid (below or equal: the jge skips; above: quotient < 2^14). (8) [0x603580] is the unsigned clamp of 0x419333 (cmp/jb): any u32. (9) f64 [0x601480] is the tyre peak copied to 0x601488/0x601490 when 0x411e17 does not rewrite it: finite -4..4 like tyre_00601510.",
+  "globals": [
+    {"addr": "0x00603688", "type": "i32", "lo": 1, "hi": 16},
+    {"addr": "0x00638868", "type": "i32", "count": 2, "stride": "0x300", "lo": -1048576, "hi": 1048576},
+    {"addr": "0x0063886c", "type": "i32", "count": 2, "stride": "0x300", "lo": -1048576, "hi": 1048576},
+    {"addr": "0x00638718", "type": "i32", "count": 2, "stride": "0x300", "lo": -1048576, "hi": 1048576},
+    {"addr": "0x00638708", "type": "i32", "count": 2, "stride": "0x300"},
+    {"addr": "0x006388b0", "type": "i32", "count": 2, "stride": "0x300", "lo": -32768, "hi": 32768},
+    {"addr": "0x006387c0", "type": "i32", "count": 2, "stride": "0x300", "lo": -32768, "hi": 32768},
+    {"addr": "0x00638706", "type": "u8", "count": 2, "stride": "0x300"},
+    {"addr": "0x00601500", "type": "i32", "lo": 0, "hi": 65536},
+    {"addr": "0x006034c0", "type": "i32", "lo": 0, "hi": 512},
+    {"addr": "0x0060349c", "type": "u32", "values": [0, 1, "0x40", "0x100", "0x100", "0x1000", "0x100000", "0x7fffffff", "0xffffffff", "0x80000000"]},
+    {"addr": "0x00603580", "type": "u32"},
+    {"addr": "0x00601480", "type": "f64", "lo": -4, "hi": 4}
+  ]
+}

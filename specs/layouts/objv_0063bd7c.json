@@ -1,0 +1,8 @@
+{
+  "_evidence": "Object-record vectors of the 64 0x78-byte records at 0x0063bd7c: 0x41d795 filds dwords +0x18/+0x1c/+0x20 of the car's record, rotates them through the body 0x622cf8 (0x401f02) and fistps them back. They are object state (written back every call), so all 64 records' three dwords are any i32 (fild exact; an out-of-range rotated value fistps to the indefinite integer on both sides). Nothing faults.",
+  "globals": [
+    {"addr": "0x0063bd94", "type": "i32", "count": 64, "stride": "0x78"},
+    {"addr": "0x0063bd98", "type": "i32", "count": 64, "stride": "0x78"},
+    {"addr": "0x0063bd9c", "type": "i32", "count": 64, "stride": "0x78"}
+  ]
+}

@@ -1,0 +1,36 @@
+{
+ "_evidence": "The 0x70-byte renderer state object [0xa539c0] (allocated with size 0x70 and constructed at 0x49852b..0x498549) as the snapshot writer 0x4dd7f0 reads it (thiscall from 0x49efc0, dst = 0x68d5bc, size 0xa000; plain loads and rep movs, no calls): 'mov ecx,[eax+0x68]; mov [ebx],ecx' and '[eax+0x64]' (dword count n) to the blob header, 'mov esi,[eax+0x58]; rep movsd x0x33' (a 0xcc-byte block), 'mov esi,[eax+0x60]; rep movsd/movsb' of n*4 bytes, and, when byte [0xaa1b56] > 0, 22 entries of 0xa0 bytes at [eax+0x48] (bytes +0x84/+0x85/+0x86/+0x90/+0x91 tested, dwords +0x88/+0x8c/+0x94/+0x98/+0x9c copied; the last read is +0xd20+0x9f < 0xdc0). The blob is 0x1ca4 + 4n bytes plus the byte [dst+0x9c3f], all inside the 0xa000-byte area 0x68d5bc..0x6975bc for n <= 0x1fe6; n draws 0, 1, 0x40, 0x400 and 0x1fe6 with a 0x7f98-byte table (4*0x1fe6). Every other byte is random.",
+ "size": 112,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x48",
+   "type": "ptr",
+   "size": "0xdc0",
+   "fill": "bytes"
+  },
+  {
+   "off": "0x58",
+   "type": "ptr",
+   "size": "0xcc",
+   "fill": "bytes"
+  },
+  {
+   "off": "0x60",
+   "type": "ptr",
+   "size": "0x7f98",
+   "fill": "bytes"
+  },
+  {
+   "off": "0x64",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    "0x40",
+    "0x400",
+    "0x1fe6"
+   ]
+  }
+ ]
+}

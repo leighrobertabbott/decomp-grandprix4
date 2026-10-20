@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00550dbf (compose after seg_00550d52+win_0042b10d+sign_00868582+trk_007ad894): 'mov edi,[0x866ed0]; mov ax,[edi]; mov [0x868538],ax' and the same for [0x866ed4] -> 0x86853a copy word +0 of the two window records, which win_0042b10d draws as records 0..11 of the ring 0x8943a0; seg_00550d52 varies their other fields but word +0 kept its image value (zero). Here word +0 of records 0..11 is random (copied verbatim: every value is valid), so swapping or skipping the two copies changes memory. The 12-byte per-circuit table 0x6f2e94 (17 entries) read afterwards is initialised .data with no writer in the decompiled code (readers 0x550dbf/0x5573d3 only), i.e. a constant table, and keeps its image values.",
+ "globals": [
+  {"addr": "0x008943a0", "type": "u16", "count": 12, "stride": "0x160"}
+ ]
+}

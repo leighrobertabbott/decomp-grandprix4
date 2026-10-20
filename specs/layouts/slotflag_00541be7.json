@@ -1,0 +1,17 @@
+{
+ "_evidence": "Byte +0x16 of the 22 slots of 0xb1b8d8 (stride 0x1c) tested by 0x00541be7 (or-eax block 0x541c0c); zero in the image.",
+ "globals": [
+  {
+   "addr": "0x00b1b8ee",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x1c",
+   "values": [
+    0,
+    1,
+    "0x80",
+    "0xff"
+   ]
+  }
+ ]
+}

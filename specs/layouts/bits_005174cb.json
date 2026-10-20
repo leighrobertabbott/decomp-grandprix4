@@ -1,0 +1,10 @@
+{
+ "_evidence": "0x005174cb (compose after fuzz:i32): the mode byte [0x7c2ea9] is tested for the sign ('test 0xff; jns'), bit 6 ('test 0x40; jne') and the value 2 ('cmp 2; je'), so it draws negative, bit-6 and 2 values besides others; [0x7c2e75] is compared with 0xff ('cmp 0xff; jne'): 0xff about half the time. Both bit-6 and ==2 paths call 0x51d187 with eax = 6: 'test byte [0x66d8a1],0xff; jne clc' then 'bt [0x852d64],6; jae bts..clc' else stc, and 'jb' at 0x51751d/0x517535 returns on CF. Fuzzed, [0x66d8a1] was nonzero in practically every case and [0x852d64] (not referenced by 0x5174cb itself) kept its image value, so CF = 1 never happened. Here [0x66d8a1] is zero in about half the cases and the low byte of the bit set [0x852d64] has bit 6 set in about half (the other three bytes random: bts writes the whole dword back). Flag bytes and a bit set only: every value is valid. Values are synthetic.",
+ "globals": [
+  {"addr": "0x007c2ea9", "type": "u8", "values": ["0x80", "0xff", "0xc2", 0, 1, 2, 2, 2, "0x40", "0x42", "0x44", "0x7f", 3]},
+  {"addr": "0x007c2e75", "type": "u8", "values": ["0xff", "0xff", "0xff", 0, 1, "0xfe"]},
+  {"addr": "0x0066d8a1", "type": "u8", "values": [0, 0, 0, 1, "0x80", "0xff"]},
+  {"addr": "0x00852d64", "type": "u8", "values": [0, "0x40", "0xbf", "0xff", "0x41", "0x3f", "0x60", "0x20"]},
+  {"addr": "0x00852d65", "type": "u8", "count": 3}
+ ]
+}

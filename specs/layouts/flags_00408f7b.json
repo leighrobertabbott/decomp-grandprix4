@@ -1,0 +1,13 @@
+{
+  "_evidence": "0x00408f7b walks the 22 car records at 0x66fef0 (stride 0x41c): byte +0x7c (test 0xff; js skips the car) and, through 0x408742/0x4086f9/0x43b9ae, read-modify-writes of bytes +0x7a, +0x8d, +0xcc, +0xce, +0xe5, +0xfe and 'and byte [(+0x7c & 0x3f) - 1 + 0x66d90a], 0x7f' (index -1..62 into the 64-byte driver flag table at 0x66d909..0x66d948: always inside .data). All bytes are plain u8 draws; the flag table bytes vary too. No value faults.",
+  "globals": [
+    {"addr": "0x0066ff6c", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ff6a", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ff7d", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ffbc", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ffbe", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ffd5", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ffee", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066d909", "type": "u8", "count": 64, "stride": 1}
+  ]
+}

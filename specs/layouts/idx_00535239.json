@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x00535239: edx = [0x7ab4b4]; cmp edx,4 / jne (4 restarts at 0 via mov edx,0); then up to 4 times cmp byte [edx+0xb1bb74],0 (found: stop) / inc edx / wrap 4->0; stores edx (0..3 found, 4 none) back to [0x7ab4b4]. The function itself only ever stores 0..4, so the index domain is 0..4 (a larger value reads past the 4 flag bytes). The 4 flag bytes at 0xb1bb74 are tested for zero only: values mix zero (about half, so all-zero and every first-hit position occur) with nonzero patterns.",
+ "globals": [
+  {"addr": "0x007ab4b4", "type": "u32", "lo": 0, "hi": 4},
+  {"addr": "0x00b1bb74", "type": "u8", "count": 4, "stride": 1, "values": [0, 0, 0, 1, "0x80", "0xff"]}
+ ]
+}

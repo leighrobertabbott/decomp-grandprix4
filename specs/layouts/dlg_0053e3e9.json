@@ -1,0 +1,83 @@
+{
+ "_evidence": "Dialog records edi = 0x84c830 / 0x84c8a4 / 0x84c93e (the only values the callers 0x53e292/0x53e2e1/0x53e355 load into edi; static .data templates, records 0x74 and 0x9a apart). 0x53e44d..0x53e45b walk the 6-byte entries from +0x28 (cmp word [esi],0; jne add esi,6) to the first zero word, then 0x53e46b..0x53e489 write four words at terminator+4..+0xb. The image has a zero word at +0x28 (empty list), so the walk body 0x53e454 is never reached by static data. Here entries 0..3 (u16 at +0x28+k*6) hold a nonzero prefix of drawn length 0..4 and the rest are zero, so the terminator falls at entry 0..4 and every write stays at or below +0x4b, inside each record (the +0x18 text-block pointer 0x84c88c is left as the image has it: 0x53e48d dereferences it and every caller writes [[edi+0x18]+8] through it). Entry 4 (+0x40) is zero in every case so the walk can never leave the declared entries. Values are synthetic. Dword +0x14 is the body-text index the callers store (0x53e297 mov [edi+0x14],ecx) and 0x53e4a8/0x54d1ad use as esi = [0x835846+idx*4] (1024-entry table): varied over 0..0x3ff so the returned esi depends on it.",
+ "globals": [
+  {
+   "addr": "0x0084c844",
+   "type": "u32",
+   "lo": 0,
+   "hi": 1023
+  },
+  {
+   "addr": "0x0084c8b8",
+   "type": "u32",
+   "lo": 0,
+   "hi": 1023
+  },
+  {
+   "addr": "0x0084c952",
+   "type": "u32",
+   "lo": 0,
+   "hi": 1023
+  },
+  {
+   "addr": "0x0084c858",
+   "type": "u16",
+   "count": 5,
+   "stride": 6,
+   "prefix": [
+    0,
+    1,
+    2,
+    3,
+    4
+   ],
+   "values": [
+    1,
+    "0x00b8",
+    "0x1234",
+    "0x8000",
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x0084c8cc",
+   "type": "u16",
+   "count": 5,
+   "stride": 6,
+   "prefix": [
+    0,
+    1,
+    2,
+    3,
+    4
+   ],
+   "values": [
+    1,
+    "0x00b8",
+    "0x1234",
+    "0x8000",
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x0084c966",
+   "type": "u16",
+   "count": 5,
+   "stride": 6,
+   "prefix": [
+    0,
+    1,
+    2,
+    3,
+    4
+   ],
+   "values": [
+    1,
+    "0x00b8",
+    "0x1234",
+    "0x8000",
+    "0xffff"
+   ]
+  }
+ ]
+}

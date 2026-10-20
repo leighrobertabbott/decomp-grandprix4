@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x00522192 (compose LAST): 'cmp byte [0x66d8e4],0xff; jne' gates the whole flag update (fuzz:i32 made it 0xff only by chance) and 'mov edx,[0x66d8e0]' is passed to 0x431bf7, which branches on 'cmp edx,1; je' / 'cmp edx,2; je' (else the +0x198/+0x136 grid path): 0x66d8e4 is 0xff in about half the cases and 0x66d8e0 draws 1, 2, 3 and 0 so all three 0x431bf7 arms run from this caller. Both are plain compares; the deeper tables of 0x431bf7's callees keep the earlier layouts (counter_0040f0dd, tbl_0066d94c, levels_006f2cc4, trk_007ad894, circ_007adb50).",
+ "globals": [
+  {"addr": "0x0066d8e4", "type": "u8", "values": ["0xff", "0xff", "0xff", 0, "0xfe", 1]},
+  {"addr": "0x0066d8e0", "type": "u32", "values": [1, 1, 2, 2, 3, 0]}
+ ]
+}

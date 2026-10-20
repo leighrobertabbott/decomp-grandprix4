@@ -1,0 +1,12 @@
+{
+ "_evidence": "Globals of 0x0040f06c beyond order_00675958 (compose after it): 'test byte [0x7c2ea9],0xff; jns' gates the head-of-list check, so the mode byte takes both signs (0x80/0xc4/0xff negative, 0/0x44/0x7f positive); the two 22-dword tables 0x6759c8/0x675a20 are stored at the car index and are also read by the callee sort 0x52286e as keys when a list byte has low bits 0x3f (key index 62 = 0x675970+0xf8, inside these tables), so all of them are varied (any value); 'and dword [0x852d64],0xfffffeff' and the clock [0x66d814] (+5000 into 0x852d44) take any value; the sort saves and restores [0x934df0]/[0x934df4] with push/pop (any value). Nothing here forms a pointer or a count, so nothing faults.",
+ "globals": [
+  {"addr": "0x007c2ea9", "type": "u8", "values": ["0x80", "0xc4", "0xff", 0, "0x44", "0x7f"]},
+  {"addr": "0x006759c8", "type": "i32", "count": 22, "stride": 4},
+  {"addr": "0x00675a20", "type": "i32", "count": 22, "stride": 4},
+  {"addr": "0x00852d64", "type": "u32"},
+  {"addr": "0x0066d814", "type": "u32"},
+  {"addr": "0x00934df0", "type": "u32"},
+  {"addr": "0x00934df4", "type": "u32"}
+ ]
+}

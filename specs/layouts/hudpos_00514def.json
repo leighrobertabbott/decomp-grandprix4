@@ -1,0 +1,12 @@
+{
+ "_evidence": "HUD text-position state for the readout lines that place their text with 0x514def (compose after readout_00515187; used by 0x5159e0, 0x5153db, 0x515aea). 0x514def(eax = line k) does 'imul eax,eax,6; add eax,0x891570' and copies bytes +1..+4 of that 6-byte record to the cursor 0x88fd94..0x88fd97 (column, row, x offset, y offset) before the glyphs are drawn: the ten records 0x891570..0x8915ab (the keyword strings 'lcdp_...' start at 0x8915ac) are zero in the image and have no direct writer (only this computed read), i.e. run-time positions, so all 60 bytes are drawn. The glyph writer 0x51d329 also reads the colour bytes 0x88fd9e ('test bl,0xff; js'), 0x88fd9f/0x88fda0 (written by 0x516bb2, 0x51d48e, 0x51fbb9 and others) and the escape state 0x88fd9b/0x88fd9c ('test byte [0x88fd9b],0xff; je': a nonzero escape turns the next character into a column/row coordinate): drawn. Any cursor value is valid once the surface holds the largest write: 0x51d329 writes 8 rows of 7 bytes at [0x874ee4] + ((row*8 + y offset) & 0xff) * pitch + column*7 + x offset + 1, at most 255*128 + 255*7 + 255 + 1 + 7*128 + 7 < 0x9000 bytes for the pitch 64..128 of readout_00515187, so the surface [0x874ee4] is re-drawn as a 0x9000-byte buffer. Values are synthetic.",
+ "globals": [
+  {"addr": "0x00891570", "type": "u8", "count": 60, "stride": 1},
+  {"addr": "0x0088fd9e", "type": "u8", "values": [0, 1, "0x7f", "0x80", "0xff"]},
+  {"addr": "0x0088fd9f", "type": "u8"},
+  {"addr": "0x0088fda0", "type": "u8"},
+  {"addr": "0x0088fd9b", "type": "u8", "values": [0, 0, "0x1f"]},
+  {"addr": "0x0088fd9c", "type": "u8", "values": [0, 1, 2]},
+  {"addr": "0x00874ee4", "type": "ptr", "size": 36864, "fill": "bytes"}
+ ]
+}

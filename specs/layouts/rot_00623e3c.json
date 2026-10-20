@@ -1,0 +1,7 @@
+{
+  "_evidence": "Q14 orientation state used by the quaternion helpers 0x0040e6da/0x0040e643 (and 0x40e4ec): the 3x3 matrix dwords 0x623e3c..0x623e5f (0x401893 multiplies the vector part by it, 0x4017b1 by its transpose: imul; shrd 14) and the quaternion dwords 0x625a8c..0x625a98 (0x40dff6 multiplies it with the 0x40e0e5 quaternion of the three angle words). Both are written by the game (0x40e643/0x40e4ec store the quaternion; the matrix is the car's rotation) and were static zero, which reduced the products to the scalar part. The result feeds 0x40e230 (quaternion -> angles), whose 0x401315 atan2 calls #DE when an argument is exactly 0x80000000; its arguments 2(ac - bd), a^2-b^2-c^2+d^2 stay below 2^31 while every component is below 0x5a82 in magnitude. Independent draws cannot keep a matrix orthonormal, so the entries are drawn -0x1800..0x1800 (Frobenius norm <= 1.125, so the rotated vector part grows by at most 1.125) and the quaternion components -0x2000..0x2000 (norm <= 0x4000): the 0x40e0e5 quaternion has norm ~0x4000, so every component reaching 0x40e230 stays below ~0x4810, inside the range 0x40e230 was verified on scaled by 1.125 and well under the 0x5a82 fault bound. Arithmetic, element order and signs are exercised as with real rotations.",
+  "globals": [
+    {"addr": "0x00623e3c", "type": "i32", "count": 9, "stride": 4, "lo": -6144, "hi": 6144},
+    {"addr": "0x00625a8c", "type": "i32", "count": 4, "stride": 4, "lo": -8192, "hi": 8192}
+  ]
+}

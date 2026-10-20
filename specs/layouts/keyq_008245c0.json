@@ -1,0 +1,33 @@
+{
+ "_evidence": "Key queue popped by 0x0052d7e2: read cursor [0x8245c0] and write cursor [0x8245c4] point into the 64-word ring at 0x8245c8 (equal = empty). Both are drawn from the same few slots (first, second, middle, last two) so equal cursors (empty queue) occur in about 1/5 of the cases and the last slot (wrap) often; ring words any u16.",
+ "globals": [
+  {
+   "addr": "0x008245c4",
+   "type": "u32",
+   "values": [
+    "0x8245c8",
+    "0x8245ca",
+    "0x824608",
+    "0x824644",
+    "0x824646"
+   ]
+  },
+  {
+   "addr": "0x008245c0",
+   "type": "u32",
+   "values": [
+    "0x8245c8",
+    "0x8245ca",
+    "0x824608",
+    "0x824644",
+    "0x824646"
+   ]
+  },
+  {
+   "addr": "0x008245c8",
+   "type": "u16",
+   "count": 64,
+   "stride": 2
+  }
+ ]
+}

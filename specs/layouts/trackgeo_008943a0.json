@@ -1,0 +1,239 @@
+{
+ "_evidence": "Synthetic track-geometry overlay for the 0x160-byte segment records at 0x8943a0, records 0..33 (every record a ring position, its successor or a 0x41eacf neighbour can reach; same count as geom_008943a0/segw_00427bc1). It varies the fields the 0x407811 dispatch (0x40729a left side, 0x4075d0 right side, both via 0x407af6 -> 0x406f05/0x40705f -> 0x41ec08) and the 0x40f6d0/0x43552d chains read and that no other ring layout varies; compose it after the ring/link layouts and BEFORE state_0040705f+frac_0040705f+state_0040759e (they refine records 0..1 and 0..14). Invariants (from the loader and the readers, no game data): (I1) the lerp fractions [0x627950]/[0x627958] seen by 0x406f05/0x40705f are always in [0,1]: they are written only by 0x407af6 (fistp(x*2^18) < 0 -> 0.0, > 0x3ffff -> 1.0, or 0.5) and 0x407a0d (clamp(proj,0,len)/len, or 0.5 when len < 0x555) immediately before both callers (0x40729a/0x4075d0 are the only callers of 0x406f05 and 0x40705f), so t1,t2 = fistp(f*16384) are 0..0x4000 whatever the record contents. (I2) dwords +0x100 (left) / +0x10c (right) are distances: the track builder 0x556791 stores edx = fistp(fsqrt(dx*dx+dz*dz)) from 0x5565f3 (side point minus centre point, the same call also stores the side angle +0x104/+0x110 and the height words +0x108/+0x114 = (eax-ecx)>>6, +0x10a/+0x116), so S >= 0; drawn 0..0x1000000 (coordinates are i16<<8 frames plus dwords, so a half-width is far below 2^25). Under I1+I2 0x406f05 never faults: S = lerp(+0x100|+0x10c, next) >= 0, eax = t2*S>>14 in 0..S, W = lerp(u16 +0x144|+0x14a <<6, next) >= 0; eax >= W divides clamp(S-eax,0,ebp)*A by ebp = clamp(S-W,1,S) (|q| <= |A|), eax < W divides eax*A by W >= 1 with 0 <= eax < W (|q| < |A|), for any i16 A (+0x146|+0x14c). Negative S (independent full-range dwords) is what made 0x406f05 #DE: eax < 0 < W divides |S*A| by a small W. 0x40705f clamps every idiv numerator to 0..den with den >= 1 (quotient 0..0x4000), so words +0x154/+0x158 (zero-heavy list as state_0040705f: the or/je exit and the four zero tests both ways) and i16 +0x156/+0x15a are any value. Words +0xd8/+0xda (centre-point y) and +0x108/+0x114 only form 0x6279bc..0x6279c8 = (w<<8)+(h<<6)+[+0xf4] for fild/fmul/fistp lerps (masked x87, no divide): any i16. Widths +0x144/+0x14a are raw file words (0x557cb8 lodsw), any u16 (list mixes 0, small, 0x555, mid, sign bit, 0xffff so both eax<W outcomes occur for every S scale). 0x40f6d0/0x43552d chain words: +0x02/+0x06 (0x402db6/0x402fcd: movsx lerp endpoints, cos-table angle |a|>>2&0xfffe stays in the 0x2000-byte table) any i16; +0x26 (0x402db6 lerp then je 0x402e4c) zero-heavy as seg_00402db6; +0x1a (0x409467/0x40db6c: and 0x7ff into 0x405985) any u16 as pitw_00409467; byte +0x71 (0x43552d: compared with [0x602b44]/[0x602b48]) any; +0xaa/+0x132 (0x403263: row index *16 into 0x868598/0x86c598) 0..31, the rows tbl_00868598 varies (compose it). Fields deliberately not touched: +0x104/+0x110/+0xec/+0x128/+0x12a (ring_00406ac7 pins records 2/3 so the 0x4067ea walks terminate), +0x118..+0x12e (state_004381ab/pit_00406dbb), +0x14/+0xe4/+0xf4/+0x150 (bounded by state_0040759e; records 15..33 in trackfar_008943a0). All values are synthetic draws; nothing is copied from the game's track files.",
+ "globals": [
+  {
+   "addr": "0x8943a2",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8943a6",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8943ba",
+   "type": "u16",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8943c6",
+   "type": "u16",
+   "count": 34,
+   "stride": "0x160",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    "0xffff",
+    "0x7fff",
+    "0x100",
+    "0xc000"
+   ]
+  },
+  {
+   "addr": "0x894411",
+   "type": "u8",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x89444a",
+   "type": "u16",
+   "count": 34,
+   "stride": "0x160",
+   "lo": 0,
+   "hi": 31
+  },
+  {
+   "addr": "0x8944d2",
+   "type": "u16",
+   "count": 34,
+   "stride": "0x160",
+   "lo": 0,
+   "hi": 31
+  },
+  {
+   "addr": "0x894478",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x89447a",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8944a0",
+   "type": "i32",
+   "count": 34,
+   "stride": "0x160",
+   "lo": 0,
+   "hi": 16777216
+  },
+  {
+   "addr": "0x8944a8",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8944ac",
+   "type": "i32",
+   "count": 34,
+   "stride": "0x160",
+   "lo": 0,
+   "hi": 16777216
+  },
+  {
+   "addr": "0x8944b4",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8944e4",
+   "type": "u16",
+   "count": 34,
+   "stride": "0x160",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0x40",
+    "0x100",
+    "0x555",
+    "0x1000",
+    "0x4000",
+    "0x7fff",
+    "0x8000",
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x8944e6",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8944ea",
+   "type": "u16",
+   "count": 34,
+   "stride": "0x160",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0x40",
+    "0x100",
+    "0x555",
+    "0x1000",
+    "0x4000",
+    "0x7fff",
+    "0x8000",
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x8944ec",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8944f4",
+   "type": "u16",
+   "count": 34,
+   "stride": "0x160",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    2,
+    "0x40",
+    "0x400",
+    "0x1000",
+    "0x2000",
+    "0x3000",
+    "0x3fff",
+    "0x4000",
+    "0x4001",
+    "0x5000",
+    "0x7fff",
+    "0x8000",
+    "0xc000",
+    "0xe000",
+    "0xfc00",
+    "0xffc0",
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x8944f6",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8944f8",
+   "type": "u16",
+   "count": 34,
+   "stride": "0x160",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    2,
+    "0x40",
+    "0x400",
+    "0x1000",
+    "0x2000",
+    "0x3000",
+    "0x3fff",
+    "0x4000",
+    "0x4001",
+    "0x5000",
+    "0x7fff",
+    "0x8000",
+    "0xc000",
+    "0xe000",
+    "0xfc00",
+    "0xffc0",
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x8944fa",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  }
+ ]
+}

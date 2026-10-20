@@ -1,0 +1,14 @@
+{
+  "_evidence": "0x0041b479 reads, from the two state blocks at ebx = 0x6380d8 / +0x300: dwords +0x634/+0x934 (0x63870c/0x638a0c, their sum's sign picks the final neg), +0x86c/+0xb6c (0x638944/0x638c44, minus dword 0x603508 clamped at 0, squared) and doubles +0x880/+0xb80 (0x638958/0x638c58); then |sum of both fistp terms| * [0x60350c] >> 14 is clamped to [0x603510]. The squares are scaled by the constants 0x6f2b9c (2^-14) and 0x6f2b94 (2^-10), never written, left static. These state values were stuck at their static zero; ranges: 0x638944/0x638c44 0..0x20000 and 0x603508 0..0x10000 (both signs of the difference, and an all-zero sum for the je), doubles -4..4, gain 0x60350c 0..0x8000 and clamp 0x603510 0..0x20000 (taken and not), the sign dwords any i32. Only x87 (masked) and wrapping integer arithmetic: nothing faults.",
+  "globals": [
+    {"addr": "0x0063870c", "type": "i32"},
+    {"addr": "0x00638a0c", "type": "i32"},
+    {"addr": "0x00638944", "type": "i32", "lo": 0, "hi": 131072},
+    {"addr": "0x00638c44", "type": "i32", "lo": 0, "hi": 131072},
+    {"addr": "0x00603508", "type": "i32", "lo": 0, "hi": 65536},
+    {"addr": "0x00638958", "type": "f64", "lo": -4, "hi": 4},
+    {"addr": "0x00638c58", "type": "f64", "lo": -4, "hi": 4},
+    {"addr": "0x0060350c", "type": "i32", "lo": 0, "hi": 32768},
+    {"addr": "0x00603510", "type": "i32", "lo": 0, "hi": 131072}
+  ]
+}

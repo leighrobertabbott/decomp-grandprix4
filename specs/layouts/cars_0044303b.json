@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x0044303b walks the 22 car records at 0x66fef0 (stride 0x41c, ecx = 0x16 loop): after +0x7a bit 7 and +0x8d bit 6 (flags_00408f7b) it tests byte +0xff bit 6 (0x443063, 0x66ffef + k*0x41c, zero in the image so the due-time path 0x44306c..0x44308a never ran) before the +0xf0 due time vs the clock 0x66d814 (cars_004436f9) and the 0x408742 call; any u8 is valid. Word 0x66d874 is the previous active-car count: written only here (0x4430c3) from the 0..22 count and compared for equality (0x4430b3 cmp; je), so 0..22 (both outcomes).",
+  "globals": [
+    {"addr": "0x0066ffef", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066d874", "type": "u16", "lo": 0, "hi": 22}
+  ]
+}

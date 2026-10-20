@@ -1,0 +1,47 @@
+{
+ "_evidence": "Overlay for 0x0041e069 (compose LAST, after its 0x406dbb/0x407811/0x41dbdd family list with ring_008943a0+records_008943a0 moved to the front so the coherent ring_00405a12 / state_0040759e geometry wins: lap end records 6..8, pit start 9..10, pit end 12..14). (1) The pit-lane window start [0x866ed0]: 0x406dbb follows the link +0x44 of the record 0x406a57 finds in [0x866ed0, 0x866ed4) without a zero test (0x406e3a, then 0x406ac7 -> 0x4067ea reads [edi+0xd4]); segflag_004381ab (last in 0x406dbb's own list) draws the start 9..12, and record 9 is a main-track record whose link links_00405a12 may leave 0 whenever the pit start is record 10 - the 0x4067ea faults at address 0xd4 here (28 of 600 cases). In the game the window lies in the pit records, so the start is drawn 10..12 (pit_00406dbb's domain; records 10..12 are pit records for either pit start), the end stays 13..24. (2) 0x407811 -> 0x40759e -> 0x41ec08 -> 0x41eacf/0x41eba5 divides (A-B)*(D-C) by max(A,0x10): state_0040759e bounds the record word +0x14 to -128..128 and dword +0xf4 to +-2^28 for records 0..14 so the quotient fits, but state_0040342a (later in the list) redraws +0xf4 as any i32 (0x40342a itself accepts any value), which gave the 0x41eba5 #DE at 0x41ebce: both bounds are restated here (+0xf4 +-2^28 is inside state_0040342a's domain). (3) The pit start [0x891500]: state_0041dbb0 (needed for 0x41dbb0's other inputs) redraws it as a full-range dword (or equal to [0x62783c]) for 0x41dbb0's lone unsigned compare, which breaks the closed track every walker here relies on: 0x406dbb then took record 6 or 8 for a pit record and loaded its zero lap link (the remaining 0x4067ea faults, traced). In 0x41e069 [0x62783c] is the walk record edi itself (stored at 0x41e10a just before), so 0x41dbb0's compare is the record against the real pit start: it is restored to ring_00405a12's records 9..10. (4) The wheel index [0x62789c] ('cmp edx,4; jge' then 'mov [edx*0x300+0x6383a4],eax' and 0x41dbb0's bts/btr bit offset): callers pass 0..3 (state_0041dbb0's evidence); drawn 0..7 so the jge skip occurs too (state_0041dbb0's negative indices only exercised 0x41dbb0's bit string and here would store into unrelated records).",
+ "globals": [
+  {
+   "addr": "0x00866ed0",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 10,
+    "hi": 12
+   }
+  },
+  {
+   "addr": "0x008943b4",
+   "type": "i16",
+   "count": 15,
+   "stride": "0x160",
+   "lo": -128,
+   "hi": 128
+  },
+  {
+   "addr": "0x00894494",
+   "type": "i32",
+   "count": 15,
+   "stride": "0x160",
+   "lo": -268435456,
+   "hi": 268435456
+  },
+  {
+   "addr": "0x00891500",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 9,
+    "hi": 10
+   }
+  },
+  {
+   "addr": "0x0062789c",
+   "type": "i32",
+   "lo": 0,
+   "hi": 7
+  }
+ ]
+}

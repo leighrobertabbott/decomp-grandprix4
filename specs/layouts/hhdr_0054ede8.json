@@ -1,0 +1,14 @@
+{
+ "size": 32,
+ "fill": "bytes",
+ "_evidence": "Hotspot hit test 0x0054ede8: 'cmp byte [0x7ab17f],0xff; jne' and 'cmp byte [0x7aafd3],0; jne' guards (exit with eax = 0), esi = [[0x82fd34]+0x1c] (the current menu header [0x82fd34] is never null-tested: callers only run with a menu; +0x1c is null-tested: 'or esi,esi'), then the node list (+0 next, null ends; acyclic, up to 3 distinct 0x18-byte nodes): 'test byte [esi+0x10],1; jne' skips a node, else bx = cursor x (low word of [0x838e40]) and ax = cursor y (low word of [0x838e44]) are compared UNSIGNED with the rectangle words +4 x0 (jb), +8 x1 (ja), +6 y0 (jb), +0xa y1 (ja); a hit returns the node in eax, edx = 1 once the list is non-empty. Coordinates mostly in 0..0x40 so hits and every miss reason occur; x1/y1 and the cursor also take 0x8000/0xffff-range values (an unsigned/signed mix-up changes the result); the cursor dwords' high words are random (only ax/bx are compared). Menu header: only +0x1c is read.",
+ "fields": [
+  {
+   "off": "0x1c",
+   "type": "ptr",
+   "size": 24,
+   "fill": "layout=hnode1_0054ede8",
+   "nullable": true
+  }
+ ]
+}

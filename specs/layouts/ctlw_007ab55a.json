@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x0051d4b5 (called by 0x51d798 with ebx = 0x7ab548): 'mov ax,word [ebx+0x12|0x14|0x16|0x18|0x1a|0x1c]; mov byte [edi+0x1c|0x1a|0x18|0x16|0x14|0xc],al' with edi = 0x89108d: the six words 0x7ab55a..0x7ab565 of the control block are copied (low bytes) into the record at 0x89108d. Run-time control data (zero in the image); plain copies, so every value is valid and a wrong offset or byte order shows.",
+ "globals": [
+  {"addr": "0x007ab55a", "type": "u16", "count": 6, "stride": 2}
+ ]
+}

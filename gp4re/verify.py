@@ -53,6 +53,9 @@ def lint_candidate(addr: int, cand: Path) -> list[str]:
         probs.append(f"exactly one GP4_IMPL, for 0x{addr:08x}, is required (found {impls or 'none'})")
     if not re.search(rf"//\s*FUNCTION:\s*GP4\s+0x0*{addr:x}\b", txt, re.I):
         probs.append(f"missing '// FUNCTION: GP4 0x{addr:08x}' line above the definition")
+    n_annot = len(re.findall(r"//\s*FUNCTION:\s*GP4\s+0x[0-9a-fA-F]+", txt, re.I))
+    if n_annot > 1:
+        probs.append(f"{n_annot} '// FUNCTION:' lines: exactly one per file")
     code = re.sub(r"//[^\n]*|/\*.*?\*/", "", txt, flags=re.S)
     for pat, why in BANNED:
         if pat.search(code):
@@ -147,7 +150,7 @@ def run(addr: int, candidate: Path | None = None, root: Path = REPO, agent: str 
     gates.append(emu.differential(
         gp4, dll, rec, spec, fpucw=fpucw, globals_info=globals_info,
         cases=cases if cases is not None else max(spec.cases, oracle("cases")),
-        function_starts={r[0] for r in con.execute("SELECT addr FROM functions")},
+        function_starts={r[0] for r in con.execute("SELECT addr FROM functions WHERE kind!='data'")},
     ))
     out = _summary(addr, gates)
     out.update(name=rec.name, spec=rec.spec, source_file=src_file, code_sha=code_sha(dll, rec.impl),

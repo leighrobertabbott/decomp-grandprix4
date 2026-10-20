@@ -1,0 +1,23 @@
+{
+ "_evidence": "0x00444917 (called by 0x00444a71/0x004448b3) reads the pointers [0x0062a044] (a >= 0x108-byte block) and [0x0062a048] (the 0x42453d table) and loops [0x0062a04c] times (1..16, see count_0062a04c); all are null/zero in the image.",
+ "globals": [
+  {
+   "addr": "0x0062a044",
+   "type": "ptr",
+   "size": 272,
+   "fill": "bytes"
+  },
+  {
+   "addr": "0x0062a048",
+   "type": "ptr",
+   "size": 64,
+   "fill": "layout=tab_0042453d"
+  },
+  {
+   "addr": "0x0062a04c",
+   "type": "u32",
+   "lo": 1,
+   "hi": 16
+  }
+ ]
+}

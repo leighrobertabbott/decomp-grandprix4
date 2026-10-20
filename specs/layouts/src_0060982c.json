@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x28-byte source record behind pointer global 0x0060982c: 0x4251e7 reads i32 +0/+4/+8 (sub 0x6082a0/a4/a8, fild), 0x402051/0x402081 copy the angle dwords +0x0c/+0x10/+0x14 into a body (fild + fsincos in the callees), 0x425282 reads +0x18/+0x1c/+0x20 (sar 5, fild). All plain i32: fild, sub and sar accept every pattern, fsincos of |angle*scale| far below 2^63 is valid.",
+  "size": 40,
+  "fields": [
+    {"off": 0, "type": "i32", "count": 10, "stride": 4}
+  ]
+}

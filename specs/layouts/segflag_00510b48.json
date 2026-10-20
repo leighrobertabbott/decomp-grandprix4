@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x00510b48 (stdcall, index 0..21) ORs 2 into byte +0x70 of track-segment record 0x008943a0 + idx*0x160. The byte is a run-time flag byte of the segment records (read-modify-write), so it draws any u8 for all 26 records the family layouts use (0x8943a0..0x896600), making the OR observable against bits already set.",
+  "globals": [
+    {"addr": "0x00894410", "type": "u8", "count": 26, "stride": "0x160"}
+  ]
+}

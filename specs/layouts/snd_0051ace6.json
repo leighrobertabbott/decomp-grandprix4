@@ -1,0 +1,7 @@
+{
+ "_evidence": "Sample state read by the sound trigger 0x51ace6 (compose after chan_005188f5+chan_00518654+gate_0051ae76). After the gates ([ebx+4] bit 0x100, [0x7ad868] from chan_005188f5, [0x852d6a] from gate_0051ae76) it stores sample 0x15 to [0x88f6cc] and calls 0x51f27f, which does 'imul eax,eax,0x1c; add eax,0xb1c8e8; cmp dword [eax],0; je -> clc' else stc: the dword [0xb1c8e8 + 0x15*0x1c] = [0xb1cb34] is the loaded/handle word of sample entry 0x15 (zero in the image, so 'jae 0x51ad85' always skipped the start arm before): drawn 0 (half) and nonzero 1/0x8000 so both directions of 0x51ad3e run. It is only compared with zero (nothing dereferences it here). 'cmp byte [0x7ab185],0xff; je' picks the third target 0x88f6d8 = edx (0 or 0x14000 from [ebx+0xa0] bit 0) or 0xa000: drawn 0xff (half) and 0/1. The start arm then calls 0x51f263 -> 0x518545, whose sound-off byte [0x95404c] (image 0x80: immediate return) is state: compose full_00518b09+snd_00518758 before this layout so it is also 0 and the callee's start/stop machinery runs on valid sample records and channel tables (0x88f6cc is overwritten with 0x15 here, inside their 0..99 domains). Values are synthetic.",
+ "globals": [
+  {"addr": "0x00b1cb34", "type": "u32", "values": [0, 0, 1, "0x8000"]},
+  {"addr": "0x007ab185", "type": "u8", "values": ["0xff", "0xff", 0, 1]}
+ ]
+}

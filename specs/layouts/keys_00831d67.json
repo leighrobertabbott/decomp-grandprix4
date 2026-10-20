@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00549976: 'and al,0x3f; jne' then 'mov edi,0x831d67; mov ecx,0x16; repne scasb' searches the 22-byte table 0x831d67..0x831d7c for the 6-bit code and returns 0x15 - ecx (its index) or 0xff. fuzz:i32 varied only the first 4 bytes; all 22 are drawn here from 0..0x3f (the codes al can take after the mask), so zeros, duplicates (the first match wins) and misses all occur. Plain compared bytes: every value is valid.",
+ "globals": [
+  {"addr": "0x00831d67", "type": "u8", "count": 22, "stride": 1, "lo": 0, "hi": 63}
+ ]
+}

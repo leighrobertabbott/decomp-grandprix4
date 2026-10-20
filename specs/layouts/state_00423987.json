@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x00423987: 'test [0x609864]; je' exits on 0, otherwise a do-while over the 0x64-byte records at 0x621aa0 until ecx == [0x609864] (a random count runs ~2^31 iterations off the array), so the count is 0..6. Per record: ebp = max(dword +0x54, 8) (jge at 0x4239a4, plain i32: both sides), fild dword +0x4c times the f64 constant 1024.0 at 0x6f2b2c (left at its image value), fild ebp, fild [0x608028] (limit), 0x401ccc (x87 divide/clamp; ftst guards the zero divisor) and fistp to +0x50 (masked invalid on overflow, no fault). Fields and limit are plain i32.",
+  "globals": [
+    {"addr": "0x00609864", "type": "u32", "lo": 0, "hi": 6},
+    {"addr": "0x00621aec", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621af4", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00608028", "type": "i32"}
+  ]
+}

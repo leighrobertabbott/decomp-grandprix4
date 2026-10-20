@@ -1,0 +1,9 @@
+{
+  "_evidence": "edi of 0x00428bea is the car's current track-segment record (0x160-stride array at 0x8943a0; spec edi:rec[0x8943a0,0x160,0..25]): bytes +0x10 (0x428c3e sign test; 0x428d01 (b & 0x7f)+1 scale), +0x12 (bit 4, 0x428cd3) and +0x51 (bit 0x20, 0x428cd9) of all 26 records vary as plain bytes. 0x403a1e (eax = edi) compares the record pointer unsigned with the pit start 0x891500 (jb at 0x403a2c, jae at 0x403a59), a record-aligned pointer 0..26 (both orders against the record), so the lap and the pit outcome and the 0x403a5b flag cascade all occur. Only fixed records are dereferenced; nothing faults.",
+  "globals": [
+    {"addr": "0x008943b0", "type": "u8", "count": 26, "stride": "0x160"},
+    {"addr": "0x008943b2", "type": "u8", "count": 26, "stride": "0x160"},
+    {"addr": "0x008943f1", "type": "u8", "count": 26, "stride": "0x160"},
+    {"addr": "0x00891500", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 26}}
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x0042bb90 reads from the edi record the words [edi] and [edi+0x160] (0x0042bbc0/0x0042bbc7: difference, sign kept in bp, |diff| compared with [0x00622420]) and the byte [edi+0x51] (test 0x20 at 0x0042bc92). Unconstrained i16/u8 draws give small and large differences and both bit states.",
+  "size": 360,
+  "fields": [
+    {"off": 0, "type": "i16"},
+    {"off": 81, "type": "u8"},
+    {"off": 352, "type": "i16"}
+  ]
+}

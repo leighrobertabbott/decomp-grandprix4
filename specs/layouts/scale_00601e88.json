@@ -1,0 +1,6 @@
+{
+ "_evidence": "Dword 0x601e88 is read only by 0x00440ce9 (mov eax,[0x601e88]; call 0x410841) - never written, a tuning constant (image 0x8000). 0x410841 accepts any eax (its accepted spec: eax:u32), so the constant draws its image value in about a third of the picks and otherwise other scales (0, 0x4000, 0x10000, 0x12345, 0x7fffffff, 0xffffffff).",
+ "globals": [
+  {"addr": "0x00601e88", "type": "u32", "values": ["0x8000", "0x8000", "0x8000", 0, "0x4000", "0x10000", "0x12345", "0x7fffffff", "0xffffffff"]}
+ ]
+}

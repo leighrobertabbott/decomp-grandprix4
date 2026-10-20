@@ -1,0 +1,10 @@
+{
+ "size": 144,
+ "fill": "bytes",
+ "_evidence": "0x00443de9 reads esi+0x84 as a ring-record pointer (edi for 0x4061ed, then dereferenced at +6): records 0..11 of the 0x160-byte array at 0x8943a0, matching ring_00405a12's coherent track. +0x18/+0x20 are track positions bounded to +-2^21 as the worker found (larger values walk off the ring).",
+ "fields": [
+  {"off": "0x84", "type": "u32", "points_into": {"base": "0x8943a0", "stride": "0x160", "lo": 0, "hi": 11}},
+  {"off": "0x18", "type": "i32", "lo": -2097152, "hi": 2097087},
+  {"off": "0x20", "type": "i32", "lo": -2097152, "hi": 2097087}
+ ]
+}

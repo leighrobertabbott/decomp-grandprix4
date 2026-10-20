@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x00554817: 'mov edi,[0x874b20]; mov esi,[0x874b1c]; mov ecx,0x160; rep movsb' copies one 0x160-byte track record (the 0x8943a0 record size) from [0x874b1c] to [0x874b20]. Both are null in the image (the original faulted on every case); the game sets them to record pointers (writers store [0x891504], [0x866f04] or [0x874b20] itself into 0x874b1c), never null, and 0x874b1c = 0x874b20 occurs. So [0x874b20] is a fresh 0x160-byte buffer and [0x874b1c] is in half the cases the same pointer (alias: the copy onto itself) and otherwise a separate random 0x160-byte buffer (record-aligned records never partly overlap).",
+ "globals": [
+  {"addr": "0x00874b20", "type": "ptr", "size": 352, "fill": "bytes"},
+  {"addr": "0x00874b1c", "type": "ptr", "size": 352, "fill": "bytes", "alias": "0x00874b20"}
+ ]
+}

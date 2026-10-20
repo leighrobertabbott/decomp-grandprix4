@@ -1,0 +1,17 @@
+{
+ "_evidence": "Overlay for 0x00427140 (compose LAST). The car's new position is (rotated offset) + [0x603d28] / [0x603d2c] (0x42720f/0x42721b), stored to 0x623e30/0x623e38 and handed, >> 11, as x/z to the segment walks 0x4061ed (car +0x71 bit 2) and 0x405e19. The offset is 0x603d30 = (((car +0x98 - [0x603d38]) sar 1) + [0x603d38]) * [0x603854] >> 24 (D <= 65535 from state_00405489, so |offset| < 2^23) rotated by the Q14 cosine pair of [0x603d6a] (|rotated| <= |offset|). ring_00405a12's walk proof (pinned records 2/3 stop every walk inside records 0..14) needs coordinates of the i16 record frame << 11, i.e. -0x4000000..0x3fff7ff (pos_00405cf8): fuzzed full-range bases could leave that frame and let a walk run off the varied records. The bases are therefore drawn -0x3800000..0x37ff7ff, which keeps base + offset inside the frame for every offset. Plain add/sar: nothing else depends on them.",
+ "globals": [
+  {
+   "addr": "0x00603d28",
+   "type": "i32",
+   "lo": "-0x3800000",
+   "hi": "0x37ff7ff"
+  },
+  {
+   "addr": "0x00603d2c",
+   "type": "i32",
+   "lo": "-0x3800000",
+   "hi": "0x37ff7ff"
+  }
+ ]
+}

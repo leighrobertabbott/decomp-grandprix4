@@ -1,0 +1,77 @@
+{
+ "_evidence": "0x00550d52 (called twice by 0x550dbf with edi = [0x866ed0] / [0x866ed4], the 0x160-byte track-segment records at 0x8943a0 the camera window spans, records 0..33 as in geom_008943a0/trackgeo_008943a0) with the dword [0x934df8] = 0x28 or 0x29 (set by the caller from the sign of [0x868582]; read as a word): byte [edi+0x28|0x29] + word [0x6f3db8] is the multiplier, signed bytes +0x13/+0x11 plus (word +0xe|+0x4e, +0xc|+0x4c: chosen by 'cmp ebx,0x29') sar 6 the multiplicands (imul), words +4/+8 shl 6 the origin. Only movsx/add/imul/shl touch them, so every value is valid; the spec's edi is rec[0x8943a0,0x160,0..33] and these fields of records 0..33 vary.",
+ "globals": [
+  {
+   "addr": "0x00934df8",
+   "type": "u32",
+   "values": [
+    "0x28",
+    "0x29"
+   ]
+  },
+  {
+   "addr": "0x006f3db8",
+   "type": "u16"
+  },
+  {
+   "addr": "0x8943a4",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8943a8",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8943ac",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8943ae",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8943b1",
+   "type": "u8",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8943b3",
+   "type": "u8",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8943c8",
+   "type": "u8",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8943c9",
+   "type": "u8",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8943ec",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8943ee",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  }
+ ]
+}

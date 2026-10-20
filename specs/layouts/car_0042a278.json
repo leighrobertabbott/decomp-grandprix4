@@ -1,0 +1,10 @@
+{
+  "_evidence": "Overlay on car_0042ba87 (the car record 0x0042a278 hands to 0x42ba87/0x42bae4 unchanged) for the reads of 0x0042a278 itself: dword +0x124 is the linked car (mov ebx,[esi+0x124]; test byte [ebx+0xfe],0x40 / 0x10 unconditionally, so the caller 0x42f16d never passes a null link; links_0040b186 rebases it into the car array 0x66fef0), here a pointer to a random 0x420-byte car block (bits 0x40/0x10 of its +0xfe both ways); words +0x90/+0x94 (16-bit sub, abs, 'cmp 0x200; jl', signed compares and sign tests) draw 0, +-1, +-0x100, 0x1ff/0x200/-0x200, +-0x7fff and 0x8000 so |a-b| < 0x200 and >= 0x200, both orders and both signs occur. Only tests and compares: nothing faults.",
+  "size": 1056,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x124", "type": "ptr", "size": 1056, "fill": "bytes"},
+    {"off": "0x90", "type": "u16", "values": ["0x0", "0x1", "0xffff", "0x100", "0xff00", "0x1ff", "0x200", "0xfe00", "0x7fff", "0x8001", "0x8000"]},
+    {"off": "0x94", "type": "u16", "values": ["0x0", "0x1", "0xffff", "0x100", "0xff00", "0x1ff", "0x200", "0xfe00", "0x7fff", "0x8001", "0x8000"]}
+  ]
+}

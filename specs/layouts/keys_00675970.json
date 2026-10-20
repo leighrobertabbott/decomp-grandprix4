@@ -1,0 +1,6 @@
+{
+ "_evidence": "Sort keys of the order bubble sort 0x52286e (compose after order_00675958): each list byte b at 0x675958 selects the dword key 'and ax,0x3f; sub ax,1; shl ax,2; movsx esi,ax; add esi,0x675970; push/mov [esi]', i.e. index (b & 0x3f) - 1. order_00675958 draws list bytes whose low six bits are 1..22 and also 0x7f (low bits 0x3f: index 62 = 0x675a68), so keys 0..62 (0x675970..0x675a6b) are read; order_00675958 varies only keys 0..21, leaving the index-62 read at its static value. All 63 dwords are any i32 here: they are only compared ('cmp eax,[0x934df0]; jge', signed) and copied, so every value is valid.",
+ "globals": [
+  {"addr": "0x00675970", "type": "i32", "count": 63, "stride": 4}
+ ]
+}

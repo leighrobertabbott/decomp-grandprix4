@@ -1,0 +1,13 @@
+{
+  "_evidence": "Family globals for the orientation/transform helpers 0x402038..0x4020d8 and 0x4251e7..0x4253e3. 0x00609860 and 0x0060982c are pointer globals (0 in the static image, set by the game before these run: every reader dereferences them unconditionally, e.g. 0x402042 mov ecx,[0x609860]; mov ecx,[ecx+0x40]), so each is a real buffer: obj_00609860 (0x48 bytes, nested bodies at +0x40/+0x44) and src_0060982c (0x28 bytes of i32). Byte 0x0063963d is the mode tested by 0x4251e7/0x425282 (cmp byte,0; je: zero takes the rotate path) - values give zero, small, sign-bit and 0xff. 0x006082a0/a4/a8 (subtrahends, 0x4251e7) and 0x00607f28..0x00607f48 (nine i32 positions read by 0x425321/0x425395/0x4253e3, then fild) are plain i32. The fixed bodies 0x00622cf8 (0x4251e7/0x425282 via 0x401e2e, 0x402038 eax), 0x006231d8 (0x402038 edx) and 0x00622e98 (0x4020d8 edx) get finite rotation entries in [-1,1] in their matrix qwords +0x58..+0x98; their other bytes are written before being read by these functions.",
+  "globals": [
+    {"addr": "0x00609860", "type": "ptr", "size": 72, "fill": "layout=obj_00609860"},
+    {"addr": "0x0060982c", "type": "ptr", "size": 40, "fill": "layout=src_0060982c"},
+    {"addr": "0x0063963d", "type": "u8", "values": [0, 0, 1, "0x80", "0xff"]},
+    {"addr": "0x006082a0", "type": "i32", "count": 3, "stride": 4},
+    {"addr": "0x00607f28", "type": "i32", "count": 9, "stride": 4},
+    {"addr": "0x00622d50", "type": "f64", "count": 9, "stride": 8, "lo": -1, "hi": 1},
+    {"addr": "0x00623230", "type": "f64", "count": 9, "stride": 8, "lo": -1, "hi": 1},
+    {"addr": "0x00622ef0", "type": "f64", "count": 9, "stride": 8, "lo": -1, "hi": 1}
+  ]
+}

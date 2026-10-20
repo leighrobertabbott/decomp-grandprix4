@@ -1,0 +1,92 @@
+{
+ "_evidence": "0x0051b1f9 (colour -> hue/saturation/value): reads the three words 0x933a14/0x933a16/0x933a18 (movzx), takes max/min with unsigned compares, stores the max to 0x933a1e and 'cmp esi,0; jne' - a zero maximum (all three words zero) clears 0x933a1c/0x933a1a at block 0x51b237, which fuzzed words never reached. Otherwise saturation = ((max-min) << 14) / max ('div esi', esi != 0), a zero saturation (max == min) clears the hue, else the hue selects the branch whose word equals the max ('cmp si,[..]; jne') and divides by 3*(max-min) != 0 with edx = 0 (no #DE). Each word here is zero in about a third of the cases (all three in about 1/27) and otherwise drawn from 15 small, colour-range, mid and top values, so equal maxima, max == min and every hue branch occur. Plain words: every value valid. Values are synthetic.",
+ "globals": [
+  {
+   "addr": "0x00933a14",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    2,
+    "0x3f",
+    "0x80",
+    "0xa0",
+    "0xff",
+    "0x100",
+    "0x1234",
+    "0x3f00",
+    "0x5a5a",
+    "0x7fff",
+    "0x8000",
+    "0xc000",
+    "0xfffe",
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x00933a16",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    2,
+    "0x3f",
+    "0x80",
+    "0xa0",
+    "0xff",
+    "0x100",
+    "0x1234",
+    "0x3f00",
+    "0x5a5a",
+    "0x7fff",
+    "0x8000",
+    "0xc000",
+    "0xfffe",
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x00933a18",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    2,
+    "0x3f",
+    "0x80",
+    "0xa0",
+    "0xff",
+    "0x100",
+    "0x1234",
+    "0x3f00",
+    "0x5a5a",
+    "0x7fff",
+    "0x8000",
+    "0xc000",
+    "0xfffe",
+    "0xffff"
+   ]
+  }
+ ]
+}

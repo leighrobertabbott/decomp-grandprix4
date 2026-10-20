@@ -1,0 +1,40 @@
+{
+ "_evidence": "0x00541f51: mode byte [0x7a9790] (0/0/1/0xff), [0x7a9780] with a low byte other than 0/0xff, the source pointer [0x7a9788] to a 0x304-byte block and the 0x300-byte table at 0x7a9480 (zero in the image).",
+ "globals": [
+  {
+   "addr": "0x007a9790",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x007a9780",
+   "type": "u32",
+   "values": [
+    1,
+    2,
+    5,
+    "0x7f",
+    "0x80",
+    "0x1fe",
+    "0xfe"
+   ]
+  },
+  {
+   "addr": "0x007a9788",
+   "type": "ptr",
+   "size": 772,
+   "fill": "bytes"
+  },
+  {
+   "addr": "0x007a9480",
+   "type": "u8",
+   "count": 768,
+   "stride": 1
+  }
+ ]
+}

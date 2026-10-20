@@ -1,0 +1,23 @@
+{
+  "size": 76,
+  "_evidence": "0x004118dd is a piecewise-linear curve lookup on the table at edx: dword +0 = last point index (signed cmp ecx,[edi] / jle; 0..7 keeps every read inside 0x4c), then points (X_i at +4+8i, Y_i at +8+8i). It finds the first X_i > eax (signed); i=0 returns Y_0, past the last returns Y_last, otherwise (eax-X_{i-1})*(Y_i-Y_{i-1}) idiv (X_i-X_{i-1}) + Y_{i-1}. A curve has strictly increasing X, so each X_i lies in its own band [-10000+2000i, -8001+2000i]: then 0 <= eax-X_{i-1} < X_i-X_{i-1} and |quotient| < |Y_i-Y_{i-1}| <= 2^31 always fits (no #DE); unsorted X can divide by zero or overflow, which no real curve does. Y values are full-range i32.",
+  "fields": [
+    {"off": 0, "type": "i32", "lo": 0, "hi": 7},
+    {"off": 4, "type": "i32", "lo": -10000, "hi": -8001},
+    {"off": 8, "type": "i32"},
+    {"off": 12, "type": "i32", "lo": -8000, "hi": -6001},
+    {"off": 16, "type": "i32"},
+    {"off": 20, "type": "i32", "lo": -6000, "hi": -4001},
+    {"off": 24, "type": "i32"},
+    {"off": 28, "type": "i32", "lo": -4000, "hi": -2001},
+    {"off": 32, "type": "i32"},
+    {"off": 36, "type": "i32", "lo": -2000, "hi": -1},
+    {"off": 40, "type": "i32"},
+    {"off": 44, "type": "i32", "lo": 0, "hi": 1999},
+    {"off": 48, "type": "i32"},
+    {"off": 52, "type": "i32", "lo": 2000, "hi": 3999},
+    {"off": 56, "type": "i32"},
+    {"off": 60, "type": "i32", "lo": 4000, "hi": 5999},
+    {"off": 64, "type": "i32"}
+  ]
+}

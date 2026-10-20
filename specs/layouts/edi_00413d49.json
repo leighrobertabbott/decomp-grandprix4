@@ -1,0 +1,46 @@
+{
+ "size": 106,
+ "_evidence": "Block passed in edi to 0x00413dd5 and read only by 0x00413d49: word +0 (subtracted from esi words +0xe/+0x18, then js / signed cmp with the two bounds) and words +0x60/+0x62 (movzx, +0x50, neg/sub esi word +0x90, imul [0x602090], shrd 14 -> bounds 0x602094/0x602096). Pure arithmetic and compares (imul cannot fault): small, large and extreme values reach both sides of each compare; the rest of the block is random.",
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": 0,
+   "type": "u16",
+   "values": [
+    "0x0",
+    "0xa",
+    "0xfff6",
+    "0x64",
+    "0xff9c",
+    "0x7fff",
+    "0x8000",
+    "0x3e8",
+    "0xfc18"
+   ]
+  },
+  {
+   "off": "0x60",
+   "type": "u16",
+   "values": [
+    "0x0",
+    "0x100",
+    "0x400",
+    "0xffff",
+    "0x8000",
+    "0x40"
+   ]
+  },
+  {
+   "off": "0x62",
+   "type": "u16",
+   "values": [
+    "0x0",
+    "0x100",
+    "0x400",
+    "0xffff",
+    "0x8000",
+    "0x40"
+   ]
+  }
+ ]
+}

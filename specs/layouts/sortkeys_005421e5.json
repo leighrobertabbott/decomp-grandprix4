@@ -1,0 +1,39 @@
+{
+ "_evidence": "Keys of the records sorted by 0x005421e5 (descending bubble sort of the 0x830b0c pointer table by word +0x0a, then dword +0x0c): the records are the 0x20-byte entries from 0x830bb4 that sort_00542224's table points at; keys drawn with duplicates and extremes so both comparisons and the swap run.",
+ "globals": [
+  {
+   "addr": "0x00830bbe",
+   "type": "u16",
+   "count": 40,
+   "stride": "0x20",
+   "values": [
+    "0xfffe",
+    "0xffff",
+    0,
+    0,
+    1,
+    2,
+    "0x7fff",
+    "0x8000"
+   ]
+  },
+  {
+   "addr": "0x00830bc0",
+   "type": "u32",
+   "count": 40,
+   "stride": "0x20",
+   "values": [
+    "0xfffffffd",
+    "0xfffffffe",
+    "0xffffffff",
+    0,
+    0,
+    1,
+    2,
+    3,
+    "0x80000000",
+    "0x7fffffff"
+   ]
+  }
+ ]
+}

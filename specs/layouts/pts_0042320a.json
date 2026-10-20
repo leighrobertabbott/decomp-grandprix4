@@ -1,0 +1,11 @@
+{
+ "_evidence": "Contact-point records (stride 0x14) behind pointer global 0x6097ac for 0x0042320a (8 records, as recs_006097ac): dword +0xc is tested (nonzero skips the record, zero in half the picks); +0/+4/+8 are fild-ed body-frame point coordinates, kept in +-2^16 so that every fistp of the 0x422db7/0x423048/0x401e2e chain stays inside int32 (an overflow gives 0x80000000, which 0x401315 turns into a #DE or a table index far outside 0x7c7c60, and which the 0x421f53 weight clamp passes as a huge negative weight); +0x10 is the point's Q14 scale copied to slot +0x18 for 0x423048 ('imul dword [edi+0x18]; shrd 0xe'), drawn +-0x8000.",
+ "size": 168,
+ "fields": [
+  {"off": 0, "type": "i32", "count": 8, "stride": 20, "lo": -65536, "hi": 65536},
+  {"off": 4, "type": "i32", "count": 8, "stride": 20, "lo": -65536, "hi": 65536},
+  {"off": 8, "type": "i32", "count": 8, "stride": 20, "lo": -65536, "hi": 65536},
+  {"off": 12, "type": "u32", "count": 8, "stride": 20, "values": [0, 0, 0, 1, "0xffffffff", "0x100"]},
+  {"off": 16, "type": "i32", "count": 8, "stride": 20, "lo": -32768, "hi": 32768}
+ ]
+}

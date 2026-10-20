@@ -1,0 +1,52 @@
+{
+ "_evidence": "0x005141b8 (compose after player_0040f8d9, which points [0x679d30] at one of the 22 car records 0x66fef0 + k*0x41c, aliases [0x679d2c] to it about half the time and varies the master byte 0x66d7a4): the mode [0x88ff30] indexes the handler table 0x817270 ('call [edx*4+0x817270]'), whose entries 0..13 are code (0x515b64..0x515eb2; entry 14 is 0x5156bf and 15 is -1). The callers 0x51402a/0x514ab5/0x51d160/0x5223fe store only modes 0,1,2,4,5,6,7,8,0xa,0xb,0xc,0xd before calling it (the 0x12..0x1b modes feed the other dispatcher 0x514152), so the mode is drawn from 0..13 (7 twice: the 'cmp [0x88ff30],7' exception); a larger mode would call through -1 or a non-code dword. Car byte +0x8d (0x66ff7d + k*0x41c, bit 0x10) and +0x84 (0x66ff74 + k*0x41c, compared with 7) of every record take both outcomes of the skip test. The table itself keeps its image values (globals=layout only: fuzz overwrote entry 0).",
+ "globals": [
+  {
+   "addr": "0x0088ff30",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13
+   ]
+  },
+  {
+   "addr": "0x0066ff7d",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    "0x10",
+    "0x10",
+    "0x1f",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0066ff74",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    7,
+    7,
+    0,
+    1,
+    6
+   ]
+  }
+ ]
+}

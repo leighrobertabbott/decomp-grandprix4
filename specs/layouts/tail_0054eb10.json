@@ -1,0 +1,6 @@
+{
+ "_evidence": "Overlay for 0x0054eb10/0x0054eb33 and their wrappers 0x54eb56/0x54eb63 (compose AFTER list_0054eaf7+links_0054eaf7): the walk from 0x838c94 ('cmp esi,0; jne'; 'or byte [esi+0x1f],..; mov esi,[esi]') reads the link of the last static node 0x838d78, which those layouts leave at its image null. Lists of this kind are extended at run time by writing the null tail link (0x53ca9a walks to the node whose link is 0 and stores the address of an appended node chain there), so the tail link is drawn as null (a quarter of the cases) or a fresh acyclic chain of up to five 40-byte nodes (lnode1_0053e612: +0 next nullable, +0x1f flag byte random) that ends on a null link. The walk therefore always terminates, every node it touches is mapped, and the flag bytes of the appended nodes are varied.",
+ "globals": [
+  {"addr": "0x00838d78", "type": "ptr", "size": 40, "fill": "layout=lnode1_0053e612", "nullable": true}
+ ]
+}

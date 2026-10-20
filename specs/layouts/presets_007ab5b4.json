@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x0052b942: eax (spec 0..7) * 0x34 + 0x7ab5b4 is one of 8 0x34-byte entries; 'mov edi,0x7ab548; mov ecx,0x20; rep movsb' copies its first 0x20 bytes to the current block 0x7ab548, then bytes +0x32/+0x33 go to 0x7ab568/0x7ab569. The entry table is state (0x52b6aa/0x52b76e store into it), fuzz:i32 varied only its first dword. Here all 0x1a0 bytes of the 8 entries (0x7ab5b4..0x7ab753) are random dwords, and the destination 0x7ab548..0x7ab56b too (so a short, long or misplaced copy shows against a random background). Plain byte copies, every value is valid.",
+ "globals": [
+  {"addr": "0x007ab5b4", "type": "u32", "count": 104, "stride": 4},
+  {"addr": "0x007ab548", "type": "u32", "count": 9, "stride": 4}
+ ]
+}

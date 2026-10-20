@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x0054cb50 calls 0x54cb7e with eax = 0, which does 'cmp eax,[0x822248]; jge' twice (signed: the 0x54e232 call and the stores to 0x833cc9/0x833f74 happen on opposite outcomes), then 0x54cc96 with eax = 0x7fff, which tests 'cmp byte [0xae6740],0; jne' (zero: the 15-bit colour is widened to 16-bit 'and 0x7fe0; shl 1; or', else kept) before 0x531b02. fuzz:i32 varied only the function's own byte 0x833cf3, so both callee inputs kept their image values; here 0x822248 is drawn on both sides of 0 (negative, zero, positive, both extremes) and 0xae6740 zero or not. Plain compared data: every value is valid.",
+ "globals": [
+  {"addr": "0x00822248", "type": "u32", "values": ["0x80000000", "0xfffffffb", "0xffffffff", 0, 0, 1, 5, "0x7fff", "0x7fffffff"]},
+  {"addr": "0x00ae6740", "type": "u8", "values": [0, 0, 1, "0xff"]}
+ ]
+}

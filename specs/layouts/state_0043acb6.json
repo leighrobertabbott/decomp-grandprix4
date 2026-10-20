@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x0043acb6 (caller 0x43ad95): [0x6097ec] is the highest active index that 0x43ad95 stores (cars 0..21 with flags, objects 22..63 with [0x63bcfc+k] set), re-read by 'cmp ecx,[0x6097ec]; jle' each pass, so it is 0..63 (fuzzed counts walked off the 64-byte flag tables and the 64 0x78-byte records: the observed faults); [0x6097fd] is 0 or 0xff (0x43ad95 sets 0xff for a flagged car, then clears it), selecting the table 0x607b18 (scan ebx+1..[0x6097ec]) or 0x607b58 (scan at least to 21); both 64-byte flag tables are 0 or 0xff (0x43ad95's rep stosd + 'mov byte [..],0xff'), drawn mostly 0. Each flagged pair calls 0x43ac7f with ebx/edi = 0x63bd7c + k*0x78: record bytes are random (positions, velocities, radii of the 0x43aa07 overlap test and the 0x43aac6 contact point; random patterns never faulted in 1500 cases) except byte +0x6d, the car/shape index into the 22-entry 0x5d8-stride table 0x6099c0 that 0x438c98 reads (0..21, as rec_0042453d). The contact branch of 0x438c98 (CF set -> 0x438c1f/0x43a83d/0x43ad30) needs that shape table's state and is not reached here; the target's own blocks are all covered.",
+ "globals": [
+  {"addr": "0x006097ec", "type": "i32", "lo": 0, "hi": 63},
+  {"addr": "0x006097fd", "type": "u8", "values": [0, "0xff"]},
+  {"addr": "0x00607b18", "type": "u8", "count": 64, "values": [0, 0, 0, "0xff"]},
+  {"addr": "0x00607b58", "type": "u8", "count": 64, "values": [0, 0, 0, "0xff"]},
+  {"addr": "0x0063bd7c", "type": "u8", "count": 7680, "stride": 1},
+  {"addr": "0x0063bde9", "type": "u8", "count": 64, "stride": "0x78", "lo": 0, "hi": 21}
+ ]
+}

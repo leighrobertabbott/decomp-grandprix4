@@ -1,0 +1,35 @@
+{
+ "_evidence": "0x0052241f: 'movsx eax,word [0x7ad89e]' (difficulty level 0..4; also signed out-of-range words, every one reads mapped .data) indexes the word table 0x7a8dc0 ('mov ax,[eax*2+0x7a8dc0]'), copied to 0x679b5a. The five table words are state (also referenced by 0x532e53/0x532ed4/0x532f80), so they are random, and the destination word is varied so the store is visible.",
+ "globals": [
+  {
+   "addr": "0x007ad89e",
+   "type": "u16",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    0,
+    1,
+    2,
+    3,
+    4,
+    "0xffff",
+    "0x8000",
+    "0x7fff",
+    5
+   ]
+  },
+  {
+   "addr": "0x007a8dc0",
+   "type": "u16",
+   "count": 6,
+   "stride": 2
+  },
+  {
+   "addr": "0x00679b5a",
+   "type": "u16"
+  }
+ ]
+}

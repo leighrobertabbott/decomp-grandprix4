@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x004225c0: esi = [0x0062a048] (pointer to the dword table, see tbl_004225c0), ecx = [0x00608328] (whole dword is an output; its low byte cl is compared at 0x004225ea against byte [ebx+0x0060932c], jb skips the clear), edx = [0x0062a05c] (decremented per clear), loop ebx = 0.. until ebx == [0x0062a05c] (re-read at 0x004225fb). Count 0 would run 2^32 iterations and fault, and both callers store max(1, [0x0062a04c]) into 0x0062a05c (0x00422670 / 0x004245fb), so the count is 1..16 (the real bound is < 0x400, the size of the byte table 0x0060932c..0x0060972b and of 0x0060832c's dword table). The byte table is varied over its first 16 entries (all that a count <= 16 reads), giving both outcomes of the jb.",
+  "globals": [
+    {"addr": "0x0062a048", "type": "ptr", "size": 64, "fill": "layout=tbl_004225c0"},
+    {"addr": "0x00608328", "type": "u32"},
+    {"addr": "0x0062a05c", "type": "u32", "lo": 1, "hi": 16},
+    {"addr": "0x0060932c", "type": "u8", "count": 16, "stride": 1}
+  ]
+}

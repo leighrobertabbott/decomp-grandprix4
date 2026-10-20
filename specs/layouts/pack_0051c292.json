@@ -1,0 +1,10 @@
+{
+ "_evidence": "Texture packer 0x0051c292 (compose after count_0096a368+recs_0051c21b: count 1..8, slot bytes 0x965914): [0x6975dc] is the 8-record table (0x100 bytes, rec20_0051c21b keys/flags + rec20_0051c292 widths/offsets/flags); [0x6975e0] is the destination cursor: 'mov edi,[0x6975e0]', each packed record advances it by the callee's gap (0..0xff) then writes 4 rows of <= 0x100 bytes 0x100 apart (0x400), so 8 records need <= 8*0x4ff = 0x27f8 bytes: a 0x3000-byte buffer; [0x965908] is the source stream base (records read 4*width <= 0x400 bytes at offset <= 0x400: a 0x800-byte buffer). [0x7a8e36]/[0x7a8e3a] are the texture memory base and size: 'mov edx,[0x7a8e36]; add edx,[0x7a8e3a]; cmp out+0x400,edx; jbe ok; jmp $' - the original HANGS (jmp-self at 0x51c301) when the packed data would pass the end, i.e. on inputs it never returns from, so the domain keeps base <= cursor and base + size >= cursor + 0x3000 without wrapping: base = the cursor itself in about half the cases (alias) else 0..0x20000000 (the generator's buffers lie at 0x20000000..0x21000000), size from {0x21003000, 0x40000000, 0x7fffffff} (base + size < 2^32). The final cursor is rounded up to 0x100 relative to base ('sub eax,[0x7a8e36]; add eax,0xff; mov al,0; add eax,[0x7a8e36]'): unaligned bases exercise that. The 'je 0x51c29b' at 0x51c299 (esi == [0x965908]) jumps to its own fall-through: no behaviour, not varied. Block 0x51c301 is not reached and needs no exemption (the coverage thresholds hold without it).",
+ "globals": [
+  {"addr": "0x006975dc", "type": "ptr", "size": 256, "fill": "layout=rec20_0051c21b+rec20_0051c292"},
+  {"addr": "0x006975e0", "type": "ptr", "size": "0x3000", "fill": "bytes"},
+  {"addr": "0x00965908", "type": "ptr", "size": "0x800", "fill": "bytes"},
+  {"addr": "0x007a8e36", "type": "u32", "lo": 0, "hi": 536870912, "alias": "0x006975e0"},
+  {"addr": "0x007a8e3a", "type": "u32", "values": ["0x21003000", "0x40000000", "0x7fffffff"]}
+ ]
+}

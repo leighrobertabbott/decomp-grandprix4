@@ -1,0 +1,10 @@
+{
+ "_evidence": "Scroll-bar menu item at esi for 0x00539798 (handler +0x1a = 0x539798 of fifteen static items, e.g. 0x84695d, 0x8488c0, 0x84a20e, 0x850321; rect +4/+6/+8/+0xa as u16 x0/y0/x1/y1). Read: 'movzx ebx,word [esi+6]; inc ebx; movzx ebp,word [esi+0xa]; sub ebp,ebx' (0x5397ef/0x539870: span = bottom - top - 1, the multiplier of every mul and the tail divisor 'cmp ebp,edx; jbe; div ebp', guarded so span 0 takes the clamp 0x5398a0 instead of #DE), 'mov edi,[esi+0xe]' (the value block, blk_00539798), 'test byte [esi+0x1e],4' (mode 4 gate; random fill gives both). The static items have top 140..425 and bottom 290..533 (span 70..235); the tops {100,200,300} and bottoms {101,201,301,250,350,420,533,90} give realistic spans, span 0 (bottom = top + 1, about 1/8) and a few negative spans (huge unsigned multipliers: the overflow guards), all valid since nothing is dereferenced through them. Other bytes are random (never read).",
+ "size": 32,
+ "fill": "bytes",
+ "fields": [
+  {"off": 6, "type": "u16", "values": [100, 200, 300]},
+  {"off": "0xa", "type": "u16", "values": [101, 201, 301, 250, 350, 420, 533, 90]},
+  {"off": "0xe", "type": "ptr", "size": 12, "fill": "layout=blk_00539798"}
+ ]
+}

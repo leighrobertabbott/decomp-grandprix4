@@ -1,0 +1,9 @@
+{
+  "_evidence": "Scalars of 0x0042a533 (compose after state_00426091): the gap offsets 0x603b50 and 0x603b98 (sub ax, word; only 0x42a533/0x42a792 read them) draw round values (0, 0x100, 0x200, -0x100, 0x40, 0x1000) so that, with car_0042a533's round lateral positions, the gap cancels to exactly zero in a share of the cases (the 0x42a57d fall-through) and is otherwise positive or negative; the cached pair results 0x603e8c/0x603e90 (written by 0x426091 when the car pair changes, read stale by 0x426100 when it does not; imul/shrd only) are any i32 instead of their static zero.",
+  "globals": [
+    {"addr": "0x00603b50", "type": "u16", "values": [0, 0, "0x100", "0x200", "0xff00", "0x40", "0x1000"]},
+    {"addr": "0x00603b98", "type": "u16", "values": [0, 0, "0x100", "0x200", "0xff00", "0x40", "0x1000"]},
+    {"addr": "0x00603e8c", "type": "i32"},
+    {"addr": "0x00603e90", "type": "i32"}
+  ]
+}

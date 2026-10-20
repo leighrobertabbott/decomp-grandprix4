@@ -1,0 +1,9 @@
+{
+ "_evidence": "Opcode-3 handler 0x00444c9a (compose LAST): esi = [0x679d38] is dereferenced at once (0x442c41 'mov eax,[esi+0x1c]', the later RMW of +0x83/+0xe5) and 0x4097c7 -> 0x409213 -> 0x409162 then clears that record and stores its index ((esi-0x66fef0)/0x41c via div 0x41c), so [0x679d38] is a record of the 22-car array 0x66fef0 stride 0x41c (points_into 0..21; the static zero faulted). Words 0x66d8be/c0/c2 are pushed on entry and restored before ret (any i16). 0x4097fd builds edi = car +0xfd (0 after the clear) * 0x420 + [0x866f08] + 0x160 (+0x160 for an even car number, 0x43207c/0x432095) and hands it to 0x408c3e as the grid segment record: [0x866f08] is the grid-start record (ring_0040b060/state_00412b88: record-aligned), drawn 0..9 so edi is record 1..11 (0x408c3e's accepted edi domain 0..11). 0x4098fd (taken when [0x7c2e75] != 0) uses edi = [0x866ecc] - word [0x62d256]*0x160 (lap end 6..8 from ring_00405a12, followed by 'cmp edi,0x8943a0; jae' to the next instruction), so the start-line offset word 0x62d256 is 0..6 and edi stays a ring record 0..8.",
+ "globals": [
+  {"addr": "0x00679d38", "type": "u32", "points_into": {"base": "0x0066fef0", "stride": "0x41c", "lo": 0, "hi": 21}},
+  {"addr": "0x0066d8be", "type": "i16", "count": 3, "stride": 2},
+  {"addr": "0x00866f08", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 9}},
+  {"addr": "0x0062d256", "type": "u16", "lo": 0, "hi": 6}
+ ]
+}

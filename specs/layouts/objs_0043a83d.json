@@ -1,0 +1,25 @@
+{
+ "_evidence": "0x0043a83d reads the object-record pointers [0x607abc]/[0x607ac0] (records of the 0x78-byte object array at 0x63bd7c, 64 slots); fuzzed they are wild and the original faults.",
+ "globals": [
+  {
+   "addr": "0x00607abc",
+   "type": "u32",
+   "points_into": {
+    "base": "0x0063bd7c",
+    "stride": "0x78",
+    "lo": 0,
+    "hi": 63
+   }
+  },
+  {
+   "addr": "0x00607ac0",
+   "type": "u32",
+   "points_into": {
+    "base": "0x0063bd7c",
+    "stride": "0x78",
+    "lo": 0,
+    "hi": 63
+   }
+  }
+ ]
+}

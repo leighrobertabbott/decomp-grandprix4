@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x004123a6 divides 2^28 (edx = 0) by the dword 0x602a40 with unsigned div, multiplies by dword 0x602a48 (imul/shrd 28) and stores 0x602b4c. Any nonzero divisor is valid (quotient <= 2^28); zero #DE'd in 13% of fuzz cases, so 0x602a40 is 1..0xffffffff and 0x602a48 any i32.",
+  "globals": [
+    {"addr": "0x00602a40", "type": "u32", "lo": 1, "hi": 4294967295},
+    {"addr": "0x00602a48", "type": "i32"}
+  ]
+}

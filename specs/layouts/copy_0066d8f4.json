@@ -1,0 +1,17 @@
+{
+ "_evidence": "0x00522c96 copies the 22 bytes 0x66d8f4..0x66d909 to 0x7c31dc..0x7c31f1 ('mov al,[ebx]; mov [esi],al; loop', ecx = 0x16): a per-car byte table (22 cars). Pure byte copy, so all 22 source bytes and the 22 destination bytes vary (any value valid) and every copied byte is visible.",
+ "globals": [
+  {
+   "addr": "0x0066d8f4",
+   "type": "u8",
+   "count": 22,
+   "stride": 1
+  },
+  {
+   "addr": "0x007c31dc",
+   "type": "u8",
+   "count": 22,
+   "stride": 1
+  }
+ ]
+}

@@ -1,0 +1,31 @@
+{
+ "_evidence": "Byte flags of 0x004320f2: [0x7c2e75] (cmp 0xff; je: the whole update is skipped) is 0xff in some picks and other values otherwise; [0x7c2ea9] (cmp 0x80; je -> profile 1, block 0x4321ae; state_004059ef's list draws it too) is 0x80 in a third of the picks. Compares only: any byte is valid.",
+ "globals": [
+  {
+   "addr": "0x007c2e75",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0xff",
+    1,
+    "0x80",
+    "0x7f"
+   ]
+  },
+  {
+   "addr": "0x007c2ea9",
+   "type": "u8",
+   "values": [
+    "0x80",
+    "0x80",
+    0,
+    1,
+    2,
+    3,
+    "0x44",
+    "0xff"
+   ]
+  }
+ ]
+}

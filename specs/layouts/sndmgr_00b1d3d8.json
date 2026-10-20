@@ -1,0 +1,7 @@
+{
+ "_evidence": "The 0x274-byte sound manager (ctor 0x4d87e0 -> base 0x4d6460; vtable 0x5f0f64). 0x509d80 reads only the dword +0x238 (0x509d8e) and branches on null: +0x238 is cleared by the base ctor (0x4d6543 'mov [esi+0x238],ebx') and set to the selected device wrapper by 0x4d88ef ('mov ecx,[[esi+0x234]+4]; mov [esi+0x238],ecx'), so both null (no device selected) and a device are game states: nullable pointer to a 0x290-byte device object (the size 0x5ac7a0's caller 0x4d5231 allocates for this class), layout sndev_00b1d3d8.",
+ "size": 628,
+ "fields": [
+  {"off": "0x238", "type": "ptr", "size": "0x290", "nullable": true, "fill": "layout=sndev_00b1d3d8"}
+ ]
+}

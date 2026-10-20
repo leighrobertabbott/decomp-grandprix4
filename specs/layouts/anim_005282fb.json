@@ -1,0 +1,12 @@
+{
+ "_evidence": "0x005282fb walks the 8 animation records of 0x1c bytes at 0x81cd91..0x81ce71 (zero in the image, unaligned) twice. Pass 1, state +0 == 2 ('cmp dword [edx],2; jne'): 'dec dword [edx+8]; jns' (delay; 0, 1, 2, -1 and 0x80000000 so the decrement both goes negative and stays non-negative), then 'or [edx+0x18],1', the descriptor pointer +4 (edi, desc_005282fb: a fresh 0x18-byte block per record, dereferenced unchecked in this path so it is never null), 'inc [edx+0xc]' frame 0..4 compared with the descriptor's last frame, the repeat count +0x10 ('cmp [edx+0x10],0; je', 'dec; jne': 0, 1, 1, 2 so the count both runs out and keeps going), and the end state 3/0 from the descriptor flag. Pass 2, state == 1: '[edx+0x14]' is a wait-cell pointer (wait_005282fb, dereferenced unchecked for state-1 records, so always valid) whose dword 0 starts the record. States are drawn from 0..3 with 1 and 2 frequent; +0x18 is a random flag dword (the or is visible).",
+ "globals": [
+  {"addr": "0x0081cd91", "type": "u32", "count": 8, "stride": "0x1c", "values": [0, 1, 1, 2, 2, 2, 3]},
+  {"addr": "0x0081cd95", "type": "ptr", "count": 8, "stride": "0x1c", "size": 24, "fill": "layout=desc_005282fb"},
+  {"addr": "0x0081cd99", "type": "u32", "count": 8, "stride": "0x1c", "values": [0, 0, 1, 2, "0xffffffff", "0x80000000"]},
+  {"addr": "0x0081cd9d", "type": "u32", "count": 8, "stride": "0x1c", "lo": 0, "hi": 4},
+  {"addr": "0x0081cda1", "type": "u32", "count": 8, "stride": "0x1c", "values": [0, 1, 1, 2]},
+  {"addr": "0x0081cda5", "type": "ptr", "count": 8, "stride": "0x1c", "size": 4, "fill": "layout=wait_005282fb"},
+  {"addr": "0x0081cda9", "type": "u32", "count": 8, "stride": "0x1c"}
+ ]
+}

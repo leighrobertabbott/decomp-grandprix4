@@ -1,0 +1,47 @@
+{
+ "_evidence": "Overlay for 0x00417415 (compose LAST, after tyre_00601510+bits_004171b6+tyre_0041724d). 0x417415 runs 0x41724d on the wheel records 0 (ebx = 0x6380d8, ecx 0) and 1 (0x6383d8, ecx 1), which reads per-record state that is zero in the image: dwords +0x1d8 and +0xe8 (imul, shrd 14, imul [0x62f880], shrd 14 -> +0x270 and fild), dword +0x40 (test; jns: the sign of the lateral term), and the doubles +0x290, +0x288, +0x280 (fld/fmul/fabs feeding the clamped magic-formula calls 0x411d31/0x411e69/0x411f09 and the fistp results +0x274/+0x34/+0xe0/+0x3c/+0x1a0). Integer fields are any i32 (imul/shrd/fild only); the doubles are finite -100..100 (the 0x41724d spec's own f64 fill range). x87 exceptions are masked: nothing faults. The tyre-block scalars without a writer (0x601460, 0x601498, 0x601500, 0x6014d0, the 0x62f5c0..0x62f880 tables) keep their image values as in tyre_0041724d.",
+ "globals": [
+  {
+   "addr": "0x00638118",
+   "type": "i32",
+   "count": 2,
+   "stride": "0x300"
+  },
+  {
+   "addr": "0x006381c0",
+   "type": "i32",
+   "count": 2,
+   "stride": "0x300"
+  },
+  {
+   "addr": "0x006382b0",
+   "type": "i32",
+   "count": 2,
+   "stride": "0x300"
+  },
+  {
+   "addr": "0x00638358",
+   "type": "f64",
+   "count": 2,
+   "stride": "0x300",
+   "lo": -100,
+   "hi": 100
+  },
+  {
+   "addr": "0x00638360",
+   "type": "f64",
+   "count": 2,
+   "stride": "0x300",
+   "lo": -100,
+   "hi": 100
+  },
+  {
+   "addr": "0x00638368",
+   "type": "f64",
+   "count": 2,
+   "stride": "0x300",
+   "lo": -100,
+   "hi": 100
+  }
+ ]
+}

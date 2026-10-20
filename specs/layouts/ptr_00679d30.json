@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x00516792: 'pushal; mov esi,[0x679d30]; mov eax,[esi+0x70]; mov [0xa69880],eax; mov eax,[esi+0x28]; mov [0xa6987c],eax; popal; ret'. [0x679d30] is the selected car record pointer (0x66fef0 + k*0x41c in the game; zero in the image so fuzzing it faults, and the car-record layouts leave +0x28/+0x70 zero, which would not distinguish the two offsets). Here it points at a separate 0x41c-byte buffer (one car record) of random bytes: the two dwords are copied unchanged, never dereferenced or compared, so every pattern is valid and a wrong offset or width shows.",
+  "globals": [
+    {"addr": "0x00679d30", "type": "ptr", "size": "0x41c", "fill": "bytes"}
+  ]
+}

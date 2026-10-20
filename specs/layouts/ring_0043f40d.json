@@ -1,0 +1,18 @@
+{
+  "_evidence": "0x0043f40d (edi = a track-segment record; its caller 0x0043f636 passes lap records base..[0x00866ecc] whose byte +0x73 has bit 1) walks the 0x160-stride segment array at 0x008943a0 with the shared lap/pit advance (lap end [0x00866ecc], wrap by [0x00866ec4] below pit start [0x00891500], clamp below pit end [0x00866ef8]) and walks back with the inverse (wrap forward by [0x00866ec4] under the lap start [0x00891504], clamp at the pit start). Loop 1 (0x0043f433) stops at a +0x73 bit 0x10 (final) or 0x20 record or when edi leaves the lap; loop 2 (0x0043f4b0, after >= 10 steps) retraces loop 1 to its end; loop 3 (0x0043f525) stops at a bit-0x10 record or when +/-word +0x16 minus [0x00627b04] drops below the previous value. So a lap without any 0x10/0x20 record, an incoherent lap/wrap geometry or a car parked at the pit end with [0x00627b04] <= 0 makes the original loop forever (fuzzed geometry faulted/timed out). Domain: one coherent geometry - 16 lap records 0..15 (lap end base+0x1600, wrap 0x1600, lap start base), pit start record 16..20 (16 = lap flows into the pit, otherwise a gap) and pit end 21..24; record 0 always has bit 0x10, so every lap cycle ends; [0x00627b04] is 1..0x100 (static 0x20), so the pit-end clamp ends loop 3. Starts are records 0..23 (pit and gap starts are a superset of the callers' lap starts, needed to reach the pit branches). Every visited record is then 0..23, and 0x0043fab0 also reads the following record, so words +0, +0x16, +0x18 and the flag byte +0x73 of records 0..24 are varied: flags from a list with bit 0x10 or 0x20 in 1/16 each and bit 2 (sign selector) in most, words unconstrained. 0x00627ac0/0x00627abc (static 0x40, read by no other function) are varied over -0x200..0x200. Every pointer stays inside the 25 records, so nothing faults.",
+  "globals": [
+    {"addr": "0x00866ecc", "type": "u32", "values": ["0x8959a0"]},
+    {"addr": "0x00866ec4", "type": "u32", "values": ["0x1600"]},
+    {"addr": "0x00891504", "type": "u32", "values": ["0x8943a0"]},
+    {"addr": "0x00891500", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 16, "hi": 20}},
+    {"addr": "0x00866ef8", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 21, "hi": 24}},
+    {"addr": "0x894413", "type": "u8", "values": ["0x10", "0x11", "0x12", "0x13", "0x30", "0x32", "0x92", "0x5a"]},
+    {"addr": "0x894573", "type": "u8", "count": 24, "stride": "0x160", "values": ["0x00", "0x01", "0x02", "0x03", "0x04", "0x06", "0x09", "0x0b", "0x40", "0x43", "0x82", "0x85", "0xc7", "0x4e", "0x22", "0x13"]},
+    {"addr": "0x8943b6", "type": "i16", "count": 25, "stride": "0x160"},
+    {"addr": "0x8943a0", "type": "i16", "count": 25, "stride": "0x160"},
+    {"addr": "0x8943b8", "type": "i16", "count": 25, "stride": "0x160"},
+    {"addr": "0x00627b04", "type": "i32", "lo": 1, "hi": 256},
+    {"addr": "0x00627ac0", "type": "i32", "lo": -512, "hi": 512},
+    {"addr": "0x00627abc", "type": "i32", "lo": -512, "hi": 512}
+  ]
+}

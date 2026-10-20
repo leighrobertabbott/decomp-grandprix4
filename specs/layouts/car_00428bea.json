@@ -1,0 +1,8 @@
+{
+  "_evidence": "esi of 0x00428bea: a car record prefix (0x29d bytes), background random (fill bytes: flags +0x161/+0x163/+0x71/+0x8d/+0xff and words +0x248/+0x10a are tested or written, nothing is a pointer, index or divisor). 0x428c04 test dword [esi+0x17c]; je 0x428c22 skips the timer test when the stored deadline is zero (car not yet scheduled), otherwise 0x66d814 - deadline decides (js): the dword draws zero in a third of the cases, else values of both signs and the extremes, so the zero path, the expired and the pending deadline all occur against the free millisecond counter 0x66d814 (state_0043c4d9).",
+  "size": 669,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x17c", "type": "u32", "values": [0, 0, 0, 1, "0x7fffffff", "0x80000000", "0xffffffff", "0x12345678", "0x9abcdef0"]}
+  ]
+}

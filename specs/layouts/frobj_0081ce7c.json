@@ -1,0 +1,35 @@
+{
+ "_evidence": "State of the fixed frame object 0x81ce7c that 0x53e992 (and 0x5285f3) pass to 0x528140 ('mov eax,0x81ce7c; call 0x528140'; compose after keys_0052848b+frames_008174f8). The object is a static definition: only 0x528140 and its callees touch it, and they write just +0x14 ('or dword [edi+0x14],0x80' after the first bounding box, 0x5281e6) and the box outputs +0x20..+0x2c (0x528379); its key +0, +4, +8, the frame range +0xc = 1 / +0x10 = 9 and the offsets +0x18/+0x1c = 0 are never written by any instruction (immediate references to 0x81ce7c..0x81ceb3: only 0x52860b and 0x53e9b3, both 'mov eax,0x81ce7c') - constants, so they keep their image values (unlike the pointer argument of 0x528140, whose layout obj_00528379 varies them). The state is the flag dword +0x14: image 0x141, and 0x1c1 once registered (bit 0x80 = box already computed: 'test [edi+0x14],0x80; jne' skips 0x528379), so it draws {0x141, 0x1c1}. The 8 slot records 0x81cd91 + k*0x1c have their flag dword +0x18 read-modify-written ('or dword [esi+0x18],1'): any u32. [0x81ea2c] (frame-file-open byte, written 0xff/0 by 0x527d57/0x535e7f) {0, 0xff}. Values are synthetic. With it set, 0x528450 -> 0x53646a closes the frame file: CloseHandle([0x81ea28]) - the handle CreateFileA returned to 0x527d52, drawn as a caller-opened handle of the emulator's file system (0x3000/0x3004, specs/layouts/README.md).",
+ "globals": [
+  {
+   "addr": "0x0081ce90",
+   "type": "u32",
+   "values": [
+    "0x141",
+    "0x1c1"
+   ]
+  },
+  {
+   "addr": "0x0081cda9",
+   "type": "u32",
+   "count": 8,
+   "stride": "0x1c"
+  },
+  {
+   "addr": "0x0081ea2c",
+   "type": "u8",
+   "values": [
+    0,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0081ea28",
+   "type": "u32",
+   "values": [
+    "0x3000",
+    "0x3004"
+   ]
+  }
+ ]
+}

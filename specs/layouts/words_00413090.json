@@ -1,0 +1,9 @@
+{
+  "_evidence": "Adds to ring_008943a0 what 0x00413090 reads beyond it. Pit side (edi >= [0x891500]): word +0 of the record and of the record 4 ahead (+0x580, clamped to the pit end [0x866ef8]-0x160, so records 0..33 at most) are subtracted as 16-bit, sign-extended and sar 2 (both signs: full-range u16 words of records 0..33). Lap side: byte +0xb6 (ring_008943a0 varies it, zero in some picks: the je 0x413136 exit) indexes the 0x40-stride table 0x626fb8, whose dwords +0x20/+0x24/+0x28 of all 256 entries are full-range i32 (abs and signed max: every compare both ways). Every address stays inside .data.",
+  "globals": [
+    {"addr": "0x008943a0", "type": "u16", "count": 34, "stride": "0x160"},
+    {"addr": "0x00626fd8", "type": "i32", "count": 256, "stride": "0x40"},
+    {"addr": "0x00626fdc", "type": "i32", "count": 256, "stride": "0x40"},
+    {"addr": "0x00626fe0", "type": "i32", "count": 256, "stride": "0x40"}
+  ]
+}

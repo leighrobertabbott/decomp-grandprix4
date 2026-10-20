@@ -1,0 +1,115 @@
+{
+ "_evidence": "0x0040759e (edi = the car's track-segment record [esi+0x1c], see caller 0x435b61; spec rec[0x8943a0,0x160,0..11]) calls 0x4074db: angle dword +0xe4 * pi/2^31 (fsincos), dx = [0x6278c0]-[+0xf0], dz = [0x6278c8]-[+0xf8] (wrapping, fild), rotated by 0x401d41 and fistp'd to r2 (lateral) and r1, then ebp = max(0x40000 - (r2*sx(+0x14)>>14), 0x1000) and q = (clamp(r1-..,+-0x400000)<<14)/ebp: never faults for any values. If byte 0x62794a != 0 it calls 0x41ec08 (edx = r2 clamped by (u16 +0x60/+0x62 - 0x100)<<8, so |esi| < 2^24 below) -> 0x41eacf, which uses 0x41e910 (start-line/table path: A = B = A' = 0x40000, D/C from dwords 0x6279fc + ecx*16, ecx 0..2, so the table is unconstrained) for the lap start 0x8943a0 and the last two lap records ([0x866ecc]-0x2c0..), and otherwise the four records E-1, E, E+1, E+2 (or the pit-end / lap-end successor) with A = max(0x40000 - (esi*sx(+0x14)>>14), 0x10) and D = [+0xf4] - fistp(+0x150 * 2^-28 * esi); then 0x41eba5 divides (A-B)*(D-C) by max(A,0x10) with idiv. That #DEs when |A-B|/A or |D-C| is large, so the domain bounds them: word +0x14 in -128..128 (|esi*w>>14| <= 2^17, A,B in 0x20000..0x60000, |A-B|/A <= 2) and +0xf4 in -2^28..2^28 (|+0x150*esi*2^-28| < 2^27, |D-C| < 2^30), so |quotient| < 2^31; the later idiv by 6 and the 0x41ed24 fild/fistp never fault. The ring geometry is that of ring_00405a12 (lap end 6..8, pit start 9..10, pit end 12..14, pit exit 0..1), so every record read (start 0..11, its neighbours, the pit-end successor [0x866f04]+0x160 and the lap-start wrap) is one of records 0..14, whose fields +0x14, +0x60, +0x62, +0xe4, +0xf0, +0xf4, +0xf8, +0x150 are varied; positions 0x6278c0/0x6278c8 are full-range car state; byte 0x62794a takes 0 and nonzero (the only branch of 0x40759e).",
+ "globals": [
+  {
+   "addr": "0x0062794a",
+   "type": "u8"
+  },
+  {
+   "addr": "0x006278c0",
+   "type": "i32"
+  },
+  {
+   "addr": "0x006278c8",
+   "type": "i32"
+  },
+  {
+   "addr": "0x00866ecc",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 6,
+    "hi": 8
+   }
+  },
+  {
+   "addr": "0x00891500",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 9,
+    "hi": 10
+   }
+  },
+  {
+   "addr": "0x00866ef8",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 12,
+    "hi": 14
+   }
+  },
+  {
+   "addr": "0x00866f04",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 1
+   }
+  },
+  {
+   "addr": "0x006279fc",
+   "type": "i32",
+   "count": 12,
+   "stride": 4
+  },
+  {
+   "addr": "0x8943b4",
+   "type": "i16",
+   "count": 15,
+   "stride": "0x160",
+   "lo": -128,
+   "hi": 128
+  },
+  {
+   "addr": "0x894400",
+   "type": "u16",
+   "count": 15,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894402",
+   "type": "u16",
+   "count": 15,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894484",
+   "type": "i32",
+   "count": 15,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894490",
+   "type": "i32",
+   "count": 15,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894498",
+   "type": "i32",
+   "count": 15,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x894494",
+   "type": "i32",
+   "count": 15,
+   "stride": "0x160",
+   "lo": -268435456,
+   "hi": 268435456
+  },
+  {
+   "addr": "0x8944f0",
+   "type": "i32",
+   "count": 15,
+   "stride": "0x160"
+  }
+ ]
+}

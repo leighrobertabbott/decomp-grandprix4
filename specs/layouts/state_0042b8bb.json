@@ -1,0 +1,123 @@
+{
+ "_evidence": "Overlay for 0x0042b8bb (esi, ebx = rec[0x66fef0,0x41c,0..21]; compose LAST, after list_0066fe3c+cars_0066fef0+ring_008943a0+ring_00405a12+links_00405a12+state_0042bb90+bounds_0042e330+flags_00408f7b+pair_0042e8e6+link_0042a120). Car word +0xea (0x66ffda + k*0x41c): 'cmp [esi/ebx+0xea],0; jne' (0x42b8c1/0x42b8cc), 'cmp dx,[ebx+0xea]; je' and 'cmp dx,0x20; je' (0x42b9a3/0x42b9ac), 'sub dx,[ebx+0xea]' (0x42ba60): pair_0042e8e6's list had no 0x20 (blocks 0x42b9be/0x42b9c7 never ran), so the values are zero-rich, 0x20-rich and repeat nonzero values (equal pairs). Word +0x1bc (0x6700ac): 0xffff skips, else movzx + 0x66fef0 compared with ebx (0x42ba31 je 0x42ba50): 0xffff or any of the 22 car offsets. Byte 0x603e6e (test 0xff; je / js at 0x42b986/0x42b993): zero about half, positive and negative; byte 0x60440c (cmp 0; je, else copied into 0x604155): zero about half; word 0x86855c (test 0xa at 0x42b966/0x42b9f4/0x42ba01): bit 1 / bit 3 / both / none. Callee 0x42adeb (0x42ba6f): word 0x603d9c is AI state (written by 0x42b040/0x42b27b/0x42b4b3/0x42b563/0x42beea; sub/neg/movsx only): any i16; dword 0x603ea0 is the record step 0x42beea sets to 0 or 0x160 and raises by 0x2c0, added to the car's segment pointer +0x1c and then wrapped/clamped against the ring limits before words +0x60/+0x62 and byte +0x51 are read (in-image .bss records, no dereference beyond): 0, 0x160, 0x2c0, 0x420. 0x42ad15 reads car dwords +0xac (imul [0x601b50], shrd 14, add) and +0x284 (limit ebp: |x| clamped to it with a signed jle, 0 -> 1, then idiv of |x|<<14: |q| <= 2^14 for any limit, the only overflow being |x| = 2^31 which these draws cannot produce): any i32. The gains 0x601b44..0x601b54, 0x601b6c and the threshold 0x603b58 have no writer (only these readers) and keep their image values.",
+ "globals": [
+  {
+   "addr": "0x0066ffda",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    0,
+    0,
+    "0x20",
+    "0x20",
+    8,
+    "0xfff8",
+    "0x10",
+    "0xfff0",
+    "0x28",
+    1,
+    "0xffff"
+   ]
+  },
+  {
+   "addr": "0x006700ac",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0xffff",
+    "0xffff",
+    "0xffff",
+    "0x0",
+    "0x41c",
+    "0x838",
+    "0xc54",
+    "0x1070",
+    "0x148c",
+    "0x18a8",
+    "0x1cc4",
+    "0x20e0",
+    "0x24fc",
+    "0x2918",
+    "0x2d34",
+    "0x3150",
+    "0x356c",
+    "0x3988",
+    "0x3da4",
+    "0x41c0",
+    "0x45dc",
+    "0x49f8",
+    "0x4e14",
+    "0x5230",
+    "0x564c"
+   ]
+  },
+  {
+   "addr": "0x00603e6e",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0x7f",
+    "0x80",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0060440c",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0x80",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0086855c",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    2,
+    8,
+    "0xa",
+    "0xfff5",
+    "0xffff",
+    "0x100"
+   ]
+  },
+  {
+   "addr": "0x00603d9c",
+   "type": "i16"
+  },
+  {
+   "addr": "0x00603ea0",
+   "type": "u32",
+   "values": [
+    0,
+    "0x160",
+    "0x2c0",
+    "0x420"
+   ]
+  },
+  {
+   "addr": "0x0066ff9c",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x00670174",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x41c"
+  }
+ ]
+}

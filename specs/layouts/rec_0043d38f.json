@@ -1,0 +1,14 @@
+{
+ "_evidence": "Segment-record inputs of 0x0043d38f (edi = record 0..25 of 0x8943a0, stride 0x160; compose after ring_0043d30c+words_008943a0+tab_0043d5d8). Its callees 0x43d27c and 0x43d2c4 form a = cbw(byte +0x11) + (word +0x4c sar 6) and b = cbw(byte +0x13) + (word +0x4e sar 6) (resp. words +0xc/+0xe), each in -640..638 in 16 bits, then dx:ax = a*a + b*b (16-bit imul, add/adc: at most 819200, no wrap) for the square root 0x409c44 (accepted for any edx:eax), stored to 0x6077d8/0x6077da; so all four words of records 0..25 are any i16 and both bytes any i8 (the image zero gave both roots 0). 0x43d38f itself reads word +0x14 (tab_0043d5d8) and +0x16 (words_008943a0). The loop counts of its callee 0x43d30c, dwords 0x6269a0/0x6269a4/0x6269a8, are never written (only 0x43d30c reads them; image 10, 8, 2): tuning constants, so each draws its image value in about half the cases and otherwise other small nonzero counts (0 would loop 2^32 times). Any count >= 1 keeps the backward walk inside records 0..25: it steps ebx -= 0x160 and wraps by the ring length when it drops below the ring start (ring_0043d30c: start 0..6, length 8..20), so every visited record is one ring_0043d30c varies. Nothing faults.",
+ "globals": [
+  {"addr": "0x8943ac", "type": "i16", "count": 26, "stride": "0x160"},
+  {"addr": "0x8943ae", "type": "i16", "count": 26, "stride": "0x160"},
+  {"addr": "0x8943b1", "type": "i8", "count": 26, "stride": "0x160"},
+  {"addr": "0x8943b3", "type": "i8", "count": 26, "stride": "0x160"},
+  {"addr": "0x8943ec", "type": "i16", "count": 26, "stride": "0x160"},
+  {"addr": "0x8943ee", "type": "i16", "count": 26, "stride": "0x160"},
+  {"addr": "0x6269a0", "type": "u32", "values": [10, 10, 10, 10, 1, 2, 5, 16, 25]},
+  {"addr": "0x6269a4", "type": "u32", "values": [8, 8, 8, 8, 1, 3, 12, 20]},
+  {"addr": "0x6269a8", "type": "u32", "values": [2, 2, 2, 2, 1, 4, 9]}
+ ]
+}

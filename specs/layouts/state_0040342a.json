@@ -1,0 +1,11 @@
+{
+  "_evidence": "0x0040342a: edi = [0x006278d0], the current track-segment record (0x160-byte records at 0x008943a0; the code itself steps add edi,0x160 to the next record and back), so 0x6278d0 is a record-aligned pointer to records 0..24 (it and its successor stay inside the 26 records). Per record the callees read: 0x40ce7b/0x40ceb0 fild dword +0x150 (i32, any), movzx word +0x60 / +0x62 (u16, (w+0x50)<<8 < 2^25), add dword +0xf4 (i32, any); with the constant 0x6f2a04 (2^-28) the fistp product |+0x150 * 2^-28 * (w+0x50)<<8| < 2^28 fits. 0x6278b4 is the Q14 blend factor for imul/shrd (no fault for any value). edx (spec u32 0..4) selects cmp edx,3 both ways. 0x6278a4/0x6278a8 are written before being read.",
+  "globals": [
+    {"addr": "0x006278d0", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 24}},
+    {"addr": "0x00894400", "type": "u16", "count": 26, "stride": "0x160"},
+    {"addr": "0x00894402", "type": "u16", "count": 26, "stride": "0x160"},
+    {"addr": "0x00894494", "type": "i32", "count": 26, "stride": "0x160"},
+    {"addr": "0x008944f0", "type": "i32", "count": 26, "stride": "0x160"},
+    {"addr": "0x006278b4", "type": "i32"}
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "_evidence": "0x004195e1 computes, for the pairs (a,b,c) = (+0x2cc,+0x2ec,+0x2dc) and (+0x2d4,+0x2f4,+0x2e4): ebp = (a*s)>>10 with s = [0x601dac], q = (b - origin)*(s + a) / ebp (imul, idiv), stores c - q to +0x2fc/+0x300 resp. +0x304/+0x308. With 1024 <= |a| <= 32767 (both signs) and s in 1024..32767 (state_004195e1) |ebp| >= 1024 is never zero, and |b - origin| <= 65534, |s + a| <= 65534 give |q| < 2^22: no #DE. a takes magnitudes from that range with both signs; b and c are -32767..32767.",
+  "size": 784,
+  "fields": [
+    {"off": "0x2cc", "type": "u32", "values": [1024, 1500, 4096, 20000, 32767, "0xfffffc00", "0xfffff000", "0xffffb1e0", "0xffff8001"]},
+    {"off": "0x2d4", "type": "u32", "values": [1024, 1500, 4096, 20000, 32767, "0xfffffc00", "0xfffff000", "0xffffb1e0", "0xffff8001"]},
+    {"off": "0x2dc", "type": "i32", "lo": -32767, "hi": 32767},
+    {"off": "0x2e4", "type": "i32", "lo": -32767, "hi": 32767},
+    {"off": "0x2ec", "type": "i32", "lo": -32767, "hi": 32767},
+    {"off": "0x2f4", "type": "i32", "lo": -32767, "hi": 32767}
+  ]
+}

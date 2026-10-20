@@ -1,0 +1,23 @@
+{
+ "_evidence": "Menu state read by the page refreshes 0x529408, 0x52a545 and 0x5413e9 (called by the item handlers 0x52928d/0x5292c0 and siblings; compose after session_004fd1a0+trk_007ad894+ramp_0081d1f2). Selector bytes (any byte valid: plain compares): 0x81d1d6 ('cmp byte,0; je': list mode 1 or 3 stored to [item+0x2a], which 0x4fd1a0/0x4fd200 use as a loop count of 2 or 4), 0x81d1d4 ('cmp byte,2; jb' then 'and byte,1'; also the setup slot 'movzx ecx,byte [0x81d1d4]' that 0x52a1a0/0x52a12d pass to 0x52a279 = 0x7adb4c + 4 + eax*0xf28 + 4 + ebx*0xe4 + ecx*0x38: drawn 0..3, the four 0x38-byte slots of a 0xe4 circuit record), 0x81d1d5 (selects the cell pair 0x81d223/0x81d224 or 0x81d1fa/0x81d1fc), 0x81d1e8 ('cmp byte,0xff' in 0x52a1a0/0x52a12d, 'test' in 0x503460), 0x81d1e9, 0x81d1ea, 0x7aafd3, 0x7c2e75 (mask bits), 0x81d228 ('test cl,cl; setne' in 0x503460). Index dwords: [0x7c2f28] is the team/driver row (0x52a260/0x52a279 'imul eax,0xf28' over the 22 rows of 0x7adb4c, and 'mov cl,[ecx+0x66d94c]' in 0x52a545): 0..21; [0x81d1dc] the circuit (imul 0xe4, 17 circuits): 0..16; [0x81d1e0] the slot: 0..3 (so 'rep movsb' 0x33/0x38 bytes from that record into 0x81d1f0 reads inside the 0x7adb4c table). [0x7ad898] ('cmp 5', 'cmp 2'/'cmp 3') and [0x81d318] ('cmp 6; ja') any dword; 0x66d94c[0..21] (0 / 1 / other select mask bits). The loop counts 'movzx ecx,byte [0x81d1fa|0x81d223]; ... cmp ecx,3; jb' end for any byte (an up-counting loop to 3, at most 3 passes). [0x7ab020] ('cmp byte,0; je' runs the 0x5413e9 body; 0x5415dc -> 0x541d06 then only reaches 0x540054 when [0xb1bb40] != [0xae6b64] and [0x82fffd] != 0, which keep their zero image values, so values 1 and 2 are safe too). Values are synthetic.",
+ "globals": [
+  {"addr": "0x007c2f28", "type": "u32", "lo": 0, "hi": 21},
+  {"addr": "0x0081d1dc", "type": "u32", "lo": 0, "hi": 16},
+  {"addr": "0x0081d1e0", "type": "u32", "lo": 0, "hi": 3},
+  {"addr": "0x0081d1d4", "type": "u8", "values": [0, 1, 2, 3]},
+  {"addr": "0x0081d1d5", "type": "u8", "values": [0, 1, "0xff"]},
+  {"addr": "0x0081d1d6", "type": "u8", "values": [0, 1, "0xff"]},
+  {"addr": "0x0081d1e8", "type": "u8", "values": [0, 1, "0xff"]},
+  {"addr": "0x0081d1e9", "type": "u8", "values": [0, 1]},
+  {"addr": "0x0081d1ea", "type": "u8", "values": [0, 1]},
+  {"addr": "0x007aafd3", "type": "u8", "values": [0, 1, "0xff"]},
+  {"addr": "0x007c2e75", "type": "u8", "values": [0, 1]},
+  {"addr": "0x0081d228", "type": "u8", "values": [0, 1, 5]},
+  {"addr": "0x0081d1fa", "type": "u8", "values": [0, 1, 2, 3, 4, "0xff"]},
+  {"addr": "0x0081d223", "type": "u8", "values": [0, 1, 2, 3, 4, "0xff"]},
+  {"addr": "0x007ad898", "type": "u32", "values": [0, 2, 3, 5, 6, "0xffffffff"]},
+  {"addr": "0x0081d318", "type": "u32", "values": [0, 5, 6, 7, "0xffffffff"]},
+  {"addr": "0x0066d94c", "type": "u8", "count": 22, "stride": 1, "values": [0, 1, 2, "0xff"]},
+  {"addr": "0x007ab020", "type": "u8", "values": [0, 0, 1, 2, 3, "0xff"]}
+ ]
+}

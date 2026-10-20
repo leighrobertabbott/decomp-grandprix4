@@ -1,0 +1,26 @@
+{
+ "_evidence": "Car record for 0x004168fd (esi; the rest of the 0x273 bytes are random flag background as in the earlier ':bytes' spec): byte +0xe4 is compared signed with 2 (jl) and 5 (jle) at 0x416938/0x416941, so it draws the kinds 2..5 often (0x416948 taken: skip the +0xce/+0xff tests) plus 0, 1, 6, 0x80 (negative) and 0xff; only compares, nothing faults.",
+ "size": 627,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0xe4",
+   "type": "u8",
+   "values": [
+    2,
+    3,
+    4,
+    5,
+    2,
+    3,
+    4,
+    5,
+    0,
+    1,
+    6,
+    "0x80",
+    "0xff"
+   ]
+  }
+ ]
+}

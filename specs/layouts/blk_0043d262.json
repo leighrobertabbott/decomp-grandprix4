@@ -1,0 +1,12 @@
+{
+ "_evidence": "0x0043d262: eax is null (je: clc) or a block whose dword +0x1c points to a record; byte +0x12 of that record is tested for bit 0 and bit 1 (both set: stc). The spec passes eax as nptr (null in ~1/4 of the cases); +0x1c is a real 0x14-byte buffer of random bytes, so each bit is set half the time.",
+ "size": 32,
+ "fields": [
+  {
+   "off": "0x1c",
+   "type": "ptr",
+   "size": 20,
+   "fill": "bytes"
+  }
+ ]
+}

@@ -1,0 +1,8 @@
+{
+ "_evidence": "Inputs of 0x0041b7e2 (called by 0x41b852; compose after frac_00624790, which bounds its divisor [0x624790] to 1..0x3fff). Dword 0x601310 is a car threshold written by 0x4112e3 ('sar ecx,8 of [0x623c34]; cmp ecx,[0x601310]; jl' skips the body): any i32. The f64 0x6013f8 (image 0x409ceca90470a809, about 1851.2) is never written (only 0x41b7e2 reads it, 'fmul' before 'fistp': an out-of-range product stores the masked integer indefinite): a tuning constant, drawn from its exact image dwords or from other finite doubles by pairing low dwords {0x0470a809, 0} with high dwords {0x409ceca9, 0x40590000, 0x3ff00000, 0xc0590000}. The curve table 0x62f008 that 0x411891 reads is a static table (lo/hi/scale/samples, only read here) and keeps its image. Nothing faults.",
+ "globals": [
+  {"addr": "0x601310", "type": "i32"},
+  {"addr": "0x6013f8", "type": "u32", "values": ["0x0470a809", "0x0470a809", 0]},
+  {"addr": "0x6013fc", "type": "u32", "values": ["0x409ceca9", "0x409ceca9", "0x409ceca9", "0x40590000", "0x3ff00000", "0xc0590000"]}
+ ]
+}

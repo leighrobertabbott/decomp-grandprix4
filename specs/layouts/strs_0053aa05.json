@@ -1,0 +1,13 @@
+{
+ "_evidence": "0x53aa05 draws the text id (value read through 0x539944, 0..10) + [esi+0x12] (0..7), so ids reach 17; 0x4fd820 loads esi = [0x835846 + 4*id] and dereferences it without a null test (the table is filled when the text resources load; zero in the image). script_0054d798 fills entries 0..7; this layout gives ids 8..17 (dwords 0x835866..0x83588a) their own 0x40-byte NUL-terminated strings (msgtxt_00536920 bytes). Compose after script_0054d798.",
+ "globals": [
+  {
+   "addr": "0x00835866",
+   "type": "ptr",
+   "count": 10,
+   "stride": 4,
+   "size": 64,
+   "fill": "layout=msgtxt_00536920"
+  }
+ ]
+}

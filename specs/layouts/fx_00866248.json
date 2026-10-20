@@ -1,0 +1,47 @@
+{
+ "_evidence": "Run-time state of the 13 effect templates at 0x866248 (0xe0-byte records; ebx = 0x866248 + eax*0xe0 in 0x0055278a) and the clocks they are compared with. The templates' tuning fields (+0..+0x4c, +0x50 = -1, +0x54 frame-list pointer, +0x60 flags, +0x64/+0x68 interval, +0x74..+0xd4) are static .data constants: the only writers are 0x552cfa (+0/+8 from its edx table), 0x553065 (record 0xc) and the reset/sync loops 0x553941/0x55399f/0x5539d1 (+0x6c/+0xd8/+0xdc), so they keep their image values. Varied state: [0x66d814] = clock T (0..1000), [0x866db8] = spawn limit L (0..1500, cleared by 0x553941), +0x6c = next spawn time N of every record (0..1500; 'cmp eax,[ebx+0x6c]; jle' raises N to T, then 'cmp [0x866db8],N; jl stc-exit' - both outcomes), +0xdc = latest N ('cmp [ebx+0xdc],eax; jge': 0..3000, both outcomes). With L - N up to 1500 and the static intervals (+0x64 >= 5, 32 for records 1/0xb) the 'test [ebx+0x60],0x40; jne 0x5527bb' loop spawns 0..count (<= 8) particles before N passes L or the count runs out. Byte [0x62794b] (0x443dd1: 0 -> 0x443de9 ring walk, else 0x443e26 track query; image 0xff) draws 0 and 0xff. The shift-register seed 0x62d1b3..0x62d1b7 of 0x4014ba (via 0x4015dc) is any bytes. Compose after tbl_00854460 (free particle slots: 'test [0x854460+k*0xe0],1') and the track layouts of 0x443dd1's accepted spec. Values are synthetic. For 0x552cfa the edx source (copied into record +0/+8 and added into the spawn offset) is drawn as ptr[0x10]:i32[-0x400..0x400]: its callers 0x552d1e/0x552e4f/0x552f7f/0x553065 pass only the static offset tables 0x865f58/0x865f68/0x865f78/0x865f88/0x865f98/0x865fa8 (dwords +0/+8 in -0x1dc..0xdc, only ever loaded as edx immediates), and random dwords there would put the particle position outside the +-2^21 ring range.",
+ "globals": [
+  {
+   "addr": "0x0066d814",
+   "type": "i32",
+   "lo": 0,
+   "hi": 1000
+  },
+  {
+   "addr": "0x00866db8",
+   "type": "i32",
+   "lo": 0,
+   "hi": 1500
+  },
+  {
+   "addr": "0x008662b4",
+   "type": "i32",
+   "count": 13,
+   "stride": "0xe0",
+   "lo": 0,
+   "hi": 1500
+  },
+  {
+   "addr": "0x00866324",
+   "type": "i32",
+   "count": 13,
+   "stride": "0xe0",
+   "lo": 0,
+   "hi": 3000
+  },
+  {
+   "addr": "0x0062794b",
+   "type": "u8",
+   "values": [
+    0,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0062d1b3",
+   "type": "u8",
+   "count": 5,
+   "stride": 1
+  }
+ ]
+}

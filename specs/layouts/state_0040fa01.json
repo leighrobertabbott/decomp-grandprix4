@@ -1,0 +1,88 @@
+{
+ "_evidence": "0x0040fa01 clears bit 7 of byte +0x78 (after 0x40f9e6 zeroes +0x6a..+0x6f) of the car records [0x66d820] and, when byte 0x7aafd4 != 0, [0x66d828]; each pointer is null (or esi, je: skipped) or a car record of the 22-record array at 0x0066fef0 (stride 0x41c), so both draw from 0 (about a fifth) and the 22 record addresses; byte +0x78 of every record (0x0066ff68 + k*0x41c) is varied (and-ed in place). Random dwords faulted.",
+ "globals": [
+  {
+   "addr": "0x0066d820",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    "0x66fef0",
+    "0x67030c",
+    "0x670728",
+    "0x670b44",
+    "0x670f60",
+    "0x67137c",
+    "0x671798",
+    "0x671bb4",
+    "0x671fd0",
+    "0x6723ec",
+    "0x672808",
+    "0x672c24",
+    "0x673040",
+    "0x67345c",
+    "0x673878",
+    "0x673c94",
+    "0x6740b0",
+    "0x6744cc",
+    "0x6748e8",
+    "0x674d04",
+    "0x675120",
+    "0x67553c"
+   ]
+  },
+  {
+   "addr": "0x0066d828",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    "0x66fef0",
+    "0x67030c",
+    "0x670728",
+    "0x670b44",
+    "0x670f60",
+    "0x67137c",
+    "0x671798",
+    "0x671bb4",
+    "0x671fd0",
+    "0x6723ec",
+    "0x672808",
+    "0x672c24",
+    "0x673040",
+    "0x67345c",
+    "0x673878",
+    "0x673c94",
+    "0x6740b0",
+    "0x6744cc",
+    "0x6748e8",
+    "0x674d04",
+    "0x675120",
+    "0x67553c"
+   ]
+  },
+  {
+   "addr": "0x007aafd4",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0066ff68",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  }
+ ]
+}

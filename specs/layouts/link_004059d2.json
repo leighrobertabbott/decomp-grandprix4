@@ -1,0 +1,7 @@
+{
+  "size": 76,
+  "_evidence": "0x004059d2 reads only dword [edi+0x44] (cmp with 0 at 0x4059da; loaded into edi at 0x4059e3/0x4059e8 - a link that is never dereferenced here). The u32 range 0..0xffffffff makes the generator pick 0 (stc path, je 0x4059ed) in about a ninth of the cases and arbitrary links otherwise. The limit 0x00891500 is compared unsigned with edi only (no dereference), so the spec's fuzzed globals give both jae outcomes.",
+  "fields": [
+    {"off": 68, "type": "u32", "lo": 0, "hi": 4294967295}
+  ]
+}

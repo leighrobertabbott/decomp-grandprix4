@@ -1,0 +1,51 @@
+{
+ "_evidence": "0x00510752 (compose LAST, after carbg_0066fef0+cars_00433709+records_008943a0): ecx = [0xa69878] -> 0x5106f6/0x40838c clamp it to a car 0..21 (esi = 0x66fef0 + 0x41c*i), 'mov edi,[esi+0x1c]' is the car's segment pointer (stored to 0xa6987c), then 'mov ecx,[edi+0x1a]; and ecx,0x7ff' stores bits 0..10 of the ring record's unaligned dword +0x1a to 0xa69878. The ring records 0x8943a0 (stride 0x160) are zero in the image and the dword +0x1a was never varied, so the stored value was always 0. Domain: every car's +0x1c is a record-aligned pointer to ring records 0..25 (cars_00433709's set mixes half-record addresses, which would read other fields), the dword +0x1a of records 0..25 any value, and [0xa69878] -8..40 so the clamp yields every car and both clamp edges (as 0x5106f6's spec). Plain loads through valid pointers: every value is valid.",
+ "globals": [
+  {
+   "addr": "0x00a69878",
+   "type": "i32",
+   "lo": -8,
+   "hi": 40
+  },
+  {
+   "addr": "0x0066ff0c",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x8943a0",
+    "0x894500",
+    "0x894660",
+    "0x8947c0",
+    "0x894920",
+    "0x894a80",
+    "0x894be0",
+    "0x894d40",
+    "0x894ea0",
+    "0x895000",
+    "0x895160",
+    "0x8952c0",
+    "0x895420",
+    "0x895580",
+    "0x8956e0",
+    "0x895840",
+    "0x8959a0",
+    "0x895b00",
+    "0x895c60",
+    "0x895dc0",
+    "0x895f20",
+    "0x896080",
+    "0x8961e0",
+    "0x896340",
+    "0x8964a0",
+    "0x896600"
+   ]
+  },
+  {
+   "addr": "0x008943ba",
+   "type": "u32",
+   "count": 26,
+   "stride": "0x160"
+  }
+ ]
+}

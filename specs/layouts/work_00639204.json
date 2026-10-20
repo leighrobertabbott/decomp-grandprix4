@@ -1,0 +1,11 @@
+{
+  "_evidence": "Fixed car-shaped working record at 0x639204 read by 0x00412938 through mov ebx,0x639204: byte +0x71 (0x639275, test 8: edx side 0/-1), dword +0x1a0 (0x6393a4, blend fraction -> eax of 0x429284), byte +0x294 (0x639498, movzx mode -> ecx of 0x429284), bytes +0x8d (0x639291) and +0x9c (0x6392a0) (test 2 each: force the fraction to 0x4000), and the flag byte [0x63964a] (test 0xff; jne). The mode/fraction/side triple has the car-record domain of car_004035c3 (writers 0x4036ca/0x40373b/0x412938 store a 0x403a1e/0x403721/0x429284 mode 0..7 and a 0x403ab9/0x403bb6 fraction within +-0x400000), so the mode is 0..7 and the fraction i32 in +-0x400000; the bit bytes are any u8 and [0x63964a] is zero in half the picks, so every test takes both sides. Compose after widths_00852c44/state_00403800 (0x429284's interpolators).",
+  "globals": [
+    {"addr": "0x00639275", "type": "u8"},
+    {"addr": "0x00639291", "type": "u8"},
+    {"addr": "0x006392a0", "type": "u8"},
+    {"addr": "0x006393a4", "type": "i32", "lo": -4194304, "hi": 4194304},
+    {"addr": "0x00639498", "type": "u8", "values": [0, 1, 2, 3, 4, 5, 6, 7]},
+    {"addr": "0x0063964a", "type": "u8", "values": [0, 0, 1, 255]}
+  ]
+}

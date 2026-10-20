@@ -1,0 +1,22 @@
+{
+  "size": 64,
+  "_evidence": "0x0042257b tests each dword of the table at [0x0062a048] (index ebx < [0x62a05c] <= 16) against the mask [0x62a054] and against 0x14280. The generic i32 draw (0, 1, 2, -1, small values, bytes, +-2^15, full 32-bit) makes both tests go both ways; the dword is passed to 0x4223ed in edx, any value is valid.",
+  "fields": [
+    {"off": 0, "type": "i32"},
+    {"off": 4, "type": "i32"},
+    {"off": 8, "type": "i32"},
+    {"off": 12, "type": "i32"},
+    {"off": 16, "type": "i32"},
+    {"off": 20, "type": "i32"},
+    {"off": 24, "type": "i32"},
+    {"off": 28, "type": "i32"},
+    {"off": 32, "type": "i32"},
+    {"off": 36, "type": "i32"},
+    {"off": 40, "type": "i32"},
+    {"off": 44, "type": "i32"},
+    {"off": 48, "type": "i32"},
+    {"off": 52, "type": "i32"},
+    {"off": 56, "type": "i32"},
+    {"off": 60, "type": "i32"}
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "_evidence": "0x00421fc3 divides the 64-bit value hi:lo ([0x608100]:[0x6080fc]) by D=[0x608104]: hi is clamped to <= 0x3fffffff, hi:lo <<= 1, the new high dword is clamped to <= D (signed), >>= 1 (arithmetic), D is raised to >= 1, idiv D. Statically, when the clamp to D fires with D >= 1 the dividend is >= D*2^31 and idiv overflows (#DE), and with D <= 0 the divisor is 1 so the dividend must already be an int32: the original is fault-free exactly when -D <= 2*hi+bit < D (D >= 1) or, for D in {0,-1}, when 2*hi+bit > D or equals 0. Uncorrelated draws that never fault: hi in 0..0x7fff (non-negative), lo any, D from {0, -1} (clamp + D=1 paths) or >= 0x10000 (no clamp). This leaves only block 0x421fdc (hi > 0x3fffffff), which is fault-free only for D in {0,-1} or D = 0x7fffffff with lo < 2^31 and cannot be paired with the large-D draws; it is not needed for the coverage gate. The quotient is compared signed with [0x60810c] (full range: both jle outcomes; quotients <= 0 reach 0x42201a); then ebp = max(q,1) divides the 64-bit pairs 0x608118:0x608114, 0x608120:0x60811c, 0x608128:0x608124. ebp can be 1, so each pair must be an int32 sign-extended to 64 bits; uncorrelated draws can only express the non-negative half (hi 0, lo 0..0x7fffffff), negative pairs need hi = lo>>31.",
+  "globals": [
+    {"addr": "0x006080fc", "type": "u32"},
+    {"addr": "0x00608100", "type": "i32", "lo": 0, "hi": 32767},
+    {"addr": "0x00608104", "type": "u32", "values": [0, "0xffffffff", 0, "0xffffffff", "0x10000", "0x10001", "0x12345", "0x20000", "0x100000", "0xabcdef", "0x1234567", "0x40000000", "0x7ffffffe", "0x7fffffff"]},
+    {"addr": "0x0060810c", "type": "i32"},
+    {"addr": "0x00608114", "type": "i32", "lo": 0, "hi": 2147483647},
+    {"addr": "0x00608118", "type": "u32", "values": [0]},
+    {"addr": "0x0060811c", "type": "i32", "lo": 0, "hi": 2147483647},
+    {"addr": "0x00608120", "type": "u32", "values": [0]},
+    {"addr": "0x00608124", "type": "i32", "lo": 0, "hi": 2147483647},
+    {"addr": "0x00608128", "type": "u32", "values": [0]}
+  ]
+}

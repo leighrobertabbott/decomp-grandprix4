@@ -1,0 +1,14 @@
+{
+ "_evidence": "0x00422056 splits dword 0x0060810c three ways: 'cmp [0x60810c],0x80000000; je 0x422276' and 'cmp [0x60810c],0; je 0x422259' are the two early exits, so both sentinels are listed. Each share is (clamp(a + b, +-2*d) * x) / d with idiv by d = [0x601334] / [0x601340] / [0x601338] after 'shl edx,1' and an unsigned 'cmp eax,edx; jb' clamp: the divisors are positive and <= 0x100000 (no shl overflow, no #DE), |0x60810c| <= 2^29 keeps the quotient (<= 2*|x|) in range. The summands 0x608134+0x60134c, 0x60812c+0x601344, 0x60812c+0x60133c are drawn +-0x40000 so both signs and both sides of the clamp occur.",
+ "globals": [
+  {"addr": "0x0060810c", "type": "u32", "values": ["0x80000000", 0, 1, 1000, "0x4000", "0xffffec78", "0x10000", "0x1fffffff", "0xe0000000", 77777]},
+  {"addr": "0x00601334", "type": "u32", "lo": 1, "hi": 1048576},
+  {"addr": "0x00601338", "type": "u32", "lo": 1, "hi": 1048576},
+  {"addr": "0x00601340", "type": "u32", "lo": 1, "hi": 1048576},
+  {"addr": "0x00608134", "type": "i32", "lo": -262144, "hi": 262144},
+  {"addr": "0x0060134c", "type": "i32", "lo": -262144, "hi": 262144},
+  {"addr": "0x0060812c", "type": "i32", "lo": -262144, "hi": 262144},
+  {"addr": "0x00601344", "type": "i32", "lo": -262144, "hi": 262144},
+  {"addr": "0x0060133c", "type": "i32", "lo": -262144, "hi": 262144}
+ ]
+}

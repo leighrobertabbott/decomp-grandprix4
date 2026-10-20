@@ -1,0 +1,34 @@
+{
+ "_evidence": "0x00541914 copies [0x830830] (0..0x40) bytes with rep movsb from the source [0x83082c] (null in about 1/4: 0x5418cd then falls back to the default source [0x8298f4]), indexed by [0x830834] (0..3); both sources are 0x1000-byte random blocks.",
+ "globals": [
+  {
+   "addr": "0x0083082c",
+   "type": "ptr",
+   "size": 4096,
+   "fill": "bytes",
+   "nullable": true
+  },
+  {
+   "addr": "0x008298f4",
+   "type": "ptr",
+   "size": 4096,
+   "fill": "bytes"
+  },
+  {
+   "addr": "0x00830830",
+   "type": "u32",
+   "lo": 0,
+   "hi": 64
+  },
+  {
+   "addr": "0x00830834",
+   "type": "u32",
+   "lo": 0,
+   "hi": 3
+  },
+  {
+   "addr": "0x00830838",
+   "type": "u32"
+  }
+ ]
+}

@@ -1,0 +1,49 @@
+{
+ "_evidence": "0x004381ab (esi = car record 0 at 0x66fef0, as its spec fixes) passes the car's segment pointer [esi+0x1c] = [0x66ff0c] as edi to 0x406dbb, whose accepted domain is a ring record 0..25 of 0x8943a0 under ring_00405a12+links_00405a12 (the coherent geometry: pit start record 9..10, links +0x44 of records 0..25 always valid on pit records). ring_004317ae draws that pointer as records 0..29, and records 26..29 have no varied link, so a pit-side start loads edi = [edi+0x44] = 0 and faults at 0x4067ea (the 24-37 faults of v2/v3); the game's car pointer is a valid segment of the closed track, so it is drawn 0..25 here (compose after ring_004317ae and the 0x406dbb layouts). On return 0x406dbb leaves edi = [0x629f0c] or [0x629f10], a ring record found by 0x4067b7; 0x4381ab then tests dword +0x2c of it with 0x20 (eax < 0) or 0x10 (eax >= 0), so dword +0x2c of records 0..25 draws 0, 0x10, 0x20, 0x30 and -1 (both outcomes of both tests; a bit test cannot fault). The pit-lane window [0x866ed0, 0x866ed4) of 0x406dbb/0x406a57 is entered only for edi >= the pit start, and the record 0x406a57 finds there (or the bound it stops at, up to [0x866ed4]) has its link +0x44 loaded unconditionally (0x406e3a, 0x406e58), so in the game the window lies in the linked pit records: start 9..12 and end 13..24 here (0x406a31 stops one record past the end, at end+0x160, whose link 0x406e58 loads too) (bounds_00406a57's start 0..10 put main-track records 0..8, whose link may be 0 in links_00405a12, into the window: the remaining 3/200 faults at 0x4067ea with edi = 0).",
+ "globals": [
+  {
+   "addr": "0x0066ff0c",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 25
+   }
+  },
+  {
+   "addr": "0x00866ed0",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 9,
+    "hi": 12
+   }
+  },
+  {
+   "addr": "0x00866ed4",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 13,
+    "hi": 24
+   }
+  },
+  {
+   "addr": "0x008943cc",
+   "type": "u32",
+   "count": 26,
+   "stride": "0x160",
+   "values": [
+    "0x0",
+    "0x0",
+    "0x10",
+    "0x20",
+    "0x30",
+    "0xffffffff"
+   ]
+  }
+ ]
+}

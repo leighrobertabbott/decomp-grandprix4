@@ -1,0 +1,61 @@
+{
+ "_evidence": "0x00555c49 walks 0x160-byte ring records from the pointer table 0x874d38 (32 entries, all the ring base here) with marks 0x874db8 (0/0xff) and the record dwords +0x2c..+0x40.",
+ "globals": [
+  {
+   "addr": "0x00874d38",
+   "type": "u32",
+   "count": 32,
+   "stride": 4,
+   "values": [
+    "0x8943a0"
+   ]
+  },
+  {
+   "addr": "0x00874db8",
+   "type": "u8",
+   "count": 32,
+   "stride": 1,
+   "values": [
+    0,
+    "0xff",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x8943cc",
+   "type": "u32",
+   "count": 26,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8943d0",
+   "type": "u32",
+   "count": 26,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8943d4",
+   "type": "u32",
+   "count": 26,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8943d8",
+   "type": "u32",
+   "count": 26,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8943dc",
+   "type": "u32",
+   "count": 26,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8943e0",
+   "type": "u32",
+   "count": 26,
+   "stride": "0x160"
+  }
+ ]
+}

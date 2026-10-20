@@ -1,0 +1,7 @@
+{
+  "_evidence": "Scalars read by 0x004378fc when called from 0x438aac with esi a car buffer: byte 0x6259dc (cmp 0xff; je -> stc) drawn 0xff in a quarter of the cases, and the pit start 0x891500 compared unsigned with the car's segment pointer +0x1c (jae -> stc), a plain u32 here because +0x1c is a random dword of the esi buffer (both orders occur; neither is dereferenced). Nothing faults.",
+  "globals": [
+    {"addr": "0x006259dc", "type": "u8", "values": [0, "0xff", 1, "0x80"]},
+    {"addr": "0x00891500", "type": "u32"}
+  ]
+}

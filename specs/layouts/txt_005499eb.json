@@ -1,0 +1,41 @@
+{
+ "_evidence": "0x5499eb draws 22 key rows; each row's text is looked up with id 0xb8f+code (code 0..63) through 0x546249, which loads esi = [0x835846 + 4*id] = dwords 0x838682..0x83877e and copies the string (faults at 0x54624e on the image's null pointers: the table is filled when the text resources load and is never null-tested). Each entry points at its own 0x40-byte NUL-terminated string (msgtxt_00536920 bytes). Flag bytes 0x831a97/0x831d65 are only compared. The row height [0xb1bf80] (read only by 0x546293: y = (row+7)*h) is zero in the image, which puts the right-aligned copy 0x5465bb before the 0x2000-byte surface; h in {1,2} keeps every write inside it (min start 7*0x20+7-63 > 0, max end 56*0x80+30+63 < 0x2000; m186).",
+ "globals": [
+  {
+   "addr": "0x00838682",
+   "type": "ptr",
+   "count": 64,
+   "stride": 4,
+   "size": 64,
+   "fill": "layout=msgtxt_00536920"
+  },
+  {
+   "addr": "0x00831a97",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x00831d65",
+   "type": "u8",
+   "values": [
+    "0xff",
+    "0xff",
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x00b1bf80",
+   "type": "u32",
+   "values": [
+    1,
+    2
+   ]
+  }
+ ]
+}

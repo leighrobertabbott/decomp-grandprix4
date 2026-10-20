@@ -1,0 +1,31 @@
+{
+  "_evidence": "Family layout for the 0x64-byte view records at 0x621aa0 walked by 0x4233dd, 0x423987, 0x423de4, 0x4250f1 and 0x425431 ('test [0x609864]; je' then a do-while 'inc ecx; cmp ecx,[0x609864]; jne' over records 0.. count-1, so the count is 0..6 as state_00423987/state_00423de4: a larger count walks off the array; 0x424462 zeroes it and 0x4250b9/0x43b127 append at most five). Per record (count 6, stride 0x64): dwords +0x00..+0x3c and +0x48..+0x60 are positions, fistp results and scalars (sub, fild, imul/shrd: any pattern); +0x40 and +0x44 are the two orientation-body pointers dereferenced unconditionally for a live record (0x425431 stores the record address into 0x609860, then 0x4020d8 reads both and 0x425321/0x425395/0x4253e3 read +0x40), so each is a distinct real 0xd0-byte body_00609860. Compose after view_00609860 (fixed bodies 0x622cf8/0x6231d8/0x622e98 and the 0x607f28.. positions).",
+  "globals": [
+    {"addr": "0x00609864", "type": "u32", "lo": 0, "hi": 6},
+    {"addr": "0x00621aa0", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621aa4", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621aa8", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621aac", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621ab0", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621ab4", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621ab8", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621abc", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621ac0", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621ac4", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621ac8", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621acc", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621ad0", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621ad4", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621ad8", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621adc", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621ae0", "type": "ptr", "size": 208, "fill": "layout=body_00609860", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621ae4", "type": "ptr", "size": 208, "fill": "layout=body_00609860", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621ae8", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621aec", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621af0", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621af4", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621af8", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621afc", "type": "i32", "count": 6, "stride": "0x64"},
+    {"addr": "0x00621b00", "type": "i32", "count": 6, "stride": "0x64"}
+  ]
+}

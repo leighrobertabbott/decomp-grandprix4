@@ -1,0 +1,7 @@
+{
+ "_evidence": "Language-name table: 0x0054e33d resets [0x838b91] to 0, stores one string pointer per accepted *.str file at [count*4 + 0x838b99] (inc [0x838b91]) and stops at 11 (cmp [0x838b91],0xb / jae), so the count is 0..11 and the first count entries are non-null pointers to NUL-terminated names (chars_00838b99). 0x0054e456/0x0054e491 read ecx = [0x838b91] (or ecx,ecx / je: 0 skips everything) and edi = [ebx], ebx += 4 per string. All 11 slots get valid pointers so any count is safe.",
+ "globals": [
+  {"addr": "0x00838b91", "type": "u32", "lo": 0, "hi": 11},
+  {"addr": "0x00838b99", "type": "ptr", "size": 24, "fill": "layout=chars_00838b99", "count": 11, "stride": 4}
+ ]
+}

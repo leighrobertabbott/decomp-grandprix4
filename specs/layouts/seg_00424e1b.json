@@ -1,0 +1,9 @@
+{
+  "_evidence": "Segment words read on the 0x00424e1b -> 0x405c30 path that ring_00405a12 leaves alone, for the start records 0..11 (rec offsets in obj_00424e1b): word +0 (angle: abs/neg, shr 2, index into the cos table 0x7c5c5c - any value stays in the 0x4000-byte table) and words +4/+8 via 0x40460a, words +0x60/+0x62 (movzx, compared signed with |[0x934df0]|>>8 - 0x200 to choose 0x405c9a or 0x405a12: both ways), and word +6 of the final record (movsx, shl 8 into [esi+0x58]; the walk ends on records 0..14). None can fault and none affects where the walks stop (those fields are pinned by ring_00405a12). Compose after ring_00405a12.",
+  "globals": [
+    {"addr": "0x008943a0", "type": "u16", "count": 12, "stride": "0x160"},
+    {"addr": "0x008943a6", "type": "i16", "count": 15, "stride": "0x160"},
+    {"addr": "0x00894400", "type": "u16", "count": 12, "stride": "0x160"},
+    {"addr": "0x00894402", "type": "u16", "count": 12, "stride": "0x160"}
+  ]
+}

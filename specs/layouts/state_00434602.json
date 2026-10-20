@@ -1,0 +1,40 @@
+{
+ "_evidence": "0x00434602 (esi = car record, rec[0x66fef0,0x41c,0..21]): returns unless bytes [0x852d98] and [0x852d8c] are both zero (each zero in half the picks), esi equals the car pointer [0x66d820] (alias_reg: equal in about half the cases, else a plain value) and byte +0x71 bit 1 of that car is set (0x66ff61 + k*0x41c, all 22 cars vary); then stores 0xff to 0x6f2f65. Nothing is dereferenced except esi's own record.",
+ "globals": [
+  {
+   "addr": "0x00852d98",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    128,
+    255
+   ]
+  },
+  {
+   "addr": "0x00852d8c",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    128,
+    255
+   ]
+  },
+  {
+   "addr": "0x0066d820",
+   "type": "u32",
+   "alias_reg": "esi"
+  },
+  {
+   "addr": "0x0066ff61",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  }
+ ]
+}

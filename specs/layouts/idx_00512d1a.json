@@ -1,0 +1,15 @@
+{
+ "_evidence": "0x00512d1a reads the dword at [0x7a8e18] + [0x88f624]*[0x6975c4] + 0x20 (slot base + row*pitch + 0x66d830-0x66d810): the row index is a save-slot row 0..3, which with slot_00520b1b's pitch (<= 0x3400) and 64 KiB slot area stays inside the buffer.",
+ "globals": [
+  {
+   "addr": "0x0088f624",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3
+   ]
+  }
+ ]
+}

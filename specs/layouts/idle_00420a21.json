@@ -1,0 +1,92 @@
+{
+ "_evidence": "Overlay for 0x00420a21 (compose LAST, after recs_006380d8+state_0041f489+integ_004200a7+state_004208bd+state_004094e3). The idle exit also needs [0x62244c] == 0 and [0x622450] == 0 (the per-frame deltas 0x4208bd stores: quotients, zero when the wheel pair is at rest; drawn 0 in 3/5, else 1/-1) and the wheel dwords 0x6380d8+0x2c4 and +0x8c4 nonzero ('test; je': drawn 0 in 1/7, else small/extreme values; 0x4208bd only subtracts them before dividing by the positive 0x6228bc, so any value is valid). The second gate ORs dword +0x6c of the four 0x300-byte wheel records ('or ...; je 0x420b5c' skips the four +0xb4 stores): each draws zero in 2/3 (else 1/-1/0x4000) so the all-zero skip and the store both occur; integ_004200a7 treats +0x6c as any i32 (imul only). Also any-value state: wheel dword +0x94 of the four records (0x63816c+k*0x300: 'sub eax,[ebx+0x94]; neg' into the corner dwords at 0x420b80..0x420bc0), the wheel words/dwords +0x168..+0x16f the callees read (0x638240+k*0x300, 8 bytes, add/imul only) and the 0x420880 limit 0x629bd8 ('cmp eax,[0x629bd8]; jl': signed compare with a max of absolute values, both outcomes).",
+ "globals": [
+  {
+   "addr": "0x0062244c",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x00622450",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x0063839c",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    "0xffffffff",
+    "0x1000",
+    "0x7fffffff",
+    "0x80000000",
+    "0x12345"
+   ]
+  },
+  {
+   "addr": "0x0063899c",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    "0xffffffff",
+    "0x1000",
+    "0x7fffffff",
+    "0x80000000",
+    "0x12345"
+   ]
+  },
+  {
+   "addr": "0x00638144",
+   "type": "u32",
+   "count": 4,
+   "stride": "0x300",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    "0xffffffff",
+    "0x4000"
+   ]
+  },
+  {
+   "addr": "0x0063816c",
+   "type": "i32",
+   "count": 4,
+   "stride": "0x300"
+  },
+  {
+   "addr": "0x00638240",
+   "type": "i32",
+   "count": 4,
+   "stride": "0x300"
+  },
+  {
+   "addr": "0x00638244",
+   "type": "i32",
+   "count": 4,
+   "stride": "0x300"
+  },
+  {
+   "addr": "0x00629bd8",
+   "type": "i32"
+  }
+ ]
+}

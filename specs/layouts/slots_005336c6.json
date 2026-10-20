@@ -1,0 +1,6 @@
+{
+ "_evidence": "Global-memory registry at 0x828020: 16 eight-byte entries (+0 the block key/handle stored by 0x533653 'mov [edi],edx; mov [edi+4],eax', cleared to 0 by the release 0x53367c 'mov dword [edi],0'; [0x82801c] counts them). 0x005336c6 finds the first free entry: 'mov edi,0x828020; mov ecx,0x10; ... or ecx,ecx; je; cmp dword [edi],0; jne -> add edi,8; dec ecx', then edi = 0 and stc when all 16 are in use (block 0x5336e7), else clc. Only the +0 dwords up to the first zero are read, so the behaviour depends on the index of the first free entry alone: the prefix lengths 0..16 (16 = table full; release can leave gaps, but entries past the first zero are never read) with random nonzero keys cover every outcome. Plain compares on fixed static addresses: every value is valid. Values are synthetic.",
+ "globals": [
+  {"addr": "0x00828020", "type": "u32", "count": 16, "stride": 8, "prefix": [0, 0, 1, 2, 3, 5, 8, 14, 15, 16, 16, 16]}
+ ]
+}

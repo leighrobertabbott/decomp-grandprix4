@@ -1,0 +1,12 @@
+{
+  "_evidence": "0x0043c31b indexes the dword tables 0x006227c4 (six gear values written by 0x0043c1ba) and 0x0063b844 (six values written by 0x0043c083, loop ecx 0..5) with the gear indices [0x006227e8] (ebx) and [0x006227ec] (ecx). Their writer 0x0043c7d2 stores the selected gear (0x0043ca8b clamps it to <= 5) and the car's byte +0x7f, so both are 0..5; fuzzed indices faulted. The rest is wrapping arithmetic (sub, imul [0x006227a0], shrd 14, add, imul [0x0062d244], shrd 12, add [0x006227f0], imul by the entry eax): the 12 table entries and the three scalars are unconstrained i32, which also exercises both CF/OF outcomes of the final imul.",
+  "globals": [
+    {"addr": "0x006227e8", "type": "u32", "lo": 0, "hi": 5},
+    {"addr": "0x006227ec", "type": "u32", "lo": 0, "hi": 5},
+    {"addr": "0x006227c4", "type": "i32", "count": 6, "stride": 4},
+    {"addr": "0x0063b844", "type": "i32", "count": 6, "stride": 4},
+    {"addr": "0x006227a0", "type": "i32"},
+    {"addr": "0x0062d244", "type": "i32"},
+    {"addr": "0x006227f0", "type": "i32"}
+  ]
+}

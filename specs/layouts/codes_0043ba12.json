@@ -1,0 +1,277 @@
+{
+ "_evidence": "Per-driver/per-circuit byte table used by 0x0043ba12: 0x51f816/0x51f82c address byte edx(=3) of the record 0x7adb4c + 4 + esi*0xf28 + ebx*0xe4 (0x52a260), i.e. 0x7adb53 + esi*0xf28 + ebx*0xe4, with esi = driver 0..21 and ebx = circuit 0..16 (the only caller 0x43ba31 loops esi to 0x16 and ebx to 0x11). The byte is compared with 'I' (0x49; je clears it through 0x51f82c), so all 22x17 bytes are drawn from 'I' (a quarter of the picks) and neighbouring/other codes. Static zero in the image (filled from the game's data files).",
+ "globals": [
+  {
+   "addr": "0x7adb53",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "values": [
+    "0x49",
+    "0x49",
+    0,
+    "0x41",
+    "0x48",
+    "0x4a",
+    "0x52",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x7adc37",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "values": [
+    "0x49",
+    "0x49",
+    0,
+    "0x41",
+    "0x48",
+    "0x4a",
+    "0x52",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x7add1b",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "values": [
+    "0x49",
+    "0x49",
+    0,
+    "0x41",
+    "0x48",
+    "0x4a",
+    "0x52",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x7addff",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "values": [
+    "0x49",
+    "0x49",
+    0,
+    "0x41",
+    "0x48",
+    "0x4a",
+    "0x52",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x7adee3",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "values": [
+    "0x49",
+    "0x49",
+    0,
+    "0x41",
+    "0x48",
+    "0x4a",
+    "0x52",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x7adfc7",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "values": [
+    "0x49",
+    "0x49",
+    0,
+    "0x41",
+    "0x48",
+    "0x4a",
+    "0x52",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x7ae0ab",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "values": [
+    "0x49",
+    "0x49",
+    0,
+    "0x41",
+    "0x48",
+    "0x4a",
+    "0x52",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x7ae18f",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "values": [
+    "0x49",
+    "0x49",
+    0,
+    "0x41",
+    "0x48",
+    "0x4a",
+    "0x52",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x7ae273",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "values": [
+    "0x49",
+    "0x49",
+    0,
+    "0x41",
+    "0x48",
+    "0x4a",
+    "0x52",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x7ae357",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "values": [
+    "0x49",
+    "0x49",
+    0,
+    "0x41",
+    "0x48",
+    "0x4a",
+    "0x52",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x7ae43b",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "values": [
+    "0x49",
+    "0x49",
+    0,
+    "0x41",
+    "0x48",
+    "0x4a",
+    "0x52",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x7ae51f",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "values": [
+    "0x49",
+    "0x49",
+    0,
+    "0x41",
+    "0x48",
+    "0x4a",
+    "0x52",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x7ae603",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "values": [
+    "0x49",
+    "0x49",
+    0,
+    "0x41",
+    "0x48",
+    "0x4a",
+    "0x52",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x7ae6e7",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "values": [
+    "0x49",
+    "0x49",
+    0,
+    "0x41",
+    "0x48",
+    "0x4a",
+    "0x52",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x7ae7cb",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "values": [
+    "0x49",
+    "0x49",
+    0,
+    "0x41",
+    "0x48",
+    "0x4a",
+    "0x52",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x7ae8af",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "values": [
+    "0x49",
+    "0x49",
+    0,
+    "0x41",
+    "0x48",
+    "0x4a",
+    "0x52",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x7ae993",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "values": [
+    "0x49",
+    "0x49",
+    0,
+    "0x41",
+    "0x48",
+    "0x4a",
+    "0x52",
+    "0xff"
+   ]
+  }
+ ]
+}

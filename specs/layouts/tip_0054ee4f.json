@@ -1,0 +1,14 @@
+{
+ "_evidence": "0x0054ee4f (place the hovered hotspot's box): 'cmp dword [0x838e48],0; jne' - the hovered node pointer (0 = nothing hovered, early ret; else a node, see tipnode_0054ee4f) is nullable; 'cmp dword [0x838e88],0; je' then 0x54ec64 only tests that dword for zero, adds [0x838e8c] to the total [0x82fcb0] through 0x538a24 (any u32 pair is valid: no carry stores the sum, a carry runs the fixed-table reset 0x53872f; pool fields from pool_00538a24) and clears it, so [0x838e88] is zero in half the cases, [0x838e8c]/[0x82fcb0] random. eax = [0x838e70] is preserved by the stubs 0x54cb71/0x54d6f4 (push/pop only), so the box top is [0x838e70] + 0xc and 'cmp dword [0x838e70],1; je' picks the final 0x54cb71: values around 1 plus small/large ones. The midline (u16 sum >> 1, 0..0x7fff) is compared UNSIGNED with the cursor y [0x838e44] ('cmp eax,[0x838e44]; jbe'): cursor y spans 0..0x50 and 0x7fff/0x8000/0x80000000/0xfffffff0. The y offset (y - top or y + 0xc) and the cursor x [0x838e40] are compared SIGNED with 8 ('cmp ...,8; jge'): x takes values on both sides of 8 plus 0x7fffffff/0x80000000/-1. The far corners are compared SIGNED with the screen width/height [0x822244]/[0x822248] minus 8 ('sub edx,8; cmp ebx,edx; jl'): sizes mix 0/8/small (always clamp), the real 0x280/0x1e0-class sizes, and 0x7fffffff/0x80000000 (signed wrap after -8), so both clamp outcomes occur with ebx random or small. All of these are plain dword arithmetic: no value faults.",
+ "globals": [
+  {"addr": "0x00838e48", "type": "ptr", "size": 24, "fill": "layout=tipnode_0054ee4f", "nullable": true},
+  {"addr": "0x00838e88", "type": "u32", "values": [0, 0, 0, 1, "0x400", "0xffffffff"]},
+  {"addr": "0x00838e8c", "type": "u32"},
+  {"addr": "0x0082fcb0", "type": "u32"},
+  {"addr": "0x00838e70", "type": "u32", "values": [1, 1, 1, 0, 2, "0x10", "0x40", "0xfffffff8"]},
+  {"addr": "0x00838e44", "type": "u32", "values": [0, 4, 8, "0x10", "0x18", "0x20", "0x28", "0x30", "0x40", "0x50", "0x7fff", "0x8000", "0x80000000", "0xfffffff0"]},
+  {"addr": "0x00838e40", "type": "u32", "values": [0, 1, 7, 8, 9, "0x20", "0x100", "0x7fffffff", "0x80000000", "0xffffffff", "0xfffffff8"]},
+  {"addr": "0x00822244", "type": "u32", "values": [0, 8, "0x20", "0x40", "0x80", "0x280", "0x320", "0x400", "0x7fffffff", "0x80000000", "0x80000007"]},
+  {"addr": "0x00822248", "type": "u32", "values": [0, 8, "0x20", "0x30", "0x40", "0x60", "0x80", "0x1e0", "0x258", "0x7fffffff", "0x80000000", "0x80000007"]}
+ ]
+}

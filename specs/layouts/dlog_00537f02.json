@@ -1,0 +1,36 @@
+{
+ "_evidence": "0x00537f02: mode byte [0x829ba3] (cmp 0 / cmp 1; 0x537e90 stores 1 = RAM or 2 = disk logging, 0x53827a clears it); for mode 1 it fills [start, end) = [[0x829ba4], [0x829ba8]) with 0xa5 (rep stosb, ecx = end - start). 0x537e90 sets start = [rec+0x14] and end = start + [rec+0x10] (a buffer and its size), so end >= start and both bound one writable buffer. The heap buffer is modelled by an unreferenced stretch of the zero-initialised .data at 0xa06000 (inside the 0x4309c-byte block after 0xa05c3c that no instruction addresses directly): start = 0xa06000 + 0..0x40, end = 0xa06040 + 0..0x40, so 0..0x80 bytes are filled and the fill never leaves the stretch. Random pointers wrote through wild addresses or faulted.",
+ "globals": [
+  {
+   "addr": "0x00829ba3",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    1,
+    1,
+    2
+   ]
+  },
+  {
+   "addr": "0x00829ba4",
+   "type": "u32",
+   "points_into": {
+    "base": "0xa06000",
+    "stride": 1,
+    "lo": 0,
+    "hi": 64
+   }
+  },
+  {
+   "addr": "0x00829ba8",
+   "type": "u32",
+   "points_into": {
+    "base": "0xa06040",
+    "stride": 1,
+    "lo": 0,
+    "hi": 64
+   }
+  }
+ ]
+}

@@ -23,4 +23,4 @@ void __cdecl FUN_004188c2(gp4::Regs* r) {
     r->ecx = 0;
     r->eflags = r->eflags & ~0x8d5u;
 }
-GP4_IMPL(0x004188c2, FUN_004188c2, "regs() -> (eax, ecx, cf, pf, af, zf, sf, of)")
+GP4_IMPL(0x004188c2, FUN_004188c2, "regs() -> (eax, ecx, cf, pf, af, zf, sf, of); globals=layout=slots_0041891a")

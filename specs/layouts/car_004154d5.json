@@ -1,0 +1,37 @@
+{
+ "_evidence": "Car overlay for 0x004154d5 (compose after car_0043c677+rec_00427880; car_0043c677 gives the random background and the segment +0x1c = record 0..25 that 0x4284e1's callee 0x428481 dereferences): dword +0x288 is 0x435aa4's low-pass of dword +0xac (new = (c*v + (0x4000-c)*old) >> 14, c <= 0x4000), any i32 except 0x80000000 (as car_004127b3 bounds +0xac): edx = (+0x288 * rate) >> 18 then (edx * [0x603ac0]) >> 14 gives |ecx| < rate * 2^13 for |[0x603ac0]| < 0x4000, the bound 0x427880 needs for its idiv (|ecx| << 18 by the rate). Bytes +0xe5 (bit 2) and +0x230 (bit 6) take both states in about half the picks each.",
+ "size": 672,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x288",
+   "type": "i32",
+   "lo": -2147483647,
+   "hi": 2147483647
+  },
+  {
+   "off": "0xe5",
+   "type": "u8",
+   "values": [
+    0,
+    4,
+    "0xff",
+    "0xfb",
+    5,
+    "0x10"
+   ]
+  },
+  {
+   "off": "0x230",
+   "type": "u8",
+   "values": [
+    0,
+    "0x40",
+    "0xff",
+    "0xbf",
+    "0x41",
+    "0x80"
+   ]
+  }
+ ]
+}

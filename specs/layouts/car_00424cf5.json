@@ -1,0 +1,30 @@
+{
+ "_evidence": "Car record at esi for 0x00424cf5 (caller 0x42504d walks the 22 car records and calls it when byte +0x25e is 0xff; overlay after car_0041e500+rec_00420e1d+car_00424878 for the 0x424878 chain): byte +0x202 is the car's debris slot, stored to +0x25e and used to index the flag bytes 0x63bcfc/0x63bd3c and the 0x78-byte object record 0x63bd7c + slot*0x78, whose +0x6d (object/shape index into the 22 0x5d8-byte blocks at 0x6099c0, rec_0042453d) is set to the slot, so it is 0..21; dword +0x40 is the detached-parts mask, passed as ~[+0x40] & 0x7fffff to the 0x444517 mass model, which divides by the mass of the remaining parts: a mask with all 23 low bits set leaves no part and the original #DEs (idiv by zero), which no car reaches (its chassis part stays), so the draws keep at least one remaining part (high bits free). The remaining set must also meet the shape-entry table (tab_0042453d via [0x62a048]: entry 0 holds the low 17 part bits): with no matching entry 0x4227e5 leaves the block's record count 0 and 0x424625's 'inc ecx; cmp ecx,[block+0x18]; jne' runs on until ecx wraps (the observed timeouts), which the game's table, covering every part, never allows; so every drawn mask keeps one of parts 0..16.",
+ "size": 1052,
+ "fields": [
+  {
+   "off": "0x202",
+   "type": "u8",
+   "lo": 0,
+   "hi": 21
+  },
+  {
+   "off": "0x40",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    1,
+    "0x7ffffe",
+    "0x12345",
+    "0x7f0000",
+    "0xff800000",
+    "0xfffffffe",
+    "0x80000000",
+    "0x55555555",
+    "0x400000",
+    "0x7e0000"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,38 @@
+{
+ "_evidence": "0x004240ff loops from [0x607fa4] up to [0x607fa8] (1..3 steps in the game; fuzzed it never ends); selector bytes 0x62596b (0xff mostly), 0x60827e (0xff/0), 0x60827f (0/1).",
+ "globals": [
+  {
+   "addr": "0x00607fa4",
+   "type": "u32",
+   "lo": 1,
+   "hi": 3
+  },
+  {
+   "addr": "0x0062596b",
+   "type": "u8",
+   "values": [
+    "0xff",
+    "0xff",
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x0060827e",
+   "type": "u8",
+   "values": [
+    "0xff",
+    0,
+    0
+   ]
+  },
+  {
+   "addr": "0x0060827f",
+   "type": "u8",
+   "values": [
+    0,
+    1
+   ]
+  }
+ ]
+}

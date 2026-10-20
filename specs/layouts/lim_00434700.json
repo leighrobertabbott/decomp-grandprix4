@@ -1,0 +1,9 @@
+{
+  "_evidence": "Tuning words of 0x00434700, read only here (xref; static 0x3000, 0x80, 0x6000, 0x300 in the low words): the yaw-error threshold 0x603814 (cmp dx,word; jl: signed), the speed threshold 0x603818 (cmp with (+0xac >> 11); jge), the correction clamp 0x60381c (cmp ax,word; jb: unsigned) and the hold threshold 0x603820 (cmp; jge). globals=fuzz drew mostly tiny or negative words, so |error| < threshold (0x43481f) and |correction| < clamp (0x43485e) never occurred on the deep path; here they are drawn around their static values (0..0x7fff, -0x100..0x400, 0..0xffff, 0..0x7fff) so both sides of every compare occur. Only compares and imul word: nothing faults.",
+  "globals": [
+    {"addr": "0x00603814", "type": "i32", "lo": 0, "hi": 32767},
+    {"addr": "0x00603818", "type": "i32", "lo": -256, "hi": 1024},
+    {"addr": "0x0060381c", "type": "i32", "lo": 0, "hi": 65535},
+    {"addr": "0x00603820", "type": "i32", "lo": 0, "hi": 32767}
+  ]
+}

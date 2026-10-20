@@ -1,0 +1,15 @@
+{
+  "size": 860,
+  "_evidence": "0x00413d01 loops i=0..3 over dwords [esi+0x34c+4i] (abs via test/jns/neg, signed cmp with [0x602084], jg exit) and [esi+0x2ec+4i] (signed jl [0x602088] / jge [0x60208c] exits); after four passes it clears bit 2 of byte [esi+0x203] (clc). The last dword read ends at +0x35c, so the buffer is 0x35c bytes. Pure compares: every value is valid; values in -100..100 against the state_00413d01 bounds make each early exit and the four-pass completion (about 6% of cases) occur.",
+  "fields": [
+    {"off": 515, "type": "u8"},
+    {"off": 748, "type": "i32", "lo": -100, "hi": 100},
+    {"off": 752, "type": "i32", "lo": -100, "hi": 100},
+    {"off": 756, "type": "i32", "lo": -100, "hi": 100},
+    {"off": 760, "type": "i32", "lo": -100, "hi": 100},
+    {"off": 844, "type": "i32", "lo": -100, "hi": 100},
+    {"off": 848, "type": "i32", "lo": -100, "hi": 100},
+    {"off": 852, "type": "i32", "lo": -100, "hi": 100},
+    {"off": 856, "type": "i32", "lo": -100, "hi": 100}
+  ]
+}

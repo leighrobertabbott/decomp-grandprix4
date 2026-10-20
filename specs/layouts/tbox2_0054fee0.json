@@ -1,0 +1,17 @@
+{
+ "_evidence": "[0x83e6a2] -> a tboxrec_0054fee0 record (non-null: 0x54fee0 dereferences it unconditionally), plus the string entry for text id 0xc11 (dword 0x83888a of the 0x835846 table, zero in the image) with the script_0054d798 byte set.",
+ "globals": [
+  {
+   "addr": "0x0083e6a2",
+   "type": "ptr",
+   "size": 16,
+   "fill": "layout=tboxrec_0054fee0"
+  },
+  {
+   "addr": "0x0083888a",
+   "type": "ptr",
+   "size": 64,
+   "fill": "u8{=0,1,2,3,5,6,7,8,9,0xa,0xb,0xc,0xd,0xe,0xf,0x10,0x11,0x12,0x13,0x14,0x20,0x41,0x7f,0x80,0xff}"
+  }
+ ]
+}

@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x00426091 caches the pair (esi, ebx) in 0x00603e84/0x00603e88 (cmp esi; jne, cmp ebx; je: both equal skips the work), so each global equals its register in about half the cases (alias_reg). 0x426031 (called for [esi+0x98] and [ebx+0x98], always with the esi record's words) reads the runtime table 0x0063a194 (zero in the image, filled by the game) at index |x >> 22| (0..512, 513 dwords, all varied), the gain 0x0062d28c (imul/shrd 14, drawn -0x8000..0x8000) and the positive rate 0x00603854 (32..65535 as in state_00405489). Then ebp = |(r1+r2)>>1| or 1 if zero is the idiv divisor of 0x10000000: never zero, and |quotient| <= 2^28 (0x80000000 stays negative after neg and gives 0), so no input faults. The 'neg eax' block 0x4260f8 is dead: the dividend is positive and ebp is >= 1 or 0x80000000 (quotient 0), so the quotient is never negative.",
+  "globals": [
+    {"addr": "0x00603e84", "type": "u32", "alias_reg": "esi"},
+    {"addr": "0x00603e88", "type": "u32", "alias_reg": "ebx"},
+    {"addr": "0x0062d28c", "type": "i32", "lo": -32768, "hi": 32768},
+    {"addr": "0x00603854", "type": "u32", "lo": 32, "hi": 65535},
+    {"addr": "0x0063a194", "type": "i32", "count": 513, "stride": 4}
+  ]
+}

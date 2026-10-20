@@ -1,0 +1,19 @@
+{
+  "_evidence": "0x00416dec reads only dwords: max(0x638d30, 0x62fbec) (zero exits), |0x638ce0| against 0x62fb9c, the averaged pairs of the two state blocks at ebx = 0x6380d8 (+0x640/+0x940 = 0x638718/0x638a18 and +0x61c/+0x91c = 0x6386f4/0x6389f4: sign of their xor; +0x628/+0x928 = 0x638700/0x638a00: |avg| against 0x62fba0), the gain 0x62fba4 (imul/shrd 14, clamped to 0..0x4000) and the pair 0x637f38/0x637f3c it scales. All are state (static zero, so fuzz:i32 never reached the xor/clamp blocks); every value is valid (wrapping add/sar, imul/shrd, no division), so all are full-range i32.",
+  "globals": [
+    {"addr": "0x00638d30", "type": "i32"},
+    {"addr": "0x0062fbec", "type": "i32"},
+    {"addr": "0x00638ce0", "type": "i32"},
+    {"addr": "0x0062fb9c", "type": "i32"},
+    {"addr": "0x00638718", "type": "i32"},
+    {"addr": "0x00638a18", "type": "i32"},
+    {"addr": "0x006386f4", "type": "i32"},
+    {"addr": "0x006389f4", "type": "i32"},
+    {"addr": "0x00638700", "type": "i32"},
+    {"addr": "0x00638a00", "type": "i32"},
+    {"addr": "0x0062fba0", "type": "i32"},
+    {"addr": "0x0062fba4", "type": "i32"},
+    {"addr": "0x00637f38", "type": "i32"},
+    {"addr": "0x00637f3c", "type": "i32"}
+  ]
+}

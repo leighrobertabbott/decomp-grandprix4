@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x00431efb: ebx = [eax*4 + 0x0062a970] is one of four pointers (eax 0..3) to entry_00431efb entries (header plus up to 3 sixteen-byte source records); byte 0x00868582 (test; jns) selects the negating copy loop, any value.",
+  "globals": [
+    {"addr": "0x0062a970", "type": "ptr", "size": 56, "count": 4, "stride": 4, "fill": "layout=entry_00431efb"},
+    {"addr": "0x00868582", "type": "u8"}
+  ]
+}

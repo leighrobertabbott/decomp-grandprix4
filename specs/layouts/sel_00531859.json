@@ -1,0 +1,13 @@
+{
+ "_evidence": "Selector [0x7ad87c] (read through 0x530774) is a small id taken from the device records: 0x530c2d stores 'mov edx,[ebx+0xc]; mov edx,[ebx+edx*4+0x14]; mov [0x7ad87c],edx'; it is used as a bit index ('shl eax,cl; or [0x7ad848],eax' at 0x530706, 'bt [0x7ad848],eax' in 0x531803/0x531847) and as a record index (0x531803: 0x7ad670 + i*0x38, 8 records below the bitmap at 0x7ad848), so 0..7 (signed bt beyond bit 31 or a negative index reads outside the bitmap). 0x00531859 compares it with the seven dword keys at +0x14..+0x2c of each of the three 0x3c-byte device records at 0x827160 ('cmp eax,[ebx+edx*4+0x14]'; 7 columns, 'add ebx,0x3c', 3 rows) and on a hit returns '[ebx+edx*4+0x28]' (overlapping keys 5/6 and the following dwords). Keys are drawn from 0..6, so a selector of 7 always misses (the 0x1000 exit) and smaller selectors hit at varying columns/rows. The result dwords at +0x30..+0x40 of each row (0x827190/0x8271cc/0x827208, count 5) are random; +0x28/+0x2c stay keys (they are both). The bitmap dword 0x7ad848 (bits 0..7 selected by 0x531803/0x531847) is random so both bt outcomes occur.",
+ "globals": [
+  {"addr": "0x007ad87c", "type": "u32", "lo": 0, "hi": 7},
+  {"addr": "0x00827174", "type": "u32", "count": 7, "stride": 4, "lo": 0, "hi": 6},
+  {"addr": "0x008271b0", "type": "u32", "count": 7, "stride": 4, "lo": 0, "hi": 6},
+  {"addr": "0x008271ec", "type": "u32", "count": 7, "stride": 4, "lo": 0, "hi": 6},
+  {"addr": "0x00827190", "type": "u32", "count": 5, "stride": 4},
+  {"addr": "0x008271cc", "type": "u32", "count": 5, "stride": 4},
+  {"addr": "0x00827208", "type": "u32", "count": 5, "stride": 4},
+  {"addr": "0x007ad848", "type": "u32"}
+ ]
+}

@@ -1,0 +1,15 @@
+{
+  "_evidence": "0x00407af6 (with callees 0x407839, 0x407944, 0x407a0d) reads the two segment end-point pairs x = dwords 0x006279ac/0x006279b0, 0x006279b8/0x006279b4 and z = 0x006279cc/0x006279d0, 0x006279d8/0x006279d4, the target eax/edx (spec) and, in 0x407a0d, the car position 0x006278c0/0x006278c8; every other 0x6279xx/0x6278xx dword it reads is written first (0x627950/58 from 0.5, 0x627970/74/80/84 by 0x407839, 0x627988/8c/90 zeroed, 0x62797c/78/9c..a8 computed). Callers build the points as (sx word +0xd4/+0xdc << 8) + dword +0xf0/+0xf8 (0x40729a, 0x4075d0) or constants 0xc800..0x22600 (0x407ffb), i.e. coordinates of the i16 frame <<8, so all ten are varied over -2^24..2^24 (differences never wrap). The second coordinate of each pair repeats the first in about half the cases (alias), so degenerate and axis-aligned segments occur: both lengths below the 0x555 limit (0x407839 stc -> 0x407b08) and near-zero heading differences (the +-0x1000 turn clamp 0x407cd0..0x407ce9) are reached besides the general case. All arithmetic is fild/fsqrt/fpatan/fsincos/fdiv/fistp with masked exceptions or wrapping integer ops, and the refinement loop is bounded by the 0x627990 < 6 counter, so no input faults or hangs. 0x6279dc/0x6279e0 (0x555), 0x6f2a54 (0.5) and 0x6f2b14 (2^18) are constants never written by the game; 0x6f2be4/0x6f2bdc are set by the startup initialiser 0x527476 (oracle init_calls) and are not fuzzed.",
+  "globals": [
+    {"addr": "0x006279ac", "type": "i32", "lo": -16777216, "hi": 16777216},
+    {"addr": "0x006279b0", "type": "i32", "lo": -16777216, "hi": 16777216, "alias": "0x006279ac"},
+    {"addr": "0x006279b8", "type": "i32", "lo": -16777216, "hi": 16777216},
+    {"addr": "0x006279b4", "type": "i32", "lo": -16777216, "hi": 16777216, "alias": "0x006279b8"},
+    {"addr": "0x006279cc", "type": "i32", "lo": -16777216, "hi": 16777216},
+    {"addr": "0x006279d0", "type": "i32", "lo": -16777216, "hi": 16777216, "alias": "0x006279cc"},
+    {"addr": "0x006279d8", "type": "i32", "lo": -16777216, "hi": 16777216},
+    {"addr": "0x006279d4", "type": "i32", "lo": -16777216, "hi": 16777216, "alias": "0x006279d8"},
+    {"addr": "0x006278c0", "type": "i32", "lo": -16777216, "hi": 16777216},
+    {"addr": "0x006278c8", "type": "i32", "lo": -16777216, "hi": 16777216}
+  ]
+}

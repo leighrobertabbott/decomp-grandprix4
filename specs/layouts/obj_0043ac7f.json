@@ -1,0 +1,67 @@
+{
+ "size": 120,
+ "fill": "bytes",
+ "_evidence": "Collision-object record (0x78 bytes, as the 64 records 0x63bd7c + k*0x78 that 0x43acb6 passes to 0x0043ac7f in ebx/edi). Random background (flags, angles +0xc/+0x10/+0x14 are fild*pi/2^31 binary angles: any i32), with: positions +0/+4/+8 in +-0x20000 so pairs overlap in 0x43aa07's per-axis test (|d| or the swept |d + v*rate| below the radius sum) about as often as not; velocities +0x18/+0x1c/+0x20 in +-0x8000; radius +0x68 (added for the pair and subtracted from box projections) 0..0x2000; weight +0x48 in +-0xffff and car index +0x6c 0..21 (obj_0043a785: a wild weight pair overflows the idiv in 0x43a785, +0x6c indexes the 22 cars); shape index +0x6d 0..21 (recs_0063bd7c/state_0043acb6: index into the 22 shape blocks).",
+ "fields": [
+  {
+   "off": 0,
+   "type": "i32",
+   "lo": -131072,
+   "hi": 131072
+  },
+  {
+   "off": 4,
+   "type": "i32",
+   "lo": -131072,
+   "hi": 131072
+  },
+  {
+   "off": 8,
+   "type": "i32",
+   "lo": -131072,
+   "hi": 131072
+  },
+  {
+   "off": "0x18",
+   "type": "i32",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "off": "0x1c",
+   "type": "i32",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "off": "0x20",
+   "type": "i32",
+   "lo": -32768,
+   "hi": 32768
+  },
+  {
+   "off": "0x48",
+   "type": "i32",
+   "lo": -65535,
+   "hi": 65535
+  },
+  {
+   "off": "0x68",
+   "type": "i32",
+   "lo": 0,
+   "hi": 8192
+  },
+  {
+   "off": "0x6c",
+   "type": "u8",
+   "lo": 0,
+   "hi": 21
+  },
+  {
+   "off": "0x6d",
+   "type": "u8",
+   "lo": 0,
+   "hi": 21
+  }
+ ]
+}

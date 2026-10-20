@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x004053ff reads the record dword +0x240 (test dword,0xffffffff; je 0x405481: zero skips straight to the store of 0, so it takes values with zero in about a third of the cases and both nonzero signs), word +0xba (movzx, imul multiplier, every value valid) and word +0xb2 (movsx, then cmp 0x200 / jge: values below 0x200, including negatives, are replaced by 0x200, so every value is a valid idiv divisor and both directions occur with a full-range draw); it writes word +0x176.",
+  "size": 584,
+  "fields": [
+    {"off": "0x240", "type": "u32", "values": [0, 0, 0, 1, "0x7fffffff", "0x80000000", "0xffffffff", "0x12345"]},
+    {"off": "0xba", "type": "u16"},
+    {"off": "0xb2", "type": "i16"},
+    {"off": "0x176", "type": "u16"}
+  ]
+}

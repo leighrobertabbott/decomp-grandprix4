@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x0052d738 tests bit (al & 7) of byte [0x8245a0 + (al >> 3)]: the 256-bit key-state bitmap 0x8245a0..0x8245bf (32 bytes, run-time keyboard state, zero in the image) indexed by the scan code al (0..255 via movzx). Only 'and' reads it, so any pattern is valid; all 32 bytes vary so every scan code sees both bit values.",
+ "globals": [
+  {
+   "addr": "0x008245a0",
+   "type": "u8",
+   "count": 32,
+   "stride": 1
+  }
+ ]
+}

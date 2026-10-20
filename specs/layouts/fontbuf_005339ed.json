@@ -1,0 +1,23 @@
+{
+ "_evidence": "Font table addressed through [0x833f90] by 0x005339ed (the global holds buffer + 0x80): 'movzx eax,al; sub eax,[0x833f48]; shl eax,2; mov ebx,[0x833f90]; movzx eax,word [eax+ebx]; add ebx,eax; movzx eax,byte [ebx]' - a 4-byte entry per character code c (relative to the first code [0x833f48] <= 0x20) whose low word is the offset of the glyph from the table and whose glyph's first byte is its width. Entries exist for c - first in -0x20..0xff (buffer 0x0..0x47c: a code below the first one, possible on the first pass where ah comes from 0x53d9a6's eax so 'cmp ax,0x13' does not reject c < 0x14, still lands inside the buffer), each offset in 0x400..0x4ff (glyph bytes at buffer 0x480..0x57f, widths 0..0x20). The upper words of the entries and nothing else are read.",
+ "size": 1408,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": 0,
+   "type": "u16",
+   "count": 288,
+   "stride": 4,
+   "lo": 1024,
+   "hi": 1279
+  },
+  {
+   "off": "0x480",
+   "type": "u8",
+   "count": 256,
+   "stride": 1,
+   "lo": 0,
+   "hi": 32
+  }
+ ]
+}

@@ -1,0 +1,71 @@
+{
+ "_evidence": "Overlay for 0x0041062a (compose LAST, after state_00405489+engine_00413606+ring_008943a0+bank_004279ab; engine_00413606 already varies the dword state of the 0x405893 -> 0x4057cf -> 0x404f99 chain: 0x6013a0/a4/b4/b8 (written by 0x4112e3), 0x62d298 (circuit parser 0x40c6d8), 0x602d68/6c, 0x60312c/30, 0x624790, 0x62ec10..18). 0x405893 stores edi (the car's ring record, spec rec 0..25) into both 0x602d84 and 0x602d88, so 0x404ed0 (body_00404ed0) reads words +0x26 (zero exit at 0x404edf, then a bounded cosine-table index), +0x00, +0x18 and the next record's +0x160/+0x178 (= next +0x00/+0x18) and byte +0x51 (ring_008943a0), 0x404f33 reads words next+2 / prev+2 (ring_008943a0's 0x894242 x34) and 0x4279ab bytes +0x8c of prev/cur/next (bank_004279ab): words +0x00/+0x18/+0x26 of records -1..32 (0x894240.. x34) are full-range i16 (sub/movsx/neg and a masked table index only). 0x411c26 (called four times by 0x404f99 with ecx 0/2) computes |(-fild(eax)*[0x601440]) * ([t+8]*x + [t+0x10])| * [0x601460] * fild([ecx*4+0x62f860]) * [0x6f2b9c] with t = 0x62f410 (ecx < 2) or 0x62f638, then fistp: pure x87 with masked exceptions (an overflowing fistp stores the integer indefinite), so every finite value is valid. The f64 scale [0x601440] (image 1.7e-5) is drawn -1e-4..1e-4, [0x601460] (image 57.5) -100..100, the coefficient pairs +8/+0x10 of both tables (images 90/1983.6 and 85.7/1990, car-data defaults) 0..200 and 0..4000, and the i32 factors 0x62f860/0x62f868 (image 15360) -0x8000..0x8000. The loop count [0x603078] of 0x4057cf ('dec ecx; je': 0 would loop 2^32 times) has no writer (single reader 0x4057dc) and keeps its image value 3; the 0x6f2xxx doubles are constants.",
+ "globals": [
+  {
+   "addr": "0x00601440",
+   "type": "f64",
+   "lo": -0.0001,
+   "hi": 0.0001
+  },
+  {
+   "addr": "0x00601460",
+   "type": "f64",
+   "lo": -100,
+   "hi": 100
+  },
+  {
+   "addr": "0x0062f418",
+   "type": "f64",
+   "lo": 0,
+   "hi": 200
+  },
+  {
+   "addr": "0x0062f420",
+   "type": "f64",
+   "lo": 0,
+   "hi": 4000
+  },
+  {
+   "addr": "0x0062f640",
+   "type": "f64",
+   "lo": 0,
+   "hi": 200
+  },
+  {
+   "addr": "0x0062f648",
+   "type": "f64",
+   "lo": 0,
+   "hi": 4000
+  },
+  {
+   "addr": "0x0062f860",
+   "type": "i32",
+   "lo": "-0x8000",
+   "hi": "0x8000"
+  },
+  {
+   "addr": "0x0062f868",
+   "type": "i32",
+   "lo": "-0x8000",
+   "hi": "0x8000"
+  },
+  {
+   "addr": "0x00894240",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x00894258",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x00894266",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  }
+ ]
+}

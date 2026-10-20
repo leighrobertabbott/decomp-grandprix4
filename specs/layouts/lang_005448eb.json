@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x005448eb: 'cmp dword [0x83157c],0; je' (0 returns 0) else esi = [0x7ab538] + 0xbc8 and 0x54d1ad does 'shl esi,2; add esi,0x835846; mov esi,[esi]', and the routine returns that table dword ('mov eax,esi'). [0x83157c] is the entry count written by 0x507bc0 (clamped to <= 8 by 'cmp eax,8; jbe'): values 0 (a quarter) and 1..8. [0x7ab538] is the selected entry: 0x507bc0 stores 0 or the loop index ebp < [0x83157c] (0..7), and the menu option descriptor at 0x84c7f1 (variable 0x7ab538, text base 0xbc8) edits the same index; a fuzzed u32 put 0x835846 + 4*idx outside the image (14/200 faults at 0x54d1b6). Domain: 0..7, plus -0xbc8 (table entry 0), 0x1000 (in .data, image content) and 0x40000000/0xc0000005, whose 'shl esi,2' wraps to entries 0xbc8/0xbcd (no fault; tests the index arithmetic modulo 2^32). The eight text-pointer dwords those indices select (0x835846 + 4*0xbc8 = 0x838766, 8 dwords; zero in the image, filled at run time by the 0x4fd0d0 registrations) are random: they are only returned, never dereferenced here. Values are synthetic.",
+ "globals": [
+  {"addr": "0x0083157c", "type": "u32", "values": [0, 1, 2, 3, 5, 8, 8, 0]},
+  {"addr": "0x007ab538", "type": "u32", "values": [0, 1, 2, 3, 4, 5, 6, 7, 0, 7, "0xfffff438", "0x1000", "0x40000000", "0xc0000005"]},
+  {"addr": "0x00838766", "type": "u32", "count": 8, "stride": 4}
+ ]
+}

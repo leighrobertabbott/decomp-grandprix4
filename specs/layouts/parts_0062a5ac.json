@@ -1,0 +1,626 @@
+{
+"_evidence": "Part table 0x62a5ac (23 parts x 16 bytes: x, y, z, mass) read by 0x00444ab0, which stores x*m, y*m, z*m (imul, low dword) and m into 0x62a7cc. x/y/z are run-time state (0x444917 interpolates them each frame from 0x62a2b4 and the 0x62a298.. bounds), so all 69 are any i32; the mass column is never written (0x444917 skips +0xc; 0x444517 only reads it): tuning constants, each drawn as its image mass in about a third of the cases and otherwise other values. Only imul and stores: nothing faults.",
+"globals": [
+{
+"addr": "0x62a5ac",
+"type": "i32"
+},
+{
+"addr": "0x62a5b0",
+"type": "i32"
+},
+{
+"addr": "0x62a5b4",
+"type": "i32"
+},
+{
+"addr": "0x62a5b8",
+"type": "u32",
+"values": [
+"0x12c",
+"0x12c",
+"0x12c",
+0,
+1,
+"0x7fffffff",
+"0x80000000",
+"0xffffffff",
+"0x12c"
+]
+},
+{
+"addr": "0x62a5bc",
+"type": "i32"
+},
+{
+"addr": "0x62a5c0",
+"type": "i32"
+},
+{
+"addr": "0x62a5c4",
+"type": "i32"
+},
+{
+"addr": "0x62a5c8",
+"type": "u32",
+"values": [
+"0x32",
+"0x32",
+"0x32",
+0,
+1,
+"0x7fffffff",
+"0x80000000",
+"0xffffffff",
+"0x12c"
+]
+},
+{
+"addr": "0x62a5cc",
+"type": "i32"
+},
+{
+"addr": "0x62a5d0",
+"type": "i32"
+},
+{
+"addr": "0x62a5d4",
+"type": "i32"
+},
+{
+"addr": "0x62a5d8",
+"type": "u32",
+"values": [
+"0xf",
+"0xf",
+"0xf",
+0,
+1,
+"0x7fffffff",
+"0x80000000",
+"0xffffffff",
+"0x12c"
+]
+},
+{
+"addr": "0x62a5dc",
+"type": "i32"
+},
+{
+"addr": "0x62a5e0",
+"type": "i32"
+},
+{
+"addr": "0x62a5e4",
+"type": "i32"
+},
+{
+"addr": "0x62a5e8",
+"type": "u32",
+"values": [
+"0x5",
+"0x5",
+"0x5",
+0,
+1,
+"0x7fffffff",
+"0x80000000",
+"0xffffffff",
+"0x12c"
+]
+},
+{
+"addr": "0x62a5ec",
+"type": "i32"
+},
+{
+"addr": "0x62a5f0",
+"type": "i32"
+},
+{
+"addr": "0x62a5f4",
+"type": "i32"
+},
+{
+"addr": "0x62a5f8",
+"type": "u32",
+"values": [
+"0xf",
+"0xf",
+"0xf",
+0,
+1,
+"0x7fffffff",
+"0x80000000",
+"0xffffffff",
+"0x12c"
+]
+},
+{
+"addr": "0x62a5fc",
+"type": "i32"
+},
+{
+"addr": "0x62a600",
+"type": "i32"
+},
+{
+"addr": "0x62a604",
+"type": "i32"
+},
+{
+"addr": "0x62a608",
+"type": "u32",
+"values": [
+"0x5",
+"0x5",
+"0x5",
+0,
+1,
+"0x7fffffff",
+"0x80000000",
+"0xffffffff",
+"0x12c"
+]
+},
+{
+"addr": "0x62a60c",
+"type": "i32"
+},
+{
+"addr": "0x62a610",
+"type": "i32"
+},
+{
+"addr": "0x62a614",
+"type": "i32"
+},
+{
+"addr": "0x62a618",
+"type": "u32",
+"values": [
+"0x14",
+"0x14",
+"0x14",
+0,
+1,
+"0x7fffffff",
+"0x80000000",
+"0xffffffff",
+"0x12c"
+]
+},
+{
+"addr": "0x62a61c",
+"type": "i32"
+},
+{
+"addr": "0x62a620",
+"type": "i32"
+},
+{
+"addr": "0x62a624",
+"type": "i32"
+},
+{
+"addr": "0x62a628",
+"type": "u32",
+"values": [
+"0x2c",
+"0x2c",
+"0x2c",
+0,
+1,
+"0x7fffffff",
+"0x80000000",
+"0xffffffff",
+"0x12c"
+]
+},
+{
+"addr": "0x62a62c",
+"type": "i32"
+},
+{
+"addr": "0x62a630",
+"type": "i32"
+},
+{
+"addr": "0x62a634",
+"type": "i32"
+},
+{
+"addr": "0x62a638",
+"type": "u32",
+"values": [
+"0x14",
+"0x14",
+"0x14",
+0,
+1,
+"0x7fffffff",
+"0x80000000",
+"0xffffffff",
+"0x12c"
+]
+},
+{
+"addr": "0x62a63c",
+"type": "i32"
+},
+{
+"addr": "0x62a640",
+"type": "i32"
+},
+{
+"addr": "0x62a644",
+"type": "i32"
+},
+{
+"addr": "0x62a648",
+"type": "u32",
+"values": [
+"0x2c",
+"0x2c",
+"0x2c",
+0,
+1,
+"0x7fffffff",
+"0x80000000",
+"0xffffffff",
+"0x12c"
+]
+},
+{
+"addr": "0x62a64c",
+"type": "i32"
+},
+{
+"addr": "0x62a650",
+"type": "i32"
+},
+{
+"addr": "0x62a654",
+"type": "i32"
+},
+{
+"addr": "0x62a658",
+"type": "u32",
+"values": [
+"0x28",
+"0x28",
+"0x28",
+0,
+1,
+"0x7fffffff",
+"0x80000000",
+"0xffffffff",
+"0x12c"
+]
+},
+{
+"addr": "0x62a65c",
+"type": "i32"
+},
+{
+"addr": "0x62a660",
+"type": "i32"
+},
+{
+"addr": "0x62a664",
+"type": "i32"
+},
+{
+"addr": "0x62a668",
+"type": "u32",
+"values": [
+"0x28",
+"0x28",
+"0x28",
+0,
+1,
+"0x7fffffff",
+"0x80000000",
+"0xffffffff",
+"0x12c"
+]
+},
+{
+"addr": "0x62a66c",
+"type": "i32"
+},
+{
+"addr": "0x62a670",
+"type": "i32"
+},
+{
+"addr": "0x62a674",
+"type": "i32"
+},
+{
+"addr": "0x62a678",
+"type": "u32",
+"values": [
+"0x1ce",
+"0x1ce",
+"0x1ce",
+0,
+1,
+"0x7fffffff",
+"0x80000000",
+"0xffffffff",
+"0x12c"
+]
+},
+{
+"addr": "0x62a67c",
+"type": "i32"
+},
+{
+"addr": "0x62a680",
+"type": "i32"
+},
+{
+"addr": "0x62a684",
+"type": "i32"
+},
+{
+"addr": "0x62a688",
+"type": "u32",
+"values": [
+"0xf",
+"0xf",
+"0xf",
+0,
+1,
+"0x7fffffff",
+"0x80000000",
+"0xffffffff",
+"0x12c"
+]
+},
+{
+"addr": "0x62a68c",
+"type": "i32"
+},
+{
+"addr": "0x62a690",
+"type": "i32"
+},
+{
+"addr": "0x62a694",
+"type": "i32"
+},
+{
+"addr": "0x62a698",
+"type": "u32",
+"values": [
+"0x37",
+"0x37",
+"0x37",
+0,
+1,
+"0x7fffffff",
+"0x80000000",
+"0xffffffff",
+"0x12c"
+]
+},
+{
+"addr": "0x62a69c",
+"type": "i32"
+},
+{
+"addr": "0x62a6a0",
+"type": "i32"
+},
+{
+"addr": "0x62a6a4",
+"type": "i32"
+},
+{
+"addr": "0x62a6a8",
+"type": "u32",
+"values": [
+"0xf",
+"0xf",
+"0xf",
+0,
+1,
+"0x7fffffff",
+"0x80000000",
+"0xffffffff",
+"0x12c"
+]
+},
+{
+"addr": "0x62a6ac",
+"type": "i32"
+},
+{
+"addr": "0x62a6b0",
+"type": "i32"
+},
+{
+"addr": "0x62a6b4",
+"type": "i32"
+},
+{
+"addr": "0x62a6b8",
+"type": "u32",
+"values": [
+"0x37",
+"0x37",
+"0x37",
+0,
+1,
+"0x7fffffff",
+"0x80000000",
+"0xffffffff",
+"0x12c"
+]
+},
+{
+"addr": "0x62a6bc",
+"type": "i32"
+},
+{
+"addr": "0x62a6c0",
+"type": "i32"
+},
+{
+"addr": "0x62a6c4",
+"type": "i32"
+},
+{
+"addr": "0x62a6c8",
+"type": "u32",
+"values": [
+"0x28",
+"0x28",
+"0x28",
+0,
+1,
+"0x7fffffff",
+"0x80000000",
+"0xffffffff",
+"0x12c"
+]
+},
+{
+"addr": "0x62a6cc",
+"type": "i32"
+},
+{
+"addr": "0x62a6d0",
+"type": "i32"
+},
+{
+"addr": "0x62a6d4",
+"type": "i32"
+},
+{
+"addr": "0x62a6d8",
+"type": "u32",
+"values": [
+"0xa",
+"0xa",
+"0xa",
+0,
+1,
+"0x7fffffff",
+"0x80000000",
+"0xffffffff",
+"0x12c"
+]
+},
+{
+"addr": "0x62a6dc",
+"type": "i32"
+},
+{
+"addr": "0x62a6e0",
+"type": "i32"
+},
+{
+"addr": "0x62a6e4",
+"type": "i32"
+},
+{
+"addr": "0x62a6e8",
+"type": "u32",
+"values": [
+"0xa",
+"0xa",
+"0xa",
+0,
+1,
+"0x7fffffff",
+"0x80000000",
+"0xffffffff",
+"0x12c"
+]
+},
+{
+"addr": "0x62a6ec",
+"type": "i32"
+},
+{
+"addr": "0x62a6f0",
+"type": "i32"
+},
+{
+"addr": "0x62a6f4",
+"type": "i32"
+},
+{
+"addr": "0x62a6f8",
+"type": "u32",
+"values": [
+"0x28",
+"0x28",
+"0x28",
+0,
+1,
+"0x7fffffff",
+"0x80000000",
+"0xffffffff",
+"0x12c"
+]
+},
+{
+"addr": "0x62a6fc",
+"type": "i32"
+},
+{
+"addr": "0x62a700",
+"type": "i32"
+},
+{
+"addr": "0x62a704",
+"type": "i32"
+},
+{
+"addr": "0x62a708",
+"type": "u32",
+"values": [
+"0x14",
+"0x14",
+"0x14",
+0,
+1,
+"0x7fffffff",
+"0x80000000",
+"0xffffffff",
+"0x12c"
+]
+},
+{
+"addr": "0x62a70c",
+"type": "i32"
+},
+{
+"addr": "0x62a710",
+"type": "i32"
+},
+{
+"addr": "0x62a714",
+"type": "i32"
+},
+{
+"addr": "0x62a718",
+"type": "u32",
+"values": [
+"0x14",
+"0x14",
+"0x14",
+0,
+1,
+"0x7fffffff",
+"0x80000000",
+"0xffffffff",
+"0x12c"
+]
+}
+]
+}

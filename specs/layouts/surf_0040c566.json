@@ -1,0 +1,17 @@
+{
+ "_evidence": "Overlay for 0x0040c566 (compose after state_0066d8c0+map_0040c43b+tab_00622590): the map pointer [0x62ac9c] gets the smap_0040c566 byte grid (same 0x10000-byte size, so every masked index ebx <= 0xffff stays inside). A negative kept byte k (0x80..0xff after 'and eax,0xff') makes 'mov eax,[ecx*4+0x622590]' read the dword at 0x622590+4k = 0x622790..0x62298f, past the 6-entry table: whatever state lies there (other BSS/.data dwords, only read here as the returned base, no division) is drawn full-range u32 for all 128 slots.",
+ "globals": [
+  {
+   "addr": "0x0062ac9c",
+   "type": "ptr",
+   "size": 65536,
+   "fill": "layout=smap_0040c566"
+  },
+  {
+   "addr": "0x00622790",
+   "type": "u32",
+   "count": 128,
+   "stride": 4
+  }
+ ]
+}

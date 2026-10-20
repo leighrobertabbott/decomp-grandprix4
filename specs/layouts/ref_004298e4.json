@@ -1,0 +1,33 @@
+{
+ "_evidence": "Byte 0x601ba8 selects the reference-offset path of 0x004298e4 (the 0x429843 call); zero in the image. Drawn {0,0,1,0xff}; the offsets 0x601ae8/0x601c08/0x601c0c it adds are plain i32 sums.",
+ "globals": [
+  {
+   "addr": "0x00601ba8",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x00601ae8",
+   "type": "i32",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x00601c08",
+   "type": "i32",
+   "lo": -65536,
+   "hi": 65536
+  },
+  {
+   "addr": "0x00601c0c",
+   "type": "i32",
+   "lo": -65536,
+   "hi": 65536
+  }
+ ]
+}

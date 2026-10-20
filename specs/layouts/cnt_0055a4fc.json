@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x0055a4fc: cx = word [0x88f5d0] (copied by 0x553f72 from the track header word +0x12 just before the call) is the entry count: 'test cx,0xffff; je' (0 = nothing), then a 'sub cx,1 / jns' loop reads one word per entry from esi (two unless it is 0x1f) and stores its low byte to 0x88f5ca+ebx, finally copying the last stored byte to 0x88f5c9. The table the other user 0x55a53e indexes with '& 3' has 4 bytes, so real counts are small; drawn here 0..6 with a few larger counts up to 0x40 (the 0x100-byte esi buffer holds 0x80 words, enough for 0x40 entries even without 0x1f words). A random 16-bit count (fuzz:i32) made almost every case a thousands-entry run over zeros past the buffer.",
+ "globals": [
+  {"addr": "0x0088f5d0", "type": "u16", "values": [0, 0, 1, 2, 3, 4, 4, 5, 6, 8, 16, 64]}
+ ]
+}

@@ -1,0 +1,182 @@
+{
+ "_evidence": "Lane-neighbour state of 0x0042e97e (compose LAST, after cars_0066fef0+pair_0042e8e6+flags_00430449+state_00426091+gap_0042a533+walk_0042e06a+cursor_006043fc+order_0042e97e). Lane offsets: word 0x60414e (target lane, 'movsx edi,[0x60414e]') and car word +0xea (0x66ffda, 'movsx edi,[esi+0xea]') index the dword table 'mov edx,[edi+0x6041a4]' and are compared with each other ('cmp dx,[ebx+0xea]'); the lane builder 0x42f8bf stores car pointers at [ecx+0x6041a4] for lane offsets that are multiples of 8 (cars_0042dd4b: 0x18/0x20/0/8/-8/+-0x10), so both draw -0x10..0x20 in steps of 8 and the table entries 0x604194 + 8k (k = 0..6, i.e. offsets -0x10..0x20) are 0 (empty lane, the 'or edx,edx; je' path) or a car record (cars 0..5, so equalities with the walked/found cars occur); a random offset read misaligned or out-of-table dwords and dereferenced them. Byte 0x60414c selects 0x6043d8/0x6043dc (sign) when the lane is 0 (zero/nonzero/sign values). The side pointers 0x6043d8/0x6043dc, the excluded car 0x60427c ('cmp ebx,[0x60427c]; je') and the previous car 0x6043e0 ('cmp ebx,[0x6043e0]; je') are 0 or cars 0..5 (each is a car pointer written by the lane/order code or cleared). Car words +0xe/+0x18 (0x66fefe/0x66ff08: |+0xe - +0x18| vs the constant [0x603d9e] = 0x600) and +0x90/+0x94 (0x66ff80/0x66ff84: the |lateral gap| vs [0x603db6] = 0x100) draw clustered values so both sides of those compares occur; the tuning thresholds 0x603d9e/0x603b2a/0x603b18/0x603dae/0x603b2c/0x603db4/0x603db6/0x6039a4/0x603afc are only ever read (0x42e97e and the 0x42c1f4 compare) and keep their image values (no fuzz). Car flag byte +0x137 (0x670027, 'test byte [esi+0x137],0x40; je' gating the [0x603dae] compare) of all 22 cars is a plain u8 draw (static zero before). Word 0x603e70 (the gap register 0x42e97e saves on entry and restores on both exits; callees overwrite it) is any i16.",
+ "globals": [
+  {
+   "addr": "0x0060414e",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    8,
+    "0xfff8",
+    "0x10",
+    "0xfff0",
+    "0x18",
+    "0x20"
+   ]
+  },
+  {
+   "addr": "0x0060414c",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x80",
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x00604194",
+   "type": "u32",
+   "count": 7,
+   "stride": 8,
+   "values": [
+    0,
+    0,
+    "0x66fef0",
+    "0x67030c",
+    "0x670728",
+    "0x670b44",
+    "0x670f60",
+    "0x67137c"
+   ]
+  },
+  {
+   "addr": "0x006043d8",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    "0x66fef0",
+    "0x67030c",
+    "0x670728",
+    "0x670b44",
+    "0x670f60",
+    "0x67137c"
+   ]
+  },
+  {
+   "addr": "0x006043dc",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    "0x66fef0",
+    "0x67030c",
+    "0x670728",
+    "0x670b44",
+    "0x670f60",
+    "0x67137c"
+   ]
+  },
+  {
+   "addr": "0x0060427c",
+   "type": "u32",
+   "values": [
+    0,
+    "0x66fef0",
+    "0x67030c",
+    "0x670728",
+    "0x670b44",
+    "0x670f60",
+    "0x67137c"
+   ]
+  },
+  {
+   "addr": "0x006043e0",
+   "type": "u32",
+   "values": [
+    0,
+    "0x66fef0",
+    "0x67030c",
+    "0x670728",
+    "0x670b44",
+    "0x670f60",
+    "0x67137c"
+   ]
+  },
+  {
+   "addr": "0x0066ffda",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    0,
+    8,
+    "0xfff8",
+    "0x10",
+    "0xfff0",
+    "0x18",
+    "0x20"
+   ]
+  },
+  {
+   "addr": "0x0066fefe",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    "0x100",
+    "0x400",
+    "0x700",
+    "0xfc00",
+    "0x8000"
+   ]
+  },
+  {
+   "addr": "0x0066ff08",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    "0x100",
+    "0x400",
+    "0x700",
+    "0xfc00",
+    "0x8000"
+   ]
+  },
+  {
+   "addr": "0x0066ff80",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    "0x10",
+    "0x80",
+    "0x200",
+    "0xfff0",
+    "0x8000"
+   ]
+  },
+  {
+   "addr": "0x0066ff84",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    "0x10",
+    "0x80",
+    "0x200",
+    "0xfff0",
+    "0x8000"
+   ]
+  },
+  {
+   "addr": "0x00670027",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x00603e70",
+   "type": "i16"
+  }
+ ]
+}

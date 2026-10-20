@@ -1,0 +1,35 @@
+{
+  "_evidence": "Segment-record words and smoothing gains the 0x00405552 solver chain reads that the other layouts leave static (compose after drive_00405552, which sets 0x602d84/0x602d88 to 0 or edi, a record 0..25). 0x404ed0 (via [0x602d84]) reads movsx word +0x26 of the record (zero test, then 0x4000-w with sign fold indexes the static cosine table 0x7c5c5c: any i16 is valid, body_00404ed0); 0x404f33 (via [0x602d88]) subtracts the words at edi-0x15e and edi+0x162, i.e. word +2 of the previous and next records (any i16, state_00404f33), so +2 varies for records -1..27 and +0x26 for records 0..26; 0x404ed0 also forms the sign of words +0x178 + +0x160 - +0x18 - +0x00 (this record's +0/+0x18 and the next one's), so words +0/+0x18 of records 0..27 vary too (any i16). 0x4279ab scales its smoothed bank value by the gains [0x6247f0]/[0x6247f4]/[0x6247f8] (imul/shrd 14, no division): any i32, as bank_004279ab notes (they were only fuzzed where they are direct globals).",
+  "globals": [
+    {
+      "addr": "0x006247f0",
+      "type": "i32",
+      "count": 3,
+      "stride": 4
+    },
+    {
+      "addr": "0x00894242",
+      "type": "i16",
+      "count": 29,
+      "stride": "0x160"
+    },
+    {
+      "addr": "0x008943c6",
+      "type": "i16",
+      "count": 27,
+      "stride": "0x160"
+    },
+    {
+      "addr": "0x008943a0",
+      "type": "i16",
+      "count": 28,
+      "stride": "0x160"
+    },
+    {
+      "addr": "0x008943b8",
+      "type": "i16",
+      "count": 28,
+      "stride": "0x160"
+    }
+  ]
+}

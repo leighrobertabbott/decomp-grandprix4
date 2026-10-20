@@ -1,0 +1,8 @@
+{
+  "size": 848,
+  "_evidence": "Block at esi for 0x004105c7 / 0x00410841 (index ecx 0..3): dword +0x2cc+4*ecx is the divisor of div (X<<6) (unsigned, edx = X>>26 = 0 for the X domain of state_004105c7, so any nonzero divisor is valid: 1..0xffffffff) and dword +0x2dc+4*ecx is subtracted (any). +0x31c/+0x32c/+0x33c are outputs. Size 0x350 also serves the 0x358-byte spec of 0x410841.",
+  "fields": [
+    {"off": "0x2cc", "type": "u32", "count": 4, "stride": 4, "lo": 1, "hi": 4294967295},
+    {"off": "0x2dc", "type": "i32", "count": 4, "stride": 4}
+  ]
+}

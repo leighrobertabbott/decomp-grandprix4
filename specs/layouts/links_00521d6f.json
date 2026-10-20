@@ -1,0 +1,31 @@
+{
+ "_evidence": "0x00521d6f follows the index [0x66d8d8] (0..9) through the 10-entry link table 0x893f78 (each 0..9) into the tables 0x893f28/0x893f50; fuzzed they are wild (faults at 0x521d75/0x521d86).",
+ "globals": [
+  {
+   "addr": "0x0066d8d8",
+   "type": "u32",
+   "lo": 0,
+   "hi": 9
+  },
+  {
+   "addr": "0x00893f78",
+   "type": "u32",
+   "count": 10,
+   "stride": 4,
+   "lo": 0,
+   "hi": 9
+  },
+  {
+   "addr": "0x00893f28",
+   "type": "u32",
+   "count": 10,
+   "stride": 4
+  },
+  {
+   "addr": "0x00893f50",
+   "type": "u32",
+   "count": 10,
+   "stride": 4
+  }
+ ]
+}

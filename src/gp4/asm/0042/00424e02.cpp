@@ -25,4 +25,4 @@ void __cdecl FUN_00424e02(gp4::Regs* r) {
     r->eax = GP4_FIELD(uint32_t, reinterpret_cast<void*>(static_cast<uintptr_t>(record)), 0x4c);
     r->eflags = (r->eflags & ~0x8d5u) | flags;
 }
-GP4_IMPL(0x00424e02, FUN_00424e02, "regs(eax:u32[0..15]) -> (eax, cf, pf, af, zf, sf, of)")
+GP4_IMPL(0x00424e02, FUN_00424e02, "regs(eax:u32[0..15]) -> (eax, cf, pf, af, zf, sf, of); globals=layout=recs_0063bd7c")

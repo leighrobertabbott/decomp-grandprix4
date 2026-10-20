@@ -1,0 +1,10 @@
+{
+ "_evidence": "Car fields of 0x0041d645 (overlay after car_0041e500+rec_00420e1d+car_00424878+car_00424cf5+rec_00413dd5). Angles +0xc/+0x10/+0x14 (i32, 2^31 = pi; read by 0x402906 -> 0x402655, any value is a valid angle) mix level poses (0, +-2^20, +-0x3000000 = +-pi/43) with large ones (+-0x18000000, 0x40000000, 0x7fffffff), so the relative pitch/roll falls on both sides of the 0x8000000/0x14000000/0x20000000 limits. +0x154/+0x15c and +0x158 are read only as |x| compared signed with the limits 0x400000 and 0x800000 ('neg' of 0x80000000 stays negative, so 0x80000000 passes the compare): drawn as 0, +-1, the limit -1, the limit, +-limit, a mid value, 0x7fffffff and 0x80000000.",
+ "size": 1052,
+ "fields": [
+  {"off": "0xc", "type": "u32", "count": 3, "stride": 4, "values": [0, 0, "0x100000", "0xfff00000", "0x3000000", "0xfd000000", "0x18000000", "0xe8000000", "0x40000000", "0x7fffffff"]},
+  {"off": "0x154", "type": "u32", "values": [0, 1, "0xffffffff", "0x3fffff", "0xffc00001", "0x400000", "0xffc00000", "0x12345", "0x7fffffff", "0x80000000"]},
+  {"off": "0x15c", "type": "u32", "values": [0, 1, "0xffffffff", "0x3fffff", "0xffc00001", "0x400000", "0xffc00000", "0x12345", "0x7fffffff", "0x80000000"]},
+  {"off": "0x158", "type": "u32", "values": [0, 1, "0xffffffff", "0x7fffff", "0xff800001", "0x800000", "0xff800000", "0x123456", "0x7fffffff", "0x80000000"]}
+ ]
+}

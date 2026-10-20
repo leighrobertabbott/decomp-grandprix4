@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x00512cc1 sets edx=2 and reads the dword tables [edx*4+base], i.e. the third entries: 0x679b3c (start position P, `mov eax,[edx*4+0x679b34]`), 0x679ba4 (lower bound L, `cmp/sub eax,[edx*4+0x679b9c]`), 0x679bb4 (wrap length W, `add eax,[edx*4+0x679bac]`), 0x679b2c (upper limit U, `cmp eax,[edx*4+0x679b24]; jg`), plus 0x7a8e1c (step limit, `cmp eax,[0x7a8e1c]; jg`) and 0x88f624 (marker, `cmp eax,[0x88f624]; je`). All are plain dword compares/adds on registers with no memory access through them, so every value is fault-free; the loop is bounded by the step count in ecx (eax 1..limit, `loop`). Small overlapping ranges (including negatives, so signed jg/jge differ from unsigned) make every outcome frequent: P-1 < L and >= L, the wrapped position above and not above U, a step landing on the marker, and the count running out. 0x88f5fc is only written (0xff).",
+ "globals": [
+  {"addr": "0x007a8e1c", "type": "i32", "lo": -2, "hi": 12},
+  {"addr": "0x00679b3c", "type": "i32", "lo": -4, "hi": 16},
+  {"addr": "0x00679ba4", "type": "i32", "lo": -4, "hi": 16},
+  {"addr": "0x00679bb4", "type": "i32", "lo": -8, "hi": 24},
+  {"addr": "0x00679b2c", "type": "i32", "lo": -8, "hi": 24},
+  {"addr": "0x0088f624", "type": "i32", "lo": -8, "hi": 24}
+ ]
+}

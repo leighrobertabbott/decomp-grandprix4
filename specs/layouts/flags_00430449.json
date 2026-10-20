@@ -1,0 +1,186 @@
+{
+ "_evidence": "Overlay for 0x00430449 (compose LAST): byte +0x230 of each of the 22 car records (0x670120 + k*0x41c; 'test byte [esi+0x230],0x80; je' picks the 0x42fe2f overtaking scan or the 0x43b974 search) is a plain flag byte, any value; state_0041104f varies it for cars 0..5 only, so the scan path depended on esi. carx_0042fe2f (composed before it) supplies +0x7b bit 6 (0x43044d), +0x26b bit 3 (0x430492), +0x9c bit 1, +0xea 0x20 and +0xe2 for all 22 cars and the 0x42fe2f inputs that make it return CF=0 (0x43046e fallthrough -> block 0x430474). Word +0x68 (lap distance, 0x66ff58 + k*0x41c) of all 22 cars: 0x42fe2f only returns CF=0 for an order-list neighbour with esi.68 - ebx.68 in [-1, [0x603afe]) (image 0x10) and 0x430449 itself needs ebx.68 - esi.68 >= 0 and below [0x603afc] (0x4304a6..0x4304b7); full-range draws (cars_0066fef0) made a difference that small a 1/4000 event, so the words draw a -8..8 cluster (all three outcomes of both compares) plus the extremes -0x8000/0x7fff/+-0x1000/+-0x400 (wrapping 16-bit differences). Any value is valid (sub/cmp only). Callee state of the 0x4304f5 pair path (0x42a6dc, 0x42a533, 0x42f05a -> 0x42a792 with esi and the hit car ebx from the array): flag bytes +0xcb (RMW 'or 8'), +0xcc (bit 3 adds [0x603b98]), +0xce (bit 7) and the distance dword +0xd0/+0xd2 of all 22 cars (sub/sar/imul; the only divides are guarded: 0x42a69b only runs when dx < |c>>1| so c != 0 and the quotient fits, per car_0042a533) are any value; the derived globals [0x623df6] (= 0x4000000/[0x603854] from 0x4124ea, so 0x400..0x200000 for the 32..65535 rate) and the cap word [0x623e04] (a 16-bit product, any) are multipliers/caps only. Selector bias for the deep 0x4304bf..0x4304d1 path (it needs eight independent flag/word tests in a row, a 1/1000 event per case with uniform draws): the flag bytes +0x7a (bit 7 clear for the 0x43b974 hit, bit 5 at 0x4304b9), +0x7b (bit 6), +0x9c (bit 1 of both cars), +0x25f (bit 1) and +0x26b (bit 3) of all 22 cars draw from value lists in which the bit tested by this path is clear in 5/8..6/8 of the picks (set in the rest, so every direction still occurs), word +0xea is 0x20 in half the picks (0x18/0x10/0/0x7fff otherwise) and the lap threshold [0x603afc] draws 0x19 (image)/0x10/0x100/0/0x7fff/0xfff0. All plain test/cmp operands.",
+ "globals": [
+  {
+   "addr": "0x00670120",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x0066ff58",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0xfff8",
+    "0xfff9",
+    "0xfffa",
+    "0xfffb",
+    "0xfffc",
+    "0xfffd",
+    "0xfffe",
+    "0xffff",
+    "0x0",
+    "0x1",
+    "0x2",
+    "0x3",
+    "0x4",
+    "0x5",
+    "0x6",
+    "0x7",
+    "0x8",
+    "0x8000",
+    "0x7fff",
+    "0xf000",
+    "0x1000",
+    "0x400",
+    "0xfc00"
+   ]
+  },
+  {
+   "addr": "0x0066ffbb",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x0066ffbc",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x0066ffbe",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x0066ffc0",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x00623df6",
+   "type": "i32",
+   "lo": 1024,
+   "hi": 2097152
+  },
+  {
+   "addr": "0x00623e04",
+   "type": "u16"
+  },
+  {
+   "addr": "0x0066ff6a",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    1,
+    "0x20",
+    "0x80",
+    "0xa0",
+    "0x5f",
+    "0x40",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0066ff6b",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    1,
+    "0x20",
+    "0x80",
+    "0xbf",
+    "0x40",
+    "0xff",
+    "0x10"
+   ]
+  },
+  {
+   "addr": "0x0066ff8c",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    0,
+    1,
+    "0xfd",
+    "0x10",
+    2,
+    "0xff",
+    "0x12"
+   ]
+  },
+  {
+   "addr": "0x0067014f",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    8,
+    "0x10",
+    "0xfd",
+    2,
+    "0xff",
+    4,
+    "0x80"
+   ]
+  },
+  {
+   "addr": "0x0067015b",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    "0x80",
+    "0xf7",
+    "0x10",
+    8,
+    "0xff",
+    1,
+    "0x40"
+   ]
+  },
+  {
+   "addr": "0x0066ffda",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x20",
+    "0x20",
+    "0x20",
+    "0x20",
+    "0x20",
+    "0x18",
+    "0x18",
+    "0x10",
+    0,
+    "0x7fff"
+   ]
+  },
+  {
+   "addr": "0x00603afc",
+   "type": "u16",
+   "values": [
+    "0x19",
+    "0x10",
+    "0x100",
+    0,
+    "0x7fff",
+    "0xfff0"
+   ]
+  }
+ ]
+}

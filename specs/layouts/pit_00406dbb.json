@@ -1,0 +1,97 @@
+{
+ "_evidence": "Pit-side search inputs of 0x00406dbb's 0x406b0a call (compose after state_00406b0a+ring_00406ac7+bounds_00406a57+ring_00405a12+links_00405a12). Bytes 0x627945 (cmp 0; je: run 0x406b0a) and 0x627944 (cmp 0; je: take its record) are flags, drawn zero in half the cases. 0x406b0a (edi = the classified record [0x629f0c], a ring record; only below the pit start [0x891500], records 9..10 in ring_00405a12) walks link + k*0x160 for k = sx(+0x7c)..sx(+0x7d) of that record (js exit when +0x7d < +0x7c), link = dword +0x44 (links_00405a12: 0 or a record 0..11 for records 0..8), stopping when the next record reaches the pit end [0x866ef8] (records 12..14) or 0x406303 returns CF=1. +0x7c is drawn 0..2 and +0x7d 0..3 for records 0..25 (both orders, walks of 1..4 records), so every record the walk classifies is 0..13 with its successor <= 14, all inside the records ring_00406ac7 varies (+0xd4..+0xfb, +0xec, +0x104, +0x110, +0x128/+0x12a); static zero bytes only ever tried the link record itself. Only fixed records are read; nothing faults. The classifier helpers 0x4065c3/0x4066be (via 0x4067b7) read the record dwords +0x118/+0x11c/+0x120/+0x124 and angle words +0x12c/+0x12e (sine-table lookups, imul/shrd; any value valid): those vary for records 0..25 too (static zero before). The record window [0x866ed0, 0x866ed4] (0x406dd6/0x406dde, 0x406a57, 0x406d90) is the pit-lane window: pit records outside it are mapped to their lap link (0x406de6) and a record found inside it is followed through its link without a zero test (0x406e3a, then 0x406ac7 walks from it), so the window lies inside the pit records, whose links are never zero. bounds_00406a57's start 0..10 put lap records with zero links (links_00405a12) inside it and the original faulted on 4 of 1000 cases of the accepted spec (0x406e3a -> edi = 0). Here the start is record 10..12 (at or after the pit start 9..10 of ring_00405a12, so pit records below the window still occur: 0x406ddc both ways) and the end 13..24: 0x406a31's bound is inclusive and a forward walk that runs past it returns clc with edi = end+1, whose link 0x406e58 then follows (likewise start-1 at or above the pit start), so end+1 must still be a linked pit record (links exist for records 9..25; end 25 read record 26's zero link and faulted).",
+ "globals": [
+  {
+   "addr": "0x00627944",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x00627945",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0089441c",
+   "type": "u8",
+   "count": 26,
+   "stride": "0x160",
+   "lo": 0,
+   "hi": 2
+  },
+  {
+   "addr": "0x0089441d",
+   "type": "u8",
+   "count": 26,
+   "stride": "0x160",
+   "lo": 0,
+   "hi": 3
+  },
+  {
+   "addr": "0x8944b8",
+   "type": "i32",
+   "count": 26,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8944bc",
+   "type": "i32",
+   "count": 26,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8944c0",
+   "type": "i32",
+   "count": 26,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8944c4",
+   "type": "i32",
+   "count": 26,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8944cc",
+   "type": "i16",
+   "count": 26,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x8944ce",
+   "type": "i16",
+   "count": 26,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x00866ed0",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 10,
+    "hi": 12
+   }
+  },
+  {
+   "addr": "0x00866ed4",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 13,
+    "hi": 24
+   }
+  }
+ ]
+}

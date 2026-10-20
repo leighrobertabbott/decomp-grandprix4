@@ -1,0 +1,8 @@
+{
+  "_evidence": "esi of 0x00441606 (0x84-byte car prefix, background random: only byte +0x7c is read, at 0x441609/0x441631). Row = (b & 0x3f) - 1 clamped to <= 0x15. When b & 0x3f == 0 the row is -1 and ebp is read from the 44 dwords BEFORE 0x66ec60 (the tail of the 0x66e882 byte table and the gap 0x66ec4a..0x66ec5f), an arbitrary dword: negative values make 'mul ebp; div edi(0xf0)' overflow and the original faults (seen with tabs_00441606: 1/200). Car numbers are 1-based (0x43b9ae skips byte 0), so the domain excludes only 0/0x40/0x80/0xc0: values cover rows 0..21, rows above 21 (23, 0x30, 0x3f -> clamp branch 0x441616/0x44163e) and the flag bits 6/7.",
+  "size": 132,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x7c", "type": "u8", "values": [1, 2, 3, 5, 8, 11, 16, 21, 22, 23, "0x30", "0x3f", "0x41", "0x56", "0x81", "0x96", "0xc1", "0xd6", "0xff"]}
+  ]
+}

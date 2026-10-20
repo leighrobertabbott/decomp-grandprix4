@@ -87,4 +87,4 @@ void __cdecl FUN_0041fbef(gp4::Regs* r) {
     r->ebp = ebp;
     r->eflags = (r->eflags & ~0x8d5u) | flags;
 }
-GP4_IMPL(0x0041fbef, FUN_0041fbef, "regs() -> (eax, ebx, edx, ebp, cf, pf, af, zf, sf, of)")
+GP4_IMPL(0x0041fbef, FUN_0041fbef, "regs() -> (eax, ebx, edx, ebp, cf, pf, af, zf, sf, of); globals=layout=recs_006380d8")

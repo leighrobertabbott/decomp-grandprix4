@@ -1,0 +1,9 @@
+{
+  "_evidence": "Segment block behind car +0x1c for 0x0042f47f (edi = [esi+0x1c], 0x42f499; in the game a 0x160-byte record of 0x8943a0, here a 0x1d0-byte random block as in car_0042ba87). Byte +0x51: 'test 0x20; je; test 0x80; je exit' on the +0x161 bit-7 path (0x42f4a9/0x42f4af) and 'test 0x20; jne exit' (0x42f58a): values give bit 5 clear about 2/3 of the time and bit 5 with and without bit 7. Word +0xa6 (0x42f642 movzx) is the segment speed limit compared signed with [0x62ac50] (0x6400) and fed into ((min - v) * 2v) >> 24 (+ the excess over 0x6400) against the window [[0x603bb0],[0x603bac]) = [8,0x40): values at, just above, below and far from 0x6400 so the window is hit and missed on both sides and the clamp to 0 (0x42f66c) and the excess (0x42f679) both occur.",
+  "size": 464,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x51", "type": "u8", "values": [0, 0, 0, "0x80", "0x10", "0x40", "0x20", "0xa0", "0xff"]},
+    {"off": "0xa6", "type": "u16", "values": ["0x6400", "0x6400", "0x6410", "0x6000", "0x5000", "0x1000", "0xffff", "0x7000", 0]}
+  ]
+}

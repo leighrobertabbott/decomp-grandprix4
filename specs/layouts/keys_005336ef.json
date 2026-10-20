@@ -1,0 +1,6 @@
+{
+ "_evidence": "Global-memory registry at 0x828020 (16 eight-byte entries, see slots_005336c6: +0 the block handle, +4 the key stored by 0x533653 'mov [edi+4],eax'). 0x005336ef searches it by key: 'mov edi,0x828020; mov ecx,0x10; ... or ecx,ecx; je; cmp dword [edi+4],eax; jne -> add edi,8; dec ecx', clc with edi at the first entry whose +4 equals eax, else edi = 0 and stc. Only the 16 key dwords +4 (0x828024 + k*8) are read; they are drawn from a small key set {1..12} plus 0, 0x10000 and 0xffffffff, and the spec draws eax mostly from {1..12}, so the first match lands at every position 0..15 and no match occurs in about a third of the cases. Plain compares on fixed static addresses: every value is valid (values synthetic).",
+ "globals": [
+  {"addr": "0x00828024", "type": "u32", "count": 16, "stride": 8, "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, "0x10000", "0xffffffff"]}
+ ]
+}

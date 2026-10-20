@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x0043cdcc / 0x0043cde2 (and their wrappers 0x0043cdf8 / 0x0043cdfe) read word [eax*2 + 0x0062d210] / [eax*2 + 0x0062d21a] (eax 0..4) with movzx, multiply by 0x83127 and shrd 14. The two 5-word tables are run-time state: 0x0040c6d8 copies them from words +0x22..+0x30 of its source record (zero in the image). Unsigned word times a constant cannot overflow 64 bits, so all ten words draw any u16.",
+  "globals": [
+    {"addr": "0x0062d210", "type": "u16", "count": 10, "stride": 2}
+  ]
+}

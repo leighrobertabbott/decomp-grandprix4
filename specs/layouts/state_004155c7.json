@@ -1,0 +1,78 @@
+{
+ "_evidence": "Overlay for 0x004155c7 (compose LAST, after cars_0066fef0+rel_0042c0c4+state_0043c677+pit_0040d9e6+trk_007ad894+state_00427880+state_00426947+frac_00624790). Divisions: 'cdq; shld edx,eax,0x18; shl eax,0x18; idiv [0x603854]' at 0x415650 and 0x4156db divide x<<24 by D = [0x603854] (state_00427880: 0x800..0xffff), so |x| < D*2^7 >= 2^18 keeps the quotient in range. x = (movzx word +0xd8 (< 0x6000 on the imul path) * [0x601e94] >> 14) - movsx +0x9a, or word +0xd8 - movsx +0x9a, or movzx [0x62d22c] - movsx +0x9a: with [0x601e94] in +-0x10000, |x| < 0x6000*4 + 0x8000 = 0x20000 and every u16 [0x62d22c] gives |x| < 0x18000, both < 2^18. [0x62d22c] is the per-circuit word the circuit parser 0x40c6d8 stores (any u16). [0x624850] is AI state written by 0x4284e1 (eax or [0x62484c]-1) compared signed with [0x625890] (jl at 0x415712): both small (-4..8) so less, equal and greater occur. Tuning dwords with no writer in the image (only these readers; image values inside the ranges): [0x601e94] (gain, image 16592), [0x604118] (signed jle bound for eax at 0x4156fe, image -2048: -0x8000..0x8000 against 0x426947's quotients), [0x6039fc] (imul/shrd 14 gain at 0x415735, image 2048), [0x62fbe4]/[0x62fbe8] (imul/shrd 14 gains at 0x415778/0x415784, images 0 and 0x4000: with the image values the 0..0x4000 clamps 0x415793/0x41579f never ran) - varied -0x8000..0x8000 so the product falls below 0, inside and above 0x4000. imul/shrd and compares only: nothing faults. 0x426b00 returns CF=1 only for circuit [0x7ad894] == 9 (cmp 9; jne at 0x426b01), so the circuit number keeps trk_007ad894's 0..16 but draws 9 in about a quarter of the cases.",
+ "globals": [
+  {
+   "addr": "0x00601e94",
+   "type": "i32",
+   "lo": "-0x10000",
+   "hi": "0x10000"
+  },
+  {
+   "addr": "0x00604118",
+   "type": "i32",
+   "lo": "-0x8000",
+   "hi": "0x8000"
+  },
+  {
+   "addr": "0x006039fc",
+   "type": "i32",
+   "lo": "-0x8000",
+   "hi": "0x8000"
+  },
+  {
+   "addr": "0x0062fbe4",
+   "type": "i32",
+   "lo": "-0x8000",
+   "hi": "0x8000"
+  },
+  {
+   "addr": "0x0062fbe8",
+   "type": "i32",
+   "lo": "-0x8000",
+   "hi": "0x8000"
+  },
+  {
+   "addr": "0x0062d22c",
+   "type": "u16"
+  },
+  {
+   "addr": "0x00624850",
+   "type": "i32",
+   "lo": -4,
+   "hi": 8
+  },
+  {
+   "addr": "0x00625890",
+   "type": "i32",
+   "lo": -4,
+   "hi": 8
+  },
+  {
+   "addr": "0x007ad894",
+   "type": "u32",
+   "values": [
+    9,
+    9,
+    9,
+    9,
+    9,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+   ]
+  }
+ ]
+}

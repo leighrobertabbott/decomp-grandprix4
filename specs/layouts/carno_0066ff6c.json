@@ -1,0 +1,12 @@
+{
+  "_evidence": "Car-number searches over the 22 car records (0x0066fef0, stride 0x41c): 0x00409b87 compares byte [0x0066d896] (0 skips) with record byte +0x7c and tests [0x0066d7a4] > 1; 0x0040ea09/0x0040ea46 take bl = [esi+0x415]>>1 and read the order byte [0x007c31dd+bl] / [0x007c31db+bl] (22-byte order arrays from 0x007c31dc, zero in the image, filled through 0x0040b503), 0x0040ea09 first comparing bl with the low byte of [0x0066d89c]-1, then look for a record whose +0x7c equals it; 0x0040eb25 then sets bits in the found record's byte +0x82; 0x0040f3f6 calls 0x0040eb25 only when [0x007c2ea9] == 0x80. +0x7c holds a car number with flag bits (0x0043b9ae uses (b & 0x3f) - 1 as a car index), so the record bytes and the order bytes draw from car numbers 0..23 plus flagged and extreme values, which makes both the hit and the 22-record exhaustion common. bl reaches 127 for an arbitrary +0x415 byte, so the whole span 0x007c31dc..0x007c325c is varied. [0x0066d89c] is the car-count word (1..23 hit the bl compare, extremes miss); [0x0066d7a4] and [0x007c2ea9] take both sides of their compares. No pointer is formed from any of these, so nothing can fault.",
+  "globals": [
+    {"addr": "0x0066d896", "type": "u8", "values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, "0x41", "0x81", "0xc1", "0xff"]},
+    {"addr": "0x0066d7a4", "type": "u8", "values": [0, 1, 2, 3, "0xff"]},
+    {"addr": "0x0066d89c", "type": "u16", "values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, "0x80", "0xff", "0x100", "0xffff"]},
+    {"addr": "0x007c2ea9", "type": "u8", "values": ["0x80", "0x80", 0, "0x7f", "0x81", "0xff"]},
+    {"addr": "0x007c31dc", "type": "u8", "count": 129, "values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, "0x41", "0x81", "0xc1", "0xff"]},
+    {"addr": "0x0066ff6c", "type": "u8", "count": 22, "stride": "0x41c", "values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, "0x41", "0x81", "0xc1", "0xff"]},
+    {"addr": "0x0066ff72", "type": "u8", "count": 22, "stride": "0x41c"}
+  ]
+}

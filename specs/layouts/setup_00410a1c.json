@@ -1,0 +1,9 @@
+{
+  "_evidence": "Per-wheel setup bytes behind ebx for the chain 0x00410a1c (ecx = wheel 0..3): 0x4100ff reads byte +0x24+ecx, 0x41011a +0x10+ecx, 0x4100d8 +0x28+ecx, 0x410154/0x410242 +0x20/+0x18/+0x1c/+0x14+ecx (clamped to 0x20 / 8). Only byte +0x24+ecx is constrained: 0x4100ff stores (byte*[0x601d68])>>14 to [esi+ecx*4+0x2cc] and 0x4105c7 then divides (v<<6) by it ('div dword [esi+ecx*4+0x2cc]'); a zero byte gives a zero divisor (#DE), which the game's setup tables never hold. With bytes 1..255 and [0x601d68] >= 0x100000 (wheel_00410a1c) that divisor is >= 64, so the quotient of any 38-bit dividend fits. All other bytes are full-range (both clamp outcomes).",
+  "size": 64,
+  "fields": [
+    {"off": "0x10", "type": "u8", "count": 20, "stride": 1},
+    {"off": "0x24", "type": "u8", "count": 4, "stride": 1, "lo": 1, "hi": 255},
+    {"off": "0x28", "type": "u8", "count": 4, "stride": 1}
+  ]
+}

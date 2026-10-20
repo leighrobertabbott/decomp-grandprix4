@@ -1,0 +1,19 @@
+{
+ "_evidence": "Overlay for 0x004054e6 (compose after cars_0066fef0+bank_004279ab+state_00405489+engine_00413606+drive_00405552+seg_00405552+state_0041062a+torque_00425e19, the layouts of its caller 0x405552's solver chain 0x4054e6 -> 0x4057cf -> 0x404f99 plus the 0x404f99 coefficient/table state): 0x404aa3 (reached through 0x404f99 when [0x6030d0] = -[0x604124] is >= [0x624790]) multiplies the runtime torque-table entry [0x639654 + 4*([0x6030b4]>>14)] (torque_00425e19: 719 full-range dwords, the index stays below 257 here) by the car word +0xd6 (movzx, 'imul edx; shrd 0xe'), then by +0xb2 and [0x60313c]: only imul/shrd, so the word +0xd6 (0x66ffc6 + k*0x41c, 22 cars) is a full-range u16 draw. Nothing divides by it. 0x404bcf indexes the 257-word table 0x603140 with a fistp result clamped to 0..0x100 ('movzx eax, word [eax*2+0x603140]'), compares the entry with [0x60311c]/[0x603120] and multiplies it in: the table is runtime state built at setup by 0x404a33 (fcos/fsqrt curve, fistp clamped to 0..0x4000, zero in the image), so its 257 words draw 0..0x4000. [0x603078] (0x4057cf pass count, image 3, no writer) and the 0x6f2xxx doubles stay constant.",
+ "globals": [
+  {
+   "addr": "0x0066ffc6",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x00603140",
+   "type": "u16",
+   "count": 257,
+   "stride": 2,
+   "lo": 0,
+   "hi": 16384
+  }
+ ]
+}

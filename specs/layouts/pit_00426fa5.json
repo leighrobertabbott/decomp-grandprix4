@@ -1,0 +1,23 @@
+{
+ "_evidence": "Globals of 0x00426fa5: the pit start [0x891500] is a record pointer 0..25 (cmp edi,[0x891500]; jb: segments below it skip the body, so both outcomes occur against the car's record 0..25). For a segment at or above the pit start the dword +0x44 is dereferenced as a pointer to a pit-geometry block that 0x0040460a reads (words +0 angle: |a|>>2&0xfffe indexes the 0x7c5c5c sine table, always inside .data; +4/+8 movsx<<11 positions), so +0x44 of records 0..25 points at a random 0x40-byte block (lap records' +0x44 is not read here). 0x623e30/0x623e38 are written before being read; everything else is wrapping imul/shrd.",
+ "globals": [
+  {
+   "addr": "0x00891500",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 25
+   }
+  },
+  {
+   "addr": "0x008943e4",
+   "type": "ptr",
+   "count": 26,
+   "stride": "0x160",
+   "size": 64,
+   "fill": "bytes"
+  }
+ ]
+}

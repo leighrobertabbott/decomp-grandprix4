@@ -1,0 +1,11 @@
+{
+  "_evidence": "0x00405489 calls 0x00405320, which feeds dwords 0x0060309c/a0/a4/a8 to 0x00411c75 (fild, x87 products with constant tables, fistp to 0x6f2bf4: every i32 is fault-free with the FPU exceptions masked, out-of-range results store the integer indefinite) and scales by dword 0x0062d29c (imul/shrd, all values valid); their image values are 0, which made 0x602d78/0x602d74 always 0 and the quotient always < 0x10. 0x0040548e..0x4054d2 then multiply by dword 0x00603854, a positive rate copied from 0x7ad8b8 by 0x412604 (see state_0041246e), varied as 32..65535 so that with the record divisor >= 8 (rec_00405489) neither idiv overflows. 0x602d74/0x602d78 are written by 0x405320 before they are read.",
+  "globals": [
+    {"addr": "0x0060309c", "type": "i32"},
+    {"addr": "0x006030a0", "type": "i32"},
+    {"addr": "0x006030a4", "type": "i32"},
+    {"addr": "0x006030a8", "type": "i32"},
+    {"addr": "0x0062d29c", "type": "i32"},
+    {"addr": "0x00603854", "type": "u32", "lo": 32, "hi": 65535}
+  ]
+}

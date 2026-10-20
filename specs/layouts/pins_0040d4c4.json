@@ -1,0 +1,15 @@
+{
+ "_evidence": "Overlay for 0x0040d4c4 (compose LAST): re-applies ring_00406ac7's two pinned classification records, which state_0040d389/state_0040d19f (composed after it for 0x40d389/0x40d19f) overwrite: 0x406ac7 (reached through 0x40d644 -> 0x40d5ef -> 0x406dbb) walks the lap forward until 0x4067ea returns CF=0 and backward until CF=1, wrapping at the lap end [0x866ecc] (record 6 in pitgeo_0040d644), so a lap without both outcomes never ends - the observed 8/8 timeouts inside 0x4067ea..0x4069e6. Record 2 (+0xec 0x89474c any, +0x104 = 0x13570001, +0x110 = 0x2467ffff, +0x128 = 0x1357, +0x12a = 0x2468) always classifies CF=1 and record 3 (+0xec = 0, +0x104 = 0x40000000, +0x110 = 0, +0x128 = 0x4000, +0x12a = 0) always CF=0 (ring_00406ac7's evidence), as a closed track always has records on both sides of any position. Records 2 and 3 are lap records here, and in pitgeo_0040d644's domain (entry 4..5, exit 1..3) 0x40d4c4 never calls 0x40d389 on them (every lap record it walks is entry, entry+1 or exit-3..exit-1), so the 0x40d389/0x40d19f axis domain those layouts set for records 0..7 is not needed on records 2..3 in this composition.",
+ "globals": [
+  {"addr": "0x0089474c", "type": "i32"},
+  {"addr": "0x00894764", "type": "u32", "values": ["0x13570001"]},
+  {"addr": "0x00894770", "type": "u32", "values": ["0x2467ffff"]},
+  {"addr": "0x00894788", "type": "u16", "values": ["0x1357"]},
+  {"addr": "0x0089478a", "type": "u16", "values": ["0x2468"]},
+  {"addr": "0x008948ac", "type": "u32", "values": [0]},
+  {"addr": "0x008948c4", "type": "u32", "values": ["0x40000000"]},
+  {"addr": "0x008948d0", "type": "u32", "values": [0]},
+  {"addr": "0x008948e8", "type": "u16", "values": ["0x4000"]},
+  {"addr": "0x008948ea", "type": "u16", "values": [0]}
+ ]
+}

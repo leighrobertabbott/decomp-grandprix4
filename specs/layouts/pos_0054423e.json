@@ -1,0 +1,8 @@
+{
+ "_evidence": "Text positions of the graph-label routine 0x54423e (compose AFTER strtab_00542da8+cursor_00545f09+surf_0054654a). For each of the 9 slots it reads 'mov eax,[edi]' from the dword table 0x8313a7+4k (k = 0..8, ends where the strtab dwords 0x8313cb begin), skips the slot on 'cmp eax,-1; je', subtracts [0xb1bf80] (mode 1) or [0xb1bf80]>>1 (mode 3), and passes that as y to 0x546327 ([0x831564] = y) and [0x831547]-4 as x to 0x546311 ([0x831560] = x); 0x546173 -> 0x54d1ad (string) -> 0x5461e9 -> 0x5465bb (cursor_00545f09 keeps [0x7ab53c] nonzero) writes the string RIGHT-aligned: dst = [0x831568] + y*[0xb1bf40] + x - len (len from 0x546249) up to dst + len, unchecked ('mov [edi],al' at 0x5465e8 faults off the 0x2000-byte surface of surf_0054654a, pitch 0x20/0x40/0x80 = 64 rows at most). Game domain: the caller 0x54402f/0x544144 stores into 0x8313a7 either -1 or a row clamped to [0x83153b,0x83153f] (0x5441c8..0x5441d8: 5/48 and 44/48 of the screen height [0xb1bf98], i.e. positive rows); [0x831547] = 12*[0xb1bf1c] (0x543c7f, the character width: >= 12, so x >= 8); [0xb1bf80] is the font height from 0x507f50 or 1 (0x544974), smaller than the top row. Here: the row dwords from {4,5,6,8,16,40,60,-1,-1} (y = row - bias(/2) in 0..60, 60*0x80 + 68 < 0x2000), [0xb1bf80] 0..4 (both parities for the shr), [0x831547] 8..68 (x 4..64, so with strtab's strings of at most 4 bytes the right-aligned start x - len is never before the surface). Values are synthetic.",
+ "globals": [
+  {"addr": "0x008313a7", "type": "u32", "count": 9, "stride": 4, "values": [4, 5, 6, 8, 16, 40, 60, "0xffffffff", "0xffffffff"]},
+  {"addr": "0x00b1bf80", "type": "u32", "values": [0, 0, 1, 2, 3, 4]},
+  {"addr": "0x00831547", "type": "u32", "lo": 8, "hi": 68}
+ ]
+}

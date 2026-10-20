@@ -1,0 +1,82 @@
+{
+ "size": 672,
+ "_evidence": "Car-record overlay for esi of 0x0043c7d2 (compose after car_0043c677, which gives +0x1c a segment record 0..25 and random background). Gate 'movzx eax,byte [esi+0x202]; add eax,[0x63b830]; test eax,0x1f; jne exit' passes only when the sum is a multiple of 32 (a 1/32 chance with random bytes): +0x202 (the car's slot/phase byte) draws multiples of 0x20 most of the time plus 0x1f/5/0x21; byte +0x7f is the car's current choice 0..5 (it indexes the 6-dword table 0x63b844 with ecx at 0x43c8f3 and is stored to [0x6227ec], which state_0043c31b bounds to 0..5: 0x43ca8b clamps its own choice to <= 5); byte +0x7c is the driver number (0x43b974 forms the team-mate key ((n-1)&0x3f ^ 1)+1, 0x43c888 clamps (n&0x3f)-1 to <= 21 for the 0x66fd20 byte table): drawn 0..22 plus 0x41/0x7f. Flag bytes +0xfe (bit 2: 'test 4; jne exit') and +0x231 (bit 5: 'test 0x20; jne exit') draw from value lists that leave the tested bit clear in two thirds of the picks (other bits set too); any byte is a valid flag set.",
+ "fields": [
+  {
+   "off": "0x202",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x20",
+    "0x40",
+    "0x60",
+    "0xe0",
+    "0x1f",
+    5,
+    "0x21"
+   ]
+  },
+  {
+   "off": "0x7f",
+   "type": "u8",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "off": "0x7c",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    "0x41",
+    "0x7f"
+   ]
+  },
+  {
+   "off": "0xfe",
+   "type": "u8",
+   "values": [
+    0,
+    "0x10",
+    "0xfb",
+    "0x20",
+    4,
+    "0xff"
+   ]
+  },
+  {
+   "off": "0x231",
+   "type": "u8",
+   "values": [
+    0,
+    "0x10",
+    "0xdf",
+    "0x40",
+    "0x20",
+    "0xff"
+   ]
+  }
+ ]
+}

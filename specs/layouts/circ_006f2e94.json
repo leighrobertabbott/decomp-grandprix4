@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00550dbf indexes the 17-entry, 12-byte per-circuit table 0x6f2e94 by [0x7ad894] * 0xc (trk_007ad894: circuit 0..16) and copies words +0/+2/+6/+8 to 0x875718/0x87571a/0x87571c/0x87571e and words +4/+0xa times 0x160 (movzx; mul edx) to the dwords 0x875710/0x875714. The table is initialised .data that no instruction writes (readers 0x550dbf/0x5573d3), so the game sees its image values; they are varied here as random words (synthetic) so a wrong field, width or index shows. Plain loads and an unsigned multiply: every value is valid.",
+ "globals": [
+  {"addr": "0x006f2e94", "type": "u16", "count": 102, "stride": 2}
+ ]
+}

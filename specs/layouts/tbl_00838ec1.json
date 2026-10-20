@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x0054f604 calls 0x54f753, which walks the 0x22 entries of 0x14 bytes at 0x838ec1 (ebx += 0x14) doing 'or byte [ebx+0x10],1' (a read-modify-write of each entry's flag byte; the words +4/+6/+8/+0xa are only stored): the flag bytes 0x838ed1 + 0x14k were never varied (reached through ebx). Then 'cmp dword [0x839169],0; je' and, when set, 'mov eax,0x800; call 0x538a24' (free end [0x82fcb0] += 0x800: 'jb' on the carry runs the reset 0x53872f, else the flags of 'cmp new end, [0x829868+0x14]+[0x829868+0x10]' survive the clc) and clears 0x839169. Compose after pool_0054f5e9+pool_00538a24 (the base/size dwords 0x829878/0x82987c any u32). Domain: flag bytes any value (bit 0 set or clear before the or); 0x839169 zero in about a third of the cases, else a nonzero dword; the free end from pool_0054f5e9's values plus 0xfffff800/0xffffffff so the 32-bit add carries (the reset path). Only fixed addresses are read and stored: every value is valid.",
+ "globals": [
+  {"addr": "0x00838ed1", "type": "u8", "count": 34, "stride": "0x14"},
+  {"addr": "0x00839169", "type": "u32", "values": [0, "0xa06100", 1, "0xffffffff"]},
+  {"addr": "0x0082fcb0", "type": "u32", "values": ["0xa06100", "0xa06300", "0xa06900", "0xa07100", "0xfffff800", "0xffffffff"]}
+ ]
+}

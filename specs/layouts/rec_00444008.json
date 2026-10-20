@@ -1,0 +1,14 @@
+{
+  "_evidence": "0x00444008 runs on one 0xe0-byte record of the array 0x854414 (the caller 0x4440be walks esi = 0x854414 + k*0xe0, 0x140 records); spec esi:rec[0x854414,0xe0,0..0] is record 0. Reads: +0x90 u32 (0x444008) is either -1 ('cmp ecx,-1; je 0x44409f' early exit) or a pointer to a frame table (frames_00444008): modelled as a ptr that aliases record 1's +0x90 (0x854584, fixed -1 = 'no table') in about half the cases. +0x98 u32 flags (test 4 at 0x444017 / test 8 at 0x444023): values cover neither/4/8/both with other bits set and clear. +0x94 u32 previous frame index (0x444038, inc): values hit <1 after inc (0xffffffff -> 0, 0x7fffffff -> negative), in range and above the count (0..32). +0x60/+0x64 i32 (0x444060-0x44407c, imul by [0x603854], shrd 16, floor 0x400) full range; +0x68/+0x6a/+0x5a i16 (0x44407f-0x44409b, 16-bit add and signed floor) full range. +0x58 and +0x94 are written. Every pattern of these is valid: the only dereferences are [ecx] and [ecx+eax*4] inside the table.",
+  "globals": [
+    {"addr": "0x00854584", "type": "u32", "values": ["0xffffffff"]},
+    {"addr": "0x008544a4", "type": "ptr", "size": 136, "fill": "layout=frames_00444008", "alias": "0x00854584"},
+    {"addr": "0x008544a8", "type": "u32", "values": [0, 1, 2, 5, 31, 32, 33, "0x7fffffff", "0xffffffff"]},
+    {"addr": "0x008544ac", "type": "u32", "values": [0, 4, 8, 12, "0x200", "0x2004", "0x2008", "0xfffffff3", "0xffffffff"]},
+    {"addr": "0x0085446e", "type": "i16"},
+    {"addr": "0x00854474", "type": "i32"},
+    {"addr": "0x00854478", "type": "i32"},
+    {"addr": "0x0085447c", "type": "i16"},
+    {"addr": "0x0085447e", "type": "i16"}
+  ]
+}

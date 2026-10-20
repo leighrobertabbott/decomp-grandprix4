@@ -1,0 +1,9 @@
+{
+ "_evidence": "Overlay on rec20_0051c21b (same 8 x 0x20-byte texture records behind [0x6975dc]) for the packer 0x0051c292: 'movzx ecx,word [ebx+0x10]' is the row width copied 4 times ('rep movsb', dest rows 0x100 apart, the source read contiguously): 0..0x100 (wider rows would overlap the next row and run past the 0x400 bytes the 'out + 0x400 <= limit' check reserves; texture rows are 0x100 bytes); 'mov esi,[ebx+0xc]; add esi,[0x965908]' is the record's source offset into the stream buffer [0x965908] (0..0x400, so 4*width <= 0x400 more bytes stay inside its 0x800-byte buffer; the rebase pass reads +0xc as any dword); 'test word [ebx+0x1a],4' gates the pack pass on record 0 and marks a record for the rebase pass: bit 2 set in about a third of the draws, other bits mixed (0x2000 is the caller's 0x51c3ae selector, clear on the real call path but not read here).",
+ "size": 256,
+ "fields": [
+  {"off": "0x0c", "type": "u32", "count": 8, "stride": "0x20", "lo": 0, "hi": 1024},
+  {"off": "0x10", "type": "u16", "count": 8, "stride": "0x20", "lo": 0, "hi": 256},
+  {"off": "0x1a", "type": "u16", "count": 8, "stride": "0x20", "values": [0, 0, 0, 0, 1, "0x8000", 4, 4, "0xfffb", "0xffff", "0x2004"]}
+ ]
+}

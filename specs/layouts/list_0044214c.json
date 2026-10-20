@@ -1,0 +1,18 @@
+{
+ "_evidence": "Variable-length event-record list at 0x630238 as written by 0x4420b2 and walked by 0x44214c (cursor edi, end esi; caller 0x44226c passes 0x630238+[0x63022c] and 0x630238+[0x630230]). 0x4420b2 writes a record as [clock][size][entries: mask dword + category byte (+ bytes) padded to 4][size] with size = total bytes, and compresses the one-entry 0x14-byte case to a 0xc-byte short record [clock|0x80000000][entry][x|0x80000000]; so a long record has bit 31 of its key clear and its size (>= 0x18, a multiple of 4) at +4 and in its last dword, a short record has bit 31 set in its key and its last dword. 0x44214c steps forward by 0xc (key bit 31) or [edi+4], and backward by 0xc ([edi-4] bit 31) or [edi-4]; it compares the clock [0x66d814] with key & 0x7fffffff (je found / jb, ja direction) and stops at esi (forward, jae) or at the list base (backward). A list whose sizes do not chain (the zero image: size 0) spins forever (the v1 300 s timeout), which the writer never produces. Domain: 5 superblocks of 0x48 bytes = 20 records in the order short(0xc), long(0x18), long(0x18), short(0xc), so every multiple of 0x24 from the base is a record boundary preceded alternately by a long record (trailing size 0x18, 'sub edi,[edi-4]') and by a short one (bit 31, 'sub edi,0xc'); the spec registers are rec[0x630238,0x24,0..10] (0 = the empty-list exit for esi; edi above, at or below esi). Keys: long 0..0x40, short 0x80000000..0x80000040 and the clock 0..0x40 (overlaid here on clock_0066d814's 0..0x10000) so equal keys (stc), smaller and larger ones all occur along a walk; the short records' last dwords draw any value with bit 31 set; their +4 entry dword and the long records' entry bytes are never read by 0x44214c. Every walk stays inside the 0x168 listed bytes; nothing faults.",
+ "globals": [
+  {"addr": "0x66d814", "type": "u32", "lo": 0, "hi": 64},
+  {"addr": "0x630238", "type": "u32", "count": 5, "stride": "0x48", "lo": "0x80000000", "hi": "0x80000040"},
+  {"addr": "0x63023c", "type": "u32", "count": 5, "stride": "0x48"},
+  {"addr": "0x630240", "type": "u32", "count": 5, "stride": "0x48", "lo": "0x80000000", "hi": "0xffffffff"},
+  {"addr": "0x630244", "type": "u32", "count": 5, "stride": "0x48", "lo": 0, "hi": 64},
+  {"addr": "0x630248", "type": "u32", "count": 5, "stride": "0x48", "values": ["0x18"]},
+  {"addr": "0x630258", "type": "u32", "count": 5, "stride": "0x48", "values": ["0x18"]},
+  {"addr": "0x63025c", "type": "u32", "count": 5, "stride": "0x48", "lo": 0, "hi": 64},
+  {"addr": "0x630260", "type": "u32", "count": 5, "stride": "0x48", "values": ["0x18"]},
+  {"addr": "0x630270", "type": "u32", "count": 5, "stride": "0x48", "values": ["0x18"]},
+  {"addr": "0x630274", "type": "u32", "count": 5, "stride": "0x48", "lo": "0x80000000", "hi": "0x80000040"},
+  {"addr": "0x630278", "type": "u32", "count": 5, "stride": "0x48"},
+  {"addr": "0x63027c", "type": "u32", "count": 5, "stride": "0x48", "lo": "0x80000000", "hi": "0xffffffff"}
+ ]
+}

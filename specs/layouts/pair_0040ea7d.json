@@ -1,0 +1,11 @@
+{
+  "_evidence": "0x0040ea7d compares two car records (ebx and esi, same layout): bytes +0x7a (test 0x80) and +0x8d (test 2) of both must be clear to get past the four early stc exits, so their values set the tested bit in about a quarter of the picks; signed byte +0x70 (cmp esi.+0x70,2; jl, then esi-ebx: equal -> the +0xc0 path, positive -> stc, negative -> the +0x1c path where -1 and <= -2 differ by 'inc eax; jge') drawn from -1..4 with 2..4 weighted so esi >= 2 and differences 0, -1, -2 and positive all occur; dword +0x1c (unsigned cmp ebx,esi; jae) from a small list so equal and both orders occur; dword +0xc0 from a list containing the 0xc0000000 sentinel (je on either side) and values of both signs around it for 'sub; js'. Only reads, nothing dereferenced: no value faults.",
+  "size": 200,
+  "fields": [
+    {"off": "0x7a", "type": "u8", "values": [0, 0, 0, "0x20", "0x7f", "0x80", "0xff"]},
+    {"off": "0x8d", "type": "u8", "values": [0, 0, 0, 1, "0xfd", 2, "0xff"]},
+    {"off": "0x70", "type": "u8", "values": [2, 2, 3, 3, 4, 4, 0, 1, "0xff"]},
+    {"off": "0x1c", "type": "u32", "values": [0, 1, 2, "0x8943a0", "0x894500", "0xffffffff"]},
+    {"off": "0xc0", "type": "u32", "values": ["0xc0000000", "0xc0000000", 0, 1, 5, "0xfffffffb", "0x7fffffff", "0x80000000"]}
+  ]
+}

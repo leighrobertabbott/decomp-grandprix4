@@ -1,0 +1,8 @@
+{
+ "_evidence": "Object passed in esi to 0x0053d1f4 (the callers pass the static blocks 0x83f0aa / 0x840fd2): 'add esi,0x18; mov edi,[esi]; or edi,edi; je' reads only the dword +0x18, a pointer to the record list (recs_0053d1f4) or null (no list: the walk is skipped, nullable in about a quarter of the cases). Other bytes random and unread.",
+ "size": 32,
+ "fill": "bytes",
+ "fields": [
+  {"off": "0x18", "type": "ptr", "size": 96, "fill": "layout=recs_0053d1f4", "nullable": true}
+ ]
+}

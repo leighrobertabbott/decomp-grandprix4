@@ -1,0 +1,200 @@
+{
+ "_evidence": "Look-ahead state of 0x004295fe (compose last, after the worker's 0x40362e/0x403524 family: state_00403800+ring_008943a0+records_008943a0+div_00403bb6+side_00601ba6+words_008943a0+state_00431ffb+widths_00852c44). The forward walk 'call 0x40362e; call 0x404796; dist = fistp(sqrt(dx^2+dy^2)) >> 4; cmp [0x601b80]; jge' only ends when a visited record's world point is at least the reach [0x601b80] from the reference point [0x601ad4]/[0x601ad8] (the car x/y that 0x4298e4 copies); the ring then cycles (lap end -> lap start by [0x866ec4], or the pit-end clamp repeats one record forever), so a reach above every visited record's distance never ends (the observed timeouts) and [0x601b24] (a target global the fuzz made a wild pointer: 'movsx eax,word [edi+0x16]' faults) must be a ring record. Domain = one closed lap, as the game's look-ahead always sees: lap records 0..7 (lap end [0x866ecc] = record 8, wrap [0x866ec4] = 8 records), pit start [0x891500] = record 9, pit end [0x866ef8] 10..12; the walk start [0x601b24] is a lap record 0..7 (0x429339 stores the car's segment) or, in a ninth of the cases, the lap-end sentinel 8, whose successor lies in the pit lane (the 'cmp edi,[0x891500]; jb / cmp edi,[0x866ef8]' branch of the walk), the fraction [0x601b20] 0..0x3fff (the caller masks & 0x3fff). Record position words +4/+8 (world = word << 11 plus the rotated lateral offset) lie in +-0x800 for records 0..12 except records 2 and 6, pinned to the far corners (+0x7fff,+0x7fff) and (-0x8000,-0x8000), and the pit records 9..12, pinned to (+0x7fff,-0x8000): with the reference point in +-2^22 every lap contains a record whose distance >> 4 exceeds 2^21, and the reach max(b74 - |b70*S >> 14|, b78) with [0x601b74]/[0x601b78] in 0..2^21 and the gain [0x601b70] +-0x4000 stays below it, so the walk ends after 0, 1 or several steps. Words +0 (angle) and +0x18 of records 0..13 feed the sum S (both signs) and the rotation; [0x601b7c] 0..0x8000 is compared with the max |word +0x14| of 4 records (ring_008943a0 varies those). Dead in this code: 0x4297db and 0x4297f9 (d84 >= reach > d88 makes d84-d88 >= 1 and reach-d88 <= d84-d88), and 0x4297f0 needs reach > 2^31-2^27 with a fistp-overflowed previous distance. 0x429798 (pit-end clamp in the walk) is reachable only on a walk that has already visited record pit end - 1 at fraction 0 and does not stop there, so the clamp revisits the same point forever; it is not covered.",
+ "globals": [
+  {
+   "addr": "0x00866ecc",
+   "type": "u32",
+   "values": [
+    "0x894ea0"
+   ]
+  },
+  {
+   "addr": "0x00866ec4",
+   "type": "u32",
+   "values": [
+    "0xb00"
+   ]
+  },
+  {
+   "addr": "0x00891500",
+   "type": "u32",
+   "values": [
+    "0x895000"
+   ]
+  },
+  {
+   "addr": "0x00866ef8",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 10,
+    "hi": 12
+   }
+  },
+  {
+   "addr": "0x00601b24",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 8
+   }
+  },
+  {
+   "addr": "0x00601b20",
+   "type": "i32",
+   "lo": 0,
+   "hi": 16383
+  },
+  {
+   "addr": "0x00601b7c",
+   "type": "i32",
+   "lo": 0,
+   "hi": 32768
+  },
+  {
+   "addr": "0x00601b70",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "addr": "0x00601b74",
+   "type": "i32",
+   "lo": 0,
+   "hi": 2097152
+  },
+  {
+   "addr": "0x00601b78",
+   "type": "i32",
+   "lo": 0,
+   "hi": 2097152
+  },
+  {
+   "addr": "0x00601ad4",
+   "type": "i32",
+   "lo": -4194304,
+   "hi": 4194304
+  },
+  {
+   "addr": "0x00601ad8",
+   "type": "i32",
+   "lo": -4194304,
+   "hi": 4194304
+  },
+  {
+   "addr": "0x008943a0",
+   "type": "i16",
+   "count": 14,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x008943b8",
+   "type": "i16",
+   "count": 14,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x008943a4",
+   "type": "i16",
+   "count": 13,
+   "stride": "0x160",
+   "lo": -2048,
+   "hi": 2048
+  },
+  {
+   "addr": "0x008943a8",
+   "type": "i16",
+   "count": 13,
+   "stride": "0x160",
+   "lo": -2048,
+   "hi": 2048
+  },
+  {
+   "addr": "0x00894664",
+   "type": "u16",
+   "values": [
+    "0x7fff"
+   ]
+  },
+  {
+   "addr": "0x00894668",
+   "type": "u16",
+   "values": [
+    "0x7fff"
+   ]
+  },
+  {
+   "addr": "0x00894be4",
+   "type": "u16",
+   "values": [
+    "0x8000"
+   ]
+  },
+  {
+   "addr": "0x00894be8",
+   "type": "u16",
+   "values": [
+    "0x8000"
+   ]
+  },
+  {
+   "addr": "0x895004",
+   "type": "u16",
+   "values": [
+    "0x7fff"
+   ]
+  },
+  {
+   "addr": "0x895008",
+   "type": "u16",
+   "values": [
+    "0x8000"
+   ]
+  },
+  {
+   "addr": "0x895164",
+   "type": "u16",
+   "values": [
+    "0x7fff"
+   ]
+  },
+  {
+   "addr": "0x895168",
+   "type": "u16",
+   "values": [
+    "0x8000"
+   ]
+  },
+  {
+   "addr": "0x8952c4",
+   "type": "u16",
+   "values": [
+    "0x7fff"
+   ]
+  },
+  {
+   "addr": "0x8952c8",
+   "type": "u16",
+   "values": [
+    "0x8000"
+   ]
+  },
+  {
+   "addr": "0x895424",
+   "type": "u16",
+   "values": [
+    "0x7fff"
+   ]
+  },
+  {
+   "addr": "0x895428",
+   "type": "u16",
+   "values": [
+    "0x8000"
+   ]
+  }
+ ]
+}

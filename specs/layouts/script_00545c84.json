@@ -1,0 +1,28 @@
+{
+ "_evidence": "Text-script entries [0x835846+4*id] (zero in the image: filled when the text resources load, never null-tested) for the ids this function passes to 0x54d798, each its own 0x40-byte script with the script_0054d798 byte set (no opcode 4). Compose after script_0054d798. Ids 0x21..0x16d (dh+0x21 / dl+0x6e for any byte: dwords 0x8358ca..0x835dfa) for the non-0xff arm of 0x545c84/0x545cf7, plus the selector [0x82974e] (0xff picks the other arm) and the byte [0x829750].",
+ "globals": [
+  {
+   "addr": "0x008358ca",
+   "type": "ptr",
+   "count": 333,
+   "stride": 4,
+   "size": 64,
+   "fill": "u8{=0,1,2,3,5,6,7,8,9,0xa,0xb,0xc,0xd,0xe,0xf,0x10,0x11,0x12,0x13,0x14,0x20,0x41,0x7f,0x80,0xff}"
+  },
+  {
+   "addr": "0x0082974e",
+   "type": "u8",
+   "values": [
+    "0xff",
+    "0xff",
+    0,
+    1,
+    2
+   ]
+  },
+  {
+   "addr": "0x00829750",
+   "type": "u8"
+  }
+ ]
+}

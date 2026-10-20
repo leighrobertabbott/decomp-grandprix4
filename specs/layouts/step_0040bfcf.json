@@ -1,0 +1,58 @@
+{
+ "_evidence": "0x0040bfcf advances ([0x63b814] + [0x62282c]) >> 16 segments: the step [0x62282c] is a 16.16 segment count per tick (0..3 segments), [0x63b814] a record byte offset k*0x160; byte 0x62ac99 is a 0/0xff flag. Zero in the image, so the segment loop never ran.",
+ "globals": [
+  {
+   "addr": "0x0062282c",
+   "type": "u32",
+   "values": [
+    0,
+    "0x8000",
+    "0x10000",
+    "0x18000",
+    "0x20000",
+    "0x30000"
+   ]
+  },
+  {
+   "addr": "0x0063b814",
+   "type": "u32",
+   "values": [
+    "0x0",
+    "0x160",
+    "0x2c0",
+    "0x420",
+    "0x580",
+    "0x6e0",
+    "0x840",
+    "0x9a0",
+    "0xb00",
+    "0xc60",
+    "0xdc0",
+    "0xf20",
+    "0x1080",
+    "0x11e0",
+    "0x1340",
+    "0x14a0",
+    "0x1600",
+    "0x1760",
+    "0x18c0",
+    "0x1a20",
+    "0x1b80",
+    "0x1ce0",
+    "0x1e40",
+    "0x1fa0",
+    "0x2100",
+    "0x2260"
+   ]
+  },
+  {
+   "addr": "0x0062ac99",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0xff"
+   ]
+  }
+ ]
+}

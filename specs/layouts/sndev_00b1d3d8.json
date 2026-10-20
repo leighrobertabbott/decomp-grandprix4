@@ -1,0 +1,8 @@
+{
+ "_evidence": "DirectSound device wrapper (class with vtable 0x5f9c80, ctor 0x5ac7a0, 0x290 bytes) as reached from 0x509d80's non-null arm: 0x4d4f20(dev) stores it in the stack helper (+0x14c), reads the byte dev+0x70 (0x5a9d80) and writes dev+0x70 = 0 (0x5a9d70(0)); 0x4d5140 then tests the dword dev+0x1a4 (0x4d52e7 'cmp [ecx+0x1a4],ebx; jne 0x4d530b'), and 0x4d4f80 restores dev+0x70 (0x5a9d70(saved byte)); [helper+0x131] is 0 on this path so no device vtable call is made. dev+0x1a4 is the IDirectSound interface pointer (filled by 0x5ec51c = DirectSoundCreate in 0x5ac944/0x5b2d6a; 0 until the device is opened or when DirectSoundCreate fails): 0 is a game state and takes the return-3 arm (0x509dbc: al=0). A non-null interface continues into DirectSoundEnumerateA (0x5a49a8 = jmp [0x5f0028], dsound.dll ordinal 2), the advapi32 registry calls (RegOpenKeyExA 'Software\\Infogrames\\Grand Prix 4\\Audio', RegQueryValueExA 'GUID') and IDirectSound vtable calls ([vtbl+0xac]), none of which the emulator models, so that arm is left to the in-game check (T2) and +0x1a4 is pinned 0. All other bytes are never read on the modelled arm (random background).",
+ "size": 656,
+ "fill": "bytes",
+ "fields": [
+  {"off": "0x1a4", "type": "u32", "values": [0]}
+ ]
+}

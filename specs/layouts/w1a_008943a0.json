@@ -1,0 +1,11 @@
+{
+ "_evidence": "Word +0x1a / flag byte +0x1b of the 0x160-byte segment records 0..63 at 0x8943a0 (0x8943ba + k*0x160). 0x00441d85 (via 0x441d6b/0x441d7a) sets or clears bit 4 of +0x1b (or/and, read-modify-write) on 32 records walked with 0x406045 from [0x891504] + cx*8 records, and copies word +0x1a of the record [0x866f04] to the record [0x866ef8]. With ring_008943a0+records_008943a0 the start is a record <= 12 (lap start 0..4 plus cx*8); 0x406045 steps +0x160 except that reaching the lap end wraps to record 0 and reaching the pit end jumps to the pit exit [0x866f04] (records 5..26), and a random ring can step past those exact matches, so the 31 further steps stay below record 26 + 31 = 57 (observed up to 52); the copy endpoints are records <= 32. 64 records therefore cover every byte the walk can touch (the array has 432 records). The word is run-time segment state with no index/pointer use here (RMW of one bit, a plain copy), so any value is valid; compose after ring_008943a0+records_008943a0 (it only adds these words).",
+ "globals": [
+  {
+   "addr": "0x008943ba",
+   "type": "u16",
+   "count": 64,
+   "stride": "0x160"
+  }
+ ]
+}

@@ -1,0 +1,118 @@
+{
+  "_evidence": "Overlay for 0x004250f1 (compose AFTER view_00609860+recs_00621aa0). Count: 0x4250f1 runs a do-while over i = 0..[0x609864]-1 and reads the index table dword [i*4+0x609870] (0x425141); its only caller chain 0x424462 zeroes the count, 0x43b127 appends at most one entry and 0x4250b9 at most four, so the count is 0..5 and the table holds 5 dwords (state_004250b9; 0x609884 is a separate global). Each table entry is a record index: 0x425148 imul 0x34 + 0x63db8c (16 records 0x63db8c..0x63decb: 0x43b127 fills record 0, 0x43a83d uses the free slot 1..15 found by 0x43a05a over the bytes 0x63db7d..0x63db8b; 0x63decc starts the next table), so 0..15 (fuzzed indices addressed wild memory: 21 faults). Record fields read through 0x60982c: +0/+4/+8 (0x4251e7 sub/fild or copy), +0xc/+0x10/+0x14 (0x402051/0x402081 angles, fild+fsincos), +0x18..+0x20 (unused here), +0x24/+0x2c copied to view +0x3c/+0x48: plain i32. +0x28 = v (0x43b127 writes 100000) is copied to view +0x54 and feeds two idivs: d1 = v + g254 (g254 = [0x608254], camera +0x48 copied by 0x424462) divides v<<14 (0x425195), then d2 = low32([0x608164]*d1) (0 -> 1 at 0x4251b4) divides low32(v*g254) * (([0x609868]+0x4000)<<5) (0x4251d3). Domain: v in 1..0x1ffff, g254 in 0..0x3ff, so d1 >= 1 and 0 < q1 <= 2^14 (v = 0 with g254 = 0 is the original's own #DE, negative v near -g254 overflows q1); v*g254 < 2^31 (no low32 wrap). [0x608164] is x/ceil(x/128) from 0x4125ce, i.e. 1..128 (image value 128; state_004125ce), and in about half the cases aliases g254 (so it is 0 exactly when g254 = 0: the 'mov ebp,1' block with numerator 0). [0x609868] = j - 0x4000 with j in -0xffff..0xffff (its image value 0x2800 inside), so m = 32*j fits and |q2| < g254*|m| <= 0x3ff*32*0xffff < 2^31 when [0x608164] >= 1 (d2 = [0x608164]*d1 < 2^31, no wrap), and |q2| < |m| when it equals g254 (d2 = g254*d1 < 2^27). Full-range [0x609868]/[0x608164] with nonzero numerator overflow q2 (the original's #DE). The 0x401fb4 path (mode byte 0x63963d == 0) reads the camera angles 0x638dd0/d4/d8 (fild + fsincos: any i32).",
+  "globals": [
+    {
+      "addr": "0x00609864",
+      "type": "u32",
+      "lo": 0,
+      "hi": 5
+    },
+    {
+      "addr": "0x00609870",
+      "type": "u32",
+      "count": 5,
+      "stride": 4,
+      "lo": 0,
+      "hi": 15
+    },
+    {
+      "addr": "0x0063db8c",
+      "type": "i32",
+      "count": 16,
+      "stride": "0x34"
+    },
+    {
+      "addr": "0x0063db90",
+      "type": "i32",
+      "count": 16,
+      "stride": "0x34"
+    },
+    {
+      "addr": "0x0063db94",
+      "type": "i32",
+      "count": 16,
+      "stride": "0x34"
+    },
+    {
+      "addr": "0x0063db98",
+      "type": "i32",
+      "count": 16,
+      "stride": "0x34"
+    },
+    {
+      "addr": "0x0063db9c",
+      "type": "i32",
+      "count": 16,
+      "stride": "0x34"
+    },
+    {
+      "addr": "0x0063dba0",
+      "type": "i32",
+      "count": 16,
+      "stride": "0x34"
+    },
+    {
+      "addr": "0x0063dba4",
+      "type": "i32",
+      "count": 16,
+      "stride": "0x34"
+    },
+    {
+      "addr": "0x0063dba8",
+      "type": "i32",
+      "count": 16,
+      "stride": "0x34"
+    },
+    {
+      "addr": "0x0063dbac",
+      "type": "i32",
+      "count": 16,
+      "stride": "0x34"
+    },
+    {
+      "addr": "0x0063dbb0",
+      "type": "i32",
+      "count": 16,
+      "stride": "0x34"
+    },
+    {
+      "addr": "0x0063dbb4",
+      "type": "i32",
+      "count": 16,
+      "stride": "0x34",
+      "lo": 1,
+      "hi": "0x1ffff"
+    },
+    {
+      "addr": "0x0063dbb8",
+      "type": "i32",
+      "count": 16,
+      "stride": "0x34"
+    },
+    {
+      "addr": "0x00608254",
+      "type": "i32",
+      "lo": 0,
+      "hi": "0x3ff"
+    },
+    {
+      "addr": "0x00608164",
+      "type": "i32",
+      "lo": 1,
+      "hi": 128,
+      "alias": "0x00608254"
+    },
+    {
+      "addr": "0x00609868",
+      "type": "i32",
+      "lo": "-0x13fff",
+      "hi": "0xbfff"
+    },
+    {
+      "addr": "0x00638dd0",
+      "type": "i32",
+      "count": 3,
+      "stride": 4
+    }
+  ]
+}

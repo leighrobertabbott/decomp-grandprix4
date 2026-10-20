@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x004327cd (compose after state_0043260e for the 0x43260e branch): the sign of byte 0x007c2ea9 (test 0xff; js) selects the 0x43260e call or the replay branch, which compares esi with [0x00679d2c] (cmp; jne: equal in about half the cases, alias_reg) and then copies dword 0x00679b18 and word 0x0088f6a0 (plain values).",
+  "globals": [
+    {"addr": "0x007c2ea9", "type": "u8"},
+    {"addr": "0x00679d2c", "type": "u32", "alias_reg": "esi"},
+    {"addr": "0x00679b18", "type": "u32"},
+    {"addr": "0x0088f6a0", "type": "u16"}
+  ]
+}

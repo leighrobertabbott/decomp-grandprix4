@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x0042181c (ebx = 0x006380d8, loop over the four 0x300-byte records to 0x00638cd8) stores +0x140 + +0x120 into +0xf4 and +0x13c + +0x11c + +0x110 into +0xf0 of each record (+0x110 is written first from esi+0x40c/+0x410). Dwords +0x11c/+0x120/+0x13c/+0x140 are per-frame record state used only in add, so any i32 is valid.",
+  "globals": [
+    {"addr": "0x006381f4", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x006381f8", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x00638214", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x00638218", "type": "i32", "count": 4, "stride": "0x300"}
+  ]
+}

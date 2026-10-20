@@ -1,0 +1,8 @@
+{
+  "_evidence": "Car block (esi, 0x100 bytes) for 0x00426947: dword +0x98 (abs, shr 2, clamp 0x16600000, shr 20: table index 0..0x166) and byte +0x8d (bit 0 adds 0x168) are any pattern; word +0xd6 (movzx, imul with the table entry, shrd 6) is drawn 0..0x400 so the thresholds are of the order of diff (see state_00426947); word +0xf6 is any i16 (movsx imul, both signs). Nothing else is read: random background.",
+  "size": 256,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0xd6", "type": "u16", "lo": 0, "hi": 1024}
+  ]
+}

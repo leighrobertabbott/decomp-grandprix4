@@ -126,7 +126,14 @@ def build_recon(files: list[Path] | None = None, root: Path = REPO, out_dir: Pat
                 log.append(_trim(out, 1500))
         objs.append(obj)
     dll = bdir / f"{out_name}.dll"
-    rc, out = _run(["link", *LFLAGS, f"/OUT:{dll}", f"/MAP:{bdir / (out_name + '.map')}", *map(str, objs)], env, root)
+    # Objects go through a response file: hundreds of paths exceed the 32,767-character
+    # Windows command line (WinError 206). Unique name: concurrent links share bdir.
+    rsp = bdir / f"{out_name}.{uuid.uuid4().hex}.rsp"
+    rsp.write_text("\n".join(f'"{o}"' for o in objs) + "\n", encoding="utf-8")
+    try:
+        rc, out = _run(["link", *LFLAGS, f"/OUT:{dll}", f"/MAP:{bdir / (out_name + '.map')}", f"@{rsp}"], env, root)
+    finally:
+        rsp.unlink(missing_ok=True)
     if rc != 0:
         return {"gate": "build", "status": "fail", "file": "<link>", "log": _trim(out)}
     return {"gate": "build", "status": "pass", "dll": str(dll), "objects": len(objs),

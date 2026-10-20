@@ -1,0 +1,213 @@
+{
+ "size": 860,
+ "_evidence": "Car record (esi) for 0x00413dd5 and its callees 0x434d6b, 0x413d49, 0x413d01; every read is a test/cmp/movsx of a byte, word or dword, so no bit pattern can fault and the background bytes are random (fill bytes: +0x230/+0x203/+0x162/+0x163 RMW and tests, +0x161 bit 1, +0x179 bit 0, +0x9a sign and its 0x603bc0 compare all take both sides). The success path (stc at 0x413e9c) needs about a dozen correlated conditions, so the selector bytes draw from value lists that keep every outcome but favour the continuing one: +0x25f (test 0x80 jne exit at 0x413ddc, test 2 at 0x413e2b/0x413e7d: bit 7 set 1/8, bit 1 set 3/8), +0x26b (bit 3: 2/8), dword +0x40 (test 0x15280: masked-zero in 7/11), dword +0x1f0 (test/je, then [0x66d814]-x js: zero, small, extremes), dword +0x1a0 (cmp 0 jl: 5/7 non-negative), +0xe5 (bit 7: 2/6), +0xcc (bit 6: 2/6), +0xfe (bit 5 set 4/6), +0x7a (bit 5: 2/6). 0x413d49 compares words +0xe/+0x18 minus edi word +0 against bounds built from word +0x90 (movsx) and edi words +0x60/+0x62 times [0x602090] >>14 and |+0xe - +0x18| against 0xe00: small/large/extreme i16 values reach both outcomes of every compare. 0x413d01 runs four passes over dwords +0x34c..+0x358 (abs, jg [0x602084]) and +0x2ec..+0x2f8 (jl [0x602088], jge [0x60208c]); its completion (clc, needed for the stc) requires all eight to pass, so they are zero in half the picks plus small, +-100 and the two extremes (0x80000000 keeps its sign through neg).",
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x25f",
+   "type": "u8",
+   "values": [
+    "0x0",
+    "0x1",
+    "0x7d",
+    "0x40",
+    "0x2",
+    "0x7f",
+    "0x13",
+    "0x80"
+   ]
+  },
+  {
+   "off": "0x26b",
+   "type": "u8",
+   "values": [
+    "0x0",
+    "0xf7",
+    "0x1",
+    "0x77",
+    "0x8",
+    "0xff",
+    "0x30",
+    "0x80"
+   ]
+  },
+  {
+   "off": "0x40",
+   "type": "u32",
+   "values": [
+    "0x0",
+    "0x0",
+    "0x1",
+    "0x8",
+    "0xead7f",
+    "0x80000000",
+    "0x10000000",
+    "0x80",
+    "0x200",
+    "0x1000",
+    "0x15280"
+   ]
+  },
+  {
+   "off": "0x1f0",
+   "type": "u32",
+   "values": [
+    "0x0",
+    "0x0",
+    "0x1",
+    "0xffffffff",
+    "0x64",
+    "0xffffff9c",
+    "0x7fffffff",
+    "0x80000000"
+   ]
+  },
+  {
+   "off": "0x1a0",
+   "type": "u32",
+   "values": [
+    "0x0",
+    "0x1",
+    "0x64",
+    "0x7fffffff",
+    "0x12345",
+    "0xffffffff",
+    "0x80000000"
+   ]
+  },
+  {
+   "off": "0xe5",
+   "type": "u8",
+   "values": [
+    "0x0",
+    "0x7f",
+    "0x1",
+    "0x40",
+    "0x80",
+    "0xff"
+   ]
+  },
+  {
+   "off": "0xcc",
+   "type": "u8",
+   "values": [
+    "0x0",
+    "0xbf",
+    "0x1",
+    "0x80",
+    "0x40",
+    "0xff"
+   ]
+  },
+  {
+   "off": "0xfe",
+   "type": "u8",
+   "values": [
+    "0x20",
+    "0xff",
+    "0x21",
+    "0x60",
+    "0x0",
+    "0xdf"
+   ]
+  },
+  {
+   "off": "0x7a",
+   "type": "u8",
+   "values": [
+    "0x0",
+    "0xdf",
+    "0x1",
+    "0x80",
+    "0x20",
+    "0xff"
+   ]
+  },
+  {
+   "off": "0x90",
+   "type": "u16",
+   "values": [
+    "0x0",
+    "0x32",
+    "0xffce",
+    "0x7fff",
+    "0x8000",
+    "0x5"
+   ]
+  },
+  {
+   "off": "0xe",
+   "type": "u16",
+   "values": [
+    "0x0",
+    "0xa",
+    "0xfff6",
+    "0x64",
+    "0xff9c",
+    "0x7fff",
+    "0x8000",
+    "0x3e8",
+    "0xfc18"
+   ]
+  },
+  {
+   "off": "0x18",
+   "type": "u16",
+   "values": [
+    "0x0",
+    "0xa",
+    "0xfff6",
+    "0x64",
+    "0xff9c",
+    "0x7fff",
+    "0x8000",
+    "0x3e8",
+    "0xfc18"
+   ]
+  },
+  {
+   "off": "0x2ec",
+   "type": "u32",
+   "count": 4,
+   "stride": 4,
+   "values": [
+    "0x0",
+    "0x0",
+    "0x0",
+    "0x0",
+    "0x0",
+    "0x0",
+    "0x1",
+    "0xffffffff",
+    "0x1e",
+    "0xffffffe2",
+    "0x64",
+    "0xffffff9c",
+    "0x7fffffff",
+    "0x80000000"
+   ]
+  },
+  {
+   "off": "0x34c",
+   "type": "u32",
+   "count": 4,
+   "stride": 4,
+   "values": [
+    "0x0",
+    "0x0",
+    "0x0",
+    "0x0",
+    "0x0",
+    "0x0",
+    "0x1",
+    "0xffffffff",
+    "0x1e",
+    "0xffffffe2",
+    "0x64",
+    "0xffffff9c",
+    "0x7fffffff",
+    "0x80000000"
+   ]
+  }
+ ]
+}

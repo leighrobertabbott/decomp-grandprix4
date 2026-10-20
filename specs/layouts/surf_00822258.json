@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x0054a225: esi = [0x822260] (source words, movzx eax,word [esi]), edi = [0x822258] (destination, mov [edi],ax), both += 2 per entry until edi == [0x82225c] (cmp/jne, a do-while: at least one entry). 0x00538d70 sets dst = surface base, end = dst + 0xea600 and src = end (a second 800x600x2 buffer), so end - dst is a positive even byte count; an end below or equal to dst would never be hit. Emulator domain: dst a fixed writable address 0x8218f0 (bss, not read by this routine), end = dst + 2k for k = 1..16 (points_into), src a separate random 64-byte buffer (k <= 16 words are read).",
+ "globals": [
+  {"addr": "0x00822258", "type": "u32", "values": ["0x008218f0"]},
+  {"addr": "0x0082225c", "type": "u32", "points_into": {"base": "0x008218f0", "stride": 2, "lo": 1, "hi": 16}},
+  {"addr": "0x00822260", "type": "ptr", "size": 64, "fill": "bytes"}
+ ]
+}

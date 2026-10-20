@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x00549db9 inserts a 0x14-byte entry into a key-sorted list using the pool built by 0x549d81 (count [0x831d7d] = 0, head [0x831d81] = 0, free list [0x831d85] -> 256 linked 0x14-byte nodes at 0x831d89). 'mov edx,[0x831d7d]; cmp edx,0x100; jae' takes the 0x54e232 stub (pool full) else 'inc [0x831d7d]'; since the count only grows while below 0x100 it is 0..0x100 (both sides of the compare drawn). 'mov edi,[0x831d85]; mov edx,[edi]; mov [0x831d85],edx' pops the free node (non-null whenever the count is below 0x100: a separate 0x14-byte buffer, its +0 next only copied) and +4/+8/+0xc/+0x10 are written. Then 'mov esi,[ebx]; or esi,esi; je' / 'cmp eax,[esi+8]; jb' walks the used list from the head [0x831d81] (nullable; the existing node1_0054a09f chain: up to 5 fresh nodes, +0 next nullable, +8 keys -2/-1/0..3 as unsigned, so with the eax argument the walk stops both at a larger key and at the null end) and links the node in. Every pointer is a valid separate buffer, so nothing faults and no walk cycles.",
+ "globals": [
+  {"addr": "0x00831d7d", "type": "u32", "values": [0, 1, 2, 3, 16, "0x7f", "0xfe", "0xff", "0xff", "0x100", "0x100"]},
+  {"addr": "0x00831d85", "type": "ptr", "size": 20, "fill": "bytes"},
+  {"addr": "0x00831d81", "type": "ptr", "size": 16, "fill": "layout=node1_0054a09f", "nullable": true}
+ ]
+}

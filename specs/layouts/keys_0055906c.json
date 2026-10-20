@@ -1,0 +1,12 @@
+{
+ "_evidence": "0x0055906c looks the 10-byte key {dword [0x962f9c], dword [0x962fa0], word [0x962fa4]} up in the table 0x961b9c (10-byte entries, 512 slots: the key sits right after slot 511) - 'cmp ecx,[edi]; jne / cmp edx,[edi+4]; jne / cmp bp,[edi+8]; je found' - over [0x9559f4] entries with a do-while ('add edi,0xa; inc eax; cmp eax,[0x9559f4]; jne'), clc with eax = index when found, stc after the last entry. The count is 1..0x1ff: 0x559024 appends entries and asserts the count below 0x200, and a zero count would never meet the jne exit (the caller 0x5590b4 does not test it). Key and entry fields come from the same small sets, so each compare is equal or not, an entry matches with probability 1/36, the key is found at varying positions or not at all (counts from 1 up to 0x1ff).",
+ "globals": [
+  {"addr": "0x00962f9c", "type": "u32", "values": [0, 1, 2, "0x12345678"]},
+  {"addr": "0x00962fa0", "type": "u32", "values": [0, 1, "0xffffffff"]},
+  {"addr": "0x00962fa4", "type": "u16", "values": [0, 1, "0x8000"]},
+  {"addr": "0x009559f4", "type": "u32", "values": [1, 1, 2, 3, 4, 8, 16, 25, 40, 64, 100, 300, "0x1ff"]},
+  {"addr": "0x00961b9c", "type": "u32", "count": 512, "stride": 10, "values": [0, 1, 2, "0x12345678"]},
+  {"addr": "0x00961ba0", "type": "u32", "count": 512, "stride": 10, "values": [0, 1, "0xffffffff"]},
+  {"addr": "0x00961ba4", "type": "u16", "count": 512, "stride": 10, "values": [0, 1, "0x8000"]}
+ ]
+}

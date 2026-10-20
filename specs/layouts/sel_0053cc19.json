@@ -1,0 +1,196 @@
+{
+ "_evidence": "0x0053cc19 (next selectable item from the selection; compose after menu_0084300a, globals=layout only so the static links keep their image values): esi = header [0x82fd34] = the static 13-item menu 0x84300a (items 0x843040..0x843224, item 13 links to 0; a null or other header faults: no null test before the hops), ecx = selection byte [0x82fd45] (0 -> 1; above the item count [0x82fd52] -> error call 0x54e232 and 1), 'mov esi,[esi]' ecx times (count must stay <= 13: 14 hops reach the null link and the next 'test [esi+0x1e]' faults, so the count draws {12,13}), then the walk tests +0x1e bits 0x40/0x80 and +0x1f bits 0x20/0x10 (found -> selection = item id +0xc), else steps to the next item (null -> first item) and stops when its id +0xc equals the selection (error call, selection = first item's id). The walk only terminates when an item qualifies or the selection is one of the item ids, so a selection that is no id (0, 14.., 0xff) with no qualifying item loops forever in the original; layouts cannot tie the selection to the flags, so instead the id byte of item 13 (0x843230, 13 in the image, never written by code) draws {13 (often), 0, 14, 0x80, 0xff} and the selection draws 1..12 or (alias, about half the cases) the same byte: every case terminates (at item sel, at item 13, or at a qualifying item), while sel = 0 (0x53cc2b), sel > count (13 with count 12, 14, 0x80, 0xff: 0x53cc38/0x53cc4d), the wrap at the null link (0x53cc81), the found exit and the full-cycle id exit (no item qualifies, ~1/5 with +0x1e = 0xc0 in 1 of 6 and menu_0084300a's +0x1f) all occur. Item +0x1e bytes (0x84305e + item strides) draw {0xc0, 0, 0x40, 0x80, 0x41, 0x81} (each bit test both ways); +0x1f comes from menu_0084300a. Replaces sel_0053d8c5 here (every field of it is redrawn).",
+ "globals": [
+  {
+   "addr": "0x0082fd34",
+   "type": "u32",
+   "values": [
+    "0x84300a"
+   ]
+  },
+  {
+   "addr": "0x0082fd52",
+   "type": "u32",
+   "values": [
+    12,
+    13,
+    13
+   ]
+  },
+  {
+   "addr": "0x84305e",
+   "type": "u8",
+   "values": [
+    "0xc0",
+    0,
+    "0x40",
+    "0x80",
+    "0x41",
+    "0x81"
+   ]
+  },
+  {
+   "addr": "0x843084",
+   "type": "u8",
+   "values": [
+    "0xc0",
+    0,
+    "0x40",
+    "0x80",
+    "0x41",
+    "0x81"
+   ]
+  },
+  {
+   "addr": "0x8430aa",
+   "type": "u8",
+   "values": [
+    "0xc0",
+    0,
+    "0x40",
+    "0x80",
+    "0x41",
+    "0x81"
+   ]
+  },
+  {
+   "addr": "0x8430d0",
+   "type": "u8",
+   "values": [
+    "0xc0",
+    0,
+    "0x40",
+    "0x80",
+    "0x41",
+    "0x81"
+   ]
+  },
+  {
+   "addr": "0x8430f6",
+   "type": "u8",
+   "values": [
+    "0xc0",
+    0,
+    "0x40",
+    "0x80",
+    "0x41",
+    "0x81"
+   ]
+  },
+  {
+   "addr": "0x84311c",
+   "type": "u8",
+   "values": [
+    "0xc0",
+    0,
+    "0x40",
+    "0x80",
+    "0x41",
+    "0x81"
+   ]
+  },
+  {
+   "addr": "0x843146",
+   "type": "u8",
+   "values": [
+    "0xc0",
+    0,
+    "0x40",
+    "0x80",
+    "0x41",
+    "0x81"
+   ]
+  },
+  {
+   "addr": "0x843170",
+   "type": "u8",
+   "values": [
+    "0xc0",
+    0,
+    "0x40",
+    "0x80",
+    "0x41",
+    "0x81"
+   ]
+  },
+  {
+   "addr": "0x84319a",
+   "type": "u8",
+   "values": [
+    "0xc0",
+    0,
+    "0x40",
+    "0x80",
+    "0x41",
+    "0x81"
+   ]
+  },
+  {
+   "addr": "0x8431c4",
+   "type": "u8",
+   "values": [
+    "0xc0",
+    0,
+    "0x40",
+    "0x80",
+    "0x41",
+    "0x81"
+   ]
+  },
+  {
+   "addr": "0x8431ee",
+   "type": "u8",
+   "values": [
+    "0xc0",
+    0,
+    "0x40",
+    "0x80",
+    "0x41",
+    "0x81"
+   ]
+  },
+  {
+   "addr": "0x843218",
+   "type": "u8",
+   "values": [
+    "0xc0",
+    0,
+    "0x40",
+    "0x80",
+    "0x41",
+    "0x81"
+   ]
+  },
+  {
+   "addr": "0x843242",
+   "type": "u8",
+   "values": [
+    "0xc0",
+    0,
+    "0x40",
+    "0x80",
+    "0x41",
+    "0x81"
+   ]
+  },
+  {
+   "addr": "0x00843230",
+   "type": "u8",
+   "values": [
+    13,
+    13,
+    0,
+    14,
+    "0x80",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0082fd45",
+   "type": "u8",
+   "lo": 1,
+   "hi": 12,
+   "alias": "0x00843230"
+  }
+ ]
+}

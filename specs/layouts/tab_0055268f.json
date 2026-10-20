@@ -1,0 +1,7 @@
+{
+  "_evidence": "Count-prefixed dword table for 0x0055268f (and the same shape for its sibling 0x005526eb at [ebx+0x54]): 'mov ecx,[ebx+0x50]' then, unless ecx = -1, the index eax is 1 (bits clear), [ebx+0x58]+1 (bit 0) or 0x4015e2(count) = 1..count (bit 1), clamped by 'cmp eax,1; jge' and 'cmp eax,[ecx]; jbe' (else 1), and 'mov eax,[ecx+eax*4]' reads entry 1..max(count,1). blk_0055268f points [ebx+0x50] either at -1 or at this table placed at the fixed, otherwise unused .data address 0x00a20000 (zero in the image, no code references 0xa1f000..0xa21100); the layout language has no 'pointer or -1' field, so the table must sit at a fixed address. Count dword 0..16 (16 entries follow, so every clamped index stays inside: a count beyond the table would let [ebx+0x58]+1 index past it) and 16 random entry dwords at +4..+0x40 (copied to [ebx+0x54] and [edi+0x90], never dereferenced). Count 0 reaches the 'jbe' not-taken clamp from every path.",
+  "globals": [
+    {"addr": "0x00a20000", "type": "u32", "lo": 0, "hi": 16},
+    {"addr": "0x00a20004", "type": "u32", "count": 16, "stride": 4}
+  ]
+}

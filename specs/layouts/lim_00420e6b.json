@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x00420e6b compares esi dword +0x32c+4k with dword +0x1c8 of record k of the four 0x300-byte records at 0x006380d8 (jle) and clamps it to that limit, else to 0 when negative (jge). +0x1c8 is per-record run-time state (a limit, image 0 so the jge was only taken for an exact 0); any i32 draws both clamps and the in-range case.",
+  "globals": [
+    {"addr": "0x006382a0", "type": "i32", "count": 4, "stride": "0x300"}
+  ]
+}

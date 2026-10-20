@@ -1,0 +1,141 @@
+{
+ "_evidence": "Car-record state that 0x0040f6d0 reads when its caller passes a fixed car record (esi = 0x66fef0 + k*0x41c: 0x0043ad30 any of the 22 cars, 0x00410d4b cars 0..5 via [0x66d82c]); these bytes were never varied in those wrappers (static zero). 0x40f6d0's own accepted domain is car_004129fa: every car byte random except the position dwords +0/+4 in -0x4000000..0x3fff7ff (coordinates of the i16 record frame <<11, so the walks 0x405cf8/0x405d65 stay in records 0..14); the callees only test/RMW flag bytes (+0x78, +0x7b, +0x9c, +0xe5, +0xe6, +0x162, +0x1ce, +0x203, +0x21d), use words +0xe/+0x18/+0xc4/+0xce/+0xd6/+0xda/+0xe0/+0x278/+0x27e and dwords +0x98/+0x28c as plain operands or imul factors (0x409244's idiv divisor is forced >= 0x10). The same domain is applied here to exactly the offsets the wrappers' original runs read: positions bounded, everything else any value. Compose after cars_0066fef0 (it pins other car fields: +0x1c segment pointer, +0xfd, ...).",
+ "globals": [
+  {
+   "addr": "0x66fef0",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x41c",
+   "lo": -67108864,
+   "hi": 67106815
+  },
+  {
+   "addr": "0x66fef4",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x41c",
+   "lo": -67108864,
+   "hi": 67106815
+  },
+  {
+   "addr": "0x66fefe",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x66ff08",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x66ffb4",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x66ffbe",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x66ffc6",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x66ffca",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x66ffd0",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x670052",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x670168",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x67016e",
+   "type": "u16",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x66ff68",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x66ff6b",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x66ff8c",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x66ffd5",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x66ffd6",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x6700be",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x6700f3",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x67010d",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x66ff88",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x67017c",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x41c"
+  }
+ ]
+}

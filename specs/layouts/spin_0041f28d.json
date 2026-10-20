@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x0041f28d and 0x0041f2f1 (ebx = 0x006380d8, loop over the four 0x300-byte records) fild dwords +0x254 and +0x24c of each record, multiply them by a fild-ed global times the constant angle scale (0x006f2bcc / 0x006f2bc4, set at startup, left alone) and fistp the difference (out-of-range products give the integer indefinite, as in the game). The two dwords are per-record run-time state (fild only), so any i32 is valid for all four records.",
+  "globals": [
+    {"addr": "0x00638324", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x0063832c", "type": "i32", "count": 4, "stride": "0x300"}
+  ]
+}

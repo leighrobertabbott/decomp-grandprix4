@@ -1,0 +1,5 @@
+{
+  "size": 88,
+  "_evidence": "Record reached through [[0x601a74]+0x1c] in 0x004127b3: only byte +0x51 is read (test 8: selects which sign of 0x6036dc / +0xac continues). Any value.",
+  "fields": [{"off": "0x51", "type": "u8"}]
+}

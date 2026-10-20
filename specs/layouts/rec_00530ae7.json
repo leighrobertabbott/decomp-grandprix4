@@ -1,0 +1,25 @@
+{
+ "_evidence": "Records at 0x827160 (stride 0x3c, 3 of them) reached through ebx by 0x00530ae7: byte +4 any, byte +5 gate (== 3).",
+ "globals": [
+  {
+   "addr": "0x00827164",
+   "type": "u8",
+   "count": 3,
+   "stride": "0x3c"
+  },
+  {
+   "addr": "0x00827165",
+   "type": "u8",
+   "count": 3,
+   "stride": "0x3c",
+   "values": [
+    3,
+    3,
+    3,
+    0,
+    1,
+    2
+   ]
+  }
+ ]
+}

@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x0041891a scans the 16 entries at 0x0063decc (stride 0x2c) for the first whose dwords +0 and +4 are both zero (or + je: returns its address with clc), else stc after 16. Only those two dwords per entry are read (state; fuzz varied only the first). Each draws 0 in 2/7 of the cases (independently, so one-zero entries occur), giving a free entry with probability ~1/12: first hits at every depth and about a quarter exhausted scans. Any value is valid.",
+  "globals": [
+    {"addr": "0x0063decc", "type": "u32", "count": 16, "stride": "0x2c", "values": [0, 0, 1, 5, "0x1000", "0x80000000", "0xffffffff"]},
+    {"addr": "0x0063ded0", "type": "u32", "count": 16, "stride": "0x2c", "values": [0, 0, 1, 5, "0x1000", "0x80000000", "0xffffffff"]}
+  ]
+}

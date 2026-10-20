@@ -1,0 +1,51 @@
+{
+ "_evidence": "0x0053c500 (compose after menu_0084300a+state_0053d9a6): 'mov ebx,[0x7a9460]; mov eax,[0x7a9464]' copies the pointer x/y to ebx/eax and 0x82fd94/0x82fd98; 0x53dd5f then hit-tests the static menu 0x84300a on the signed words bx/ax (items 6..13 sit in column x 488..503 and rows of 16 px between y 209 and 428; items 1..5 have empty rectangles at 0,0). So x is drawn from the column with misses either side (0, 480, 487, 504, 510) and one value with high-word garbage (0x123401f0: bx = 496, inside), y from the item rows (first/middle/last lines) and the gaps between them (195, 208, 225, 320, 429, 440) plus one high-word value (0x100d8: ax = 216, inside). 'mov dl,[0x7a9469]; and dl,3' selects the button branch: 0/0x80/0xfc give 0, 1/2/3/0x81 nonzero. 'test byte [0x82fd6b],2' is the press latch (0/0xfd clear, 2/0x42/0xff set). 'cmp byte [0x7ab003],0' is the repeat countdown (0 and nonzero). After each hit test 'jb; cmp edx,[0x82fd88]; je' needs [0x82fd88] equal to the hit id: it aliases [0x82fd40] (the id the hit test requires when [0x82fd44] = 0xff, so an aliased hit always matches) in half the cases, else 0..13 (0 also selects 'cmp dword [0x82fd88],0; jne' -> the idle hit test). 'cmp byte [0x82fd84],0xff' selects 7/8 vs no event. 0x82fd6a only gets 'or 2'. All are plain .data scalars; no pointer is formed from them, so no value faults.",
+ "globals": [
+  {
+   "addr": "0x007a9460",
+   "type": "u32",
+   "values": [0, 480, 487, 488, 488, 489, 492, 495, 496, 498, 500, 503, 503, 504, 510, "0x123401f0"]
+  },
+  {
+   "addr": "0x007a9464",
+   "type": "u32",
+   "values": [195, 208, 209, 216, 224, 225, 235, 242, 250, 261, 270, 276, 287, 295, 302, 320, 335, 342, 350, 361, 368, 376, 387, 394, 402, 413, 420, 428, 429, 440, "0x100d8"]
+  },
+  {
+   "addr": "0x007a9469",
+   "type": "u8",
+   "values": [0, 0, 1, 2, 3, 3, "0x80", "0x81", "0xfc"]
+  },
+  {
+   "addr": "0x0082fd6b",
+   "type": "u8",
+   "values": [0, "0xfd", 2, "0x42", "0xff"]
+  },
+  {
+   "addr": "0x007ab003",
+   "type": "u8",
+   "values": [0, 0, 2, "0xa", "0xff"]
+  },
+  {
+   "addr": "0x0082fd40",
+   "type": "u32",
+   "values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 6, 7, 8, 9, 10, 11, 12, 13]
+  },
+  {
+   "addr": "0x0082fd88",
+   "type": "u32",
+   "lo": 0,
+   "hi": 13,
+   "alias": "0x0082fd40"
+  },
+  {
+   "addr": "0x0082fd84",
+   "type": "u8",
+   "values": ["0xff", "0xff", 0, 1, "0x80"]
+  },
+  {
+   "addr": "0x0082fd6a",
+   "type": "u8"
+  }
+ ]
+}

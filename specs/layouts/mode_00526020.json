@@ -1,0 +1,43 @@
+{
+ "_evidence": "0x526020: mov eax,[0x874f48]; mov esi,[eax*8+0x874f9c]; rep movsd (4 dwords) from esi. The table at 0x874f9c holds {ptr,-1} pairs for entries 0..2 (0x87514c, 0x87515c, 0x87516c) and 0 for entry 3, so only indices 0..2 give a readable source; any other index faults in the original. fuzz:i32 also rewrites the table entries (direct globals), so the three source pointers are pinned to the 16-byte mode blocks 0x87514c/0x87515c/0x87516c (the image's table values) and the blocks' dwords are drawn as positive sizes (they are multiplied by the 0x280/0x1e0 scale factors, any value is safe).",
+ "globals": [
+  {
+   "addr": "0x00874f48",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2
+   ]
+  },
+  {
+   "addr": "0x00874f9c",
+   "type": "u32",
+   "values": [
+    "0x87514c"
+   ]
+  },
+  {
+   "addr": "0x00874fa4",
+   "type": "u32",
+   "values": [
+    "0x87515c"
+   ]
+  },
+  {
+   "addr": "0x00874fac",
+   "type": "u32",
+   "values": [
+    "0x87516c"
+   ]
+  },
+  {
+   "addr": "0x0087514c",
+   "type": "u32",
+   "count": 12,
+   "stride": 4,
+   "lo": 0,
+   "hi": "0x1000"
+  }
+ ]
+}

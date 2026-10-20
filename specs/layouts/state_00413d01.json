@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x00413d01 bounds: dword 0x00602084 is the signed limit for |[esi+0x34c+4i]| (jg exit), 0x00602088 / 0x0060208c the signed half-open band for [esi+0x2ec+4i] (jl / jge exits). 0..120, -120..0 and 0..120 against record values in -100..100 reach every exit and the completion; compares only, so no value can fault.",
+  "globals": [
+    {"addr": "0x00602084", "type": "i32", "lo": 0, "hi": 120},
+    {"addr": "0x00602088", "type": "i32", "lo": -120, "hi": 0},
+    {"addr": "0x0060208c", "type": "i32", "lo": 0, "hi": 120}
+  ]
+}

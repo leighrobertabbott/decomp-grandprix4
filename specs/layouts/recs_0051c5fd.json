@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x51c5fd: count [0x96a368] of the do-while 'inc ebp; cmp ebp,[0x96a368]; jne' (0 wraps to 2^32 - the caller 0x51c058 runs the same do-while over the same records first, so the game never has 0): 1..4. [0x9658fc] = the record array (trecs_0051c5fd, 4 x 0x20 bytes). A slot word w != 0xffff gives the texture entry eax = 0x6975ec + w ('add eax,0x6975ec'); slots_0051cc50 draws w from {0xffff,0,0x20,0x40}, so the three 0x20-byte entries at 0x6975ec/0x69760c/0x69762c are filled like tex_0051c59a: +0 pointer to the eight level buffers (levels_0051c59a), +4 width 1..256 and +6 height 1..16 (0 would run 0x51c59a's loop/dec-jne counts 2^32 times; rows are 0x100 apart).",
+  "globals": [
+    {"addr": "0x0096a368", "type": "u32", "lo": 1, "hi": 4},
+    {"addr": "0x009658fc", "type": "ptr", "size": 128, "fill": "layout=trecs_0051c5fd"},
+    {"addr": "0x006975ec", "type": "ptr", "count": 3, "stride": "0x20", "size": 32, "fill": "layout=levels_0051c59a"},
+    {"addr": "0x006975f0", "type": "u16", "count": 3, "stride": "0x20", "lo": 1, "hi": 256},
+    {"addr": "0x006975f2", "type": "u16", "count": 3, "stride": "0x20", "lo": 1, "hi": 16}
+  ]
+}

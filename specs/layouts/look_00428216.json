@@ -1,0 +1,17 @@
+{
+ "_evidence": "Overlay for the 0x428216 path of 0x00428481 (record byte +0x51 bit 3 set; compose after ring_008943a0+walk_00427f3c). 0x428216 is 0x427f3c's twin: after its two walks it reads dword [0x624814] (static 1, no writer in the decompiled code: a look-ahead record count like the 1..40 counts [0x624818]/[0x62481c] of walk_00427f3c), 'imul eax,eax,0x160' and adds it to the current record edi (0..31 under ring_008943a0's geometry): at/after the pit start [0x891500] it clamps to pit end - 0x160 when the sum reaches [0x866ef8], otherwise it subtracts the wrap [0x866ec4] when the sum reaches the lap end [0x866ecc]; then it reads words [edi] and [edi+0x160] only. A count of 0..4 records keeps every read inside records 0..36 of the mapped BSS segment array (no fault; records 0..31 varied), and reaches both the clamp/no-clamp and wrap/no-wrap outcomes. 0x428158 (called in the second walk with the current edi) reads the u16 radius word +0x62 of each record (minus 0x100, clamped from below by [0x624820], then a Q14 multiply): any value, so the word is a full-range draw for records 0..31.",
+ "globals": [
+  {
+   "addr": "0x00624814",
+   "type": "u32",
+   "lo": 0,
+   "hi": 4
+  },
+  {
+   "addr": "0x00894402",
+   "type": "u16",
+   "count": 32,
+   "stride": "0x160"
+  }
+ ]
+}

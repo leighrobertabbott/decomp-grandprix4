@@ -1,0 +1,18 @@
+{
+ "_evidence": "0x00524a08 (compose after cars_0066fef0): a priority chain on the key byte [0x66d7a6] ('test byte [0x66d7a6],1/0x10/8/0x20/4/2'); its only caller 0x524b3d calls it only when the byte is nonzero ('test byte [0x66d7a6],0xff; je'), so the walk path (none of those six bits) has 0x40 and/or 0x80 set: values give each single bit, 0x40/0x80/0xc0 (walk +2 / -2) and multi-bit bytes where the higher-priority bit wins (0xff, 0x30, 0x84). Bit 0x20/4/2 paths test '[0xa53ad0]' (je, both outcomes to the same block) then 'cmp [0x645950],1' (je, same block): zero and nonzero, one and not one. Bit 8: 'mov eax,[0x66d820]; or eax,eax; je' then esi = eax (never dereferenced here; the caller stores it to 0x679d30): zero or a car pointer / any dword. The walk: the counter word [0x679bce] is set to 0x16 by the caller ('push 0x16; pop word [0x679bce]') and decremented per rejected candidate ('sub word,1; jne'), so entry values 1..22 (states after k rejections; 0 would mean a 65536-step walk the caller never starts). Each step reads ax = byte [esi+0x7d] +-2 wrapped to 0..0x2b, the order-list word at 0x66fe3c + ax (cars_0066fef0: 0xffff or k*0x41c), esi = 0x66fef0 + movsx word; for a 0xffff entry esi = 0x66feef, a pseudo-record whose +0x7a/+0x7d/+0x8d are car 0's bytes 0x66ff69/0x66ff6c/0x66ff7c: +0x7a/+0x8d vary as full bytes (bits 0x20/0x80 and 0x40 tested), +0x7d is the even order offset 0..42 that 0x43b576 stores there for a 0xffff entry (as cars_0066fef0's +0x7d). The callee 0x5249ca (bit 1) compares dwords [0x6f3a34]/[0x6f3a38]/[0x679bdc]+1 with [0x679c24] (jl) after testing bytes [0x7ad88e] bit 0x80 and [0x66d7a4] bit 0x40: all plain draws (nothing is dereferenced).",
+ "globals": [
+  {"addr": "0x0066d7a6", "type": "u8", "values": [1, "0x10", 8, "0x20", 4, 2, "0x40", "0x80", "0xc0", "0x40", "0x80", "0xff", "0x30", "0x84"]},
+  {"addr": "0x00a53ad0", "type": "u32", "values": [0, 0, 1, "0xffffffff", "0x100"]},
+  {"addr": "0x00645950", "type": "u32", "values": [1, 1, 0, 2, "0xffffffff"]},
+  {"addr": "0x0066d820", "type": "u32", "values": [0, 0, "0x66fef0", "0x670728", "0x675554", "0xffffffff"]},
+  {"addr": "0x00679bce", "type": "u16", "lo": 1, "hi": 22},
+  {"addr": "0x0066ff69", "type": "u8"},
+  {"addr": "0x0066ff7c", "type": "u8"},
+  {"addr": "0x0066ff6c", "type": "u8", "values": [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42]},
+  {"addr": "0x007ad88e", "type": "u8"},
+  {"addr": "0x0066d7a4", "type": "u8"},
+  {"addr": "0x006f3a34", "type": "i32"},
+  {"addr": "0x006f3a38", "type": "i32"},
+  {"addr": "0x00679c24", "type": "i32"}
+ ]
+}

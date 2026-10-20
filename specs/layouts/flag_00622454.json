@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x00432db9 runs 0x432cc2 once: byte 0x00622454 (cmp 0xff; je skips, else it is set to 0xff and the call made). Values give 0xff in about a third of the cases and other bytes otherwise.",
+  "globals": [
+    {"addr": "0x00622454", "type": "u8", "values": ["0xff", "0xff", 0, 1, "0x7f", "0xfe"]}
+  ]
+}

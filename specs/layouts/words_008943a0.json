@@ -1,0 +1,9 @@
+{
+  "_evidence": "Lane-edge words of the 0x160-byte segment records at 0x008943a0 read by the interpolators 0x403b19/0x403b3f (movzx +0x60/+0x62 and the next record's +0x1c0/+0x1c2), 0x429100/0x429131 (+0x60/+0x62) and 0x4291f4 (movsx +0x16), plus word 0x00603baa (0x403938 lane offset). Only sub/imul/shrd/compare arithmetic: every value is valid. 34 records cover every edi+0x1c2 read for record pointers 0..32 (ring_008943a0 positions).",
+  "globals": [
+    {"addr": "0x00894400", "type": "u16", "count": 34, "stride": "0x160"},
+    {"addr": "0x00894402", "type": "u16", "count": 34, "stride": "0x160"},
+    {"addr": "0x008943b6", "type": "i16", "count": 34, "stride": "0x160"},
+    {"addr": "0x00603baa", "type": "u16"}
+  ]
+}

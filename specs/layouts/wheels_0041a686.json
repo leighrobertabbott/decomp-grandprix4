@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x0041a686 (when bit 2 of byte [esi+0xe5] is clear) loops ebx over the four 0x300-byte records at 0x006380d8 (exit cmp ebx,0x638cd8): |dword +0x40| + |dword +0x18| (test/jns/neg; both signs so both neg blocks run), times [esi+0x2ec+4k] (shrd 18), times dword [0x00601dd4+4k] (shrd 14), clamped at 0 (jge, both outcomes with signed gains), times [0x0060384c] (shrd 12), added to [esi+0x188+4k]. Only imul/shrd/add: every value is valid, so all fields are full-range i32 draws.",
+  "globals": [
+    {"addr": "0x00638118", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x006380f0", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x00601dd4", "type": "i32", "count": 4, "stride": 4},
+    {"addr": "0x0060384c", "type": "i32"}
+  ]
+}

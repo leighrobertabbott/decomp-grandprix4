@@ -1,0 +1,9 @@
+{
+  "_evidence": "Car record fields 0x004035c3 hands to 0x00403524 (overlay on car_00431ffb, which supplies +0x7e/+0xfd and the random background): movzx ecx,byte [esi+0x294] is the interpolation mode, mov ebp,[esi+0x1a0] the blend fraction and test byte [esi+0x71],8 the side (edx 0/-1; random background bit). Every writer of the triple stores an interpolator result: 0x4036ca/0x40373b store +0x294 = mode from 0x403a1e (eax 0..7) / 0x403721 (1 or 7 or the incoming mode), 0x412938 stores cl of 0x429284 (ecx 1/7/unchanged), so the mode is 0..7 (0x428efb compares it with 7); they store +0x1a0 = eax of 0x403ab9 (0x403d10 clamps to +-0x400000) or 0x403bb6 (neg of a quotient clamped to 0x80000, or an in-band idiv quotient within +-0x4000), so the fraction lies in [-0x400000..0x400000]. Random dwords there (e.g. 0x7e20579a) are impossible and make the original raise #DE in 'div [0x622354]' at 0x403c19 (|ecx-edge|<<14 overflows) after 0x429284 replaces ebp; the bounded range keeps every mode 0..7 branch of 0x403938/0x429284 reachable.",
+  "size": 668,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x294", "type": "u8", "values": [0, 1, 2, 3, 4, 5, 6, 7]},
+    {"off": "0x1a0", "type": "i32", "lo": -4194304, "hi": 4194304}
+  ]
+}

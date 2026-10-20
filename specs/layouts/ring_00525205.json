@@ -1,0 +1,111 @@
+{
+ "_evidence": "0x00525205 measures the ring distance from the object's record [0x6f2f6c + 4*[0x679bd8]] (index 0..31 from ptrtab_00524fa4; the 32-entry table parallel to 0x6f306c, filled by 0x55ab0e) to the record [0x679be0] (stored by 0x524fa4): 'cmp edx,[0x891500]; jae' / 'cmp eax,[0x891500]; jae' exit unless both lie below the pit start (records of the 0x160-stride ring at 0x8943a0 before the pit lane), 'sub eax,edx', |d| compared signed with the half-lap [0x866ed8] ('cmp ecx,[0x866ed8]; jl'), folded with the lap length [0x866ec4] ('neg ecx; add ecx,[0x866ec4]; neg eax') and 'cdq; idiv ecx' by the constant 0x160 (no #DE for any 32-bit dividend). ptrs_006f2f6c makes the entries heap blocks (above any pit start), so only the early exit ran. Here the 32 entries and [0x679be0] draw ring record addresses 0x8943a0 + k*0x160 (k 0..30) plus 0 and 0xffffffff, the pit start a record 4..26 (both sides of each jae), the half-lap 0..0x2a00 (|d| <= 30*0x160 = 0x2940: both sides of the jl) and the lap length from {0x160, 0xb00, 0x2300, 0x2a00}. Nothing is dereferenced, so every value is valid; compose after ptrtab_00524fa4+ptrs_006f2f6c.",
+ "globals": [
+  {
+   "addr": "0x006f2f6c",
+   "type": "u32",
+   "count": 32,
+   "stride": 4,
+   "values": [
+    "0x8943a0",
+    "0x894500",
+    "0x894660",
+    "0x8947c0",
+    "0x894920",
+    "0x894a80",
+    "0x894be0",
+    "0x894d40",
+    "0x894ea0",
+    "0x895000",
+    "0x895160",
+    "0x8952c0",
+    "0x895420",
+    "0x895580",
+    "0x8956e0",
+    "0x895840",
+    "0x8959a0",
+    "0x895b00",
+    "0x895c60",
+    "0x895dc0",
+    "0x895f20",
+    "0x896080",
+    "0x8961e0",
+    "0x896340",
+    "0x8964a0",
+    "0x896600",
+    "0x896760",
+    "0x8968c0",
+    "0x896a20",
+    "0x896b80",
+    "0x896ce0",
+    0,
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x00679be0",
+   "type": "u32",
+   "values": [
+    "0x8943a0",
+    "0x894500",
+    "0x894660",
+    "0x8947c0",
+    "0x894920",
+    "0x894a80",
+    "0x894be0",
+    "0x894d40",
+    "0x894ea0",
+    "0x895000",
+    "0x895160",
+    "0x8952c0",
+    "0x895420",
+    "0x895580",
+    "0x8956e0",
+    "0x895840",
+    "0x8959a0",
+    "0x895b00",
+    "0x895c60",
+    "0x895dc0",
+    "0x895f20",
+    "0x896080",
+    "0x8961e0",
+    "0x896340",
+    "0x8964a0",
+    "0x896600",
+    "0x896760",
+    "0x8968c0",
+    "0x896a20",
+    "0x896b80",
+    "0x896ce0",
+    0,
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x00891500",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 4,
+    "hi": 26
+   }
+  },
+  {
+   "addr": "0x00866ed8",
+   "type": "i32",
+   "lo": 0,
+   "hi": 10752
+  },
+  {
+   "addr": "0x00866ec4",
+   "type": "u32",
+   "values": [
+    "0x160",
+    "0xb00",
+    "0x2300",
+    "0x2a00"
+   ]
+  }
+ ]
+}

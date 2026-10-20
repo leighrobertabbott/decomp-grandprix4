@@ -1,0 +1,121 @@
+{
+ "_evidence": "0x0043e0bc (the backward braking walk of 0x43ff93; esi = car rec[0x66fef0,0x41c,0..21], edi = record rec[0x8943a0,0x160,0..25]; compose after cars_0066fef0+bank_004279ab+ring_008943a0 and the 0x405552 solver layouts state_00405489+engine_00413606+drive_00405552+search_00405552+seg_00405552+tab_00425f41). [0x62ac50] is the target speed (image 0x6400, no code writer): the car word +0x9a (0x43ff93 stores [0x626988] there) is compared with it before the loop (jge exit) and each pass (jl: the 0x43dbdc braking step, then clamp to the target; otherwise the +1-per-pass branch 0x43e0f2), so the image value dominates and 0, 0x100, 0x2000, 0x5000, 0x7fff put it on both sides of the car words (0..0x6400). Each pass steps edi back one record (pit start clamp / lap wrap by [0x866ec4] below [0x891504], or the 0x86857a variant, ring_008943a0 geometry) and ends when 0x43d76b's CF=1: [0x622426] == 0xff compares the speed with record word +0xa4 (stop when not below; else store it), otherwise word +0xa6 (stop when not above; else store it and +0x15c, id byte +0x2a = [0x62698a]). A revisited record holds the speed stored on the earlier visit, so a pass that does not lower the speed ends there; the record words draw small/zero values (stop at once) and large ones (the walk continues), so walks of one and several records occur. [0x62699c] (cmp [0x626998] = 0x43dbdc's speed change; jl) is drawn -0x100..0x100; [0x626964]/[0x626968] feed 0x43e02d's imul (any i32); the 0x43dbdc thresholds [0x604140] (image 0x5500, word compare) and [0x604144] (image 0x60, |angle change| compare) and the byte [0x625a4e] (0xff skips the solver) take image and boundary values so the 0x405552 call both runs and is skipped.",
+ "globals": [
+  {
+   "addr": "0x0062ac50",
+   "type": "u32",
+   "values": [
+    "0x6400",
+    "0x6400",
+    "0x6400",
+    0,
+    "0x100",
+    "0x2000",
+    "0x5000",
+    "0x7fff"
+   ]
+  },
+  {
+   "addr": "0x0066ff8a",
+   "type": "i16",
+   "count": 22,
+   "stride": "0x41c",
+   "lo": 0,
+   "hi": 25600
+  },
+  {
+   "addr": "0x00622426",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0xff",
+    1
+   ]
+  },
+  {
+   "addr": "0x00894444",
+   "type": "u16",
+   "count": 34,
+   "stride": "0x160",
+   "values": [
+    0,
+    0,
+    "0x100",
+    "0x1000",
+    "0x3000",
+    "0x6000",
+    "0x7fff",
+    "0xffff",
+    "0x8000"
+   ]
+  },
+  {
+   "addr": "0x00894446",
+   "type": "u16",
+   "count": 34,
+   "stride": "0x160",
+   "values": [
+    0,
+    0,
+    "0x100",
+    "0x1000",
+    "0x3000",
+    "0x6000",
+    "0x7fff",
+    "0xffff",
+    "0x8000"
+   ]
+  },
+  {
+   "addr": "0x0062699c",
+   "type": "i32",
+   "lo": -256,
+   "hi": 256
+  },
+  {
+   "addr": "0x00626964",
+   "type": "i32"
+  },
+  {
+   "addr": "0x00626968",
+   "type": "i32"
+  },
+  {
+   "addr": "0x00604140",
+   "type": "i32",
+   "values": [
+    "0x5500",
+    "0x5500",
+    0,
+    "0x7fff",
+    "0x2000"
+   ]
+  },
+  {
+   "addr": "0x00604144",
+   "type": "i32",
+   "values": [
+    "0x60",
+    "0x60",
+    0,
+    "0x7fffffff",
+    "0x1000"
+   ]
+  },
+  {
+   "addr": "0x00625a4e",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0xff",
+    1
+   ]
+  },
+  {
+   "addr": "0x0062698a",
+   "type": "u8"
+  }
+ ]
+}

@@ -1,0 +1,76 @@
+{
+ "_evidence": "0x0051cb69: when byte 0x7ad869 == 0 it reads five slot words [0x9e1b20 + 2*{0x340,0x33f,0x341,0x44c,0x44d}] (zero in the image), each either 0xffff ('cmp bx,-1; je' = no slot, exit) or a byte offset of a 0x20-byte texture entry in the table at 0x6975ec, whose dword it copies to 0x88fe18..0x88fe28. Domain: the flag byte mostly 0, each word 0xffff or one of the first four entry offsets, and the first 32 table dwords random.",
+ "globals": [
+  {
+   "addr": "0x007ad869",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x9e21a0",
+   "type": "u16",
+   "values": [
+    "0xffff",
+    0,
+    "0x20",
+    "0x40",
+    "0x60"
+   ]
+  },
+  {
+   "addr": "0x9e219e",
+   "type": "u16",
+   "values": [
+    "0xffff",
+    0,
+    "0x20",
+    "0x40",
+    "0x60"
+   ]
+  },
+  {
+   "addr": "0x9e21a2",
+   "type": "u16",
+   "values": [
+    "0xffff",
+    0,
+    "0x20",
+    "0x40",
+    "0x60"
+   ]
+  },
+  {
+   "addr": "0x9e23b8",
+   "type": "u16",
+   "values": [
+    "0xffff",
+    0,
+    "0x20",
+    "0x40",
+    "0x60"
+   ]
+  },
+  {
+   "addr": "0x9e23ba",
+   "type": "u16",
+   "values": [
+    "0xffff",
+    0,
+    "0x20",
+    "0x40",
+    "0x60"
+   ]
+  },
+  {
+   "addr": "0x006975ec",
+   "type": "u32",
+   "count": 32,
+   "stride": 4
+  }
+ ]
+}

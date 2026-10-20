@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x004250b9 indexes the dword table 0x00609870 with the counter [0x00609864] (0x004250d4/0x004250da) and increments it per stored byte. Its only caller 0x00424462 zeroes the counter at 0x00424468 and then at most 0x0043b127 appends one entry (single store at 0x0043b312, no loop), so on entry the counter is 0 or 1; with up to four appends here the table holds 5 dwords (0x00609870..0x00609883; 0x00609884 is a separate global used by 0x00424a21). Unbounded fuzz:i32 counters faulted the original. The table itself is only written here.",
+  "globals": [
+    {"addr": "0x00609864", "type": "u32", "lo": 0, "hi": 1}
+  ]
+}

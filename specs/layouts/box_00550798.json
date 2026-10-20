@@ -1,0 +1,103 @@
+{
+ "_evidence": "0x00550798 reads the ring record [0x679d20] (records 2..29 of 0x8943a0) at +0/+6, the 12 corner components of the box at 0x9351fc (bounded -2047..2047 so the steps stay -2..1 and the neg branch 0x55090a is reached), mode byte 0x7ad844 and the RNG bytes 0x88f5e7..0x88f5eb.",
+ "globals": [
+  {
+   "addr": "0x00679d20",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 2,
+    "hi": 29
+   }
+  },
+  {
+   "addr": "0x9351fc",
+   "type": "i32",
+   "lo": -2047,
+   "hi": 2047
+  },
+  {
+   "addr": "0x935200",
+   "type": "i32",
+   "lo": -2047,
+   "hi": 2047
+  },
+  {
+   "addr": "0x935204",
+   "type": "i32",
+   "lo": -2047,
+   "hi": 2047
+  },
+  {
+   "addr": "0x93520c",
+   "type": "i32",
+   "lo": -2047,
+   "hi": 2047
+  },
+  {
+   "addr": "0x935210",
+   "type": "i32",
+   "lo": -2047,
+   "hi": 2047
+  },
+  {
+   "addr": "0x935214",
+   "type": "i32",
+   "lo": -2047,
+   "hi": 2047
+  },
+  {
+   "addr": "0x93521c",
+   "type": "i32",
+   "lo": -2047,
+   "hi": 2047
+  },
+  {
+   "addr": "0x935220",
+   "type": "i32",
+   "lo": -2047,
+   "hi": 2047
+  },
+  {
+   "addr": "0x935224",
+   "type": "i32",
+   "lo": -2047,
+   "hi": 2047
+  },
+  {
+   "addr": "0x93522c",
+   "type": "i32",
+   "lo": -2047,
+   "hi": 2047
+  },
+  {
+   "addr": "0x935230",
+   "type": "i32",
+   "lo": -2047,
+   "hi": 2047
+  },
+  {
+   "addr": "0x935234",
+   "type": "i32",
+   "lo": -2047,
+   "hi": 2047
+  },
+  {
+   "addr": "0x007ad844",
+   "type": "u8",
+   "values": [
+    "0xff",
+    0,
+    1,
+    "0x7f"
+   ]
+  },
+  {
+   "addr": "0x0088f5e7",
+   "type": "u8",
+   "count": 5,
+   "stride": 1
+  }
+ ]
+}

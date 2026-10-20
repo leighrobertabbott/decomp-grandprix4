@@ -1,0 +1,10 @@
+{
+ "_evidence": "Car record at esi for 0x0043259c (0x41c-byte car records at 0x66fef0; random background, then rec_00410894+rec_004087aa overlay the divisor/key fields of the 0x432feb -> 0x432a0f/0x43283f -> 0x432933 chain). 'test dword [esi+0x1fc],-1; je' twice: +0x1fc is a timer (0 = idle, else a clock value compared through '[0x66d814] - [+0x1fc]; js'), so 0 is drawn in about a third of the cases and otherwise any value. Bytes +0x7f and +0x160 are tyre-set indices: 0x441304 ('movzx ecx,byte [esi+0x7f]' ... 'mov edx,[ecx*4+0x6f2cc4]') and 0x44126d (+0x7f >= 2, or +0x160 copied into +0x7f when bit 2 of +0x230 is set) index the 6-dword table 0x6f2cc4 = {0,8,0x10,0x17,0x1e,0x25} (followed by the 0xff byte table 0x6f2cdc), whose entry 0x4411f7 then uses as a base into the 0x2c-byte tables 0x6f2c3e/0x6f2c6a/0x6f2c96; the computed alternative (0x43ca8b, clamped 'cmp eax,5; jle') is also 0..5, so the game's values are 0..5 and a wild byte reads a garbage base and faults (seen 1 in 1000). All other bytes are flag/state bytes that the callees only test or RMW.",
+ "size": 1056,
+ "fill": "bytes",
+ "fields": [
+  {"off": "0x1fc", "type": "u32", "values": [0, 0, 0, 1, "0x7fffffff", "0x80000000", "0xffffffff", "0x00012345", "0xfff00000"]},
+  {"off": "0x7f", "type": "u8", "lo": 0, "hi": 5},
+  {"off": "0x160", "type": "u8", "lo": 0, "hi": 5}
+ ]
+}

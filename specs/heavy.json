@@ -1,0 +1,23 @@
+{
+ "_doc": "Lead-proven fixed-work functions (all loop counts constant; inputs are data only) whose single emulated run is too long for the default 200 cases: the emu gate runs `cases` cases and `ni_cases` hidden-input checks instead and says so in the verdict. Each entry needs evidence; coverage and bit-exact comparison rules are unchanged.",
+ "0x005278e5": {
+  "cases": 3,
+  "ni_cases": 1,
+  "evidence": "Builds the 64x64 colour lookup 0x94b000: loops of exactly 0x20, 7 x 0x20 and 0x1000 iterations (counts are immediates), each of the 0x1000 rounds calling the accepted nearest-colour scan 0x51b645 (fixed 0xfe entries): about 10M instructions per run, so 200 cases exceed the 3600 s gate (m149). Inputs are the palette 0x7c4d5c and the tables 0x948b80/0x948858 only (layouts pal_00527787+lut_0051c59a), so a few random palettes exercise every block."
+ },
+ "0x0051be22": {
+  "cases": 2,
+  "ni_cases": 1,
+  "evidence": "Builds the 256x16 colour-blend table 0x923104+0x1000..: ecx counts 0xff..0 ('dec ecx; jns') and ebp 0x10..1 ('dec ebp; jne') - immediates only; 4080 of the 4096 rounds call the accepted 254-entry nearest-colour scan 0x51b645 (about 16-31M instructions per run, m145), so 200 cases exceed the 3600 s gate. Inputs are the palette behind [0x96a3d4] and 0x51b645's tables only."
+ },
+ "0x0051bef2": {
+  "cases": 2,
+  "ni_cases": 1,
+  "evidence": "Unreferenced GP3 colour self-test with no inputs: fixed loops ax 0..0xff step 9, bx once (the cx test above), cx 0..0xff, each round calling 0x51b1f9 and 0x51b2ea (about 30 minutes of emulation for 200 cases, m180); every value it uses is a loop counter."
+ },
+ "0x0051bd23": {
+  "cases": 2,
+  "ni_cases": 1,
+  "evidence": "Palette blend builder: a 0x100-entry init loop (cmp eax,0x100), 16 rows of nearest-colour searches through 0x51b2ea/0x51b645 (ecx/ebp counters compared with immediates), then the accepted heavy 0x51be22 (heavy.json) - about 50M instructions per run (m197). Its only data-dependent branch is [0x7ad869]; inputs are the palette tables."
+ }
+}

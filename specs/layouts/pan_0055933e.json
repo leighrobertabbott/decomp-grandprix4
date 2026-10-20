@@ -1,0 +1,6 @@
+{
+ "_evidence": "Byte tables read by 0x0055933e (esi = 0x6f3cd4 + (eax & 7)): 'mov bl,[esi+0x18]' (0x6f3cec..0x6f3cf3) is the divisor of the first 0x55936f call (((movsx word [edi+0x62]) << 11) cdq idiv movsx bl, a zero bl replaced by 1) and 'mov bl,[esi+0x20]' (0x6f3cf4..0x6f3cfb) is zero-tested ('test bl,0xff; je' skips the rest), then divides again and is stored as 'and bl,0xfe' to +0x10 and subtracted as 'sar bl,1' from cl into +8. Only this function references the table, and its image bytes are a few small positive values, so the sign handling of movsx/sar (negative bytes) was never exercised. Both 8-byte rows draw zero (both outcomes of the zero test and of 0x55936f's zero-divisor fix), small, mid and negative bytes. The divisions cannot fault: |dividend| < 2^27 and the divisor is a nonzero sign-extended byte. Values are synthetic.",
+ "globals": [
+  {"addr": "0x006f3cec", "type": "u8", "count": 16, "stride": 1, "values": [0, 0, 0, 1, 2, 3, "0x10", "0x7f", "0x80", "0x81", "0xc0", "0xfe", "0xff"]}
+ ]
+}

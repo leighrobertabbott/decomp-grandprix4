@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x00431fd7: 'cmp [0x62a96c],-1; je' returns; otherwise eax = [0x62a96c] (group index) and edx = [0x62a968] go to 0x431f6e, which reads the pointer [eax*4+0x62a970] (4 entries, eax 0..3) to an {offset 0..0x40, count 0..3} entry (entry_00431f6e) and rewrites words of up to 3 0x160-byte records from edx+offset (0x600-byte buffer, random bytes: the copied word +0x15c is arbitrary). The index is -1 in a third of the cases, else 0..3 (a larger index reads past the 4 entry pointers).",
+  "globals": [
+    {"addr": "0x0062a96c", "type": "u32", "values": ["0xffffffff", "0xffffffff", 0, 1, 2, 3]},
+    {"addr": "0x0062a968", "type": "ptr", "size": 1536, "fill": "bytes"},
+    {"addr": "0x0062a970", "type": "ptr", "size": 8, "count": 4, "stride": 4, "fill": "layout=entry_00431f6e"}
+  ]
+}

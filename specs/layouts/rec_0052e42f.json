@@ -1,0 +1,21 @@
+{
+ "_evidence": "0x0052e42f: esi = [0x826d11] (unaligned pointer global; the current file record), edi = 0x82471a. 'cmp byte [esi+0x52],0xff; je': != 0xff copies 0x30 bytes (rep movsb) + NUL; == 0xff scans the name: lodsb, 'cmp al,0x2e; je' / 'or al,al; je' end it, else stosb, then 'loop 0x52e44c' - whose target is the 'mov ecx,0x30' itself, so ecx is reset every pass and the scan is NOT bounded by 0x30: it runs to the first '.' or NUL wherever that is. The record is therefore drawn so that both happen: bytes +0..+0x4f come from 48 name characters plus '.' and NUL (4% terminator per byte: early ends at every position and ~14% of names with no terminator in the first 0x30 bytes, which continue through +0x30..), and +0x5f is NUL so every scan ends inside the 0x60-byte buffer (a real record always has a terminator after the name; without one the original reads past any buffer). Then '.', and the 3 characters of the 4-byte extension entry 0x826dbe + 4*byte[+0x50] (table of 20 types nam/rec/con/cs?/.../ql?, read-only: index 0..19), where '?' becomes 0x52f4f9's letter from [0x7ad894] (low 5 bits; random dword) and every char goes through 0x54d755's map table 0x833e18. Mode +0x52 is 0xff in half the cases. The output area 0x82471a..+0x68 is varied so every store is visible.",
+ "globals": [
+  {
+   "addr": "0x00826d11",
+   "type": "ptr",
+   "size": 96,
+   "fill": "layout=recbuf_0052e42f"
+  },
+  {
+   "addr": "0x007ad894",
+   "type": "u32"
+  },
+  {
+   "addr": "0x0082471a",
+   "type": "u8",
+   "count": "0x68",
+   "stride": 1
+  }
+ ]
+}

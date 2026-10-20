@@ -20,17 +20,19 @@ from __future__ import annotations
 import json
 import math
 import random
+import re
 import struct
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from unicorn import (UC_ARCH_X86, UC_HOOK_CODE, UC_HOOK_MEM_UNMAPPED, UC_HOOK_MEM_WRITE,
+from unicorn import (UC_ARCH_X86, UC_HOOK_CODE, UC_HOOK_MEM_READ, UC_HOOK_MEM_UNMAPPED, UC_HOOK_MEM_WRITE,
                      UC_MODE_32, UC_PROT_ALL, Uc, UcError)
 from unicorn import x86_const as X
 
 from .binary import Binary
 from .spec import FLAG_BITS, GPRS, Arg, ArgType, Spec
+from .stubs import HEAP_BASE, HEAP_SIZE, ImportStubs, Unsupported, first_difference
 
 PAGE = 0x1000
 STACK_LO, STACK_SIZE = 0x0E000000, 0x00200000
@@ -46,12 +48,26 @@ ST_EXT_OUT = TRAP + 0x0B00
 FLAGS_SLOT = TRAP + 0x0A00
 IMPORT_TRAPS = TRAP + 0x1000
 GDT_ADDR, TIB_ADDR = 0x7FFC0000, 0x7FFD0000
-REGS_SIZE = 0x68
+REGS_SIZE = 0x110
 CANARY = {r: 0xC0DE0000 | (i << 8) for i, r in enumerate(GPRS)}
 GPR_ID = {"eax": X.UC_X86_REG_EAX, "ebx": X.UC_X86_REG_EBX, "ecx": X.UC_X86_REG_ECX,
           "edx": X.UC_X86_REG_EDX, "esi": X.UC_X86_REG_ESI, "edi": X.UC_X86_REG_EDI,
           "ebp": X.UC_X86_REG_EBP}
 LAYOUT_DIR = Path(__file__).resolve().parent.parent / "specs" / "layouts"
+
+
+_REP_SITE = re.compile(b"(?:" + re.escape(bytes([0x66])) + b")?[" + bytes([0xF2, 0xF3]) + b"](?:" + re.escape(bytes([0x66])) + b")?[" + bytes([0xA4, 0xA5, 0xAA, 0xAB, 0xAC, 0xAD]) + b"]")
+def _rep_string_sites(binaries) -> frozenset:
+    """Addresses of rep/repne-prefixed movs/stos/lods in executable sections (flag-preserving
+    string ops). A regex scan: about 0.03 s for GP4.exe, so no cache (synthetic test images
+    share names and sizes)."""
+    sites: set[int] = set()
+    for b in binaries:
+        for sec in b.sections:
+            if sec.executable:
+                data = bytes(b.read(sec.va, sec.vsize))
+                sites.update(sec.va + m.start() for m in _REP_SITE.finditer(data))
+    return frozenset(sites)
 
 
 def _align(n: int, a: int = PAGE) -> int:
@@ -86,9 +102,17 @@ def read_registry(dll: Binary) -> list[Impl]:
     return uniq
 
 
-def _cstr(b: Binary, va: int) -> str:
-    raw = b.read(va, 512)
-    return raw[: raw.find(b"\0")].decode("latin1")
+def _cstr(b: Binary, va: int, limit: int = 8192) -> str:
+    """NUL-terminated string from the DLL image (spec strings can be long layout compositions)."""
+    size = 512
+    while True:
+        raw = b.read(va, size)
+        end = raw.find(bytes(1))
+        if end >= 0:
+            return raw[:end].decode("latin1")
+        if size >= limit:
+            raise ValueError(f"string at {va:#x} is not NUL-terminated within {limit} bytes")
+        size *= 2
 
 
 @dataclass
@@ -105,6 +129,8 @@ class RunResult:
     caller_stack: bytes = b""
     caller_stack_before: bytes = b""
     st_depth: int = 0
+    site: int = 0                    # eip where an invalid run stopped (fault / timeout)
+    stub_log: list = field(default_factory=list)   # modelled import calls (gp4re/stubs.py), in order
     fpucw: int = 0
     dirty: dict = field(default_factory=dict)   # page -> bytes
     imports: list = field(default_factory=list)
@@ -163,6 +189,7 @@ class Machine:
         self._map(SCRATCH, bytes(SCRATCH_SIZE))
         self._map(REGS_ADDR & ~0xFFFF, bytes(0x10000))
         self._map(TRAP, b"\xF4" * TRAP_SIZE)
+        self._map(HEAP_BASE, bytes(HEAP_SIZE))      # the modelled process heap (gp4re/stubs.py)
         self.import_names: dict[int, str] = {}
         for i, (slot, name) in enumerate(sorted(gp4.imports.items())):
             t = IMPORT_TRAPS + 4 * i
@@ -171,6 +198,8 @@ class Machine:
         self._setup_fs()
         self.pristine = {a: bytes(uc.mem_read(a, n)) for a, n in self.regions}
         self.dirty: set[int] = set()
+        self.stubs = ImportStubs(uc, lambda a, n: self.dirty.update(range(a & ~(PAGE - 1), _align(a + n), PAGE)),
+                                 (STACK_LO, STACK_LO + STACK_SIZE))
         self.fault: str | None = None
         self.external: list[str] = []
         self.fpucw = fpucw
@@ -183,10 +212,20 @@ class Machine:
         self.return_pc: int | None = None
         self.return_fp: tuple[int, int] | None = None
         self.excluded_code = [(s.va, s.end) for s in gp4.sections if s.executable and not s.in_scope]
+        self.rep_sites = _rep_string_sites([gp4] + ([dll] if dll else []))
+        self.rep_flags, self.rep_addr = 0, None
         uc.hook_add(UC_HOOK_MEM_WRITE, self._on_write)
         uc.hook_add(UC_HOOK_MEM_UNMAPPED, self._on_unmapped)
         uc.hook_add(UC_HOOK_CODE, self._on_import, begin=IMPORT_TRAPS, end=TRAP + TRAP_SIZE - 1)
         uc.hook_add(UC_HOOK_CODE, self._on_code)
+        # Bytes of GP4's writable data the original reads before writing them:
+        # its data inputs. Reported when no case varied them (static-image proof).
+        self.data_reads: set[int] = set()
+        self.run_written: set[int] = set()
+        for s in gp4.sections:
+            if s.writable and s.in_scope:
+                uc.hook_add(UC_HOOK_MEM_READ, self._on_data_read, begin=s.va, end=s.end - 1)
+                uc.hook_add(UC_HOOK_MEM_WRITE, self._on_data_write, begin=s.va, end=s.end - 1)
 
     def run_init(self, addrs: list[int]) -> list[str]:
         """Run GP4's own initialisers once and make the result the pristine state."""
@@ -237,13 +276,28 @@ class Machine:
         if (address + size - 1) & ~(PAGE - 1) != address & ~(PAGE - 1):
             self.dirty.add((address + size - 1) & ~(PAGE - 1))
 
+    def _on_data_read(self, uc, access, address, size, value, user):
+        if self.trace_original:
+            self.data_reads.update(a for a in range(address, address + size) if a not in self.run_written)
+
+    def _on_data_write(self, uc, access, address, size, value, user):
+        if self.trace_original:
+            self.run_written.update(range(address, address + size))
+
     def _on_unmapped(self, uc, access, address, size, value, user):
         self.fault = f"unmapped access at {address:#010x} (eip={uc.reg_read(X.UC_X86_REG_EIP):#010x})"
         return False
 
     def _on_import(self, uc, address, size, user):
         if address in self.import_names:
-            self.external.append(self.import_names[address])
+            name = self.import_names[address]
+            if self.stubs.handles(name):
+                try:
+                    self.stubs.call(name)      # returns to the caller; the call is logged
+                    return
+                except Unsupported as e:
+                    name = f"{name} ({e})"
+            self.external.append(name)
             uc.emu_stop()
 
     def _on_code(self, uc, address, size, user):
@@ -256,6 +310,14 @@ class Machine:
             self.fault = f"out-of-scope executable section at {address:#010x}"
             uc.emu_stop()
             return
+        # rep movs/stos/lods never write flags, but Unicorn (2.1.x, with these hooks installed)
+        # can return CF/AF corrupted after one: keep the flags from before the instruction.
+        if self.rep_addr is not None and address != self.rep_addr:
+            uc.reg_write(X.UC_X86_REG_EFLAGS,
+                         (uc.reg_read(X.UC_X86_REG_EFLAGS) & ~0x8D5) | (self.rep_flags & 0x8D5))
+            self.rep_addr = None
+        if address in self.rep_sites and address != self.rep_addr:
+            self.rep_flags, self.rep_addr = uc.reg_read(X.UC_X86_REG_EFLAGS), address
         cov = self.coverage if self.trace_original else None
         if cov is None:
             return
@@ -290,6 +352,7 @@ class Machine:
              n_st_out: int, capture_flags: bool, maxinsn: int, input_flags: int = 0x202,
              stack_noise: bytes | None = None) -> RunResult:
         uc = self.uc
+        self.stubs.reset()                                    # same model state for every run of a case
         code = bytearray()
         code += b"\xDB\xE3"                                   # fninit
         code += b"\xD9\x2D" + struct.pack("<I", CW_SLOT)      # fldcw [cw]
@@ -326,6 +389,7 @@ class Machine:
         uc.reg_write(X.UC_X86_REG_EFLAGS, input_flags)
         self.trace_blocks, self.trace_branches = set(), set()
         self.pending_branch, self.insns = None, 0
+        self.run_written = set()
         self.dirty.update(range(esp & ~(PAGE - 1), STACK_LO + STACK_SIZE, PAGE))
         res = RunResult(status="ok")
         try:
@@ -333,6 +397,10 @@ class Machine:
         except UcError as e:
             res.status, res.detail = "fault", self.fault or str(e)
         eip = uc.reg_read(X.UC_X86_REG_EIP)
+        res.site = eip
+        m_eip = re.search(r"eip=(0x[0-9a-fA-F]+)", self.fault or "")
+        if m_eip:
+            res.site = int(m_eip.group(1), 16)
         if self.fault:
             res.status, res.detail = "fault", self.fault
         elif res.status == "ok" and self.external:
@@ -355,6 +423,7 @@ class Machine:
         if capture_flags:
             res.flags = struct.unpack("<I", bytes(uc.mem_read(FLAGS_SLOT, 4)))[0]
         res.imports = list(self.external)
+        res.stub_log = list(self.stubs.log)
         res.insns = self.insns
         res.blocks, res.branches = self.trace_blocks.copy(), self.trace_branches.copy()
         return res
@@ -380,6 +449,12 @@ class CaseGen:
     def alloc(self, data: bytes) -> int:
         a = self.next_buf
         self.next_buf = _align(a + len(data) + PAGE)  # guard gap between buffers
+        refs = getattr(data, "self_refs", ())
+        if refs:                                      # layout "self" fields: this buffer's own address
+            data = bytearray(data)
+            for off, bias in refs:
+                struct.pack_into("<I", data, off, (a + bias) & 0xFFFFFFFF)
+            data = bytes(data)
         self.buffers.append((a, data))
         return a
 
@@ -391,6 +466,9 @@ class CaseGen:
             return r.choice([0.0, 1.0, -1.0, 0.5, r.uniform(-1, 1), r.uniform(-1, 1), r.uniform(-1000, 1000),
                              r.uniform(-1e6, 1e6), r.uniform(-1, 1) * 1e-6])
         bits = {"i8": 8, "u8": 8, "i16": 16, "u16": 16, "i32": 32, "u32": 32}[t.kind]
+        if getattr(t, "choices", ()) and (getattr(t, "exclusive", False) or r.randrange(4)):
+            v = r.choice(t.choices)
+            return v & ((1 << bits) - 1) if t.kind.startswith("u") else v
         low = int(t.lo) if t.lo is not None else (0 if t.kind.startswith("u") else -(1 << (bits - 1)))
         high = int(t.hi) if t.hi is not None else ((1 << bits) - 1 if t.kind.startswith("u") else (1 << (bits - 1)) - 1)
         directed = [v for v in self.constants if low <= v <= high]
@@ -418,34 +496,114 @@ class CaseGen:
             return b"".join(struct.pack("<i", r.randint(-1000, 1000)) for _ in range(size // 4)).ljust(size, b"\0")
         if fill.startswith("layout="):
             return self.layout(fill.split("=", 1)[1], size)
+        if "[" in fill or "{" in fill:   # typed range / value-set fill, e.g. i16[-32767..32767], u8{0x20,0x22}
+            from .spec import _type
+            t = _type(fill)
+            width = {"i8": 1, "u8": 1, "i16": 2, "u16": 2, "i32": 4, "u32": 4, "f32": 4, "f64": 8}[t.kind]
+            out = bytearray()
+            for _ in range(size // width):
+                v = self.scalar(t)
+                if t.kind in ("f32", "f64"):
+                    out += struct.pack("<f" if t.kind == "f32" else "<d", v)
+                else:
+                    out += (int(v) & ((1 << (8 * width)) - 1)).to_bytes(width, "little")
+            return bytes(out.ljust(size, bytes(1)))
         raise ValueError(fill)
 
     def layout(self, name: str, size: int) -> bytes:
+        if "+" in name:   # a+b: the first layout sets size and background, later ones overlay their fields
+            names = name.split("+")
+            specs = [json.loads((LAYOUT_DIR / f"{n}.json").read_text()) for n in names]
+            size = max([size] + [sp.get("size", 0) for sp in specs])
+            first = self.layout(names[0], size)
+            buf, refs = bytearray(first), list(first.self_refs)
+            for n in names[1:]:
+                self._apply_fields(n, json.loads((LAYOUT_DIR / f"{n}.json").read_text()), buf, refs)
+            return _Buf(buf, refs)
         spec = json.loads((LAYOUT_DIR / f"{name}.json").read_text())
-        buf = bytearray(max(size, spec.get("size", 0)))
+        n_bytes = max(size, spec.get("size", 0))
+        background = spec.get("fill", "zero")   # unlisted bytes: zero (default) or random "bytes"
+        if background not in ("zero", "bytes"):
+            raise ValueError(f"layout {name}: fill must be zero or bytes")
+        buf = bytearray(self.rng.randbytes(n_bytes) if background == "bytes" else bytes(n_bytes))
+        refs: list[tuple[int, int]] = []
+        self._apply_fields(name, spec, buf, refs)
+        return _Buf(buf, refs)
+
+    def _apply_fields(self, name: str, spec: dict, buf: bytearray, refs: list | None = None) -> None:
+        num = lambda v: int(v, 0) if isinstance(v, str) else int(v)
         for f in spec["fields"]:
-            off, ty = f["off"], f["type"]
-            t = ArgType(ty if ty != "ptr" else "ptr", f.get("lo"), f.get("hi"), f.get("size", 0), f.get("fill", "bytes"))
-            if ty == "ptr":
-                struct.pack_into("<I", buf, off, self.alloc(self.fill(t.size, t.fill)))
-            elif ty == "f32":
-                struct.pack_into("<f", buf, off, self.scalar(t))
-            elif ty == "f64":
-                struct.pack_into("<d", buf, off, self.scalar(t))
-            else:
-                n = {"i8": 1, "u8": 1, "i16": 2, "u16": 2, "i32": 4, "u32": 4}[ty]
-                buf[off: off + n] = (self.scalar(t) & ((1 << (8 * n)) - 1)).to_bytes(n, "little")
-        return bytes(buf)
+            ty = f["type"]
+            n = {"i8": 1, "u8": 1, "i16": 2, "u16": 2, "i32": 4, "u32": 4, "f32": 4, "f64": 8, "ptr": 4, "self": 4}[ty]
+            if ty == "self":   # dword = this buffer's own address + bias (patched by alloc): a cyclic node
+                if refs is None:
+                    raise ValueError(f"layout {name}: self fields need an allocated buffer (not a fixed global)")
+                count, stride = num(f.get("count", 1)), num(f.get("stride", 4))
+                for k in range(count):
+                    off = num(f["off"]) + k * stride
+                    if off + 4 > len(buf):
+                        raise ValueError(f"layout {name}: field at {off:#x} outside the {len(buf):#x}-byte buffer")
+                    refs[:] = [r for r in refs if r[0] != off] + [(off, num(f.get("bias", 0)))]
+                continue
+            if refs is not None:   # a later field overwrites an earlier self field at the same offset
+                count0, stride0 = num(f.get("count", 1)), num(f.get("stride", n))
+                hit = {num(f["off"]) + k * stride0 for k in range(count0)}
+                refs[:] = [r for r in refs if not any(h <= r[0] < h + n or r[0] <= h < r[0] + 4 for h in hit)]
+            bound = lambda v: None if v is None else (float(v) if ty in ("f32", "f64") else num(v))  # hex strings too
+            t = ArgType(ty, bound(f.get("lo")), bound(f.get("hi")), num(f.get("size", 0)), f.get("fill", "bytes"))
+            choices = [num(v) for v in f["values"]] if "values" in f else None
+            into = f.get("points_into")   # a record address inside a fixed game array: base + k*stride
+            if into is not None:
+                if ty not in ("u32", "i32"):
+                    raise ValueError(f"layout {name}: points_into needs a u32 field")
+                into = tuple(num(into[k]) for k in ("base", "stride", "lo", "hi"))
+            count, stride = num(f.get("count", 1)), num(f.get("stride", n))
+            for k in range(count):          # repeated records: off + k*stride
+                off = num(f["off"]) + k * stride
+                if off + n > len(buf):
+                    raise ValueError(f"layout {name}: field at {off:#x} outside the {len(buf):#x}-byte buffer")
+                if choices is not None:
+                    buf[off: off + n] = (self.rng.choice(choices) & ((1 << (8 * n)) - 1)).to_bytes(n, "little")
+                elif into is not None:
+                    if f.get("nullable") and self.rng.randrange(4) == 0:
+                        value = 0
+                    else:
+                        value = (into[0] + self.rng.randint(into[2], into[3]) * into[1]) & 0xFFFFFFFF
+                    struct.pack_into("<I", buf, off, value)
+                elif ty == "ptr":
+                    if f.get("nullable") and self.rng.randrange(4) == 0:
+                        value = 0
+                    else:
+                        value = self.alloc(self.fill(t.size, t.fill)) + num(f.get("bias", 0))
+                    struct.pack_into("<I", buf, off, value)
+                elif ty == "f32":
+                    struct.pack_into("<f", buf, off, self.scalar(t))
+                elif ty == "f64":
+                    struct.pack_into("<d", buf, off, self.scalar(t))
+                else:
+                    buf[off: off + n] = (self.scalar(t) & ((1 << (8 * n)) - 1)).to_bytes(n, "little")
 
     def value(self, a: Arg):
         """Return ('int', u32) | ('f32', float) | ('f64', float)."""
         t = a.t
+        if t.kind == "rec":
+            return ("int", (t.base + self.rng.randint(int(t.lo), int(t.hi)) * t.stride) & 0xFFFFFFFF)
         if t.kind == "ptr":
+            if t.nullable and self.rng.randrange(4) == 0:
+                return ("int", 0)
             return ("int", self.alloc(self.fill(t.size, t.fill)))
         v = self.scalar(t)
         if t.kind in ("f32", "f64"):
             return (t.kind, v)
         return ("int", v & 0xFFFFFFFF)
+
+
+class _Buf(bytes):
+    """Layout bytes plus the offsets of its "self" fields (patched with the buffer address on alloc)."""
+    def __new__(cls, data, refs=()):
+        obj = super().__new__(cls, bytes(data))
+        obj.self_refs = list(refs)
+        return obj
 
 
 def _push(vals) -> bytes:
@@ -542,25 +700,131 @@ def compare_pages(a: dict[int, bytes], b: dict[int, bytes], pristine_of, tol: fl
 
 
 # ---------------------------------------------------------------- driver
+def _ignored_flags(addr: int) -> set[str]:
+    """specs/flag_exempt.json: regs-convention flags the oracle does not compare for one function
+    (stack-address-dependent garbage from a compiled-C callee that no caller reads; lead evidence)."""
+    path = Path(__file__).resolve().parent.parent / "specs" / "flag_exempt.json"
+    try:
+        entry = json.loads(path.read_text()).get(f"{addr:#010x}")
+    except (OSError, ValueError):
+        return set()
+    if not entry or not entry.get("evidence"):
+        return set()
+    return {f for f in entry.get("flags", []) if f in FLAG_BITS}
+
+
+def _heavy(addr: int) -> dict | None:
+    """specs/heavy.json: lead-proven fixed-work functions (every loop count a constant, inputs
+    only data) whose single run is too long for the default case count: run `cases` cases and
+    `ni_cases` hidden-input checks instead (lead evidence required)."""
+    path = Path(__file__).resolve().parent.parent / "specs" / "heavy.json"
+    try:
+        entry = json.loads(path.read_text()).get(f"{addr:#010x}")
+    except (OSError, ValueError):
+        return None
+    if not entry or not entry.get("evidence") or int(entry.get("cases", 0)) < 1:
+        return None
+    return entry
+
+
+SKIP_PROBE_WALL = 120.0   # s: comparison run of an emu=skip spec (cases that avoid the skipped API)
+
+_CONSTANTS: list[tuple[int, int]] | None = None
+
+
+def _is_constant(addr: int) -> bool:
+    """specs/constants.json: never-written data ranges that fuzzing must not overwrite."""
+    global _CONSTANTS
+    if _CONSTANTS is None:
+        path = Path(__file__).resolve().parent.parent / "specs" / "constants.json"
+        try:
+            ranges = json.loads(path.read_text()).get("ranges", [])
+            _CONSTANTS = [(int(r["lo"], 16), int(r["hi"], 16)) for r in ranges if r.get("evidence")]
+        except (OSError, ValueError, KeyError):
+            _CONSTANTS = []
+    return any(lo <= addr < hi for lo, hi in _CONSTANTS)
+
+
+def _exemption_entry(addr: int) -> dict:
+    path = Path(__file__).resolve().parent.parent / "specs" / "coverage_exempt.json"
+    if not path.exists():
+        return {}
+    entry = json.loads(path.read_text()).get(f"{addr:#010x}") or {}
+    if entry and not str(entry.get("evidence", "")).strip():
+        raise ValueError(f"coverage exemption for {addr:#010x} has no evidence")
+    return entry
+
+
+def _coverage_exemptions(addr: int) -> set[int]:
+    """Lead-proven dead blocks (specs/coverage_exempt.json); each entry carries its proof."""
+    return {int(b, 16) for b in _exemption_entry(addr).get("blocks", [])}
+
+
+def _dead_directions(addr: int) -> set[tuple[int, bool]]:
+    """Lead-proven dead branch directions, e.g. "0x00418c9e:taken"."""
+    out = set()
+    for d in _exemption_entry(addr).get("branches", []):
+        va, _, direction = d.partition(":")
+        if direction not in ("taken", "fallthrough"):
+            raise ValueError(f"bad exempt branch direction {d!r}")
+        out.add((int(va, 16), direction == "taken"))
+    return out
+
+
+def _byte_ranges(addresses: set[int]) -> list[tuple[int, int]]:
+    out: list[tuple[int, int]] = []
+    for a in sorted(addresses):
+        if out and out[-1][0] + out[-1][1] == a:
+            out[-1] = (out[-1][0], out[-1][1] + 1)
+        else:
+            out.append((a, 1))
+    return out
+
+
 def differential(gp4: Binary, dll: Binary, rec: Impl, spec: Spec, *, fpucw: int, globals_info: list[int] | None = None,
-                 cases: int | None = None, function_starts: set[int] | None = None) -> dict:
+                 cases: int | None = None, function_starts: set[int] | None = None,
+                 _wall: float | None = None) -> dict:
     m = Machine(gp4, dll, fpucw=spec.fpucw if spec.fpucw is not None else fpucw)
     from .config import oracle
     init_problems = m.run_init(list(oracle("init_calls")))
     if init_problems:
         return {"gate": "emu", "status": "fail", "reason": "initialization failed", "problems": init_problems}
     if spec.emu_skip:
-        return {"gate": "emu", "status": "skipped", "reason": spec.emu_skip}
+        # A runtime-only exception still runs the comparison on every case that never reaches
+        # the unmodelled API: a mismatch (or hidden input) there fails the function; cases the
+        # original cannot finish (external, fault, timeout) leave it pending the in-game check.
+        import dataclasses
+        probe = differential(gp4, dll, rec, dataclasses.replace(spec, emu_skip=None), fpucw=fpucw,
+                             globals_info=globals_info, cases=min(cases or spec.cases, 64),
+                             function_starts=function_starts, _wall=SKIP_PROBE_WALL)
+        if probe.get("status") == "fail":
+            return probe
+        note = ({"note": "every probe case passed: the skip is unnecessary - remove it for a full T1 run"}
+                if probe.get("status") == "pass" else {})
+        return {"gate": "emu", "status": "skipped", "reason": spec.emu_skip, **note,
+                "probe": {k: probe.get(k) for k in ("passed", "invalid", "invalid_reasons", "reason")}}
     try:
         cov = target_coverage(gp4, rec.addr, function_starts)
     except (ValueError, SystemExit) as e:
         return {"gate": "emu", "status": "inconclusive", "reason": f"coverage unavailable: {e}"}
+    exempt = _coverage_exemptions(rec.addr) & cov.blocks
+    if exempt:
+        starts = sorted(cov.blocks)
+        def _block_of(va):
+            prior = [b for b in starts if b <= va]
+            return prior[-1] if prior else None
+        dead_branches = {va for va in cov.branches if _block_of(va) in exempt}
+        cov = Coverage(cov.insns, cov.blocks - exempt, cov.branches, cov.constants)
     m.coverage = cov
     n = spec.cases if cases is None else cases
     if n < 1:
         return {"gate": "emu", "status": "fail", "reason": "case count must be positive"}
     limit = max(n, int(oracle("max_cases")))
-    deadline = time.monotonic() + float(oracle("time_budget_s"))
+    phase2_budget = float(oracle("time_budget_s"))   # the extra coverage search; starts after the n cases
+    heavy = _heavy(rec.addr)
+    if heavy:                                       # lead-listed fixed-work routine: few long cases
+        n = limit = int(heavy["cases"])
+    deadline = None
     exclude = [(STACK_LO, STACK_LO + STACK_SIZE), (REGS_ADDR & ~0xFFFF, (REGS_ADDR & ~0xFFFF) + 0x10000),
                (TRAP, TRAP + TRAP_SIZE)]
     pristine = {}
@@ -582,30 +846,66 @@ def differential(gp4: Binary, dll: Binary, rec: Impl, spec: Spec, *, fpucw: int,
     capture_flags = spec.conv == "regs"
     passed = invalid = 0
     invalid_reasons: dict[str, int] = {}
+    invalid_sites: dict[str, int] = {}
     warnings: set[str] = set()
+    if heavy:
+        warnings.add(f"heavy fixed-work routine: {n} cases, {heavy.get('ni_cases', 1)} hidden-input checks (specs/heavy.json)")
     seen_blocks: set[int] = set()
     seen_branches: set[tuple[int, bool]] = set()
+    dead_dirs = {d for d in _dead_directions(rec.addr) if d[0] in cov.branches}
+    seen_branches |= dead_dirs
+    if exempt:   # directions into, or branches inside, lead-proven dead blocks are not obligations
+        for va, (taken, fall) in cov.branches.items():
+            for direction, target in ((True, taken), (False, fall)):
+                if va in dead_branches or target in exempt:
+                    seen_branches.add((va, direction))
+    ignored_flags = _ignored_flags(rec.addr)
     ni_checked = 0
     ni_target = max(0, int(oracle("ni_cases")))
+    if heavy:
+        ni_target = max(1, int(heavy.get("ni_cases", 1)))
+    varied: set[int] = set()
+    m.data_reads = set()
     attempted = 0
+    import_models: dict[str, int] = {}   # modelled import calls made by passing cases (gp4re/stubs.py)
 
     def coverage_ok():
         return (len(seen_blocks) / len(cov.blocks) >= float(oracle("min_block_coverage")) and
                 (not cov.branches or len(seen_branches) / (2 * len(cov.branches)) >= float(oracle("min_branch_coverage"))))
 
+    try:
+        wall_cap = float(oracle("max_wall_s"))
+    except KeyError:
+        wall_cap = 300.0
+    wall_cap = max(wall_cap, float(getattr(spec, "wall", 0) or 0))   # spec wall=<s> for heavy routines
+    if _wall is not None:
+        wall_cap = _wall
+    started = time.monotonic()
     for i in range(limit):
-        if i >= n and (coverage_ok() or time.monotonic() >= deadline):
-            break
+        if i >= n:
+            if deadline is None:   # measured from here so a loaded machine still searches as long
+                deadline = time.monotonic() + phase2_budget
+            if coverage_ok() or time.monotonic() >= deadline:
+                break
+        if time.monotonic() - started > wall_cap:
+            return {"gate": "emu", "status": "inconclusive", "cases": attempted, "passed": passed, "invalid": invalid,
+                    "invalid_reasons": invalid_reasons, "invalid_sites": invalid_sites,
+                    "reason": f"emulation exceeded {wall_cap:.0f}s wall clock (likely an unbounded loop on generated "
+                              f"inputs): bound the loop counts/pointers with a layout"}
         attempted += 1
         seed = (spec.seed * 1_000_003 + rec.addr * 7919 + i) & 0xFFFFFFFF
         g = CaseGen(spec, seed)
+        m.stubs.seed = seed   # modelled imports: identical state for the original and reconstruction runs
         if i >= n:
             g.constants = cov.constants
         flags = 0x202
         if spec.conv == "regs":
             regs, st_in, desc = {}, [], {}
             for a in spec.args:
-                kind, v = g.value(a)
+                if a.t.kind == "rel":   # tied to an earlier register: ref + k*stride
+                    kind, v = "int", (regs[a.t.ref] + g.rng.randint(int(a.t.lo), int(a.t.hi)) * a.t.stride) & 0xFFFFFFFF
+                else:
+                    kind, v = g.value(a)
                 if a.reg.startswith("st"):
                     continue   # load the sorted contiguous stack below
                 elif a.reg in FLAG_BITS:
@@ -631,19 +931,28 @@ def differential(gp4: Binary, dll: Binary, rec: Impl, spec: Spec, *, fpucw: int,
                         regs[r] = stack_vals.pop(0)[1]
             stack_o = _push(stack_vals)
             st_in = []
+        if spec.globals.startswith("fuzz"):
+            fuzz_part, _, layout_part = spec.globals.partition("+layout=")
+        else:
+            fuzz_part, layout_part = "", spec.globals[len("layout="):] if spec.globals.startswith("layout=") else ""
         if spec.globals.startswith("fuzz") and globals_info:
-            kind = spec.globals.split(":", 1)[1] if ":" in spec.globals else "f32"
+            kind = fuzz_part.split(":", 1)[1] if ":" in fuzz_part else "f32"
             for gaddr in globals_info:
+                if _is_constant(gaddr):   # lead-proven constant tables keep their image values
+                    continue
                 v = g.scalar(ArgType(kind))
                 data = struct.pack("<I", v & 0xFFFFFFFF) if kind == "i32" else struct.pack({"f32": "<f", "f64": "<d"}[kind], v)
                 g.buffers.append((gaddr, data))
-        elif spec.globals.startswith("layout="):
+        if layout_part:
             from .input_layouts import global_buffers
             try:
-                g.buffers.extend(global_buffers(g, spec.globals.split("=", 1)[1], gp4))
+                for layout_name in layout_part.split("+"):   # applied after any fuzz: later fields win on overlap
+                    g.buffers.extend(global_buffers(g, layout_name, gp4, regs=regs))
             except (ValueError, KeyError, OSError, struct.error) as e:
                 return {"gate": "emu", "status": "inconclusive", "reason": f"invalid global input layout: {e}"}
         bufs = list(g.buffers)
+        for a, data in bufs:
+            varied.update(range(a, a + len(data)))
 
         def load_inputs():
             for a, data in bufs:
@@ -661,25 +970,28 @@ def differential(gp4: Binary, dll: Binary, rec: Impl, spec: Spec, *, fpucw: int,
             invalid += 1
             key = orig.status + (": " + orig.detail if orig.status == "external" else "")
             invalid_reasons[key] = invalid_reasons.get(key, 0) + 1
+            if orig.status in ("fault", "timeout"):   # where the ORIGINAL stopped: points at the callee to bound
+                site_key = f"{orig.status}@{orig.site:#010x}"
+                invalid_sites[site_key] = invalid_sites.get(site_key, 0) + 1
+            if invalid >= 8 and invalid >= passed:
+                break   # PASS needs every case valid: stop early, report the invalid-input reasons
             continue
         orig.dirty = m.snapshot_dirty(exclude)
         if orig.st_depth != n_st_out:
             return _fail(rec, i, desc, f"x87 output contract declares {n_st_out} values but original returns {orig.st_depth}", passed, invalid)
-        if spec.conv == "regs" and any(raw != _double_extended(value)
-                                       for raw, value in zip(orig.st_extended, orig.st_bits)):
-            return {"gate": "emu", "status": "inconclusive", "reason": "original x87 output cannot be represented exactly by gp4::Regs double slots",
-                    "case": i, "inputs": desc, "passed": passed, "invalid": invalid,
-                    "st_extended": [v.hex() for v in orig.st_extended], "st_binary64": [v.hex() for v in orig.st_bits]}
         if spec.conv == "regs" and orig.fpucw != m.fpucw:
             return {"gate": "emu", "status": "inconclusive", "reason": "original changes x87 control word, unsupported by gp4::Regs",
                     "case": i, "passed": passed, "invalid": invalid,
                     "fpucw_in": hex(m.fpucw), "fpucw_out": hex(orig.fpucw)}
+        new_path = bool(set(orig.blocks) - seen_blocks) or bool(set(orig.branches) - seen_branches)
         seen_blocks.update(orig.blocks)
         seen_branches.update(orig.branches)
 
         # Missing inputs are tested on the ORIGINAL, independently of whether
-        # the reconstruction happens to repeat the same fixed-canary result.
-        if ni_checked < ni_target:
+        # the reconstruction happens to repeat the same fixed-canary result: on the
+        # first ni_cases valid cases and on every case that reaches new code (bounded),
+        # so an input read only on a rare path (an early exit returning eax) is found too.
+        if ni_checked < ni_target or (new_path and ni_checked < ni_target + 48):
             entry = {r: regs.get(r, CANARY[r]) for r in GPRS}
             declared_flags = {a.reg for a in spec.args if a.reg in FLAG_BITS}
             noise_rng = random.Random(seed ^ 0x4E494348)
@@ -700,6 +1012,9 @@ def differential(gp4: Binary, dll: Binary, rec: Impl, spec: Spec, *, fpucw: int,
                 ventry = {r: vregs.get(r, CANARY[r]) for r in GPRS}
                 dependencies = _ni_problems(orig, variant, spec, entry, ventry, flags, vflags)
                 dependencies += compare_pages(orig.dirty, variant.dirty, pristine_of, 0)
+                calls_differ = first_difference(orig.stub_log, variant.stub_log)
+                if calls_differ:
+                    dependencies.append(calls_differ)
                 if dependencies:
                     return _fail(rec, i, desc, f"hidden input {label}: " + "; ".join(dependencies[:8]), passed, invalid)
             ni_checked += 1
@@ -715,15 +1030,17 @@ def differential(gp4: Binary, dll: Binary, rec: Impl, spec: Spec, *, fpucw: int,
             struct.pack_into("<I", block, 0x1C, flags)
             for k, v in enumerate(st_in):
                 struct.pack_into("<d", block, 0x20 + 8 * k, v)
+                block[0x68 + 10 * k: 0x72 + 10 * k] = _double_extended(struct.pack("<d", v))
             struct.pack_into("<ii", block, 0x60, len(st_in), len(spec.st_outputs))
+            struct.pack_into("<II", block, 0x108, (1 << len(st_in)) - 1, 0)   # st_xin_mask, st_xout_mask
             m.uc.mem_write(REGS_ADDR, bytes(block))
             m.dirty.add(REGS_ADDR & ~(PAGE - 1))
             recon = m.call(rec.impl, regs={}, stack=struct.pack("<I", REGS_ADDR), st_in=[], n_st_out=0,
-                           capture_flags=False, maxinsn=spec.maxinsn * 4, input_flags=flags)
+                           capture_flags=False, maxinsn=spec.maxinsn * 16, input_flags=flags)
             out_block = bytes(m.uc.mem_read(REGS_ADDR, REGS_SIZE))
         else:
             recon = m.call(rec.impl, regs=regs, stack=stack_o, st_in=[], n_st_out=n_st_out,
-                           capture_flags=False, maxinsn=spec.maxinsn * 4, input_flags=flags)
+                           capture_flags=False, maxinsn=spec.maxinsn * 16, input_flags=flags)
         if recon.status != "ok":
             return _fail(rec, i, desc, f"reconstruction {recon.status}: {recon.detail}", passed, invalid)
         recon.dirty = m.snapshot_dirty(exclude)
@@ -735,13 +1052,28 @@ def differential(gp4: Binary, dll: Binary, rec: Impl, spec: Spec, *, fpucw: int,
                 rv = struct.unpack_from("<I", out_block, 4 * k)[0]
                 if rv != orig.regs[r]:
                     problems.append(f"{r}: original {orig.regs[r]:#010x} vs reconstruction {rv:#010x}")
+            xout_mask = struct.unpack_from("<I", out_block, 0x10C)[0]
             for k, o in enumerate(spec.st_outputs):
+                if (xout_mask >> k) & 1:      # reconstruction returned the full 80-bit value
+                    ext = out_block[0xB8 + 10 * k: 0xC2 + 10 * k]
+                    if ext != orig.st_extended[k]:
+                        problems.append(f"{o}: original 80-bit {orig.st_extended[k][::-1].hex()} "
+                                        f"({orig.st[k]!r}) vs reconstruction {ext[::-1].hex()}")
+                    continue
+                if orig.st_extended[k] != _double_extended(orig.st_bits[k]):
+                    return {"gate": "emu", "status": "inconclusive",
+                            "reason": f"original {o} is an 80-bit value a double cannot hold: return it with "
+                                      f"gp4::x87::set_out_st(r, {k}, Ext)",
+                            "case": i, "inputs": desc, "passed": passed, "invalid": invalid,
+                            "st_extended": [v.hex() for v in orig.st_extended], "st_binary64": [v.hex() for v in orig.st_bits]}
                 raw = out_block[0x20 + 8 * k: 0x28 + 8 * k]
                 rv = struct.unpack("<d", raw)[0]
                 if not _float_equal(orig.st_bits[k], raw, spec.tol):
                     problems.append(f"{o}: original {orig.st[k]!r} vs reconstruction {rv!r}")
             rflags = struct.unpack_from("<I", out_block, 0x1C)[0]
             for o, bit in FLAG_BITS.items():
+                if o in ignored_flags:   # lead-proven stack-address-dependent flags no caller reads
+                    continue
                 if ((orig.flags >> bit) & 1) != ((rflags >> bit) & 1):
                     problems.append(f"{o}: original {(orig.flags >> bit) & 1} vs reconstruction {(rflags >> bit) & 1}")
         elif spec.ret in ("i32", "u32"):
@@ -775,13 +1107,24 @@ def differential(gp4: Binary, dll: Binary, rec: Impl, spec: Spec, *, fpucw: int,
         if orig.caller_stack != live_recon:
             problems.append("caller-owned stack memory differs")
         problems += compare_pages(orig.dirty, recon.dirty, pristine_of, spec.tol)
+        calls_differ = first_difference(orig.stub_log, recon.stub_log)
+        if calls_differ:
+            problems.insert(0, calls_differ)
         if problems:
             return _fail(rec, i, desc, "; ".join(problems[:12]), passed, invalid)
+        for call_entry in orig.stub_log:
+            import_models[call_entry[0]] = import_models.get(call_entry[0], 0) + 1
         passed += 1
 
     status = "pass" if passed and invalid == 0 and coverage_ok() and ni_checked >= min(ni_target, passed) else "inconclusive"
     if passed == 0:
         status = "inconclusive"
+    unvaried = _byte_ranges(m.data_reads - varied)
+    if unvaried:
+        total = sum(n for _, n in unvaried)
+        shown = ", ".join(f"{a:#010x}+{n}" for a, n in unvaried[:8]) + (" ..." if len(unvaried) > 8 else "")
+        warnings.add(f"unvaried data inputs: {total} bytes of game data read by the original were never varied "
+                     f"({shown}); the pass rests on their static values - state needs a layout, constant tables are fine")
     coverage = {"blocks_hit": len(seen_blocks), "blocks_total": len(cov.blocks),
                 "block_fraction": len(seen_blocks) / len(cov.blocks),
                 "branch_directions_hit": len(seen_branches), "branch_directions_total": 2 * len(cov.branches),
@@ -789,10 +1132,15 @@ def differential(gp4: Binary, dll: Binary, rec: Impl, spec: Spec, *, fpucw: int,
                 "missing_blocks": [hex(a) for a in sorted(cov.blocks - seen_blocks)][:20],
                 "missing_branch_directions": [f"{va:#x}:{'taken' if taken else 'fallthrough'}"
                                               for va in sorted(cov.branches) for taken in (False, True)
-                                              if (va, taken) not in seen_branches][:20]}
+                                              if (va, taken) not in seen_branches][:20],
+                **({"exempt_blocks": [hex(a) for a in sorted(exempt)]} if exempt else {}),
+                **({"exempt_branches": [f"{va:#x}:{'taken' if t else 'fallthrough'}" for va, t in sorted(dead_dirs)]}
+                   if dead_dirs else {})}
     return {"gate": "emu", "status": status, "cases": attempted, "requested_cases": n,
             "passed": passed, "invalid": invalid, "coverage": coverage, "ni_checked": ni_checked,
-            "invalid_reasons": invalid_reasons, "warnings": sorted(warnings), "fs_ok": m.fs_ok,
+            "invalid_reasons": invalid_reasons, "invalid_sites": invalid_sites, "warnings": sorted(warnings), "fs_ok": m.fs_ok,
+            "unvaried_inputs": [[hex(a), n] for a, n in unvaried],
+            **({"import_models": import_models} if import_models else {}),
             **({"reason": "insufficient target-body coverage"} if not coverage_ok() else {})}
 
 

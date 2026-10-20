@@ -1,0 +1,43 @@
+{
+ "_evidence": "Car fields of 0x0042a120 beyond cars_0066fef0 (compose after it; ebx and esi are both car records rec[0x66fef0,0x41c,0..21], +0xea comes from cars_0066fef0). Byte +0xfe (0x66ffee + k*0x41c: test 0x40 / 0x10 on ebx and on esi) is any byte, so every flag combination of the two cars occurs. Dword +0x114 (0x670004 + k*0x41c) is a car link compared with ebx (cmp ebx,[esi+0x114]; je -> the stc exit 0x42a1fd): it is 0 (no link) or one of the 22 car record addresses, so it equals the other car in about 1/24 of the picks. Only compares and stores: nothing faults.",
+ "globals": [
+  {
+   "addr": "0x0066ffee",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x00670004",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x0",
+    "0x0",
+    "0x66fef0",
+    "0x67030c",
+    "0x670728",
+    "0x670b44",
+    "0x670f60",
+    "0x67137c",
+    "0x671798",
+    "0x671bb4",
+    "0x671fd0",
+    "0x6723ec",
+    "0x672808",
+    "0x672c24",
+    "0x673040",
+    "0x67345c",
+    "0x673878",
+    "0x673c94",
+    "0x6740b0",
+    "0x6744cc",
+    "0x6748e8",
+    "0x674d04",
+    "0x675120",
+    "0x67553c"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,49 @@
+{
+ "_evidence": "0x528927: al = 1 << [0x81d1d4] (8-bit shl, any count valid) and-ed with the mask byte [0x81d1d7] picks ebx = 0xb; both zero/unvaried in the image. Only shifted, and-ed and compared, so any byte values are valid; composed after menu_00529408 (layout-only: the static chain head 0x84e9bb must not be fuzzed).",
+ "globals": [
+  {
+   "addr": "0x0081d1d4",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    7
+   ]
+  },
+  {
+   "addr": "0x0081d1d7",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    2,
+    4,
+    8,
+    "0xb",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0081d1d6",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0081d1e9",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  }
+ ]
+}

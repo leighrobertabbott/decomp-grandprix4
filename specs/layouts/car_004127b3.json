@@ -1,0 +1,9 @@
+{
+  "size": 656,
+  "_evidence": "Car block [0x601a74] for 0x004127b3: +0x1c is a pointer to the record of seg_004127b3; dword +0xac (sign tests, then |v| clamped to +0x284) and dword +0x284 (the clamp and idiv divisor, 0 -> 1). eax = min(|+0xac|, d) (signed), times [0x6038e8], idiv d: the quotient has magnitude <= |[0x6038e8]| for every d (d < 0 gives eax = d), except when +0xac = 0x80000000, whose neg stays negative and overflows the idiv, so +0xac is -0x7fffffff..0x7fffffff and +0x284 any i32.",
+  "fields": [
+    {"off": "0x1c", "type": "ptr", "size": 88, "fill": "layout=seg_004127b3"},
+    {"off": "0xac", "type": "i32", "lo": -2147483647, "hi": 2147483647},
+    {"off": "0x284", "type": "i32"}
+  ]
+}

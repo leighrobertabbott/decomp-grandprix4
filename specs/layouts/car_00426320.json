@@ -1,0 +1,70 @@
+{
+ "size": 627,
+ "_evidence": "Car block (esi) read by 0x00426261 (called by 0x00426320) and its helper 0x00426216: byte +0x26b (test 0x80: set returns 0), word +0xa2 (movzx; 0x4000 - x clamped at 0), word +0x66 (movsx, subtracted from count<<14), dword +0x19c (imul [0x602b4c] shrd 28, -0x14, clamp 0) and word +0xba (movzx, imul shrd 14). Only imul/shrd/compares: every value is valid. The lead count (res+0x2000)>>14 of 0x426320 is nonzero only when the product chain is large, which random words almost never give, so these draw from lists mixing zero, Q14 unit values and extremes (bit 7 of +0x26b set in 1/5); the rest of the block is random.",
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x26b",
+   "type": "u8",
+   "values": [
+    "0x0",
+    "0x7f",
+    "0x80",
+    "0x1",
+    "0x40"
+   ]
+  },
+  {
+   "off": "0xa2",
+   "type": "u16",
+   "values": [
+    "0x0",
+    "0x0",
+    "0x100",
+    "0x1000",
+    "0x3000",
+    "0x4000",
+    "0x8000",
+    "0xffff"
+   ]
+  },
+  {
+   "off": "0x66",
+   "type": "u16",
+   "values": [
+    "0x0",
+    "0x0",
+    "0x100",
+    "0xff00",
+    "0x2000",
+    "0xe000",
+    "0x7fff",
+    "0x8000"
+   ]
+  },
+  {
+   "off": "0x19c",
+   "type": "u32",
+   "values": [
+    "0x0",
+    "0x1",
+    "0x1000000",
+    "0x10000000",
+    "0xf0000000",
+    "0x7fffffff",
+    "0x80000000"
+   ]
+  },
+  {
+   "off": "0xba",
+   "type": "u16",
+   "values": [
+    "0x0",
+    "0x2000",
+    "0x4000",
+    "0xffff",
+    "0x1234"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x00512e82 copies the circular byte buffer [[0x7a8e28], [0x7a8e2c]) to edi: `mov esi,[0x7a8e28]; add esi,[0x88f604]; mov ecx,[0x7a8e2c]; sub ecx,[0x7a8e28]` then `movsb; cmp esi,[0x7a8e2c]; jb; mov esi,[0x7a8e28]; loop` - end - start bytes from the read offset [0x88f604], wrapping at the end. The only writer of the pair, 0x5376aa, sets start = [0x8299a8+0x14] + [0x7a8e20]*[0x7a8e24] + 8 and end = start + [0x7a8e1c]*0x5b8: a heap buffer of whole 0x5b8-byte records (end == start would make `loop` run 2^32 times, so the record count is >= 1). The buffer is modelled by the unreferenced zero-initialised .data stretch after 0xa05c3c (0x4309c bytes no instruction addresses; also used by dlog_00537f02/fill_005204d0): start = 0xa06008 + i*0x5b8 (i 0..1) and end = 0xa06008 + j*0x5b8 (j 2..3), so the length is 1..3 whole records (0x5b8..0x1128 bytes) and the spec's edi buffer (0x1128 bytes) holds the copy. The offset is written by 0x512d1a from a per-frame table and kept inside [0, length) by 0x512d3f (`sub eax,[0x88f604]; jns; add eax,end; sub eax,start`): drawn 0..0x1127 (offsets at or past a shorter length read at most 0x1127 bytes past start, still inside the stretch, and simply wrap at once). The stretch bytes 0xa06000..0xa076ff are random so the copy and the wrap position are visible in the output.",
+  "globals": [
+    {"addr": "0x007a8e28", "type": "u32", "points_into": {"base": "0xa06008", "stride": "0x5b8", "lo": 0, "hi": 1}},
+    {"addr": "0x007a8e2c", "type": "u32", "points_into": {"base": "0xa06008", "stride": "0x5b8", "lo": 2, "hi": 3}},
+    {"addr": "0x0088f604", "type": "u32", "lo": 0, "hi": 4391},
+    {"addr": "0x00a06000", "type": "u32", "count": 1728, "stride": 4}
+  ]
+}

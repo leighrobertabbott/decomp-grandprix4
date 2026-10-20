@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x004430d1 (compose AFTER the 0x004097c7 chain layouts and pick_00443148): 'test byte [0x7aafd4],0xff; je 0x443132' selects one call or two (any nonzero byte), drawn 0/1/0xff; 'cmp byte [0x7c2ea7],1; je 0x4430f5' and 'cmp byte [0x7c2ea7],0; je 0x443120' pick which of [0x679d34]/[0x679d38] receives the car record and whether al comes from [0x66d896] or [0x66d87d] (both already vary in tabs_0043ced2 with 0 and car codes, so both 0x443148 'test al,0xff' outcomes occur): [0x7c2ea7] draws 0, 1 and others (2, 0xff). [0x679d34]/[0x679d38] are only written here. Compares only; no value faults.",
+  "globals": [
+    {"addr": "0x007aafd4", "type": "u8", "values": [0, 0, 1, 1, "0xff"]},
+    {"addr": "0x007c2ea7", "type": "u8", "values": [0, 0, 1, 1, 2, "0xff"]}
+  ]
+}

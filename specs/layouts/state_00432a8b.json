@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x00432a8b updates flag bytes of the esi car record (+0x7b, +0x162, +0xfe, +0xce; any bytes valid, the spec's ptr[0x16a]:bytes) and compares esi with the car pointer at 0x00679d2c (cmp/jne at 0x00432aac; only compared, never dereferenced here), so that dword holds esi itself in about half the cases (alias_reg) and a random dword otherwise. On equality the dword 0x0066d814 (free u32) plus 0x7d0 is stored to 0x0066d848 (only written). Nothing can fault.",
+  "globals": [
+    {"addr": "0x00679d2c", "type": "u32", "alias_reg": "esi"},
+    {"addr": "0x0066d814", "type": "u32"}
+  ]
+}

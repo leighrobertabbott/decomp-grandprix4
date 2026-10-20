@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x00527787 (called by the palette builder 0x527592, which fills these tables at run time; zero in the image) reads, for row ebx and column ecx 0..31, the colour bytes [ebx+0x948b80] ('cmp ..,0x15; jne': 0x15 = identity row; 'cmp dl,0x28; jb': shade-table vs clamp path) and [ecx+0x948b80] ('sub eax,0x15; jle; cmp eax,-0xf; jge': delta clamped to -15..0, so a colour above 0x15, one in 6..0x15 and one below 6 take the three outcomes). The 32 colours draw from {0x15 x2, 0, 3, 5, 6, 0xa, 0x14, 0x16, 0x20, 0x27, 0x28, 0x40, 0x80, 0xff}. The shade table [((delta+15)<<8 | colour) + 0x923104] spans 16 x 256 = 0x1000 bytes and the remap table [i + 0x948a58] 256 bytes (i is a shade byte or a level 0..0x27); both are byte lookups, full-range random. Every index stays inside its table, so nothing faults. (The clamp 'cmp eax,0x27; jle' is always taken: colour <= 0x27 there and delta <= 0, so block 0x5277f1 is dead.)",
+ "globals": [
+  {"addr": "0x00948b80", "type": "u8", "count": 32, "stride": 1, "values": ["0x15", "0x15", 0, 3, 5, 6, "0xa", "0x14", "0x16", "0x20", "0x27", "0x28", "0x40", "0x80", "0xff"]},
+  {"addr": "0x00923104", "type": "u8", "count": 4096, "stride": 1},
+  {"addr": "0x00948a58", "type": "u8", "count": 256, "stride": 1}
+ ]
+}

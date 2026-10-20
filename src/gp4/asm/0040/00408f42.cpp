@@ -50,4 +50,4 @@ void __cdecl FUN_00408f42(gp4::Regs* r) {
     r->edx = edx;
     r->eflags = (r->eflags & ~0x8d5u) | flags;
 }
-GP4_IMPL(0x00408f42, FUN_00408f42, "regs(esi:u32[6749936..6755644], edx:u32) -> (eax, edx, cf, pf, af, zf, sf, of)")
+GP4_IMPL(0x00408f42, FUN_00408f42, "regs(esi:rec[0x66fef0,0x41c,0..21], edx:u32) -> (eax, edx, cf, pf, af, zf, sf, of); globals=layout=list_0066fe3c")

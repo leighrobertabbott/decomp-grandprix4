@@ -1,0 +1,42 @@
+{
+ "_evidence": "0x53f3a7: slot index [0x7ab4a4] (0..11, 0x40-byte slots at 0x7ab1a4; compared with 0 and 0xb) selects a slot whose bytes +0 and +0x20 are tested for zero. Layout-only (it walks the static item chain 0x848042 through 0x53e4db; fuzz:i32 would rewrite the head).",
+ "globals": [
+  {
+   "addr": "0x007ab4a4",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    2,
+    5,
+    "0xb",
+    "0xb"
+   ]
+  },
+  {
+   "addr": "0x007ab1a4",
+   "type": "u8",
+   "count": 12,
+   "stride": "0x40",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x007ab1c4",
+   "type": "u8",
+   "count": 12,
+   "stride": "0x40",
+   "values": [
+    0,
+    0,
+    1,
+    "0x80"
+   ]
+  }
+ ]
+}

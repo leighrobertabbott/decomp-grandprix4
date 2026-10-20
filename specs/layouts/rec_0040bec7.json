@@ -1,0 +1,7 @@
+{
+  "size": 132,
+  "_evidence": "0x0040bec7 reads only word +0x7a of the segment record at edi (the caller 0x40bfcf passes 0x8943a0 + [0x63b814]); it indexes the 10-byte entries at 0x00675a82 and the code reads the neighbouring entries at -0xa/-9 and +0xa/+0xb, so the index is 1..30 inside the 32 entries varied by state_0040bec7.",
+  "fields": [
+    {"off": "0x7a", "type": "u16", "lo": 1, "hi": 30}
+  ]
+}

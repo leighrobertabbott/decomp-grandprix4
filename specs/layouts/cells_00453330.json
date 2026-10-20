@@ -1,0 +1,22 @@
+{
+ "size": 24,
+ "_evidence": "Grid of the collision mesh [0x9fb0a0] (see mesh_00453330): 0x4533e2..0x4533f0 index cell (row*[0x9fb0ac] + col) as 6-byte records: dword +0 a pointer to the cell's ushort triangle-index list, word +4 its count (0 = empty cell: miss). Four cells (width and height are 1..2), each a list pointer (tlist_00453330) and a count 0..2.",
+ "fields": [
+  {
+   "off": 0,
+   "type": "ptr",
+   "size": 4,
+   "fill": "layout=tlist_00453330",
+   "count": 4,
+   "stride": 6
+  },
+  {
+   "off": 4,
+   "type": "u16",
+   "lo": 0,
+   "hi": 2,
+   "count": 4,
+   "stride": 6
+  }
+ ]
+}

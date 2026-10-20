@@ -1,0 +1,19 @@
+{
+ "_evidence": "String-table entries for the menu value-text handler 0x53bf2f (compose after script_0054d798, which owns ids 0..7 and 0xba6..0xbbb; same script format and byte set - byte 4 excluded because its handler dereferences the never-written [0x833f1c]). 0x53bf2f does 'mov esi,[esi+0x12]; call 0x54d798' (item text id) and then 'call 0x539944; add eax,0x491; mov esi,eax; call 0x54d798' (value text id = cell value + 0x491); 0x54d798 -> 0x54d1ad 'mov esi,[0x835846+4*id]' -> 0x54d7c0 'lodsb', which faults on the null entries of the runtime string table (zero in the image, filled by the text loaders). The only image item with this handler, 0x8477f0 (+0x16 = 0x53bf2f), has width byte +0xd = 0 (byte cell 0x81d222) and text id +0x12 = 0x607, so the game has loaded ids 0x491..0x590 (every byte value) and 0x607: those 257 entries (0x836a8a..0x836e86 and 0x837062) point at their own 16-byte scripts (the gap after a buffer reads as zero, so a run that reaches the end stops at a NUL). Two scripts append at most ~0x30 bytes each to 0x823100. Values are synthetic.",
+ "globals": [
+  {
+   "addr": "0x00836a8a",
+   "type": "ptr",
+   "count": 256,
+   "stride": 4,
+   "size": 16,
+   "fill": "u8{=0,1,2,3,5,6,7,8,9,0xa,0xb,0xc,0xd,0xe,0xf,0x10,0x11,0x12,0x13,0x14,0x20,0x41,0x7f,0x80,0xff}"
+  },
+  {
+   "addr": "0x00837062",
+   "type": "ptr",
+   "size": 16,
+   "fill": "u8{=0,1,2,3,5,6,7,8,9,0xa,0xb,0xc,0xd,0xe,0xf,0x10,0x11,0x12,0x13,0x14,0x20,0x41,0x7f,0x80,0xff}"
+  }
+ ]
+}

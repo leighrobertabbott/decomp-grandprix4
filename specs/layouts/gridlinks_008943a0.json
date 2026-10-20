@@ -1,0 +1,25 @@
+{
+ "_evidence": "Extension of links_00405a12 (compose AFTER it) for chains that place a car on the starting grid: 0x4097fd/0x43207c put the reset car on record [0x866f08] + 1 + 3*row (+1 for an even car number), row = byte +0xfd = 0..11 from 0x43b954 (index of +0x73 in the 11-entry table 0x7c3bcd), i.e. up to 11 rows * 0x420 = 33 records past the grid start, while links_00405a12 describes links only up to record 25. Those records lie above the pit start [0x891500] (records 9..10 in ring_00405a12), where 0x406dbb/0x4059d2 follow the link +0x44 unconditionally ('mov edi,[edi+0x44]' then [edi+0xd4] at 0x4067ea): records 26..49 therefore get the same pit-record links as records 9..25 (always a link to records 0..11, inside the coherent lap geometry); a zero link there faulted 0x444c9a at 0x4067ea (edi = record 36). All other bytes of these records keep their static zero (plain operands). The object walkers of 0x424e41 (0x406dbb/0x406e58 'mov edi,[edi+0x44]' for edi >= pit start) also step past record 25 (pit window end [0x866ed4] up to record 24..25): the same zero link faulted 0x424e7f at 0x4067ea (edi = record 26).",
+ "globals": [
+  {
+   "addr": "0x8967a4",
+   "type": "u32",
+   "count": 24,
+   "stride": "0x160",
+   "values": [
+    "0x8943a0",
+    "0x894500",
+    "0x894660",
+    "0x8947c0",
+    "0x894920",
+    "0x894a80",
+    "0x894be0",
+    "0x894d40",
+    "0x894ea0",
+    "0x895000",
+    "0x895160",
+    "0x8952c0"
+   ]
+  }
+ ]
+}

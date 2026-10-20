@@ -1,0 +1,9 @@
+{
+ "_evidence": "0x510abf: 'mov eax,[ebp+8]; inc eax; call 0x51006c' then 'mov esi,[0x679d30]; movzx eax,byte [esi+0x7c]'. The restore routine 0x51006c ('dec eax; mov ebx,eax') reads the slot dword 'mov eax,[ebx*4+0x853efc]; and eax,eax; jne 0x5100ea' and, when nonzero, stores it to [0x679d30] ('mov [0x679d30],eax' at 0x5100ea); when zero it exits early (jmp 0x510306) and [0x679d30] keeps its old value. The slot dwords are written only by the save routine 0x510309 from [0x679d30], which is the selected car record pointer (0x66fef0 + k*0x41c, 22 cars), so a used slot holds a car record address and an unused one holds 0. Domain: the three slot dwords 0x853efc/0x853f00/0x853f04 are each null in about a quarter of the cases (early-exit path) or a record-aligned pointer into the car array 0x66fef0 stride 0x41c k=0..21; [0x679d30] itself is always such a car pointer (kept when the slot is empty). Compose after save_00510309 (the rest of the slot area and live state, plain copied data) and carbg_0066fef0 (random car bytes, so byte +0x7c & 0x3f minus one takes values both <= 0x15 and > 0x15 for the 'cmp eax,0x15; jle' clamp). Outside this domain the original faults at 0x510ad2 (dereference of a non-pointer).",
+ "globals": [
+  {"addr": "0x00853efc", "type": "u32", "points_into": {"base": "0x66fef0", "stride": "0x41c", "lo": 0, "hi": 21}, "nullable": true},
+  {"addr": "0x00853f00", "type": "u32", "points_into": {"base": "0x66fef0", "stride": "0x41c", "lo": 0, "hi": 21}, "nullable": true},
+  {"addr": "0x00853f04", "type": "u32", "points_into": {"base": "0x66fef0", "stride": "0x41c", "lo": 0, "hi": 21}, "nullable": true},
+  {"addr": "0x00679d30", "type": "u32", "points_into": {"base": "0x66fef0", "stride": "0x41c", "lo": 0, "hi": 21}}
+ ]
+}

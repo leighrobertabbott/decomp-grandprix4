@@ -1,0 +1,59 @@
+{
+ "_evidence": "Source record esi for 0x00540825: 'lodsb; movzx; imul 0x18; add 0x7c2b3c' selects a 0x18-byte name slot from the first byte, then up to 0x17 bytes are copied until a zero byte ('lodsb; or al,al; je'), the slot always ending in a written zero (after the 0x17-byte limit: 'dec ecx; jne' falls through to 'mov al,0; stosb'). The table at 0x7c2b3c holds 22 driver-name slots (0..21) followed by the team names, so the index draws 0..21 mostly, plus 22/0x2f/0xff (still inside writable .data: 0x7c2b3c + 0xff*0x18 + 0x18 < the section end; the original never faults on any byte). The earlier spec drew the index from the character set (slots 65..79 almost always). Name bytes +1..+0x3f draw letters, a space and zero (zero in 1 of 12), so the copy stops at every length and runs into the 0x17-byte limit in about one case in seven ((11/12)^23). Values are synthetic.",
+ "size": 64,
+ "fields": [
+  {
+   "off": 0,
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    0,
+    21,
+    22,
+    "0x2f",
+    "0xff"
+   ]
+  },
+  {
+   "off": 1,
+   "type": "u8",
+   "count": 63,
+   "stride": 1,
+   "values": [
+    0,
+    "0x20",
+    "0x2d",
+    "0x61",
+    "0x65",
+    "0x68",
+    "0x69",
+    "0x6b",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x7a"
+   ]
+  }
+ ]
+}

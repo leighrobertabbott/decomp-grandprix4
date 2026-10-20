@@ -1,0 +1,21 @@
+{
+ "_evidence": "Entry table behind [0x62a048] as walked by the 0x42458b chain (0x422501, 0x422463, 0x42257b, count [0x62a05c] 1..16). 0x4227e5 resets the entry count of the block [0x6097b0] to 0, entries are only added by 0x42257b (entry & mask nonzero and a 0x14280 bit -> 0x4223ed, else byte [0x60932c+i] >= 4 -> 0x422397), and 0x424625 then loops 'inc ecx; cmp ecx,[block+0x18]; jne', which with no entry runs past the block until it leaves .data (the original faults / never ends; the game always has an entry). Entry 0 is therefore drawn from values that contain every mask bit the record can supply (1, 2, 0x80, 0x200, 0x4000, 0x10000) and a 0x14280 bit, so at least one entry is added; entries 1..15 are free u32 draws (masked/unmasked, with and without 0x14280).",
+ "size": 64,
+ "fields": [
+  {
+   "off": 0,
+   "type": "u32",
+   "values": [
+    "0xffffffff",
+    "0x7fffffff",
+    "0x0001ffff"
+   ]
+  },
+  {
+   "off": 4,
+   "type": "u32",
+   "count": 15,
+   "stride": 4
+  }
+ ]
+}

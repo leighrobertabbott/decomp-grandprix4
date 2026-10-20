@@ -1,0 +1,12 @@
+{
+ "_evidence": "0x005223fe (compose after player_0040f8d9+disp_005141b8+stream_0062d1a0): 0x522435 stores word [0x7ad892] & word [0x679b5a] into 0x66d8b4; the mode is forced to 4, so the dispatcher 0x5141b8 (when it runs the handler) calls table entry 4 = 0x515bf8: 'and eax,0xf' searches the 9 key bytes 0x88ff47.. ('cmp cl,[eax+0x88ff47]', image 1,2,3,8,9,4,5,6,..), then 'bt word [0x7ad892],cx' / 'bt word [0x679b5a],cx' pick a bit operation on [0x866134] ('and'/'or' dword RMW) and call 0x51d1d0, which is gated by 'cmp byte [0x7ad844],0xff' and inside 0x51d1df by 'cmp byte [0x7ad869],0' (image: both 0xff; the zero path reads the binding table 0x8904d4/0x890498 image pointers, which stay valid). Finally 0x436504 'test byte [0x7aafd4],0xff; je' appends the 0x0c stream record (stream_0062d1a0 makes the cursor a fresh buffer). Varied here: 0x7aafd4 zero in half the cases, both bit words random, 0x866134 random, the 9 key bytes from 0..15 (the masked key range, so the search hits at varying positions or misses), 0x7ad844/0x7ad869 0xff or not. The handler table 0x817270 is constant code pointers (only entry 4 is used) and keeps its image values. All plain data: every value is valid.",
+ "globals": [
+  {"addr": "0x007aafd4", "type": "u8", "values": [0, 0, 1, "0xff"]},
+  {"addr": "0x007ad892", "type": "u16"},
+  {"addr": "0x00679b5a", "type": "u16"},
+  {"addr": "0x00866134", "type": "u32"},
+  {"addr": "0x0088ff47", "type": "u8", "count": 9, "stride": 1, "lo": 0, "hi": 15},
+  {"addr": "0x007ad844", "type": "u8", "values": ["0xff", "0xff", 0, 1]},
+  {"addr": "0x007ad869", "type": "u8", "values": ["0xff", "0xff", 0]}
+ ]
+}

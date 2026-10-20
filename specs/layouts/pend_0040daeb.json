@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x0040daeb compares the next segment record edi+0x160 (edi = record 0..24 of the 0x160-stride array at 0x8943a0) unsigned with the pit-end pointer 0x00866ef8 (cmp; jb: below it the next record's lane entry is the far end, otherwise the same record's entry + 0x4000). The pit end is a record-aligned pointer 1..25 so both outcomes occur; the lane words +0x7a (0..31) of records 0..25 and the 32 entries of the table 0x604435 come from lanes_0040da62 (compose after it). Only fixed records and table rows are read; nothing faults.",
+  "globals": [
+    {"addr": "0x00866ef8", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 1, "hi": 25}}
+  ]
+}

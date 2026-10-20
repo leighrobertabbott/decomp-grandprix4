@@ -1,0 +1,15 @@
+{
+  "_evidence": "0x0040f5f3 walks the 22 car records at 0x0066fef0 (stride 0x41c, loop 0x16) and calls 0x40f458 for each whose byte +0x7a has neither bit 7 nor bit 6 set (values give each case often), then calls 0x40f898. 0x40f458 tests and rewrites the state bits of byte +0x82, compares dword +0x4c with the clock dword 0x66d814 (any i32: both signs of the difference), stores clock+delay into +0x4c and tests byte +0x83 bit 5 before setting bit 7 of +0x88, so +0x82/+0x83/+0x88 are any byte and +0x4c any i32 for every record. The 0x40f898 part is state_0040f898 (pointer 0x679d30 -> root -> child, alias selector 0x679d2c, 0x62ac50, 0x62fbfc). All values are valid.",
+  "globals": [
+    {"addr": "0x0066ff6a", "type": "u8", "count": 22, "stride": "0x41c", "values": [0, 0, 1, "0x3f", "0x40", "0x80", "0xc0"]},
+    {"addr": "0x0066ff72", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ff73", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ff78", "type": "u8", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066ff3c", "type": "i32", "count": 22, "stride": "0x41c"},
+    {"addr": "0x0066d814", "type": "i32"},
+    {"addr": "0x00679d30", "type": "ptr", "size": 32, "fill": "layout=root_0040f898"},
+    {"addr": "0x00679d2c", "type": "u32", "alias": "0x00679d30"},
+    {"addr": "0x0062ac50", "type": "i32"},
+    {"addr": "0x0062fbfc", "type": "i32"}
+  ]
+}

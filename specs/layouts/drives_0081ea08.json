@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x005370bd scans the 26 drive-type bytes 0x81ea08..0x81ea21 (drive letters 'A'..'Z', ecx = 0x41..0x5a): 'cmp byte [edi],5; jne next' - 5 is DRIVE_CDROM; the first CD-ROM opens \"X:\sound\pc\tk3.st1\" with CreateFileA and returns 1, none returns 0. The bytes are run-time state (GetDriveType results, zero in the image). Here each byte draws a drive type from {0,1,2,3,4,6} with 5 in about 1 of 16 picks, so the first CD-ROM falls on varied letters and in about a fifth of the cases there is none. Plain byte compares, every value is valid. NOTE: the function's spec carries emu=skip:win32 CreateFileA (the CD path calls the unmodelled import), so the emu gate is skipped and this layout only takes effect once the oracle models CreateFileA (or for the in-game T2 check).",
+ "globals": [
+  {"addr": "0x0081ea08", "type": "u8", "count": 26, "stride": 1, "values": [0, 1, 2, 3, 3, 3, 4, 6, 0, 1, 2, 3, 3, 4, 6, 5]}
+ ]
+}

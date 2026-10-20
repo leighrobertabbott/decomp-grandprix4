@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x0041ef48 (ebp >= 0x30 path): pos = clamp([0x00622834] - [0x00622838], low [0x00602fa4], 0xb0) indexes the constant 6-byte-row gear table at 0x00622840 (12 rows, static image bytes) as (pos >> 4)*6 + [0x00622830], reading bytes +0 and +6 and interpolating by the low nibble (and 0xf; je). The column 0x622830 is a channel 0..5 (the caller 0x41f02b loads it from 0x62ac78+4k) and the low clamp 0x602fa4 is a non-negative position 0..0xb0: a negative low bound makes 'shr edx,4' of a negative position a huge row and a wild column runs off the table (original faults), neither occurs in the game. The two positions are drawn -0x40..0x200 so their difference falls below the low bound, inside, and above 0xb0, with zero low nibbles at the edges.",
+  "globals": [
+    {"addr": "0x00622830", "type": "u32", "lo": 0, "hi": 5},
+    {"addr": "0x00602fa4", "type": "i32", "lo": 0, "hi": 176},
+    {"addr": "0x00622834", "type": "i32", "lo": -64, "hi": 512},
+    {"addr": "0x00622838", "type": "i32", "lo": -64, "hi": 512}
+  ]
+}

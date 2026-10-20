@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x0041931d divides (dword 0x0060150c << 14), with edx = 0, by dword 0x0060351c using idiv. The dividend is 0..0x1ffff<<14 (< 2^31) and the divisor a nonzero 16-bit signed value, so the quotient always fits int32. The divisor list gives both signs, small and large magnitudes (negatives as two's complement).",
+  "globals": [
+    {"addr": "0x0060150c", "type": "i32", "lo": 0, "hi": 131071},
+    {"addr": "0x0060351c", "type": "u32", "values": [1, 2, 3, 7, 100, 4096, 32767, "0xffffffff", "0xfffffffe", "0xfffffff9", "0xffffff9c", "0xffff8000"]}
+  ]
+}

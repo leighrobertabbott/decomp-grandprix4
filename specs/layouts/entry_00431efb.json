@@ -1,0 +1,11 @@
+{
+  "_evidence": "Entry read by 0x00431efb: dword +0 (byte offset added to edx, 0..0x40), dword +4 (record count; 'or ecx,ecx; je' exits on 0, else 'loop' runs it; 0..3 keeps every 0x160-byte destination record inside the 0x600-byte edx buffer, as entry_00431f6e), then per count a 16-byte source record from +8 whose words +4, +6, +8 are copied (negated when byte 0x868582 is negative). Size 8 + 3*16 bytes; the words are full-range i16.",
+  "size": 56,
+  "fields": [
+    {"off": 0, "type": "i32", "lo": 0, "hi": 64},
+    {"off": 4, "type": "u32", "lo": 0, "hi": 3},
+    {"off": 12, "type": "i16", "count": 3, "stride": 16},
+    {"off": 14, "type": "i16", "count": 3, "stride": 16},
+    {"off": 16, "type": "i16", "count": 3, "stride": 16}
+  ]
+}

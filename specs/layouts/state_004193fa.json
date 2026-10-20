@@ -1,0 +1,14 @@
+{
+  "_evidence": "The directly addressed globals of 0x004193fa, for callers (0x0041b5b6) whose own fuzz:i32 does not reach them; 0x004193fa's accepted test fuzzed them as i32 and bounds the rest with wheel_004193fa. Read before written: [0x6034b0] (sar 8, magnitude raised to [0x603550]), [0x603550], [0x603684] / [0x603680] (copied to the 0x4192a8 gain [0x60368c]: imul/shrd, then 'mul/cmp/div' that 0x4192a8 keeps in range), [0x6036a8] (sign xor and magnitude difference against [0x6036ac]), [0x6034c4] (signed jg threshold), [0x624244]/[0x624248] (inc): wrapping arithmetic only, any i32. [0x60150c] is the 0x41931d dividend 'shl 0xe; xor edx,edx; idiv [0x60351c]' taken only when [0x60351c] > [0x60150c]: 0..0x1ffff keeps it below 2^31 and nonnegative (a negative value with [0x60351c] = 0 divides by zero in the original), as in state_0041931d. [0x603688] (loop count) stays with wheel_004193fa (1..16); [0x603518], [0x60351c], [0x60368c], [0x6036ac], [0x6036b0], [0x6036b4], [0x6036bc] are written before they are read.",
+  "globals": [
+    {"addr": "0x006034b0", "type": "i32"},
+    {"addr": "0x00603550", "type": "i32"},
+    {"addr": "0x00603680", "type": "i32"},
+    {"addr": "0x00603684", "type": "i32"},
+    {"addr": "0x006036a8", "type": "i32"},
+    {"addr": "0x006034c4", "type": "i32"},
+    {"addr": "0x00624244", "type": "i32"},
+    {"addr": "0x00624248", "type": "i32"},
+    {"addr": "0x0060150c", "type": "i32", "lo": 0, "hi": 131071}
+  ]
+}

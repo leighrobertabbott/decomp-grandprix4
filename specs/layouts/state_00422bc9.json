@@ -1,0 +1,22 @@
+{
+ "_evidence": "Overlay for 0x00422bc9 (compose LAST, after view_00609860+state_0042430b+state_00422ac2+state_00424011). [0x6082b4] is the record count: 0x42192d copies it from [0x6097cc] (the count of the [0x6097ac] list, 1..8 in state_00424011, where 0 runs 2^32 iterations), and 0x422bc9 restores [0x6097cc] from it and walks 'inc ecx; cmp ecx,[0x6097cc]; jne' (0 never ends: the 35/200 timeouts with state_00424011's 0..8 draw of 0x6082b4). Domain: 1..8 (the 8 described records) plus 0x46, 0x7fffffff and 0x80000000, longer lists for which the point budget 0x45 - n ([0x6082bc]) is already negative, so 'cmp esi,[0x6082bc]; jl' leaves after the first record and no record past the list is read (the 0x422d9c fall-through); no value in 9..0x45 (it would walk past the 8 records).",
+ "globals": [
+  {
+   "addr": "0x006082b4",
+   "type": "u32",
+   "values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    "0x46",
+    "0x7fffffff",
+    "0x80000000"
+   ]
+  }
+ ]
+}

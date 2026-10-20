@@ -1,0 +1,6 @@
+{
+  "_evidence": "Byte 0x00601ba6 selects the left/right interpolators in 0x429162/0x4291f4 (cmp byte,0; je: 0x403c4c/0x403bb6 vs 0x403b65/0x403ab9); 0x601ba4 is written by 0x403850 before it is read. Values give zero and nonzero.",
+  "globals": [
+    {"addr": "0x00601ba6", "type": "u8", "values": [0, 0, 1, "0xff"]}
+  ]
+}

@@ -1,0 +1,6 @@
+{
+ "_evidence": "Text-id entry of the message descriptor 0x53ed09 that the menu handler 0x53ed4f (codes 2/3) and its sibling 0x53ed83 push with 'mov esi,0x53ed09; mov al,1; call 0x54faff': the descriptor's dwords are x = -1, y = -1, text id = 0x608 (0x53ed11, code bytes, constant). 0x54faff -> 0x54fc6f (al=1 -> case 0x54fcaa) -> 0x53e202 passes the descriptor to 0x4fde40, which loads 'mov ecx,[eax+8]; mov ecx,[ecx*4+0x835846]' = [0x837066] and reads the string byte by byte without a null test (0x4fde5e) - copying bytes >= 0x20, >= 0x80 or 0x0a and dropping other control codes, up to NUL or 0x200 bytes - and 0x53e202 then looks the same id up again with 0x54d1ad (esi = [0x835846 + 4*0x608]) for 0x54d211/0x4fd820. The string-pointer table is zero in the image (filled when the text resources load) and never null-tested, so entry 0x608 points at its own 0x40-byte NUL-terminated string (msgtxt_00536920: NUL / 0x11 / space / letters / 0x7f / 0x80 / 0xff with a final NUL, so both the copy and the drop arms of 0x4fde40 run and the walk never leaves the buffer). Values are synthetic.",
+ "globals": [
+  {"addr": "0x00837066", "type": "ptr", "size": 64, "fill": "layout=msgtxt_00536920"}
+ ]
+}

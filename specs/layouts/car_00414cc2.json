@@ -1,0 +1,12 @@
+{
+  "_evidence": "Overlay (compose LAST on esi, after car_00411109+rec_00414562) for 0x00414cc2. Dword +0xf0 is a deadline: 'test dword [esi+0xf0],-1; je' (0x414de6, 0x414eea) then clock 0x66d814 - deadline (js/jns): random background bytes were never zero, so it draws zero in 3/8 and both signs/extremes otherwise. The 0x414d26..0x414dc1 path needs +0x7a bits 0x40/1/0x10 clear (0x414cc6/0x414cdd/0x414ce7), +0x1ce bit 1 clear, +0x8d bit 1 clear, +0x40 zero, the sign of byte 0x7c2ea9 and |+0x90| - +0xb0 - 0x100 >= 0x500 (car_00411109's +0x90/+0xb0 values) and edi +0x48 & 3 == 0 (edi_00414cc2): +0x7a draws all-clear in 1/3 and every other tested bit combination (0x40, 1, 0x10 with 8/4/2) otherwise; +0x1ce bit 1 clear in 2/3; +0x8d bit 1 clear in 2/3; +0x40 zero in 3/4 (test only). Plain tests/RMW: no faults.",
+  "size": 708,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0xf0", "type": "u32", "values": [0, 0, 0, 1, "0x7fffffff", "0x80000000", "0xffffffff", "0x12345678"]},
+    {"off": "0x7a", "type": "u8", "values": [0, 0, 0, "0x80", "0x20", "0x40", "0x01", "0x10", "0x18", "0x14", "0x16", "0x1c", "0x12", "0x11", "0xff"]},
+    {"off": "0x1ce", "type": "u8", "values": [0, 0, 0, 2, "0xff", "0xfd"]},
+    {"off": "0x8d", "type": "u8", "values": [0, 0, "0x10", 2, "0x12", "0xfd"]},
+    {"off": "0x40", "type": "u32", "values": [0, 0, 0, 0, 0, 0, 4, "0x10000"]}
+  ]
+}

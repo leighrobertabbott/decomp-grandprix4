@@ -1,0 +1,8 @@
+{
+ "_evidence": "A front-end control record as returned by the control lookup 0x5bcd00 ('mov eax,[ecx+eax*4+0x10]' in the control table [0xb471c4], see ctrls_004fd1a0) for the ids 0xb4 (0x4fd1a0) and 0xb5 (0x4fd200). Fields read: the dword +4 is the control kind: 0x5b7680 (value pointer, through 0x5b4bb0) does 'mov eax,[ecx+4]; dec eax; cmp eax,4; ja' then jumps through 0x5b7718 (kind 1 -> vcall [vtbl+0x44], 2 -> [vtbl+0x40], 3 -> 0x5cb4c0 = 'mov eax,[ecx+0x24]', 4 -> [vtbl+0x44], 5 -> [vtbl+0x3c]); 0x5b77b0 (clear, through 0x5b4c00), 0x5b7730 (add item, through 0x5b4bd0) and 0x5b74b0 (select, through 0x5b4b30) act only on kinds 4 (and 1 for 0x5b74b0) through further virtual calls and the global managers 0xb36aa0/0xb348f8. Any kind outside 1..5 makes 0x5b7680 return 0, and 0x4fd1a0/0x4fd200 then fault at 'mov edx,[ebx]' (0x4fd1e4/0x4fd244); kinds 1/2/4/5 need a real vtable of a game-constructed control object, which a generated input cannot provide. So the kind is 3, whose value pointer is the dword +0x24: it must point at readable memory (0x4fd1a0 reads one dword from it and passes it to 0x5b4b30), here an 8-byte random cell. The record is otherwise unread (zero).",
+ "size": 48,
+ "fields": [
+  {"off": 4, "type": "u32", "values": [3]},
+  {"off": "0x24", "type": "ptr", "size": 8, "fill": "bytes"}
+ ]
+}

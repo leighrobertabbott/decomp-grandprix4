@@ -11,7 +11,7 @@ def _number(value):
     return int(value, 0) if isinstance(value, str) else int(value)
 
 
-def global_buffers(generator, name, binary):
+def global_buffers(generator, name, binary, regs=None):
     layout = json.loads((LAYOUT_DIR / f"{name}.json").read_text())
     fields = layout.get("globals")
     if not isinstance(fields, list) or not fields:
@@ -35,11 +35,26 @@ def global_buffers(generator, name, binary):
         pattern = field.get("pattern")
         into = field.get("points_into")
         alias = field.get("alias")
+        alias_reg = field.get("alias_reg")
+        sign_of = field.get("sign_of")
+        if sign_of is not None:
+            if kind not in ("u32", "i32") or count != 1 or _number(sign_of) not in emitted or len(emitted[_number(sign_of)]) != 4:
+                raise ValueError("sign_of needs a single dword field after the 4-byte field it extends")
+        if alias_reg is not None and (kind != "u32" or count != 1 or alias is not None or pattern is not None):
+            raise ValueError("alias_reg needs a single plain u32 field")
+        alias_offset = _number(field.get("alias_offset", 0))   # global = register + offset
+        alias_always = bool(field.get("alias_always", False))    # equal in every case (an invariant)
+        if alias_always and alias is None:
+            raise ValueError("alias_always applies to alias fields only")
+        if alias_offset and alias_reg is None:
+            raise ValueError("alias_offset applies to alias_reg fields only")
         choices = field.get("values")
         bias = _number(field.get("bias", 0))
         nullable = bool(field.get("nullable", False))
-        if (bias or nullable) and kind != "ptr":
-            raise ValueError("bias and nullable apply to ptr fields only")
+        if bias and kind != "ptr":
+            raise ValueError("bias applies to ptr fields only")
+        if nullable and kind != "ptr" and field.get("points_into") is None:
+            raise ValueError("nullable applies to ptr and points_into fields only")
         if bias < 0 or (kind == "ptr" and bias >= _number(field["size"])):
             raise ValueError("ptr bias must lie inside the buffer")
         if choices is not None:
@@ -59,6 +74,14 @@ def global_buffers(generator, name, binary):
                 raise ValueError("alias needs a single field and an earlier layout field")
             if len(emitted[_number(alias)]) != width:
                 raise ValueError("alias width differs from the field it copies")
+        prefix = field.get("prefix")      # [lengths]: entries below a drawn n are nonzero, the rest zero
+        prefix_n = None
+        if prefix is not None:
+            if kind not in INT_TYPES or count < 2 or pattern is not None or alias is not None or into is not None                     or not isinstance(prefix, list) or not prefix or any(not 0 <= _number(n) <= count for n in prefix):
+                raise ValueError("prefix needs repeated plain integer fields and lengths in 0..count")
+            if choices is not None and not any(choices):
+                raise ValueError("prefix needs a nonzero value among values")
+            prefix_n = _number(generator.rng.choice(prefix))
         if pattern is not None:
             bit = _number(field.get("bit", 0))
             if pattern != "bit_scan" or kind != "u8" or count < 2 or bit < 1 or bit > 128 or bit & (bit - 1):
@@ -69,22 +92,46 @@ def global_buffers(generator, name, binary):
             # scan and every possible first-hit position. Lower bits still vary.
             scan_mode = generator.rng.randrange(3)
             hit = generator.rng.randrange(count) if scan_mode == 2 else -1
+        pool = field.get("pool")      # repeated ptr field sharing a few buffers (big pointer tables)
+        pool_bufs = None
+        if pool is not None:
+            if kind != "ptr" or count < 2 or not 1 <= _number(pool) <= 64:
+                raise ValueError("pool needs a repeated ptr field and 1..64 buffers")
+            pool_bufs = [generator.alloc(generator.fill(arg_type.size, arg_type.fill)) for _ in range(_number(pool))]
         for index in range(count):
             address = _number(field["addr"]) + index * stride
             section = binary.section_of(address)
             if not section or not section.in_scope or not section.writable or address + width > section.end:
                 raise ValueError(f"global field {address:#x} is outside writable in-scope data")
-            if alias is not None and generator.rng.randrange(2):
-                data = emitted[_number(alias)]    # equal to the other global in about half the cases
+            if sign_of is not None:   # high dword of a sign-extended 64-bit pair: 0 or 0xffffffff
+                low = int.from_bytes(emitted[_number(sign_of)], "little")
+                data = (0xFFFFFFFF if low & 0x80000000 else 0).to_bytes(4, "little")
+            elif alias_reg is not None and alias_reg in (regs or {}) and generator.rng.randrange(2):
+                data = ((regs[alias_reg] + alias_offset) & 0xFFFFFFFF).to_bytes(4, "little")   # that register (+ offset)
+            elif alias is not None and (alias_always or generator.rng.randrange(2)):
+                data = emitted[_number(alias)]    # equal to the other global in about half the cases (or always)
+            elif prefix_n is not None:   # a filled-up table: the first n entries in use (nonzero), then free
+                if index >= prefix_n:
+                    data = bytes(width)
+                else:
+                    value = 0
+                    while value == 0:
+                        value = (generator.rng.choice(choices) if choices is not None
+                                 else generator.scalar(arg_type)) & ((1 << (8 * width)) - 1)
+                    data = value.to_bytes(width, "little")
             elif choices is not None:
                 data = generator.rng.choice(choices).to_bytes(width, "little")
             elif into is not None:
-                data = (base + generator.rng.randint(lo, hi) * rec).to_bytes(4, "little")
+                if nullable and generator.rng.randrange(4) == 0:
+                    data = bytes(4)   # null in about a quarter of the cases
+                else:
+                    data = (base + generator.rng.randint(lo, hi) * rec).to_bytes(4, "little")
             elif kind == "ptr":
                 if nullable and generator.rng.randrange(4) == 0:
                     value = 0                       # null pointer in about a quarter of the cases
                 else:
-                    value = generator.alloc(generator.fill(arg_type.size, arg_type.fill)) + bias
+                    value = (generator.rng.choice(pool_bufs) if pool_bufs
+                             else generator.alloc(generator.fill(arg_type.size, arg_type.fill))) + bias
                 data = value.to_bytes(4, "little")
             elif kind in ("f32", "f64"):
                 import struct

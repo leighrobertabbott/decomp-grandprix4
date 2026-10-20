@@ -1,0 +1,29 @@
+{
+ "_evidence": "Globals of 0x00418756 (compose after state_0041b035 for the 0x41b035/0x41b0ed callees): [0x679d30] is the player car pointer (0x409b87 stores esi there; 'cmp esi,[0x679d30]; jne') and equals the esi argument in about half the cases (alias_reg). [0x603854] is the positive rate (rate_007ad8b8: 1..0xffff) used as the idiv divisor of (car +0x2a8) << 24; with |+0x2a8| <= 0x8000 (car_00418756) every rate >= 0x100 gives a quotient inside int32 (0x8000<<24 / 0x100 = 2^31 is reached only as -2^31, which fits), so the rate is drawn 0x100..0xffff: smaller rates only fault for large +0x2a8 and change no branch (the division has no branch). [0x623f10] is any i32 (abs, sign by +0xac, stored).",
+ "globals": [
+  {
+   "addr": "0x00679d30",
+   "type": "u32",
+   "alias_reg": "esi"
+  },
+  {
+   "addr": "0x00603854",
+   "type": "u32",
+   "lo": 256,
+   "hi": 65535
+  },
+  {
+   "addr": "0x00623f10",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    "0xffffffff",
+    "0x80000000",
+    "0x7fffffff",
+    "0x12345",
+    "0xfffedcbb"
+   ]
+  }
+ ]
+}

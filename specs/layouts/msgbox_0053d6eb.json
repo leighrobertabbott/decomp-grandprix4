@@ -1,0 +1,70 @@
+{
+ "_evidence": "State read by the message box 0x0053d6eb (called with edx saved by the menu item handlers 0x54e97b event 5). 'call 0x54acd3; jb': 0x54acd3 is 'cmp byte [0x7aafd3],0xff; jb stc-exit' so [0x7aafd3] < 0xff returns CF=1 at once. Then 'cmp byte [0x82fd6c],0; jne 0x53d774': [0x82fd6c] is the open-message-box nesting counter (0x54a78b/0x54a7b8 add [0x82fd6d] = 1 before the box and 0xff after it), so nonzero (a box is already up) goes straight to 0x54ad3c, which returns at its own 'cmp [0x7aafd3],0xff; jb' - a fully modelled path. Zero shows the box: 0x54a78b (adds 1, 0x54eb70 accepted), 0x53c374 (accepted), the text id 0x43e ([0xb1d3e8] == 0 or [0x7aafd3] == 0xff) / 0x43c ([0x7ab184] == 0, which it sets to 0x50) / 0x43d (else, cleared) into [0x82fea8], then 0x53c8c8 -> 0x536920 (strings from tid_0053d6eb, compose it) -> 0x50a1a0 (cursor on: [0xb2cefc] 'setne bl', LoadCursorA([0xb1c888], 0x7f00), SetCursor, ShowCursor(1) until >= 0, SetCursor([0xb2cf04]) when that saved handle is nonzero) -> MessageBoxExA([0xb1c7f0], text, caption, 0x30, 9) -> 0x50a230 (ShowCursor(0) until < 0, SetCursor(0) saved to [0xb2cf04]); all modelled by gp4re/stubs.py (cursor stubs added 2026-10-20 16:14), so these cases run to the end: the window/instance handles [0xb1c7f0]/[0xb1c888] are any u32 (only logged arguments), [0xb2cefc] {0,1} and [0xb2cf04] {0, a handle}; [0xa6c0fc] keeps its image value 0 (non-null is a COM interface whose 'call [vtbl+0x30]' is not modelled). 0x53c374 copies [0x8245c0] (any u32, as mode_007aafd3) and 0x54eb70 -> 0x54eb10 walks the shared item list 0x838c94 (compose list_0054eaf7+links_0054eaf7+tail_0054eb10 first: its links are extended at run time and its +0x1f flag bytes are state). Domain: [0x82fd6c] {0,1}, [0xb1d3e8] {0,1}, [0x7ab184] {0, 0x50, 0x2d (image)}, [0x7aafd3] {0, 1, 0x80}. [0x7aafd3] == 0xff (the in-race menu mode) is left out: there 0x54acd3 (unless [0x7ab1a0] == 0xff) and 0x54a78b -> 0x54a7b8/0x54a2c3 run the in-race frame loops (0x509b50 message pump, 0x54a2c3 'cmp word [0x7a9476],0; jne' fade loop) that end only when the timer word [0x7a9476] is decremented by the asynchronous timer, so the emulated original never returns (timeouts at 0x509bd9/0x509bde in the probe) - generated inputs cannot model it, as in menu_0052d5f8. [0xa562e9] keeps its image value 0: 1 (3D renderer up, set by 0x498597) routes 0x53c8c8 to the in-game dialog 0x53d350 that draws over the D3D surfaces ([0x822258], faults at 0x549d67/0x4fde5e in the probe). Plain byte/dword compares and stores: every listed value is valid. Values are synthetic.",
+ "globals": [
+  {
+   "addr": "0x007aafd3",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0x80"
+   ]
+  },
+  {
+   "addr": "0x0082fd6c",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    1
+   ]
+  },
+  {
+   "addr": "0x00b1d3e8",
+   "type": "u32",
+   "values": [
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x007ab184",
+   "type": "u8",
+   "values": [
+    0,
+    "0x50",
+    "0x2d"
+   ]
+  },
+  {
+   "addr": "0x008245c0",
+   "type": "u32"
+  },
+  {
+   "addr": "0x00b1c7f0",
+   "type": "u32"
+  },
+  {
+   "addr": "0x00b1c888",
+   "type": "u32"
+  },
+  {
+   "addr": "0x00b2cefc",
+   "type": "u32",
+   "values": [
+    0,
+    1
+   ]
+  },
+  {
+   "addr": "0x00b2cf04",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    "0x10012"
+   ]
+  }
+ ]
+}

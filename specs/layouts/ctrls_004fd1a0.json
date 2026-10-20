@@ -1,0 +1,8 @@
+{
+ "_evidence": "The front-end control table object [0xb471c4]: every control lookup is 0x5bcd00 ('test eax,eax; jne; ret 4' for id 0, else 'mov eax,[ecx+eax*4+0x10]'), so entry id lives at +0x10+4*id. Ids looked up on the menu-refresh paths of 0x529408/0x52a545/0x5413e9 (0x4fd1a0: 0xb4, 0x4fd200: 0xb5, 0x503460: 0x276, the 0x66b540 control list through 0x503f70, 0x5b4da0: 0x15a6..0x15a8) stay below 0x15f0, so the buffer is 0x5800 bytes. Every caller tests the looked-up pointer for null before use (0x5b73d0/0x5b7440/0x5b74b0/0x5b7550/0x5b7730/0x5b77b0: 'test edi,edi; je' / 'test eax,eax; je') except 0x4fd1a0/0x4fd200, which dereference the value pointer 0x5b7680 returns: entries 0xb4 (+0x2e0) and 0xb5 (+0x2e4) are therefore kind-3 controls (ctrl_004fd1a0); all others are null (no control of that id).",
+ "size": 22528,
+ "fields": [
+  {"off": "0x2e0", "type": "ptr", "size": 48, "fill": "layout=ctrl_004fd1a0"},
+  {"off": "0x2e4", "type": "ptr", "size": 48, "fill": "layout=ctrl_004fd1a0"}
+ ]
+}

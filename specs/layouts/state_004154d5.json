@@ -1,0 +1,82 @@
+{
+ "_evidence": "Globals of 0x004154d5 and its callee 0x4284e1 (todo, run as original code; compose after ring_008943a0+words_008943a0+walk_00427f3c+state_00427880). [0x624848] is the look-ahead segment count (image 0x1c): 0x4284e1 returns 0 at once for 0 ('or eax,eax; je'), otherwise it stores the count (or min(max((grid limit - edi)/0x160, 0), count) on the pit side) into [0x62484c] and runs a 'dec; jne' loop, so a negative count would loop 2^32 times: 0..0x1c, zero in a third of the picks (0x41551d also takes 'eax = edx' on zero). edi (spec rec 0..25) is the car's segment record; 0x4284e1 steps it forward by count records (pit end -> + pit exit [0x866f04]; on the lap side, with car +0x71 bit 7 inside [pit entry - 0x2100, [0x866ef0]), past the pit entry [0x866f00] -> + pit start; past the lap end -> - wrap) and back one record per iteration (pit start -> pit entry, pit exit -> pit end - 0x160 when the start was in the pit, below 0x8943a0 -> + wrap), so with record-aligned limits every visited record stays within records -1..60 (inside .data) and the loop ends after count steps. The grid limits [0x868518]/[0x86851c] (state_00427d4b's evidence: compared with the car's segment) and the pit entry/exit/window [0x866f00]/[0x866f04]/[0x866ef0] are record pointers. Its divisions cannot fault: 0x400:0 by [0x624854] >= 0x4000000, (hi([0x624854]^2) * i16 diff) >> 15 (< 2^30) by the rate, and (new*[0x62485c] >> 14) * ecx by new >= 0x4000000 with the static gain 0x4000. [0x603ac0] (multiplier at 0x41552b, image 0x3e00, no writer) is drawn -0x3fff..0x3fff (both signs; |c| < 0x4000 keeps 0x427880's idiv valid, see car_004154d5); word [0x7ad89e] is the difficulty 0..4 (state_0042595c) indexing the 5 constant dwords 0x602b30 (image 0x2000).",
+ "globals": [
+  {
+   "addr": "0x00624848",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    2,
+    3,
+    5,
+    8,
+    "0x1c"
+   ]
+  },
+  {
+   "addr": "0x00603ac0",
+   "type": "i32",
+   "lo": -16383,
+   "hi": 16383
+  },
+  {
+   "addr": "0x007ad89e",
+   "type": "u16",
+   "lo": 0,
+   "hi": 4
+  },
+  {
+   "addr": "0x00868518",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 32
+   }
+  },
+  {
+   "addr": "0x0086851c",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 48
+   }
+  },
+  {
+   "addr": "0x00866f00",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 30
+   }
+  },
+  {
+   "addr": "0x00866f04",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 30
+   }
+  },
+  {
+   "addr": "0x00866ef0",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 32
+   }
+  }
+ ]
+}

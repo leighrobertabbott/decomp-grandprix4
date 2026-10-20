@@ -1,0 +1,11 @@
+{
+ "_evidence": "[0xa69878] -> a 0x24-byte record with a nested pointer at +0x1c (rec_0051fa72).",
+ "globals": [
+  {
+   "addr": "0x00a69878",
+   "type": "ptr",
+   "size": 36,
+   "fill": "layout=rec_0051fa72"
+  }
+ ]
+}

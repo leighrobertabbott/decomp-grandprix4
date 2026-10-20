@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x00543b5a (edx = 5): `cmp dword [0x8310c0],0; jne`, `cmp dword [0x83137b],0x4000; jne`, `cmp dword [0x8310cc],0; jne`, `cmp dword [0x83137f],0x4000; jne` - the plot view is at its defaults (x/y positions 0 and both zooms 0x4000) only when all four hold; then 0x5426d3 recomputes the corner values, else 0x543be3/0x543c01 rescroll. These are the position dwords +0 of the two scroll blocks 0x8310c0/0x8310cc and their zoom divisors (scroll_00543340 draws them as any i32/u32, so all four defaults at once never occurred). Overlaid after scroll_00543340 with value lists weighted to the default (3 in 4 each, so the default chain is reached in about a third of the cases and every compare also sees the other outcome): positions 0 or 1 / 5, zooms 0x4000 or 0x2000 / 1. Every zoom is nonzero, and the division in 0x5426d3/0x543be3/0x543c01 is guarded by its own `cmp divisor, edx; jbe` (no input faults), as in their accepts.",
+  "globals": [
+    {"addr": "0x008310c0", "type": "u32", "values": [0, 0, 0, 1]},
+    {"addr": "0x0083137b", "type": "u32", "values": ["0x4000", "0x4000", "0x4000", "0x2000"]},
+    {"addr": "0x008310cc", "type": "u32", "values": [0, 0, 0, 5]},
+    {"addr": "0x0083137f", "type": "u32", "values": ["0x4000", "0x4000", "0x4000", 1]}
+  ]
+}

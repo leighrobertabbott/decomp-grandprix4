@@ -1,0 +1,12 @@
+{
+ "_evidence": "0x00534123 ('mov eax,0x8000; mov esi,0x852837; call 0x53e612'): 0x53e612 treats the address 0x852837 itself as the list head node ('cmp dword [esi],0; jne' then 'mov esi,[esi]'), so the unaligned dword cell 0x852837 is the head's next link: null (empty list, about a quarter of the cases) or an allocated acyclic chain of up to four further nodes (lnode2_0053e612.. lnode5_0053e612: +0 next, +0x1f flag byte, 0x28 bytes) - a random pointer faults at 0x53e61f. With eax = 0x8000 only a 16th node would be flagged, so the walk reads the links only. The table 0x835846 read through 0x54d1ad keeps its image/fuzz values.",
+ "globals": [
+  {
+   "addr": "0x00852837",
+   "type": "ptr",
+   "size": 40,
+   "fill": "layout=lnode2_0053e612",
+   "nullable": true
+  }
+ ]
+}

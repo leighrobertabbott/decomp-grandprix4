@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x0062d1a0 is the opcode-stream write cursor: 0x004453bc resets it to 0x0062b19a, and the writers 0x00444e03/0x00444f1e/0x00445070 store opcode bytes (7, 0xb) or a 10-byte record through it and advance it; 0x004452f1 dispatches the stream. Fuzzed it is a wild pointer, so it is drawn as a pointer to a fresh 64-byte buffer (random bytes) for every case.",
+ "globals": [
+  {"addr": "0x0062d1a0", "type": "ptr", "size": 64, "fill": "bytes"}
+ ]
+}

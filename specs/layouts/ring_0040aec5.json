@@ -1,0 +1,15 @@
+{
+  "_evidence": "0x0040aec5 marks track-segment records (0x160 bytes at 0x008943a0) by or-ing byte +0x92: walk 1 starts at the pit-entry record [0x866f00] and steps back [0x62d22e]+1 times (dec/jns), below the pit start [0x891500] wrapping by the lap length [0x866ec4] when it drops under the lap start [0x891504], at or above it clamping at the pit start (|= 1); walk 2 starts at the pit-exit record [0x866f04] and steps forward [0x62d230]+1 times, at or past the lap end [0x866ecc] wrapping back by [0x866ec4] below the pit start or clamping to pit end-0x160 at or past [0x866ef8] (|= 2), then marks the pit-end record. Random pointers faulted at the first [ebx+0x92]. The wrap is only safe when the lap start, end and length agree (an incoherent length lets walk 1 drift out of the array), so the lap is fixed at records 0..7 (start 0x8943a0, end base+0xb00, length 0xb00); pit start 9..10 and pit end 12..14 vary as in ring_00405a12. The entry/exit cursors range wider than the game's lap records (entry 4..11, exit 0..13), so gap and pit cursors reach the clamp branches (0x40aedb.., 0x40af39..) that need a cursor at or above the pit start; every cursor and every step stays within records 0..14, whose bytes +0x92 are varied (all values valid; the final flags come from the last or). The two counts are track-header words (0x40c936/0x40c941 pop them from the track data); any count is safe with the coherent geometry, and 0..47 (several wraps and clamps) is used to bound the run time.",
+  "globals": [
+    {"addr": "0x0062d22e", "type": "u16", "lo": 0, "hi": 47},
+    {"addr": "0x0062d230", "type": "u16", "lo": 0, "hi": 47},
+    {"addr": "0x00891504", "type": "u32", "values": ["0x8943a0"]},
+    {"addr": "0x00866ecc", "type": "u32", "values": ["0x894ea0"]},
+    {"addr": "0x00866ec4", "type": "u32", "values": ["0xb00"]},
+    {"addr": "0x00891500", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 9, "hi": 10}},
+    {"addr": "0x00866ef8", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 12, "hi": 14}},
+    {"addr": "0x00866f00", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 4, "hi": 11}},
+    {"addr": "0x00866f04", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 13}},
+    {"addr": "0x00894432", "type": "u8", "count": 15, "stride": "0x160"}
+  ]
+}

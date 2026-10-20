@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x00425f41: eax = ((T[idx] * movzx [esi+0xd6]) >> 14) * [0x603854] >> 2 (imul/shrd, any value), with idx = (|[esi+0x98] sar 2|) >> 20 (+0x168 when byte +0x8d bit 0), at most 0x368, so the runtime table 0x63a194 (zero in the image, filled by the game; full i32 as in state_00426091) is varied over 873 dwords. ebp = movsx word [0x934df4] << 14 is the 'cmp eax,ebp; jl' bound and the 'idiv ebp' divisor of eax<<14 (cdq/shld): for a nonzero word s the quotient is eax/s, which fits for every eax (eax = -2^31 with s = -1 is below ebp and skips the divide). The only caller 0x43da95 stores 0xc000 into the word right before the call; a zero word is replaced by divisor 1 (block 0x425fa7) and then overflows (#DE) for every eax >= 2^17, so the domain is nonzero words: the caller's 0xc000 plus small/large words of both signs, so the quotient is negative (clamp 0), inside 0..0x4000 and above 0x4000 (clamp), and eax < ebp also occurs. [0x603854] is the positive rate 32..65535 (state_00405489).",
+  "globals": [
+    {"addr": "0x0063a194", "type": "i32", "count": 873, "stride": 4},
+    {"addr": "0x00603854", "type": "u32", "lo": 32, "hi": 65535},
+    {"addr": "0x00934df4", "type": "u16", "values": ["0xc000", "0xc000", "0xc000", 1, 2, "0x10", "0x40", "0x100", "0x1234", "0x7fff", "0xffff", "0xfff0", "0xff00", "0x8000"]}
+  ]
+}

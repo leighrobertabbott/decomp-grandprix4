@@ -1,0 +1,35 @@
+{
+ "_evidence": "0x00432cc2 calls 0x433ff8 with eax = 1 and 2 (mask/entry tables 0x62ff64/0x62ff68 exactly as state_00433ff8: bias 4 for the edx = -1 slot, all bit patterns valid); on CF it reads entry [0x62ff58 + idx*8] (tbl_0062ff58, idx a byte 0..255). The f64 0x601400 (image ~860) is varied in +-4096 (finite); 0x6f2af4 is the constant 1000.0 (read-only, left static). [0x603854] only feeds the 'imul' whose low dword is kept: any i32 (the idiv dividend stays < 2^25, no #DE).",
+ "globals": [
+  {
+   "addr": "0x0062ff64",
+   "type": "ptr",
+   "size": 44,
+   "bias": 4,
+   "fill": "bytes"
+  },
+  {
+   "addr": "0x0062ff68",
+   "type": "ptr",
+   "size": 96,
+   "bias": 4,
+   "fill": "bytes"
+  },
+  {
+   "addr": "0x0062ff58",
+   "type": "ptr",
+   "size": 2056,
+   "fill": "layout=tbl_0062ff58"
+  },
+  {
+   "addr": "0x00601400",
+   "type": "f64",
+   "lo": -4096,
+   "hi": 4096
+  },
+  {
+   "addr": "0x00603854",
+   "type": "i32"
+  }
+ ]
+}

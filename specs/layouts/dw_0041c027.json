@@ -1,0 +1,7 @@
+{
+  "_evidence": "Dwords +0x1c and +0x40 of the four 0x300-byte records at 0x006380d8. 0x0041c027 forms rec1(+0x1c + +0x40) - rec0(+0x1c + +0x40) (0x31c/0x340 minus 0x1c/0x40), scales it by a signed gain (imul, shrd 14) and takes its absolute value (the image's zeros never made it negative); 0x0041c5f7 zeroes +0x40 and copies +0x1c of each record to esi+0x39c+4k. Both are per-record run-time state used only in add/sub/imul/copy, so any i32 is valid.",
+  "globals": [
+    {"addr": "0x006380f4", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x00638118", "type": "i32", "count": 4, "stride": "0x300"}
+  ]
+}

@@ -1,0 +1,28 @@
+{
+ "_evidence": "0x00559244: 'test byte [0x874b4f],0x10; jne' skips the call, else 0x559253 masks bytes +0x2c/+0x30/+0x3c of the ebx record with dh and, when 'test byte [0x874b3e],0xff; jne' falls through (zero), also +0x34/+0x38. 0x874b3e is read only by the callee (globals=fuzz never reached it): zero and nonzero values; 0x874b4f mixes bit 0x10 set/clear. Both are flag bytes, any value valid.",
+ "globals": [
+  {
+   "addr": "0x00874b4f",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0x10",
+    "0xef",
+    "0xff",
+    "0x01"
+   ]
+  },
+  {
+   "addr": "0x00874b3e",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0x80",
+    "0xff"
+   ]
+  }
+ ]
+}

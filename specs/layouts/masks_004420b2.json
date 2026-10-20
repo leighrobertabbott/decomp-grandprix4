@@ -1,0 +1,8 @@
+{
+ "_evidence": "Nine car-bit masks addressed by [0x0062ff64] (bias 4 as in state_00433ff8: 0x433ff8 reads the dword before it with edx = -1). 0x004420b2 tests each dword ('test dword [ebx],-1; je') and passes nonzero ones to 0x44205d, which walks the set bits (shr/jae loop) and for mask index 1/2 reads the car-indexed table [0x62ff68] + bit*4; the bits are car numbers 0..21 (bt with edx = car index in 0x433ff8; 0x44205d was accepted with edx 0..0x3fffff), so masks are 0..0x3fffff. Each dword is zero in two thirds of the picks (all nine zero in a few percent of the cases: the 'cmp byte [0x630234],0; jne' exit; exactly one nonzero mask at index 0 or 3..8 gives the 0x14-byte record of block 0x442123) and otherwise one of a few masks (single low/high bit, all 22 bits, mixed). The dwords before and after are random.",
+ "size": 44,
+ "fill": "bytes",
+ "fields": [
+  {"off": 4, "type": "u32", "count": 9, "stride": 4, "values": [0, 0, 0, 0, 0, 0, 0, 0, 1, "0x3fffff", "0x200000", "0x2a5a5"]}
+ ]
+}

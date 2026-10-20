@@ -1,0 +1,29 @@
+{
+ "_evidence": "0x51f00d (called by 0x00442d1f and 0x00445f46) writes characters through the buffer pointers [0x891cbc] and [0x891cc4] (unset/zero in the image) and reads the bytes 0x89422c/0x894230 and dword 0x852d64; drawn as two distinct 0x110-byte buffers.",
+ "globals": [
+  {
+   "addr": "0x00891cbc",
+   "type": "ptr",
+   "size": 272,
+   "fill": "bytes"
+  },
+  {
+   "addr": "0x00891cc4",
+   "type": "ptr",
+   "size": 272,
+   "fill": "bytes"
+  },
+  {
+   "addr": "0x0089422c",
+   "type": "u8"
+  },
+  {
+   "addr": "0x00894230",
+   "type": "u8"
+  },
+  {
+   "addr": "0x00852d64",
+   "type": "u32"
+  }
+ ]
+}

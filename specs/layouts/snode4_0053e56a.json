@@ -1,0 +1,9 @@
+{
+ "_evidence": "Last node of the sentinel-terminated chain of snode1_0053e56a: +0 next is the static list head 0x838c94 (the end marker 0x53e56a/0x53e58c test for: 'cmp dword [esi],0x838c94; jne' fall-through 0x53e588, 'cmp esi,0x838c94; je' 0x53e599) in two thirds of the cases, else null; +0x1f flag byte random.",
+ "size": 40,
+ "fill": "bytes",
+ "fields": [
+  {"off": "0x1f", "type": "u8"},
+  {"off": 0, "type": "u32", "values": [0, "0x838c94", "0x838c94"]}
+ ]
+}

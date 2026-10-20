@@ -1,0 +1,7 @@
+{
+ "_evidence": "Object record at ebx for 0x00424878 (overlay after rec_0042453d): byte +0x6f bit 1 selects the 0x444715 rescale in 0x444837 ('test byte [ebx+0x6f],2; je'; 0x424cf5 sets it, 0x425027/0x424d65 leave it), drawn with and without the bit; +0x4c is overwritten with the mask (eax) on entry, +0x30..+0x48/+0x50/+0x54/+0x5c/+0x64 and +0x0..+0x2c are outputs.",
+ "size": 128,
+ "fields": [
+  {"off": "0x6f", "type": "u8", "values": [0, 1, 2, 3, "0x80", "0xff"]}
+ ]
+}

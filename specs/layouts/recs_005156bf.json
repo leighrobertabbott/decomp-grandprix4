@@ -1,0 +1,12 @@
+{
+ "_evidence": "0x005156bf (handler table 0x817270 entry 14; compose after player_0040f8d9+disp_005141b8, which make 0x51d160's mode-13 dispatch through 0x5141b8 valid). It reads the 4-byte records at 0x893e10: index [0x88ff38] ('mov eax,[0x88ff38]; cmp byte [eax*4+0x893e10],0xff' and 'movsx eax,byte [eax*4+0x893e11]/[eax*4+0x893e12]'); its only writers are 0x524dc7 (0) and 0x514981, which stores the bit number of the highest set bit of [0x88ff34] (constants 1..0x100000 or the table 0x893e80) - 0..20, matching the 21-entry table (entries 0..20 hold descriptors in the image). Byte +0 (0xff = none, 'je') is drawn from {0xff,0,1}; byte +2 is a signed link index into the same array ('movsx eax,[eax*4+0x893e12]; cmp eax,-1; je; movsx eax,[eax*4+0x893e11]'), any byte (-128..127) reads inside writable .data (0x893c11..0x89400d) and the discarded 'mov eax,[eax*4+0x891bd0]' likewise (0x8919d0..0x891dcc): drawn from {-1,0,1,2,5,15,20,-128,127,-70,-2}; byte +1 is a signed flag index ('cmp eax,-1; je', clamped to 0..0x3f by 'jge'/'jle', then 'mov byte [eax+0x866014],1'), so it is varied for every record a link can reach (-128..127) from {-1,0,5,0x3f,0x40,0x7f,-128,-2}: -1, in-range, below 0 and above 0x3f all occur. The table is only read by this function, so varying it beyond the image descriptors adds inputs without leaving the valid domain. Byte [0x893cf9] ('cmp 0xff; jne', set to 0xff by 0x513ce2) is redrawn after the records (it is the +1 byte of record -70) from {0xff,0xff,0,1}; bytes 0x88fd96/97 are saved and restored around the calls (random).",
+ "globals": [
+  {"addr": "0x00893c11", "type": "u8", "count": 256, "stride": 4, "values": ["0xff", "0xff", 0, 5, "0x3f", "0x40", "0x7f", "0x80", "0xfe"]},
+  {"addr": "0x00893e10", "type": "u8", "count": 21, "stride": 4, "values": ["0xff", "0xff", 0, 1]},
+  {"addr": "0x00893e12", "type": "u8", "count": 21, "stride": 4, "values": ["0xff", "0xff", 0, 1, 2, 5, 15, 20, "0x80", "0x7f", "0xba", "0xfe"]},
+  {"addr": "0x0088ff38", "type": "u32", "lo": 0, "hi": 20},
+  {"addr": "0x00893cf9", "type": "u8", "values": ["0xff", "0xff", 0, 1]},
+  {"addr": "0x0088fd96", "type": "u8"},
+  {"addr": "0x0088fd97", "type": "u8"}
+ ]
+}

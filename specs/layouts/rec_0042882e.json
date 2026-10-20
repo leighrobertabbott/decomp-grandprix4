@@ -1,0 +1,9 @@
+{
+  "_evidence": "Car record read by 0x0042882e (and its callee 0x4261cc) through esi: flag bytes +0x71 (bits 8, 4), +0x8d (bit 2), +0xca (bit 4), +0xe5 (bit 0x80, read-modify-write), dwords +0x19c, +0x1a0, +0x284, +0x288, word +0xba (callee), +0x18 (add word) and the two division inputs. All dwords are plain u32 draws (0, +-1, small, 16-bit, random: every tested bit takes both values) except: movsx word +0xb4, the numerator of both idivs, is full i16; dword +0x98 multiplies it before 'idiv [0x601334]' (0x428907/0x428909), so |+0x98| <= 2^22-1 keeps |word*x| < 2^37 and, with [0x601334] >= 64 (state_0042882e), the quotient < 2^31 (a larger +0x98 is the original's own #DE). Its sar 8 also feeds the second clamp.",
+  "size": 656,
+  "fields": [
+    {"off": 0, "type": "u32", "count": 164, "stride": 4},
+    {"off": "0x98", "type": "i32", "lo": -4194303, "hi": 4194303},
+    {"off": "0xb4", "type": "i16"}
+  ]
+}

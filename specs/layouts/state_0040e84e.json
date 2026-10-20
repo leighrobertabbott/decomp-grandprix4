@@ -1,0 +1,65 @@
+{
+ "_evidence": "0x0040e84e compares byte 0x66d8c8 + 1 with word 0x7c2e96 (jge), word esi+0x60 with dword 0x602a6c and with (difference+1)<<6 - 0x10, then calls 0x43b974, which searches the 22 car records at 0x66fef0 (stride 0x41c) for byte +0x7c & 0x3f equal to the key derived from esi+0x7c and returns CF=1 for a hit whose byte +0x7a has bit 7 clear; on CF=1 it tests the hit's bytes +0x71 (0x80, 2) and +0x8d (2). The set path calls 0x418fd0 unless byte 0x7c2e75 != 0 (it reads esi+0x2b8.., the 0x401462 generator state 0x66d8c0/0x66d8bf and dword 0x66d814). Only the record bytes were stuck at their static values (the CF=1 blocks never ran), so +0x7c of the 22 records is 1..22 (car numbers, so random esi keys hit about a third of the time), +0x7a/+0x71/+0x8d any byte; the counters are 0..80 so both jge outcomes and small differences occur, dword 0x602a6c is 0..0x2000 like the esi word it is compared with, the other globals any value. Everything is plain byte/word arithmetic inside the esi buffer and the record array: no input faults.",
+ "globals": [
+  {
+   "addr": "0x0066d8c8",
+   "type": "u8",
+   "lo": 0,
+   "hi": 80
+  },
+  {
+   "addr": "0x007c2e96",
+   "type": "u16",
+   "lo": 0,
+   "hi": 80
+  },
+  {
+   "addr": "0x00602a6c",
+   "type": "i32",
+   "lo": 0,
+   "hi": 8192
+  },
+  {
+   "addr": "0x007c2e75",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0066d8c0",
+   "type": "u32"
+  },
+  {
+   "addr": "0x0066d8bf",
+   "type": "u8"
+  },
+  {
+   "addr": "0x0066d814",
+   "type": "u32"
+  },
+  {
+   "addr": "0x0066ff6c",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "lo": 1,
+   "hi": 22
+  },
+  {
+   "addr": "0x0066ff6a",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x0066ff61",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x0066ff7d",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  }
+ ]
+}

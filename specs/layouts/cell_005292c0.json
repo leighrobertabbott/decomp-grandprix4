@@ -1,0 +1,8 @@
+{
+ "_evidence": "ebx value cell of the menu item handlers 0x52928d / 0x5292c0 (and siblings): 0x539944 reads it as byte, word or dword by the item's width byte +0xd & 3 ('movzx eax,byte [ebx]' / 'movzx eax,word [ebx]' / 'mov eax,[ebx]', 3 -> eax 0) and 0x539a13 writes it back with the same width. 0x52928d: 'sub eax,1; jb' (value 0) then 'cmp eax,[esi+0x26]; jb' (limit); 0x5292c0: 'add eax,1; jb' (only the dword 0xffffffff carries) then 'cmp eax,[esi+0x26]; ja'. The first dword is drawn so all three widths see 0, 1, small, the byte/word maxima and the dword 0xffffffff / 0xfffffffe (random bytes give a full 0xffffffff almost never); bytes 4..7 random. Any value is valid: no index, pointer or divisor.",
+ "size": 8,
+ "fill": "bytes",
+ "fields": [
+  {"off": 0, "type": "u32", "values": [0, 1, 2, 3, "0x10", "0x31", "0xff", "0x100", "0xffff", "0x10000", "0xfffffffe", "0xffffffff", "0xffffffff"]}
+ ]
+}

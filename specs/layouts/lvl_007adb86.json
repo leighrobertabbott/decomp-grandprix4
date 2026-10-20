@@ -1,0 +1,549 @@
+{
+ "_evidence": "Overlay for circ_007adb50 (compose AFTER it) for callers whose chain copies the setup level into the car: byte +0x32 of every setup sub-record (R + 4 + k*0x38 + 0x32, R = 0x7adb4c + 4 + driver*0xf28 + circuit*0xe4, driver 0..21, circuit 0..16, k 0..3 - the same fields circ_007adb50 draws) is the driver/tyre level that 0x410b09 clamps to 0..5 before storing it there. 0x410a65 -> 0x4104b1 copies [[0x601f24]+0x32] to car +0x7f, which 0x441166 and 0x4415c9 -> 0x44182d use as an index into the 6-entry tables 0x6f2cc4 and 0x62d1d8 (then the curve tables 0x602dec/0x602c24, see levels_006f2cc4/state_0043c1ba): circ_007adb50's sign-boundary picks 0x7f/0x80/0xff for this byte faulted 0x408c3e at 0x41efcd/0x44120d (reads 0x87023cb...). Drawn 0..5 here (both sides of the 'cmp dl,2; jl' tests of 0x43c475/0x441166 remain); circ_007adb50 itself is unchanged for its other users.",
+ "globals": [
+  {
+   "addr": "0x7adb86",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7adbbe",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7adbf6",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7adc2e",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7adc6a",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7adca2",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7adcda",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7add12",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7add4e",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7add86",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7addbe",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7addf6",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ade32",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ade6a",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7adea2",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7adeda",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7adf16",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7adf4e",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7adf86",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7adfbe",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7adffa",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae032",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae06a",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae0a2",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae0de",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae116",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae14e",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae186",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae1c2",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae1fa",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae232",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae26a",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae2a6",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae2de",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae316",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae34e",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae38a",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae3c2",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae3fa",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae432",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae46e",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae4a6",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae4de",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae516",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae552",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae58a",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae5c2",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae5fa",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae636",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae66e",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae6a6",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae6de",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae71a",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae752",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae78a",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae7c2",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae7fe",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae836",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae86e",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae8a6",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae8e2",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae91a",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae952",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae98a",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae9c6",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7ae9fe",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7aea36",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  },
+  {
+   "addr": "0x7aea6e",
+   "type": "u8",
+   "count": 22,
+   "stride": "0xf28",
+   "lo": 0,
+   "hi": 5
+  }
+ ]
+}

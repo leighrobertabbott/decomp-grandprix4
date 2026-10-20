@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x004087aa: ebp = max(X + addend, [0x0062a0a0]) (cmp/jge signed) is the idiv divisor of sx([0x0060138c]) << 14 (cdq; shld/shl 14). [0x62a0a0] is the positive divisor floor (a zero or negative floor lets ebp be 0 or tiny and the original #DEs or overflows, which the game never does), varied 0x100..0x4000; the dividend dword is varied -2^24..2^24, so |quotient| <= 2^38/2^8 = 2^30 fits and both clamps (0x7000 high, 0x2000 low) and the unclamped middle are reached. 0x00602b4c (imul/shrd multiplier), 0x00601388 and 0x0062eca8 (addends) are plain i32: any value is valid.",
+  "globals": [
+    {"addr": "0x00602b4c", "type": "i32"},
+    {"addr": "0x00601388", "type": "i32"},
+    {"addr": "0x0062eca8", "type": "i32"},
+    {"addr": "0x0062a0a0", "type": "i32", "lo": 256, "hi": 16384},
+    {"addr": "0x0060138c", "type": "i32", "lo": -16777216, "hi": 16777216}
+  ]
+}

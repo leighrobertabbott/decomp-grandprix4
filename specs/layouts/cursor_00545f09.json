@@ -1,0 +1,8 @@
+{
+ "_evidence": "Text-cursor state used by the literal-text handler 0x0054611f (table 0x545f27 slot 0x14, reached from 0x00545f09's clamp block 0x545f11 for any opcode byte > 0x14). 0x54611f: `cmp byte [0x7ab53c],0; jne 0x54613c` selects the output path; both paths `push esi; push dword [0x831564]; push dword [0x831560]` and call either 0x5083c0 (flag == 0) or accepted 0x54654a (flag != 0), then accepted 0x546154. 0x5083c0 measures the run of bytes >= 0x20 and calls [0x5f0054] = TextOutA(hdc [0xb1bfa4], x, y, text, len): an unmodelled Win32 import reached only through the handler table (an indirect call, so emu=skip:win32 cannot name it), hence u8 0x7ab53c is drawn nonzero (1..255) so the case stays inside modelled code; 0x00545f09's own blocks do not depend on this flag (it only selects which callee 0x54611f runs). 0x54654a computes dst = [0x831568] + x + y*[0xb1bf40] (x = dword 0x831560, y = dword 0x831564) and copies bytes >= 0x14: x is bounded to 0..64 and y to 0..8 so that with surf_0054654a (0x2000-byte surface, pitch 0x20/0x40/0x80) the write stays inside the surface (64 + 8*0x80 + 0x40 < 0x2000). Compose AFTER fuzz:i32 and BEFORE/with surf_0054654a (disjoint addresses).",
+ "globals": [
+  {"addr": "0x007ab53c", "type": "u8", "lo": 1, "hi": 255},
+  {"addr": "0x00831560", "type": "u32", "lo": 0, "hi": 64},
+  {"addr": "0x00831564", "type": "u32", "lo": 0, "hi": 8}
+ ]
+}

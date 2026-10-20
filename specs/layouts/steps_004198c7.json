@@ -1,0 +1,24 @@
+{
+ "_evidence": "Sub-step overlay for 0x004198c7 (compose LAST, after bounds_0041970f+wheels_00420d3f). 0x41995e..0x419978: ebp = d = [0x6228ac], eax = [0x60384c] + d/2, 'div ebp', q stored to [0x6228bc] and [0x6228b8]; then the batch b4 = [0x6228b0], [0x60384c] = b4*d (0x419992, again each pass at 0x4199fc), and the loop 0x419aa2 '[0x6228b8] -= b4; je exit; b4 = min(rest, [0x6228b0])'. Game domain: 0x41816f copies the rate S = [0x603854] into [0x60384c] just before 0x4198c7 (0x41c31e's changes to it are push/pop-restored, 0x41970f restores it), and S = [0x7ad8b8] (copied by 0x412604) is written only by 0x53001c/0x54b2ad as 0x4126e2(n) = (0x10000 + n/2)/n of the frame rate n = [0x7ad810], which 0x477e07/0x478d88 clamp to 8..0x3c (0x52fc98 round-trips it, 0x54b285 takes an unsigned min with a peer's rate), or temporarily by 0x40ce21 as the constant [0x625a44] = 0xa00: S is 0x444..0x2000. 0x4125ce then stores d = S idiv ceil(S/0x80), i.e. 113..128 (the only other store, 0x420bd2, copies d onto itself), so q = round(S/d) is 9..65; [0x6228b0] is never written (its nine instructions in 0x41970f/0x4198c7/0x4208f3/0x4209ae all read it; image 4, the length of 0x4208f3's 32-slot average) so every batch is 1..4 sub-steps (b4*d <= 0x200) and the first pass always continues (q - 4 > 4: block 0x419abc). The composed layouts drew far outside this: bounds_0041970f S 0..640 (q = 0 when S < d/2: 'idiv [0x6228bc]' #DE at 0x4208cf/0x4208e7 under 0x4199c2 -> 0x420a21 -> 0x4208bd, and the counter starting at -b0 would need ~2^32 passes) and [0x6228b0] 1..8, wheels_00420d3f d in {0x40,0x80,0x100}: batches of up to 8 sub-steps of 0x100 and the negative second batch (q - b0)*d of q < b0 (which the game never runs) drove the wheel integrator 0x420ed6 ('idiv [ebx+0xa04]' #DE at 0x421719) and 0x41724d's tyre forces (wheel +0x1a0 to -2^25, then 0x41befb's idiv at 0x41bf50) out of range. Domain: d 113..128, [0x6228b0] = 4, S 0x440..0x580, so q is 9..12 (three passes, the fewest the game runs: the q > 2*b0 fall-through 0x419abc, the 'jle 0x419ac1' remainder batch of 1..4 and the je exit all occur; q = 12 gives an exact batch). [0x60384c] is read only at 0x419964 (callees see b4*d; 0x419af6 restores the pushed value). The idivs by q at 0x4208cf/0x4208e7 cannot overflow.",
+ "globals": [
+  {
+   "addr": "0x006228ac",
+   "type": "u32",
+   "lo": 113,
+   "hi": 128
+  },
+  {
+   "addr": "0x006228b0",
+   "type": "u32",
+   "values": [
+    4
+   ]
+  },
+  {
+   "addr": "0x0060384c",
+   "type": "u32",
+   "lo": 1088,
+   "hi": 1408
+  }
+ ]
+}

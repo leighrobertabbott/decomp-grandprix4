@@ -1,0 +1,10 @@
+{
+ "_evidence": "Hovered hotspot node [0x838e48] read by 0x0054ee4f (a 0x18-byte node of the 0x54ede8 list, which returns it): 'mov esi,[esi+0xc]; call 0x54d1ad' uses +0xc as a dword index into the table at 0x835846 ('shl esi,2; add esi,0x835846; mov esi,[esi]'), bounded 0..0x3ff so the read stays inside that table (the value read is discarded: esi is reloaded with the node pointer); 'movzx eax,word [esi+6]; add ax,word [esi+0xa]; shr eax,1' takes the 16-bit (wrapping) sum of y0/y1, so both words mix small menu coordinates with 0x8000/0xfff0/0xffff (sums past 0xffff wrap to a small midline, sums of 0x8000+0x8000 give 0). No other node byte is read (fill bytes).",
+ "size": 24,
+ "fill": "bytes",
+ "fields": [
+  {"off": 6, "type": "u16", "values": [0, "0x8", "0x10", "0x20", "0x30", "0x40", "0x8000", "0xfff0", "0xffff"]},
+  {"off": "0xa", "type": "u16", "values": [0, "0x10", "0x18", "0x20", "0x40", "0x60", "0x8000", "0xfff8", "0xffff"]},
+  {"off": "0xc", "type": "u32", "lo": 0, "hi": "0x3ff"}
+ ]
+}

@@ -1,0 +1,487 @@
+{
+ "_evidence": "Overlay for 0x0043ff93 (compose LAST, after the v3 chain cars_0066fef0+...+ring_008943a0+...+ring_0043faf5+...+state_0043e0bc; ring_0043ec1a stays out). (1) Mode byte [0x86857a] == 0 (ring_008943a0: zero in half the picks) reads the key-frame stream pointer [0x866edc] ('mov esi,[0x866edc]' at 0x43fff3) and parses it record by record through 0x43df22 -> 0x40aadb; the loader 0x553f72 stores the same pointer and walks it with 0x40abc1, so it is a stream_0040abc1 buffer: every word 0 (terminating header) or a header with count 1..0x15. Counts >= 1 matter here too: the slow path copies the count to [0x62ac44] and runs 'dec [0x62ac44]; jne 0x440219', 2^32 iterations from 0. (2) 0x43dd13 (mode 0, 0x4401e0) stores the dword [0x626fb8 + (byte +0xb6 of a bit-7 ring record)*0x40] into [0x603ed0], and the emit path's 0x43dda2 walks from that record ('movsx edx,word [edi+0x14]', two records forward and back) and passes it to 0x43d27c/0x43d2c4: so the 256 table dwords are 0 (the 0x43dda2 skip) or ring records 0..24 (ring_008943a0/ptr_00603ed0/rec_0043d38f range); ring_008943a0's random dwords made it dereference wild pointers. Nothing else in the call tree reads the table. (3) The idiv at 0x440142 divides 0x400<<14 by (cx*K)>>14 with K = dword [0x6f2bec] and cx the nonzero 16-bit gradient: zero (#DE) exactly when 0 <= cx*K < 2^14. [0x6f2bec] is never written by any code (all 13 functions that reference it, 0x43ff93 included, only execute 'imul dword [0x6f2bec]', e.g. 0x404f4f, 0x4056e4, 0x405962, 0x44012d), i.e. a tuning constant whose value lies in 0x4000..0x7fff; any |K| in 0x4000..0x7fff makes |cx*K| >= 2^14 for |cx| >= 1 (and |cx*K| < 2^31, so the quotient fits), so it draws synthetic values of both signs in that band (engine_00413606's +-0x7fff and state_00404f33's full range include K = 0 / small K: the original's own #DE). (4) Mode != 0 measures runs of the pit records from [0x891500]: [0x62ac48] = 2 + the number of further equal 16-bit gradients d = (w0+w18)[k+1] - (w0+w18)[k] (words +0/+0x18, 0x4400d0..0x440104); the emit branch 0x440206:taken needs |d| >= 0x3c over a run of count >= 4, i.e. five records in arithmetic progression, which random words never give. Record k (0..33, the pit records ring_008943a0 can visit and read) draws word +0 = 0x40*k in four of six picks (step 0x40 >= 0x3c), 0 or 0x123 otherwise (zero and negative gradients, mismatches), and word +0x18 = 0 in five of six picks (else 0x10). Words +0/+0x18 are only compared/subtracted in this call tree (ring_0043faf5: nothing faults), so every value is valid.",
+ "globals": [
+  {
+   "addr": "0x00866edc",
+   "type": "ptr",
+   "size": 64,
+   "fill": "layout=stream_0040abc1"
+  },
+  {
+   "addr": "0x00626fb8",
+   "type": "u32",
+   "count": 256,
+   "stride": "0x40",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    "0x8943a0",
+    "0x894500",
+    "0x894660",
+    "0x8947c0",
+    "0x894920",
+    "0x894a80",
+    "0x894be0",
+    "0x894d40",
+    "0x894ea0",
+    "0x895000",
+    "0x895160",
+    "0x8952c0",
+    "0x895420",
+    "0x895580",
+    "0x8956e0",
+    "0x895840",
+    "0x8959a0",
+    "0x895b00",
+    "0x895c60",
+    "0x895dc0",
+    "0x895f20",
+    "0x896080",
+    "0x8961e0",
+    "0x896340",
+    "0x8964a0"
+   ]
+  },
+  {
+   "addr": "0x006f2bec",
+   "type": "i32",
+   "values": [
+    "0x4000",
+    "0x4abc",
+    "0x5555",
+    "0x6000",
+    "0x7000",
+    "0x7fff",
+    "0xffffc000",
+    "0xffffa5a6",
+    "0xffff8001"
+   ]
+  },
+  {
+   "addr": "0x8943a0",
+   "type": "u16",
+   "values": [
+    "0x0",
+    "0x0",
+    "0x0",
+    "0x0",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x894500",
+   "type": "u16",
+   "values": [
+    "0x40",
+    "0x40",
+    "0x40",
+    "0x40",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x894660",
+   "type": "u16",
+   "values": [
+    "0x80",
+    "0x80",
+    "0x80",
+    "0x80",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x8947c0",
+   "type": "u16",
+   "values": [
+    "0xc0",
+    "0xc0",
+    "0xc0",
+    "0xc0",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x894920",
+   "type": "u16",
+   "values": [
+    "0x100",
+    "0x100",
+    "0x100",
+    "0x100",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x894a80",
+   "type": "u16",
+   "values": [
+    "0x140",
+    "0x140",
+    "0x140",
+    "0x140",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x894be0",
+   "type": "u16",
+   "values": [
+    "0x180",
+    "0x180",
+    "0x180",
+    "0x180",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x894d40",
+   "type": "u16",
+   "values": [
+    "0x1c0",
+    "0x1c0",
+    "0x1c0",
+    "0x1c0",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x894ea0",
+   "type": "u16",
+   "values": [
+    "0x200",
+    "0x200",
+    "0x200",
+    "0x200",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x895000",
+   "type": "u16",
+   "values": [
+    "0x240",
+    "0x240",
+    "0x240",
+    "0x240",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x895160",
+   "type": "u16",
+   "values": [
+    "0x280",
+    "0x280",
+    "0x280",
+    "0x280",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x8952c0",
+   "type": "u16",
+   "values": [
+    "0x2c0",
+    "0x2c0",
+    "0x2c0",
+    "0x2c0",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x895420",
+   "type": "u16",
+   "values": [
+    "0x300",
+    "0x300",
+    "0x300",
+    "0x300",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x895580",
+   "type": "u16",
+   "values": [
+    "0x340",
+    "0x340",
+    "0x340",
+    "0x340",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x8956e0",
+   "type": "u16",
+   "values": [
+    "0x380",
+    "0x380",
+    "0x380",
+    "0x380",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x895840",
+   "type": "u16",
+   "values": [
+    "0x3c0",
+    "0x3c0",
+    "0x3c0",
+    "0x3c0",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x8959a0",
+   "type": "u16",
+   "values": [
+    "0x400",
+    "0x400",
+    "0x400",
+    "0x400",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x895b00",
+   "type": "u16",
+   "values": [
+    "0x440",
+    "0x440",
+    "0x440",
+    "0x440",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x895c60",
+   "type": "u16",
+   "values": [
+    "0x480",
+    "0x480",
+    "0x480",
+    "0x480",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x895dc0",
+   "type": "u16",
+   "values": [
+    "0x4c0",
+    "0x4c0",
+    "0x4c0",
+    "0x4c0",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x895f20",
+   "type": "u16",
+   "values": [
+    "0x500",
+    "0x500",
+    "0x500",
+    "0x500",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x896080",
+   "type": "u16",
+   "values": [
+    "0x540",
+    "0x540",
+    "0x540",
+    "0x540",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x8961e0",
+   "type": "u16",
+   "values": [
+    "0x580",
+    "0x580",
+    "0x580",
+    "0x580",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x896340",
+   "type": "u16",
+   "values": [
+    "0x5c0",
+    "0x5c0",
+    "0x5c0",
+    "0x5c0",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x8964a0",
+   "type": "u16",
+   "values": [
+    "0x600",
+    "0x600",
+    "0x600",
+    "0x600",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x896600",
+   "type": "u16",
+   "values": [
+    "0x640",
+    "0x640",
+    "0x640",
+    "0x640",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x896760",
+   "type": "u16",
+   "values": [
+    "0x680",
+    "0x680",
+    "0x680",
+    "0x680",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x8968c0",
+   "type": "u16",
+   "values": [
+    "0x6c0",
+    "0x6c0",
+    "0x6c0",
+    "0x6c0",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x896a20",
+   "type": "u16",
+   "values": [
+    "0x700",
+    "0x700",
+    "0x700",
+    "0x700",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x896b80",
+   "type": "u16",
+   "values": [
+    "0x740",
+    "0x740",
+    "0x740",
+    "0x740",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x896ce0",
+   "type": "u16",
+   "values": [
+    "0x780",
+    "0x780",
+    "0x780",
+    "0x780",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x896e40",
+   "type": "u16",
+   "values": [
+    "0x7c0",
+    "0x7c0",
+    "0x7c0",
+    "0x7c0",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x896fa0",
+   "type": "u16",
+   "values": [
+    "0x800",
+    "0x800",
+    "0x800",
+    "0x800",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x897100",
+   "type": "u16",
+   "values": [
+    "0x840",
+    "0x840",
+    "0x840",
+    "0x840",
+    0,
+    "0x123"
+   ]
+  },
+  {
+   "addr": "0x008943b8",
+   "type": "u16",
+   "count": 34,
+   "stride": "0x160",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    "0x10"
+   ]
+  }
+ ]
+}

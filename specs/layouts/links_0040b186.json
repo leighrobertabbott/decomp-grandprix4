@@ -1,0 +1,15 @@
+{
+  "_evidence": "0x0040b186 rebases a loaded car record (0x40b24b runs it on the 22 records at 0x66fef0; 0x44580c on one car): it adds the immediate 0x89423c to dwords +0x1c and +0x1b8 (track-segment pointers stored as offsets, plain u32: add never faults), then for each of the link dwords +0x114, +0x118, +0x110, +0x128, +0x12c, +0x130, +0x124 'test r/m32,-1; je' skips a zero (null link) and otherwise adds the immediate 0x66feec (car-array base). Each link is drawn independently from zero (about half the picks, so both je outcomes occur per field), small car byte offsets (k*0x41c + 4, as stored by the saver) and wild dwords; the final flags are those of the last add/test. Nothing else is read.",
+  "size": 452,
+  "fields": [
+    {"off": "0x1c", "type": "u32"},
+    {"off": "0x1b8", "type": "u32"},
+    {"off": "0x110", "type": "u32", "values": [0, 0, 0, 0, 0, 4, "0x420", "0x5234", "0x80000000", "0xffffffff", "0x1234567"]},
+    {"off": "0x114", "type": "u32", "values": [0, 0, 0, 0, 0, 4, "0x420", "0x5234", "0x80000000", "0xffffffff", "0x1234567"]},
+    {"off": "0x118", "type": "u32", "values": [0, 0, 0, 0, 0, 4, "0x420", "0x5234", "0x80000000", "0xffffffff", "0x1234567"]},
+    {"off": "0x124", "type": "u32", "values": [0, 0, 0, 0, 0, 4, "0x420", "0x5234", "0x80000000", "0xffffffff", "0x1234567"]},
+    {"off": "0x128", "type": "u32", "values": [0, 0, 0, 0, 0, 4, "0x420", "0x5234", "0x80000000", "0xffffffff", "0x1234567"]},
+    {"off": "0x12c", "type": "u32", "values": [0, 0, 0, 0, 0, 4, "0x420", "0x5234", "0x80000000", "0xffffffff", "0x1234567"]},
+    {"off": "0x130", "type": "u32", "values": [0, 0, 0, 0, 0, 4, "0x420", "0x5234", "0x80000000", "0xffffffff", "0x1234567"]}
+  ]
+}

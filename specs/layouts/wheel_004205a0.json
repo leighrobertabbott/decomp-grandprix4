@@ -1,0 +1,25 @@
+{
+ "_evidence": "0x004205a0 subtracts a force product of the wheel-record dwords +0xbc/+0xc4 (0x638194/0x63819c, records 0..3 stride 0x300, zero in the image) from +0x178 (0x638250) and clamps the result at zero (blocks 0x420634..0x4206d0); the values are only multiplied, shifted, added and compared (the idiv divisor is max(word, 0x200)), so full-range draws are fault-free and both signs occur.",
+ "globals": [
+  {
+   "addr": "0x00638194",
+   "type": "i32",
+   "count": 4,
+   "stride": "0x300"
+  },
+  {
+   "addr": "0x0063819c",
+   "type": "i32",
+   "count": 4,
+   "stride": "0x300"
+  },
+  {
+   "addr": "0x00638250",
+   "type": "i32",
+   "count": 4,
+   "stride": "0x300",
+   "lo": -1048576,
+   "hi": 1048576
+  }
+ ]
+}

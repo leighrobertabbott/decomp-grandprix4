@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x00548836: for row edx < 0x16 (`cmp edx,0x16; jae`), `imul edx,edx,0x11; add esi,0x7c2f2d; mov ecx,[0x7c2e84]` then `cmp bl,[esi]; jne; inc eax; inc esi; loop` counts the bytes equal to bl among the first [0x7c2e84] bytes of the 17-byte row of the 22x17 byte table 0x7c2f2d..0x7c30a2 (22 rows read by 0x54857e/0x548602/0x54868c/0x54885d with bl = 1..0x16, i.e. finishing places per round). [0x7c2e84] is the number of rounds: 0x512817 and 0x545e54 compare the round index [0x7ad894] (+1) against it with `jb`, 0x5458f7 loops [0x822290] up to it over the same table rows; it has no direct writer in the code (no other instruction or data dword references it). `loop` with ecx = 0 runs 2^32 times and any count above 17 reads past row 21 / the table (21*17+17 = 0x176 bytes), so 1..17 (the row width). The table bytes are only compared for equality and unsigned order (CF survives into the flags): values around the places bl takes (1, 2, 3, 0x16), 0 and 0xff.",
+  "globals": [
+    {"addr": "0x007c2e84", "type": "u32", "lo": 1, "hi": 17},
+    {"addr": "0x007c2f2d", "type": "u8", "count": 374, "stride": 1, "values": [0, 0, 1, 1, 2, 3, 5, "0x16", "0xff"]}
+  ]
+}

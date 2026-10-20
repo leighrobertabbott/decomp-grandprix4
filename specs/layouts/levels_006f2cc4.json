@@ -1,0 +1,47 @@
+{
+ "_evidence": "Read-only level table 0x6f2cc4 (6 dwords, image 0, 8, 0x10, 0x17, 0x1e, 0x25; no code writes it, its readers 0x431bf7/0x431d1f/0x441166/0x44126d/0x441304/0x521f89 only index it with a level 0..5): the entry is the first-column offset into the 0x2c-entry byte tables 0x6f2c3e/0x6f2c6a/0x6f2c96 that 0x4411f7 indexes with it. fuzz:i32 replaced entry 0 (a direct global of 0x431d1f) with random dwords, which made 0x4411f7 read outside .data (4 faults); the constants are pinned to their image values.",
+ "globals": [
+  {
+   "addr": "0x6f2cc4",
+   "type": "u32",
+   "values": [
+    0
+   ]
+  },
+  {
+   "addr": "0x6f2cc8",
+   "type": "u32",
+   "values": [
+    8
+   ]
+  },
+  {
+   "addr": "0x6f2ccc",
+   "type": "u32",
+   "values": [
+    16
+   ]
+  },
+  {
+   "addr": "0x6f2cd0",
+   "type": "u32",
+   "values": [
+    23
+   ]
+  },
+  {
+   "addr": "0x6f2cd4",
+   "type": "u32",
+   "values": [
+    30
+   ]
+  },
+  {
+   "addr": "0x6f2cd8",
+   "type": "u32",
+   "values": [
+    37
+   ]
+  }
+ ]
+}

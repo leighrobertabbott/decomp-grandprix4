@@ -1,0 +1,11 @@
+{
+  "_evidence": "0x00413397: ebp = (([0x6034b0]*[0x6f2bec]) >> 22) * sx(esi+0xb2); q1 = c*c / D (idiv) with c = dword 0x638ce0 and D = dword 0x601334; s = (q1*ebp) >> 25 (any 32-bit value); q2 = s*G / D (idiv) with G = dword 0x60134c; then *[0x6038d4] >> 14. Both idivs fit for every s when D >= 2^15 and |c| < 2^23 (c*c < 2^46 <= 2^31*D) and |G| < 2^15 (|s*G| < 2^46 <= 2^31*D): D is 0x8000..0x7fffffff (the positive mass-like divisor also used by 0x4120e4, state_004120e4), c is -0x7fffff..0x7fffff, G -0x7fff..0x7fff; fuzzed values #DE'd in 50 of 200 cases. 0x6034b0, 0x6f2bec, 0x6038d4 are any i32.",
+  "globals": [
+    {"addr": "0x00601334", "type": "i32", "lo": 32768, "hi": 2147483647},
+    {"addr": "0x00638ce0", "type": "i32", "lo": -8388607, "hi": 8388607},
+    {"addr": "0x0060134c", "type": "i32", "lo": -32767, "hi": 32767},
+    {"addr": "0x006034b0", "type": "i32"},
+    {"addr": "0x006f2bec", "type": "i32"},
+    {"addr": "0x006038d4", "type": "i32"}
+  ]
+}

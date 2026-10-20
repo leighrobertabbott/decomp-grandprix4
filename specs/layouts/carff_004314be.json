@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x004314be (esi = car rec 0..21 of 0x66fef0, stride 0x41c): word +0xe0 (0x66ffd0) is a countdown that 0x43154b tests for zero ('test word [esi+0xe0],0xffff; jne 0x4315f8') and 0x4315ef rewrites; it was zero in every car, so the nonzero skip only came from records the family layouts happen to touch. Drawn zero in about 3/7 and nonzero (small, sign bit, all ones) otherwise. Byte +0xff (0x66ffef) is read-modify-written ('or 0x10' at 0x4316f0 / 'and 0xef' at 0x4316f9): any u8, so the untouched bits are checked. Plain test/RMW: no faults.",
+  "globals": [
+    {"addr": "0x0066ffd0", "type": "u16", "count": 22, "stride": "0x41c", "values": [0, 0, 0, 1, "0x100", "0x8000", "0xffff"]},
+    {"addr": "0x0066ffef", "type": "u8", "count": 22, "stride": "0x41c"}
+  ]
+}

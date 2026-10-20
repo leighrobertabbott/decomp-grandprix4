@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x004060a4 adds 0x160 to EDI (one 0x160-byte track-segment record of the array at 0x008943a0) and falls into 0x004060b0, which compares EDI unsigned with [0x00891500] (jae) and for equality with [0x00866ecc] (-> 0x008943a0), [0x00866f00] (-> [0x00891500]) and [0x00866ef8] (-> [0x00866f04]). All are segment pointers (ring_004317ae, records_008943a0), i.e. record-aligned addresses base + k*0x160. EDI is given as record 0..15 (so EDI+0x160 is record 1..16) and the four compared pointers as records 0..17, so the jae goes both ways and each equality selector hits in about one case in 18; [0x00866f04] is only copied into EDI and varies over the full u32 range. Nothing is dereferenced, so no value can fault.",
+  "globals": [
+    {"addr": "0x00891500", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 17}},
+    {"addr": "0x00866ecc", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 17}},
+    {"addr": "0x00866f00", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 17}},
+    {"addr": "0x00866ef8", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 17}},
+    {"addr": "0x00866f04", "type": "u32"}
+  ]
+}

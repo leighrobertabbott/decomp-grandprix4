@@ -1,0 +1,33 @@
+{
+ "_evidence": "Inputs of 0x00425e19 (reached from 0x425eca when car byte +0xfe bit 5 is set; edi = min(|+0x98|>>2, 0x16600000)>>20, +0x168 when +0x8d bit 0, so 0..718): the 719-dword runtime tables 0x639654 (filled by 0x4405a4) and 0x63acd4 (0x44099f), zero in the image, and the gains [0x624794]/[0x624798] (0x4123c6: 0x10000000 / (0x4000 - x) and 0x10000000 / x for the split x = [0x624790], see frac_00624790), [0x6039d8] (+0x78 bit 6) and [0x604164] (+0x122 bit 4). The body is only sub/js/imul/shrd: every value is valid; the tables and gains are drawn full-range i32 (state_00426947 bounds the same tables only because 0x426947 divides by them). Compose with frac_00624790 for the split itself.",
+ "globals": [
+  {
+   "addr": "0x00639654",
+   "type": "i32",
+   "count": 719,
+   "stride": 4
+  },
+  {
+   "addr": "0x0063acd4",
+   "type": "i32",
+   "count": 719,
+   "stride": 4
+  },
+  {
+   "addr": "0x00624794",
+   "type": "i32"
+  },
+  {
+   "addr": "0x00624798",
+   "type": "i32"
+  },
+  {
+   "addr": "0x006039d8",
+   "type": "i32"
+  },
+  {
+   "addr": "0x00604164",
+   "type": "i32"
+  }
+ ]
+}

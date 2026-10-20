@@ -1,0 +1,6 @@
+{
+  "_evidence": "Dword 0x0062fbf8, returned in eax by 0x0040f8d3 ('mov eax,[0x62fbf8]; ret') and consumed by 0x00515d4d as 'and eax,0xf; cmp eax,9; jle' (clamp to 9, stored at 0x866128). It is never dereferenced, used as an index or a divisor, so every 32-bit value is valid; the unbounded u32 draw (0, 1, -1, 2, small, byte, word and random patterns) gives low nibbles both <= 9 and 10..15. fuzz:i32 does not reach it from 0x515d4d (only addressed inside the callee).",
+  "globals": [
+    {"addr": "0x0062fbf8", "type": "u32"}
+  ]
+}

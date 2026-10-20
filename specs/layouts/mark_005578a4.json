@@ -1,0 +1,35 @@
+{
+ "_evidence": "High-water mark [0x871ca4] of the R3 stream decoders 0x557843/0x5578a4/0x557903/0x557966 (identical loops): 'mov edi,[0x871ca4]; add edi,0x160; cmp edi,ebx; jae skip' then a do-while 'or [edi+0x2c],eax; or [edi+0x67],dl; mov [0x871ca4],edi; add edi,0x160; cmp edi,ebx; jne loop' that ends ONLY on equality with ebx. The callers pass ebx as a record pointer into the 0x160-byte ring at 0x8943a0 (spec rec[0x8943a0,0x160,0..29]), and the mark is the last record already processed, so it is a record-aligned pointer into the same ring: points_into k = 0..28. Then mark+1 <= ebx-1 (loop runs, ends exactly at ebx), mark+1 == ebx and mark+1 > ebx (skipped) all occur; any non-aligned or out-of-ring mark would make the 'jne' walk run off the ring and fault in the original, which callers never pass. Walked records are 1..28, all inside the ring. Their dword +0x2c (0x8943cc + k*0x160) and byte +0x67 (0x894407 + k*0x160) are read-modify-written (or), so they vary for records 0..31; ring_008943a0 does not declare these offsets. The source bits [0x8705f4] (dword) and [0x87062f] (byte) are directly addressed and varied by fuzz:i32; they are listed here too so the layout alone varies them.",
+ "globals": [
+  {
+   "addr": "0x00871ca4",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 28
+   }
+  },
+  {
+   "addr": "0x008943cc",
+   "type": "u32",
+   "count": 32,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x00894407",
+   "type": "u8",
+   "count": 32,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x008705f4",
+   "type": "u32"
+  },
+  {
+   "addr": "0x0087062f",
+   "type": "u8"
+  }
+ ]
+}

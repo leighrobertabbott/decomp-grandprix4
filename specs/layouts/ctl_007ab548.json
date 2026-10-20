@@ -1,0 +1,186 @@
+{
+ "_evidence": "Control block 0x7ab548 that 0x00410d04 passes as ebx to 0x00410dd2 (its twin 0x00410d4b passes 0x7ab590): the same 0x26-byte record layout and domain as ctl_007ab590, shifted by -0x48. 0x410dd2 copies bytes +0,+4,+5,+7,+0xa,+0xd,+0xf,+0x1e into the car record, scales +6 (imul word 0x2d82), tests +1 bits 0/1 (with byte 0x7a97a0), compares +0x10 with +0x11 (je), compares each of +2/+8/+0xb/+0xe with the list 6,7,0x20,0x22,0x23,0x24,8,9,0x21,0x25,0x26,0x27 (je: set a car flag) and zero-tests +3/+5/+9/+0xc. Every byte value is valid (no pointer, no division); the selector bytes mix list members and non-members, the zero-tested bytes are zero in about half the cases, and +0x11 equals +0x10 in about half. The accepted 0x410d04 never varied +4..+0x11 and +0x1e (static image).",
+ "globals": [
+  {
+   "addr": "0x007ab548",
+   "type": "u8"
+  },
+  {
+   "addr": "0x007ab549",
+   "type": "u8"
+  },
+  {
+   "addr": "0x007ab54a",
+   "type": "u8",
+   "values": [
+    6,
+    7,
+    8,
+    9,
+    "0x20",
+    "0x21",
+    "0x22",
+    "0x23",
+    "0x24",
+    "0x25",
+    "0x26",
+    "0x27",
+    0,
+    5,
+    "0x0a",
+    "0x1f",
+    "0x28",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x007ab54b",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x007ab54c",
+   "type": "u8"
+  },
+  {
+   "addr": "0x007ab54d",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0x80"
+   ]
+  },
+  {
+   "addr": "0x007ab54e",
+   "type": "u8"
+  },
+  {
+   "addr": "0x007ab54f",
+   "type": "u8"
+  },
+  {
+   "addr": "0x007ab550",
+   "type": "u8",
+   "values": [
+    6,
+    7,
+    8,
+    9,
+    "0x20",
+    "0x21",
+    "0x22",
+    "0x23",
+    "0x24",
+    "0x25",
+    "0x26",
+    "0x27",
+    0,
+    5,
+    "0x0a",
+    "0x1f",
+    "0x28",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x007ab551",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x007ab552",
+   "type": "u8"
+  },
+  {
+   "addr": "0x007ab553",
+   "type": "u8",
+   "values": [
+    6,
+    7,
+    8,
+    9,
+    "0x20",
+    "0x21",
+    "0x22",
+    "0x23",
+    "0x24",
+    "0x25",
+    "0x26",
+    "0x27",
+    0,
+    5,
+    "0x0a",
+    "0x1f",
+    "0x28",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x007ab554",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x007ab555",
+   "type": "u8"
+  },
+  {
+   "addr": "0x007ab556",
+   "type": "u8",
+   "values": [
+    6,
+    7,
+    8,
+    9,
+    "0x20",
+    "0x21",
+    "0x22",
+    "0x23",
+    "0x24",
+    "0x25",
+    "0x26",
+    "0x27",
+    0,
+    5,
+    "0x0a",
+    "0x1f",
+    "0x28",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x007ab557",
+   "type": "u8"
+  },
+  {
+   "addr": "0x007ab558",
+   "type": "u8"
+  },
+  {
+   "addr": "0x007ab559",
+   "type": "u8",
+   "alias": "0x007ab558"
+  },
+  {
+   "addr": "0x007ab566",
+   "type": "u8"
+  }
+ ]
+}

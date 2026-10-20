@@ -1,0 +1,17 @@
+{
+ "size": 1056,
+ "fill": "bytes",
+ "_evidence": "Overlay (compose LAST on 0x00429dca's esi chain) for the car flag bytes 0x00429dca tests: +0x9c bit4, +0x179 bit6, +0x8d bit1, +0x163 bit7, +0xce bit2 (test/or/and), +0x135 bits 2/3/6 (test, or 4/0x10/0x20/8, and), +0xff bit5, +0x71 bit3 (test only). All are plain flag bits (no index or pointer), so every byte value is valid; each byte draws from a set that holds both states of every tested bit but clears the gating bits more often, so the deep path 0x429e7a -> 0x429eab (ce bit2 clear, 135 bits 2/3 clear, then the 0x1bc == 0xffff and 0xea == +-8/+-0x10 selectors of other_0042f16d/lane_0042df3a) is reached in many cases instead of ~0.5% of them (the regress at 502 cases missed 0x429eeb..0x429f51). Word +0x1bc (cmp 0xffff, a 'none' sentinel) also takes 0xffff in half the cases. Dword +0x1a0 (signed compares with 0x62236c/0x622370/0x622368/0x603e20 and the 0xffffc000 clamp) any i32.",
+ "fields": [
+  {"off": "0x9c", "type": "u8", "values": [0, 0, 0, "0x10", "0xef", "0xff", "0x2c"]},
+  {"off": "0x179", "type": "u8", "values": [0, 0, 0, "0x40", "0xbf", "0xff", "0x13"]},
+  {"off": "0x8d", "type": "u8", "values": [0, 2, 2, "0xfd", "0xff", "0x41"]},
+  {"off": "0x163", "type": "u8", "values": [0, 0, "0x80", "0x7f", "0xff"]},
+  {"off": "0xce", "type": "u8", "values": [0, 0, 0, 4, "0xfb", "0xff", "0x11"]},
+  {"off": "0x135", "type": "u8", "values": [0, 0, 0, "0x40", "0x40", 4, 8, "0x44", "0xbb", "0xff", "0x30"]},
+  {"off": "0xff", "type": "u8", "values": [0, "0x20", "0xdf", "0xff"]},
+  {"off": "0x71", "type": "u8", "values": [0, 8, "0xf7", "0xff", "0x5a"]},
+  {"off": "0x1bc", "type": "u16", "values": ["0xffff", "0xffff", "0xffff", "0x0", "0x41c", "0x5230"]},
+  {"off": "0x1a0", "type": "i32"}
+ ]
+}

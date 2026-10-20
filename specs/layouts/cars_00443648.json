@@ -1,0 +1,13 @@
+{
+ "_evidence": "0x00443648 walks the 22 car records testing byte +0x72 (0x66ff62, signed: 0x44360a's carry test needs 0x7f/0x80 boundaries), comparing word +0xee (0x66ffde) with dword 0x6039e0, and the flag bytes +0xe6 bit 4 (0x66ffd6), +0x6d (0x66ff5d), +0x6f bit 4 (0x66ff5f); word 0x7ad89e selects the circuit table 0..3 and byte 0x7ad8af is a 0/1 mode. All zero in the image.",
+ "globals": [
+  {"addr": "0x0066ff62", "type": "u8", "count": 22, "stride": "0x41c", "values": [0, 0, 1, 2, "0x7f", "0x80", "0xff"]},
+  {"addr": "0x0066ffde", "type": "u16", "count": 22, "stride": "0x41c", "lo": 0, "hi": 4096},
+  {"addr": "0x006039e0", "type": "i32", "lo": 0, "hi": 4096},
+  {"addr": "0x0066ffd6", "type": "u8", "count": 22, "stride": "0x41c"},
+  {"addr": "0x0066ff5d", "type": "u8", "count": 22, "stride": "0x41c"},
+  {"addr": "0x0066ff5f", "type": "u8", "count": 22, "stride": "0x41c"},
+  {"addr": "0x007ad89e", "type": "u16", "values": [0, 1, 2, 3]},
+  {"addr": "0x007ad8af", "type": "u8", "values": [0, 0, 1]}
+ ]
+}

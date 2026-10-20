@@ -1,0 +1,6 @@
+{
+ "_evidence": "Heading overlay for 0x00428216 (compose LAST on its globals, after ring_008943a0+walk_00427f3c+look_00428216). After the walks, 0x4283c0 interpolates the i16 heading words +0 of records edi and edi+0x160 (records 0..36 per look_00428216), subtracts the car heading word [esi+0x18] (car18_00428216), 'sar ax,1' gives cx in -0x4000..0x3fff and 'neg ax; add ax,0x4000; jns' takes the 'neg ax' block 0x4283f1 only for cx == -0x4000, i.e. heading - car heading == 0x8000/0x8001 (mod 2^16); the same near-perpendicular case makes the cos entry ~0 so the clamp block 0x428450 (eax < 0x100) runs. With full-range words both blocks occurred in well under 1% of the cases (the regress at 200 cases under load missed them: insufficient coverage). Headings are plain 16-bit angles (only subtracted, shifted and used as a masked, in-range index into the 0x7c5c5c cos table), so every value is valid; here they draw 0 in half the picks (equal consecutive headings: interp == heading exactly) and a spread of other angles otherwise, while car18 draws 0x8000/0x8001 in a third of the picks.",
+ "globals": [
+  {"addr": "0x008943a0", "type": "u16", "count": 37, "stride": "0x160", "values": [0, 0, 0, 0, 0, 0, "0x4000", "0xc000", "0x8000", "0x1234", "0x9abc", "0x7fff", "0x2d41", "0xe5f3"]}
+ ]
+}

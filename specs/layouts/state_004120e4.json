@@ -1,0 +1,13 @@
+{
+  "_evidence": "0x004120e4 divides (X<<14) as an unsigned 46-bit edx:eax (xor edx then shld) by the signed dword 0x601334 (idiv) for X = dwords 0x601350 and 0x60134c (any u32); the quotient fits int32 for every X exactly when the divisor magnitude is at least 0x8000 (X*2^14/0x8000 < 2^31), so 0x601334 is 0x8000..0x7fffffff (fuzzed 0/small divisors faulted in 8 of 14 cases). The rest is wrapping imul/shrd and stores: dwords 0x62ee00, 0x602a48, 0x601388 (factor), 0x601390, 0x601394 are any i32.",
+  "globals": [
+    {"addr": "0x00601334", "type": "i32", "lo": 32768, "hi": 2147483647},
+    {"addr": "0x00601350", "type": "u32"},
+    {"addr": "0x0060134c", "type": "u32"},
+    {"addr": "0x0062ee00", "type": "i32"},
+    {"addr": "0x00602a48", "type": "i32"},
+    {"addr": "0x00601388", "type": "i32"},
+    {"addr": "0x00601390", "type": "i32"},
+    {"addr": "0x00601394", "type": "i32"}
+  ]
+}

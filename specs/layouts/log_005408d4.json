@@ -1,0 +1,44 @@
+{
+ "_evidence": "Log-line state of 0x53eeb7 as reached from 0x005408d4: 0x541a0a 'mov eax,[0xb1bb40]; cmp eax,[0xae6b64]' then 'jne skip' (log only when equal: alias in about half the cases, any u32); line counter [0x83055b] ('cmp dword,0xf; jb' else the 15 lines 0x8300db.. scroll up by 0x48 bytes and it becomes 0xe; then 'and eax,0xf; imul 0x48' picks the line, 'inc' after): any u32, drawn on both sides of 0xf; [0xae6ca4] is the dword stored at the line start (eax, any). [0x833f1c] is the item table the escape handlers 0/1 of 0x54d7c0 index with a digit 0..7 ('shl eax,2; add eax,[0x833f1c]; mov eax,[eax]'): an 8-dword buffer of random values (zero in the image: filled at run time). Values are synthetic. The 16 log lines 0x8300db..0x83055a (0x48 bytes each) are earlier messages that the scroll 'rep movsb' moves up: random bytes. The code-length table 0x833f98 is constant (only read).",
+ "globals": [
+  {
+   "addr": "0x00ae6b64",
+   "type": "u32"
+  },
+  {
+   "addr": "0x00b1bb40",
+   "type": "u32",
+   "alias": "0x00ae6b64"
+  },
+  {
+   "addr": "0x0083055b",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    7,
+    "0xe",
+    "0xf",
+    "0x10",
+    "0x7fffffff",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x00ae6ca4",
+   "type": "u32"
+  },
+  {
+   "addr": "0x00833f1c",
+   "type": "ptr",
+   "size": 32,
+   "fill": "bytes"
+  },
+  {
+   "addr": "0x008300db",
+   "type": "u8",
+   "count": 1152,
+   "stride": 1
+  }
+ ]
+}

@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x004129fa tests byte 0x00639652 (test 0xff; jns) to choose the backward (0x405d65) or forward (0x405cf8) walk; a plain u8 draw gives both signs.",
+  "globals": [
+    {"addr": "0x00639652", "type": "u8"}
+  ]
+}

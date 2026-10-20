@@ -1,0 +1,13 @@
+{
+ "_evidence": "0x005439ad with edx = 5 (compose after fuzz:i32+scroll_00543340): 'cmp byte [0x82fcf0],0; jne' gates the update (nonzero in 3/4 here). For x: edx = [0x82fcd0], eax = [0x82fcd8], 'cmp eax,edx; jae; xchg' orders them, the block 0x8310c0 gets +0 = min and +8 = max(max-min, [0x8310c4] >> 6), and 'cmp dword [ebx+8],0; je 0x543a0c' skips the 'idiv' (quotient 0) only when the two x corners are equal AND the limit +4 is below 64. The same for y ([0x82fcd4], [0x82fcdc], block 0x8310cc, limit >> 4) after 'cmp byte [0x8310b5],0; jne' (zero in 3/5 here; fuzzed it was almost always nonzero, so the reversed-y xchg 0x543a33 was never reached). So the second corner of each axis equals the first in about half the cases (alias) and otherwise both are drawn from 0..1023 (both orders), and the limits [0x8310c4]/[0x8310d0] (scroll_00543340 draws them as any i32) draw small values below and at 16/64 as well as large and negative ones. The idiv cannot fault: the divisor is at least limit>>6 (resp. >>4) taken unsigned, so |limit*0x4000 / divisor| < 2^21 for every limit. Plain compares and arithmetic otherwise; every value valid. Values are synthetic.",
+ "globals": [
+  {"addr": "0x0082fcf0", "type": "u8", "values": [0, 1, 1, "0xff"]},
+  {"addr": "0x008310b5", "type": "u8", "values": [0, 0, 0, 1, "0xff"]},
+  {"addr": "0x0082fcd0", "type": "u32", "lo": 0, "hi": 1023},
+  {"addr": "0x0082fcd8", "type": "u32", "lo": 0, "hi": 1023, "alias": "0x0082fcd0"},
+  {"addr": "0x0082fcd4", "type": "u32", "lo": 0, "hi": 1023},
+  {"addr": "0x0082fcdc", "type": "u32", "lo": 0, "hi": 1023, "alias": "0x0082fcd4"},
+  {"addr": "0x008310c4", "type": "u32", "values": [0, 1, "0xf", "0x10", "0x3f", "0x40", "0x41", "0x100", "0x320", "0x10000", "0x7fffffff", "0x80000000", "0xfffffc00", "0xffffffff"]},
+  {"addr": "0x008310d0", "type": "u32", "values": [0, 1, "0xf", "0x10", "0x11", "0x3f", "0x40", "0x100", "0x320", "0x10000", "0x7fffffff", "0x80000000", "0xfffffc00", "0xffffffff"]}
+ ]
+}

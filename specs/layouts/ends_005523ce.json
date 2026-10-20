@@ -1,0 +1,63 @@
+{
+ "_evidence": "0x005523ce (compose after geom_008943a0+span_00551227+mask_005520a0+ring_00555b28+state_00552126+rows_0055218f, which give the ring records 0..17 and the lap end [0x866ecc] = record 4..12, lap length [0x866ec4] = 1..4 records, pit start [0x891500] 0..14 / pit end [0x866ef8] 1..16 that the walk's wraps use): 'mov edi,0x8943a0; mov ebx,[0x866ecc]; call 0x5522fa; mov edi,[0x866ed0]; mov ebx,[0x866ed4]; call 0x5522fa'. 0x5522fa walks [edi, ebx) in chunks of [0x9631e4] records: 'imul eax,[0x9631e4],0x160; add eax,start; cmp eax,end; jbe' else the count is '(end-start) xor edx,edx; idiv 0x160' (unsigned dividend: an end BELOW the start gives a count of ~12 million records, and 0x552126 then walks [0x9631f8]+1 records off the array - the 14/28 faults of v2 at 0x5510ae/0x550fe7/0x5521e4 were exactly the cases with [0x866ed4] < [0x866ed0] that win_0042b10d draws independently). The game never has that: [0x866ed0]/[0x866ed4] are the pit-lane window records stored by 0x55736e ('cmp cl,0x20; je' -> ed4 else ed0); 0x5561d3 marks the pit lane as the ordered walks [0x891500]..[0x866ed0]..[0x868518]..[0x86851c]..[0x866ed4]..[0x866ef8] ('add edi,0x160; cmp edi,ebp; jb'), 0x40d644 walks 'add edi,0x160; cmp edi,[0x866ed4]; jne' from [0x866ed0] (an equality end reached by stepping forward) and divides '[0x866ed4]-[0x866ed0]+0x160', 0x406d90/0x438548 test 'cmp edi,[0x866ed0]; jb .. cmp edi,[0x866ed4]; jae' as a [ed0, ed4) range and 0x55aa77 clamps [0x868518]/[0x86851c] into [ed0, ed4]. So [0x866ed0] is drawn as record 0..6 and [0x866ed4] as record 7..14 (always above it, 1..14 records apart: single records end at 'cmp count,2; jl', longer ranges run the setup). The chunk size [0x9631e4] is 0x20 in the image and is never written: a raw dword scan of every section finds the value 0x9631e4 only in 0x55232b 'mov eax,[0x9631e4]' (no store, no pointer to it, no block write near it), so the game always uses 32-record chunks; it is drawn here as 0x20 (most cases: one chunk per range, exit through 'cmp edi,[0x9631f0]; je' with equal operands or 'cmp count,2; jl') and the small values 0, 1, 2, 3, 4, 8 (zero/one-record chunks end at once, 2..8 split the ranges into several chunks; still valid: every chunk start is a record inside [start, end] and 0x552126 walks at most chunk+1 records). 0x7fffffff (requested) is NOT valid: 'imul eax,eax,0x160' wraps to start-0x160 <= end, so the count becomes 0x7fffffff and the setup walks off the array. The ranges stay within records 0..14 (+1 for the walk's last record, wrapped back by the lap/pit bounds), all inside the records 0..17 the composed layouts vary. The directly read globals are all drawn here or by state_00552126, so the spec uses no globals fuzz (it would also write a random dword over record 0's word +0/+2 at the immediate 0x8943a0). Values are synthetic. The longer ranges (counts up to 14 where the callee layouts assumed <= 7) make 0x55218f also test rows 8..15 of the 0x38-byte table 0x872ab0 ('test [..],0xffffffff'; v3 dry run reported 0x872c74/0x872ca8/0x872cb8/0x872d50 as read but never varied - run-time state that 0x551227 does not always rewrite), so rows 8..15 (0x872c70..0x872e2f, still inside the 64-row table below 0x8738b0) are drawn with rows_0055218f's values (zero in about half the entries).",
+ "globals": [
+  {
+   "addr": "0x009631e4",
+   "type": "u32",
+   "values": [
+    "0x20",
+    "0x20",
+    "0x20",
+    "0x20",
+    0,
+    1,
+    2,
+    3,
+    4,
+    8
+   ]
+  },
+  {
+   "addr": "0x00866ed0",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 6
+   }
+  },
+  {
+   "addr": "0x00866ed4",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 7,
+    "hi": 14
+   }
+  },
+  {
+   "addr": "0x00872c70",
+   "type": "u32",
+   "count": 112,
+   "stride": 4,
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    8,
+    "0xfffffff8",
+    "0x7fffffff",
+    "0x80000000",
+    "0x12345678",
+    "0xffffffff",
+    "0x1000"
+   ]
+  }
+ ]
+}

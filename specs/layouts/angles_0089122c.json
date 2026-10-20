@@ -1,0 +1,54 @@
+{
+ "_evidence": "0x00554fdd rotates the angle list at 0x89122c by the angle word [0x8911f8]: cos/sin of each are table lookups (|w|>>2 & 0xfffe into the static 0x2000-byte cosine table 0x7c5c5c, valid for every i16 as in geom_008943a0), and for i = 0.. until 'cmp ax,0x8000; je' the products go to 0x891236+2i and 0x89123e+2i. The list holds at most 4 angles: its fifth word 0x891234 is the last one before the first output 0x891236, so a longer list would read its own outputs (the game always terminates it there). Words 0..3 draw 0x8000 (the terminator, about 1/6 each, so 0..4 entries occur) or assorted angles over the whole range, word 4 is always 0x8000, [0x8911f8] is any i16 and the eight output words vary so every store is visible. No value faults.",
+ "globals": [
+  {
+   "addr": "0x008911f8",
+   "type": "i16"
+  },
+  {
+   "addr": "0x0089122c",
+   "type": "u16",
+   "count": 4,
+   "stride": 2,
+   "values": [
+    "0x8000",
+    "0x8000",
+    "0x8000",
+    "0x8000",
+    0,
+    1,
+    "0xffff",
+    "0x7fff",
+    "0x8001",
+    "0x4000",
+    "0xc000",
+    "0x2000",
+    "0xe000",
+    "0x1234",
+    "0xedcc",
+    "0x3fff",
+    "0x4001",
+    "0x6a5c",
+    "0x95a4",
+    "0x0400",
+    "0xfc00",
+    "0x5555",
+    "0xaaab",
+    "0x0101"
+   ]
+  },
+  {
+   "addr": "0x00891234",
+   "type": "u16",
+   "values": [
+    "0x8000"
+   ]
+  },
+  {
+   "addr": "0x00891236",
+   "type": "u16",
+   "count": 8,
+   "stride": 2
+  }
+ ]
+}

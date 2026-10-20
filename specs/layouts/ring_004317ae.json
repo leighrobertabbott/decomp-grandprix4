@@ -1,0 +1,11 @@
+{
+  "_evidence": "0x004317ae and 0x004317f3 (identical walks, different test) start at the car's current track-segment pointer [esi+0x1c] (esi fixed to car record 0 at 0x0066fef0, so the pointer is the global 0x0066ff0c) and step up to 20 times by 0x160 through the segment array at 0x008943a0: at p >= [0x00866ecc] (lap end) they either subtract [0x00866ec4] (p < [0x00891500]) or clamp to [0x00866ef8]-0x160 (p >= [0x00866ef8]) or keep p (pit range), the same advance as 0x00403557..0x00403583. Each step reads only the word [p+0x14] (cmp 0xff00 / jl at 0x004317e5, cmp 0x100 / jg at 0x0043182a). With random fuzz these pointers left mapped memory and the original faulted. Domain: all positions are record-aligned pointers (points_into the 0x160-stride array): start record 0..29, lap end 4..26 (as ring_00406ac7 / records_008943a0), pit start 0..30, pit end 1..32 (both orders against each other and against the lap end, so the wrap, the clamp and the pit-keep paths all occur), and a wrap distance of 1..4 records, never more than the lap end, so p - [0x00866ec4] stays at or above the array base. Every reachable p is then record 0..31 (checked by enumerating the walk), and word +0x14 of exactly those 32 records is varied as unconstrained i16 (both sides of -0x100 and 0x100; hits and 20-step exhaustion).",
+  "globals": [
+    {"addr": "0x0066ff0c", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 29}},
+    {"addr": "0x00866ecc", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 4, "hi": 26}},
+    {"addr": "0x00891500", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 30}},
+    {"addr": "0x00866ef8", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 1, "hi": 32}},
+    {"addr": "0x00866ec4", "type": "u32", "values": ["0x160", "0x2c0", "0x420", "0x580"]},
+    {"addr": "0x008943b4", "type": "i16", "count": 32, "stride": "0x160"}
+  ]
+}

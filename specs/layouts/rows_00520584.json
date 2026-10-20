@@ -1,0 +1,37 @@
+{
+ "_evidence": "Row-bound tables of 0x00520584 (low bounds 0x679b9c[4] 0..7, high bounds 0x679bac[4] 0..15), pitch [0x6975c4] and surface [0x7a8e18] (0x1000 bytes): rows*pitch stays inside the surface.",
+ "globals": [
+  {
+   "addr": "0x00679b9c",
+   "type": "i32",
+   "count": 4,
+   "stride": 4,
+   "lo": 0,
+   "hi": 7
+  },
+  {
+   "addr": "0x00679bac",
+   "type": "i32",
+   "count": 4,
+   "stride": 4,
+   "lo": 0,
+   "hi": 15
+  },
+  {
+   "addr": "0x006975c4",
+   "type": "u32",
+   "values": [
+    4,
+    "0x20",
+    "0x40",
+    "0x80"
+   ]
+  },
+  {
+   "addr": "0x007a8e18",
+   "type": "ptr",
+   "size": 4096,
+   "fill": "bytes"
+  }
+ ]
+}

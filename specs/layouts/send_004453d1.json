@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x004453d1 (opcode-stream send): 'cmp byte [0x7aafd8],0xff; jne' selects the link-down reset 0x4453bc (values 0xff and others). Else it copies ecx = [0x62d1a0]-[0x62d19c] bytes (clamped to >= 0 by 'cmp ecx,0; jge'; the 'cmp ecx,0xfff; jbe' falls through to the same address either way) from the stream at esi=[0x62d19c] to 0x7a97b1 with rep movsb and stores [0x7a97ac]=ecx+1. Both cursors are write/read positions inside the stream buffer 0x62b19a that 0x004453bc resets them to, so they are drawn as points_into 0x62b19a stride 1, 0..63 independently: the length is 0..63 in half the cases and negative (clamped to 0, the 'je 0x44541c' skip) in the other half. The 64 stream bytes 0x62b19a.. are varied (copied data). The send service 0x4b (0x51f0ae -> 0x531f9c -> table 0x531d74[0x4b] = 0x532d7f -> 0x54b8fe) copies the packet into slot 0x7aa7b0+([0x7aafd0]&7)*0x104 (0x54b978; length <= 64 fits the 0x104 slot) and back (0x54b910): 0x7aafd0 is varied. 0x54b910 then calls 0x507410 only when byte [0x7aafd3] != 0, and 0x507410 immediately calls the Win32 import [0x5f0254] (the DirectPlay send, external: the emulator cannot run it), so 0x7aafd3 is pinned to its image value 0 (no link session); this is inside the callee, which runs as the original code in both runs, and no branch of the target body depends on it.",
+ "globals": [
+  {"addr": "0x007aafd8", "type": "u8", "values": [0, 0, 1, "0x80", "0xff"]},
+  {"addr": "0x0062d19c", "type": "u32", "points_into": {"base": "0x0062b19a", "stride": 1, "lo": 0, "hi": 63}},
+  {"addr": "0x0062d1a0", "type": "u32", "points_into": {"base": "0x0062b19a", "stride": 1, "lo": 0, "hi": 63}},
+  {"addr": "0x0062b19a", "type": "u8", "count": 64},
+  {"addr": "0x007aafd0", "type": "u8"},
+  {"addr": "0x007aafd3", "type": "u8", "values": [0]}
+ ]
+}

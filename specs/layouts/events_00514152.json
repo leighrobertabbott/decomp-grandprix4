@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x00514152 (compose AFTER player_0040f8d9+disp_005141b8, which point [0x679d30] at one of the 22 car records 0x66fef0 + k*0x41c, alias [0x679d2c] to it about half the time, vary the master byte 0x66d7a4 and the car bytes +0x8d/+0x84; this layout then replaces disp_005141b8's mode list for [0x88ff30]): the event [0x88ff30] indexes the 8-byte {handler, mask} table 0x8172a8 ('test [edx*8+0x8172ac],ebp' then 'call [edx*8+0x8172a8]') and the byte array 0x865fd4[event]. The seven callers (0x513ce2 0x513de3 0x513f45 0x513fc2 0x514584 0x514ab5 0x515581) store only the events 0..10, 0xc, 0xd, 0xe, 0xf, 0x10, 0x12, 0x13, 0x15..0x1b ('mov dword ptr [0x88ff30], N' right before each 'call 0x514152'); 0xb, 0x11, 0x14 and anything >= 0x1c are never stored (entries from 28 on are string bytes, not code). The event therefore draws exactly from that list. The mask [0x88ff34] is drawn from single bits, zero, all-ones and mixed words so 'test mask,ebp' takes both outcomes on every entry (entries 2/4/5/9/10/12/15/16/18..26 have sparse masks).",
+ "globals": [
+  {"addr": "0x0088ff30", "type": "u32", "values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 18, 19, 21, 22, 23, 24, 25, 26, 27]},
+  {"addr": "0x0088ff34", "type": "u32", "values": [0, "0xffffffff", "0x1", "0x2", "0x4", "0x8", "0x10", "0x20", "0x40", "0x80", "0x400", "0x1000", "0x2000", "0x4000", "0x8000", "0x10000", "0x40000", "0x80000", "0x100000", "0x800000", "0x12345678", "0xedcba987"]}
+ ]
+}

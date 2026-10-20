@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x004028cf: fild dword [0x00623eb8], [0x00623ebc], [0x00623ec0] (three i32 angles/positions, zero in the image, written by the game), each times the constant angle scale qword [0x006f2bdc], fstp into 0x00622cb0/b8/c0. fild accepts every 32-bit pattern, so all three dwords vary over the full i32 range; the scale is a constant set by the oracle's startup run and is not varied.",
+  "globals": [
+    {"addr": "0x00623eb8", "type": "i32", "count": 3, "stride": 4}
+  ]
+}

@@ -1,3 +1,9 @@
 # addr name kind conf type  (gp4re export; source of truth is the shared ledger DB)
 0x00401d80 Orient_ComputeAngleSinCos func provisional
+0x00402038 FUN_00402038 func provisional
+0x00444517 Parts_ComputeMassProperties func provisional
 0x00510b48 Record8943a0_SetFlag02 func provisional
+0x0051b1f9 RgbToHsv func provisional
+0x0053832b TempFile_CachedWrite func provisional
+0x00538440 TempFile_CachedRead func provisional
+0x0054f8c2 CircuitRecords_UpdateBestTimes func provisional

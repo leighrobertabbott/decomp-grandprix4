@@ -1,0 +1,9 @@
+{
+ "_evidence": "0x005318d1: when 0x531847 sets CF (bitmap bit of the selector set), 0x531803 returns ebx = 0x7ad638 (record -1 of the rsrec_007ad638 array; the other branch, 0x7ad670 + i*0x38, is reached by other callers) and 'mov eax,[ebx+0x18]; call 0x4126e2' takes the rounded fixed-point reciprocal (0x10000 + d/2) / d of that dword (0 maps to 1; unsigned div, never faults). Compose after rsrec_007ad638 (which varies all 504 record bytes): the +0x18 divisors of record -1 (0x7ad650) and records 0..7 (0x7ad688 + i*0x38) are redrawn from 0..0x30000 so the quotient spans 0..0x10000 (a uniform u32 almost always gives 0), and the result then lands on both sides of the clamp bounds: 'cmp eax,[0x7a8dca]; jae' (lower, unsigned) then 'cmp eax,[0x7a8dce]; jbe' (upper) are drawn from 0..0x14000 so both clamps and the pass-through occur on the reciprocal path too (uniform fuzzed bounds put every small result below the lower bound); plain unsigned compares, so lower > upper is valid as well.",
+ "globals": [
+  {"addr": "0x007a8dca", "type": "u32", "lo": 0, "hi": 81920},
+  {"addr": "0x007a8dce", "type": "u32", "lo": 0, "hi": 81920},
+  {"addr": "0x007ad650", "type": "u32", "lo": 0, "hi": 196608},
+  {"addr": "0x007ad688", "type": "u32", "count": 8, "stride": "0x38", "lo": 0, "hi": 196608}
+ ]
+}

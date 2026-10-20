@@ -1,0 +1,11 @@
+{
+  "_evidence": "0x004200a7 (ebx = 0x006380d8) integrates the four 0x300-byte records at 0x006380d8: dword +0x6c times [0x006228ac] (imul, shld/shl 16) is added with carry into +0xb4 (adc into esi+0x37c..); +0x160 times the step (shrd 16) is added to +0x15c, and the mean of old/new +0x15c times the step (shld/shl 12) into +0x164 (adc into esi+0x38c..); +0x2c4 of records 0 and 2 gets [0x0062244c]/[0x00622450] added and is copied to records 1 and 3. All are per-frame integer state used only in imul/add/adc/sar, so any i32 is valid; nothing is a pointer, index or divisor.",
+  "globals": [
+    {"addr": "0x00638144", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x0063818c", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x00638234", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x00638238", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x0063823c", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x0063839c", "type": "i32", "count": 4, "stride": "0x300"}
+  ]
+}

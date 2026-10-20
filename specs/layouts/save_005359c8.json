@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x5359c8 / 0x535a20 read only through the helpers 0x535a93/aa4/ab7/ac8/ae3: [0x7a93e0] = base of the saved-state buffer (sbuf_007a93e0, 0x16400 bytes) and the unaligned [0x826d11] = 0x48-byte block whose dword +0x40 is an offset inside that buffer (sblk_00826d11). Both are real allocated buffers, so every helper address is readable.",
+  "globals": [
+    {"addr": "0x007a93e0", "type": "ptr", "size": "0x16400", "fill": "layout=sbuf_007a93e0"},
+    {"addr": "0x00826d11", "type": "ptr", "size": "0x48", "fill": "layout=sblk_00826d11"}
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "_evidence": "Globals of 0x0042e330 (used without fuzz, so the image constant [0x6f2bf0] = 10430 is not varied). The second 'idiv ecx' at 0x42e406 divides ([0x603dcc] << 9) * [0x6f2bf0] (imul, 64-bit) by ecx >= 0x100 (q^2 * movsx word >> 8, raised to 0x100 by the signed jge clamp): |x<<9| * 10430 / 0x100 < 2^31 needs |x| < 102942, so [0x603dcc] (static 0x5000, read only here) is drawn in +-100000 - fuzzed full-range values were the original's own #DE/timeouts (5 of 200). [0x603b52] is the word threshold of 'cmp ax,[0x603b52]; jl' (any i16, both sides). The first idiv (clamp(ax*16-0x1de, 0..0x10000) << 8 by max(word diff, 1)) cannot fault.",
+  "globals": [
+    {"addr": "0x00603dcc", "type": "i32", "lo": -100000, "hi": 100000},
+    {"addr": "0x00603b52", "type": "i16"}
+  ]
+}

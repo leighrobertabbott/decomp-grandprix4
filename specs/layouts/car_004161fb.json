@@ -1,0 +1,75 @@
+{
+ "_evidence": "Car record for 0x004161fb (gear-shift decision; compose with gears_0041034e for the gear count +0x1cd): byte +0x72 is the current gear (signed: -1 reverse, 0 neutral, 1..7; 0x41adbd folds |gear| >= 2 into the threshold row index clamped to the gear count), byte +0xe4 a state compared signed with 3 and 7 (3..7 takes the early 0x41637f exit), byte +0x84 compared with 7, word +0x62 (engine speed, unsigned 'ja' against the 0x41adbd threshold) and word +0x9a (road speed, signed against [0x6013e4]=0x755 / [0x6013ea]) take boundary and extreme values; flag bytes +0xe5/+0x8d/+0xcf/+0x6f/+0x78/+0x21d/+0xff/+0x9c and the car number +0x7c are random background (0x41adbd: row = (b & 0x3f) - 1 clamped to <= 0x15, inside thr_007c28bc's words). Only compares and RMW flag writes: every value is valid.",
+ "size": 549,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x72",
+   "type": "u8",
+   "values": [
+    "0xff",
+    0,
+    1,
+    1,
+    2,
+    3,
+    5,
+    7
+   ]
+  },
+  {
+   "off": "0xe4",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    5,
+    7,
+    8,
+    "0xff",
+    "0x80"
+   ]
+  },
+  {
+   "off": "0x84",
+   "type": "u8",
+   "values": [
+    7,
+    7,
+    0,
+    1,
+    "0xff"
+   ]
+  },
+  {
+   "off": "0x62",
+   "type": "u16",
+   "values": [
+    0,
+    "0x10",
+    "0x100",
+    "0x1000",
+    "0x4000",
+    "0x7fff",
+    "0xffff"
+   ]
+  },
+  {
+   "off": "0x9a",
+   "type": "u16",
+   "values": [
+    0,
+    "0x100",
+    "0x754",
+    "0x755",
+    "0x1000",
+    "0x1d55",
+    "0x7fff",
+    "0x8000",
+    "0xffff"
+   ]
+  }
+ ]
+}

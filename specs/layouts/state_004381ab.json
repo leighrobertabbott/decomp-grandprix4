@@ -1,0 +1,18 @@
+{
+  "_evidence": "Remaining state of 0x004381ab and its 0x406dbb chain (compose last, after segflag_004381ab). Car record 0 (esi = 0x66fef0): position dwords +0/+4 (0x66fef0/0x66fef4: add to the cos-table offsets, then 0x406dbb's X0/Z0, fild/fpatan only) are car coordinates -0x4000000..0x3fff7ff, word +0xe (0x66fefe: added to the [0x629f1c+2*eax] offset, 16-bit, cos-table index after abs/shr 2) any i16. The heading-offset words 0x629f1c[0..3] (eax 0..3 index) and the radius 0x629f24 are any value (imul/shrd). The two-entry tables 0x629edc/0x629ee4/0x629eec/0x629ef4/0x629efc (index ebx = 0/1 by edi vs the pit start) are copied out by 0x4381ab and written by 0x4065c3/0x4066be only on some 0x406dbb paths, so the unwritten entries are previous-frame state: any i32. Byte [0x868582] (0x406dbb 'xor dl,[0x868582]; js') any. Ring records 0..26: dwords +0x118/+0x11c/+0x120/+0x124 and words +0x12c/+0x12e are the side-line points and heading 0x4065c3/0x4066be subtract from X0/Z0 and multiply (imul/shrd, cos table): any value (they decide 0x4067b7's CF, which only picks among the coherent paths; walk termination depends on 0x4067ea, whose pinned records 2/3 of ring_00406ac7 are untouched).",
+  "globals": [
+    {"addr": "0x0066fef0", "type": "i32", "lo": -67108864, "hi": 67106815},
+    {"addr": "0x0066fef4", "type": "i32", "lo": -67108864, "hi": 67106815},
+    {"addr": "0x0066fefe", "type": "i16"},
+    {"addr": "0x00629f1c", "type": "i16", "count": 4, "stride": 2},
+    {"addr": "0x00629f24", "type": "i32"},
+    {"addr": "0x00629edc", "type": "i32", "count": 10, "stride": 4},
+    {"addr": "0x00868582", "type": "u8"},
+    {"addr": "0x008944b8", "type": "i32", "count": 27, "stride": "0x160"},
+    {"addr": "0x008944bc", "type": "i32", "count": 27, "stride": "0x160"},
+    {"addr": "0x008944c0", "type": "i32", "count": 27, "stride": "0x160"},
+    {"addr": "0x008944c4", "type": "i32", "count": 27, "stride": "0x160"},
+    {"addr": "0x008944cc", "type": "i16", "count": 27, "stride": "0x160"},
+    {"addr": "0x008944ce", "type": "i16", "count": 27, "stride": "0x160"}
+  ]
+}

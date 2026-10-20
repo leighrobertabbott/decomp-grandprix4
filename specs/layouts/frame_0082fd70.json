@@ -1,0 +1,17 @@
+{
+ "_evidence": "0x527f81: 0x53e62c returns [0x82fd70] (the current animation frame number, -1 = none, image value -1); 'cmp eax,-1; jne' picks the frame-cell path (0x5280ac/0x5388ba/0x531b3b), whose cell index is bounded 0..807 by cells_00527eae. Values -1 and 0..807 are the game's domain.",
+ "globals": [
+  {
+   "addr": "0x0082fd70",
+   "type": "u32",
+   "values": [
+    "0xffffffff",
+    0,
+    1,
+    5,
+    100,
+    807
+   ]
+  }
+ ]
+}

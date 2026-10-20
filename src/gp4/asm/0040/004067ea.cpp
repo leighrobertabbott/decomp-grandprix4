@@ -134,4 +134,4 @@ void __cdecl FUN_004067ea(gp4::Regs* r) {
     r->edx = edx;
     r->eflags = (r->eflags & ~0x8d5u) | (st.flags & ~0x01u) | (carry ? 0x01u : 0u);
 }
-GP4_IMPL(0x004067ea, FUN_004067ea, "regs(edi:ptr[0x160]:bytes) -> (eax, ecx, edx, cf, pf, af, zf, sf, of)")
+GP4_IMPL(0x004067ea, FUN_004067ea, "regs(edi:ptr[0x160]:bytes) -> (eax, ecx, edx, cf, pf, af, zf, sf, of); globals=layout=state_004067ea")

@@ -1,0 +1,13 @@
+{
+ "_evidence": "0x00427f3c (compose after ring_008943a0, whose lap/pit pointers and wrap make the forward step +0x160 / -wrap past the lap end below the pit start / clamp to pit end - 0x160 map every record 0..31 into 0..31, so a start record 0..29 never leaves records 0..31). Loop 1 ('loop 0x427f49', ecx = [0x62481c]) walks while word +0x16 <= the running limit (start 0x1000) and leaves the limit in [0x624820]; ecx = 0 would be 2^32 steps, so the count is 1..40. Loop 2 calls 0x427e7c (words +0xa angle -> 0x7c5c5c sine table, +0x60 lane width vs the limit, +4/+8 positions, esi dwords +0/+4 and word +0x18; then 0x401315) until its heading difference is >= 0, advancing edi and counting [0x624810] up to [0x624818], compared with jne, so 0 or a negative bound never ends while the results stay negative: 1..40 (both the exhausted count and an early non-negative result occur). The interpolation divides (|prev|<<14) by cur - prev >= 1 (prev < 0 <= cur, movsx words) and (sin<<10) by a value clamped to |x| >= 0x100: no #DE; the 'ebp = 1' block 0x428041 is dead for that reason. Record words +0, +4, +8, +0x16 (i16) and +0xa, +0x60 (u16) of records 0..31 are full-range draws.",
+ "globals": [
+  {"addr": "0x0062481c", "type": "u32", "lo": 1, "hi": 40},
+  {"addr": "0x00624818", "type": "u32", "lo": 1, "hi": 40},
+  {"addr": "0x008943a0", "type": "i16", "count": 32, "stride": "0x160"},
+  {"addr": "0x008943a4", "type": "i16", "count": 32, "stride": "0x160"},
+  {"addr": "0x008943a8", "type": "i16", "count": 32, "stride": "0x160"},
+  {"addr": "0x008943aa", "type": "u16", "count": 32, "stride": "0x160"},
+  {"addr": "0x008943b6", "type": "i16", "count": 32, "stride": "0x160"},
+  {"addr": "0x00894400", "type": "u16", "count": 32, "stride": "0x160"}
+ ]
+}

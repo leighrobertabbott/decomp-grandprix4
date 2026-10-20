@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x00520c08 (compose after rows_00520584+rows_00520c08, which bound the start row 0x679b9c[2] to 0..7, the pitch to 4..0x80 and the row count [0x7a8e1c] to 1..24, so (7+24)*0x80+8 <= 0x1000 keeps every read in the surface): the surface pointer [0x7a8e18] is a 0x1000-byte buffer of row records (surf_00520c08) whose head dword is often 3, and the clock [0x66d814] of the signed compare 'add edx,0xcb2; cmp edx,[0x66d814]; jg' draws values on both sides of 3+0xcb2 = 0xcb5 (0, 1, 0xcb4 | 0xcb5, 0xcb6, 0x1000, 0x7fffffff) and the negative extremes 0x80000000/0xffffffff, so found (clc) and exhausted (stc) both occur. Any clock value is valid game time.",
+ "globals": [
+  {"addr": "0x007a8e18", "type": "ptr", "size": 4096, "fill": "layout=surf_00520c08"},
+  {"addr": "0x0066d814", "type": "u32", "values": [0, 1, "0xcb4", "0xcb5", "0xcb6", "0x1000", "0x7fffffff", "0x80000000", "0xffffffff"]}
+ ]
+}

@@ -1,0 +1,77 @@
+{
+ "_evidence": "Value fields of the two 10-record interpolation tables of 0x0054ffcf (0x934f7c and 0x9350bc, 0x20-byte records {key, v1..v6, pad}). The keys (+0) keep their image values (ascending 0..0x1000, the walk 'cmp eax,[esi+0x20]; jl' must stop before the end and the unsigned div needs next key > key), but the six value dwords +4..+0x18 that feed 'mov eax,[esi+0x24]; sub eax,[esi+4]; imul ebp; shrd eax,edx,0xe; add eax,[esi+4]' (and +0x30/+0x10, +0x28/+0x08, +0x34/+0x14, +0x2c/+0x0c, +0x38/+0x18) are drawn as full-range i32 so the signed products, the shrd and the wrapping adds are exercised beyond the few image constants (imul/shrd/add never fault). Compose after param_0054ffcf.",
+ "globals": [
+  {
+   "addr": "0x934f80",
+   "type": "i32",
+   "count": 10,
+   "stride": "0x20"
+  },
+  {
+   "addr": "0x934f84",
+   "type": "i32",
+   "count": 10,
+   "stride": "0x20"
+  },
+  {
+   "addr": "0x934f88",
+   "type": "i32",
+   "count": 10,
+   "stride": "0x20"
+  },
+  {
+   "addr": "0x934f8c",
+   "type": "i32",
+   "count": 10,
+   "stride": "0x20"
+  },
+  {
+   "addr": "0x934f90",
+   "type": "i32",
+   "count": 10,
+   "stride": "0x20"
+  },
+  {
+   "addr": "0x934f94",
+   "type": "i32",
+   "count": 10,
+   "stride": "0x20"
+  },
+  {
+   "addr": "0x9350c0",
+   "type": "i32",
+   "count": 10,
+   "stride": "0x20"
+  },
+  {
+   "addr": "0x9350c4",
+   "type": "i32",
+   "count": 10,
+   "stride": "0x20"
+  },
+  {
+   "addr": "0x9350c8",
+   "type": "i32",
+   "count": 10,
+   "stride": "0x20"
+  },
+  {
+   "addr": "0x9350cc",
+   "type": "i32",
+   "count": 10,
+   "stride": "0x20"
+  },
+  {
+   "addr": "0x9350d0",
+   "type": "i32",
+   "count": 10,
+   "stride": "0x20"
+  },
+  {
+   "addr": "0x9350d4",
+   "type": "i32",
+   "count": 10,
+   "stride": "0x20"
+  }
+ ]
+}

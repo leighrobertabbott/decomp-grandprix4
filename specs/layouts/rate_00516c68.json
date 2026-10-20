@@ -1,0 +1,49 @@
+{
+ "_evidence": "0x516c68: counter [0x93243c] (incremented, compared with 2 and 0xc9), divisor ebp = counter*[0x7ad8b8] (rate; or 1 when ebp was 0 on entry), accumulator [0x932438] += [0x6f2c00]-based step, then 'imul edx; idiv ebp': random 32-bit values overflow the idiv (#DE, 21/200 original cases). The game's counter runs 0..0x1000 around the 0xc8 frame window, the rate is a per-frame tick count >= 0x80 (rate_007ad8b8 bounds it 1..0xffff), step and accumulator stay within +-0x400000 - so the quotient always fits.",
+ "globals": [
+  {
+   "addr": "0x0093243c",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    "0xc7",
+    "0xc8",
+    "0xc9",
+    "0x10",
+    "0x40",
+    "0x100",
+    "0x400",
+    "0xfff",
+    "0x1000"
+   ]
+  },
+  {
+   "addr": "0x007ad8b8",
+   "type": "u32",
+   "lo": "0x80",
+   "hi": "0xffff"
+  },
+  {
+   "addr": "0x006f2c00",
+   "type": "i32",
+   "lo": -4194304,
+   "hi": 4194304
+  },
+  {
+   "addr": "0x00932438",
+   "type": "i32",
+   "lo": -4194304,
+   "hi": 4194304
+  },
+  {
+   "addr": "0x0082fd31",
+   "type": "u8",
+   "values": [
+    0,
+    1
+   ]
+  }
+ ]
+}

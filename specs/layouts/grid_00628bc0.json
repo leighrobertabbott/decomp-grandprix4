@@ -1,0 +1,12 @@
+{
+  "_evidence": "64x64 byte-grid box filter used by 0x0041de96 (horizontal: esi=ebx, reads [esi+edi+0x628bc0], esi=(esi+1)&[0x627b90]) and 0x0041dee8 (vertical: esi=edi, reads [esi+ebx+0x628bc0], esi=(esi+[0x627b98])&[0x627b9c]); both 'loop' [0x627ba0] times, imul the tap sum by [0x627ba4] / [0x627ba8], shrd 14, cdq; idiv [0x627ba0] and clamp to -0x80..0x7f. Pristine config (0x41df3f, 0x41de65): mask 0x3f, step 0x40 (W), wrap 0xfc0, W*W 0x1000 at 0x627b94, taps 6, scale 0x7000. Domain: taps 1..16 (0 is a 2^32-iteration loop ending in idiv by 0, the original's own #DE), mask 0..0x3f and wrap 0..0xfc0 (any value: and keeps the index <= mask/wrap), step any; with ebx in 0..63 and edi in 0..0xfc0 (row offsets, caller loops edi by W up to W*W) every read stays inside the 0x1000-byte grid at 0x628bc0. The scale is a plain i32 (small and wild values: idiv by a positive tap count never faults, both clamps and the unclamped path are reached). The grid bytes are full-range i8.",
+  "globals": [
+    {"addr": "0x00627b90", "type": "u32", "lo": 0, "hi": 63},
+    {"addr": "0x00627b98", "type": "u32"},
+    {"addr": "0x00627b9c", "type": "u32", "lo": 0, "hi": 4032},
+    {"addr": "0x00627ba0", "type": "u32", "lo": 1, "hi": 16},
+    {"addr": "0x00627ba4", "type": "i32"},
+    {"addr": "0x00627ba8", "type": "i32"},
+    {"addr": "0x00628bc0", "type": "i8", "count": 4096, "stride": 1}
+  ]
+}

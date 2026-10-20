@@ -1,0 +1,25 @@
+{
+ "_evidence": "0x0041e069 loads edi from [0x602008] when [0x622424] == 0: a ring-record pointer (records 0..11 of 0x8943a0, the coherent part of ring_00405a12); [0x622424] is a 0/1/0xff mode byte.",
+ "globals": [
+  {
+   "addr": "0x00602008",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 11
+   }
+  },
+  {
+   "addr": "0x00622424",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    "0xff"
+   ]
+  }
+ ]
+}

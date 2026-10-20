@@ -1,0 +1,23 @@
+{
+ "_evidence": "0x0041970f splits work into chunks of [0x6228ac] (1..16) per [0x6228b0] (1..8) steps over [0x60384c] (0..640) units; block 0x4197d2 needs two or more full chunks, which fuzzed values (huge or zero) never give.",
+ "globals": [
+  {
+   "addr": "0x006228ac",
+   "type": "u32",
+   "lo": 1,
+   "hi": 16
+  },
+  {
+   "addr": "0x006228b0",
+   "type": "u32",
+   "lo": 1,
+   "hi": 8
+  },
+  {
+   "addr": "0x0060384c",
+   "type": "u32",
+   "lo": 0,
+   "hi": 640
+  }
+ ]
+}

@@ -1,0 +1,13 @@
+{
+ "_evidence": "Overlay for 0x00405f77 (compose after state_0040ee7b+tbl_0066d94c). When 0x51fb4f returns 3 ([0x7c2ea9] == 0x44, state_0040ee7b) the callee 0x441a1b reads, for car index i = (byte +0x7c - 1) & 0x3f clamped to 0x15, the 'unset' byte [0x66d94c+i] (tbl_0066d94c: 0xff in most picks) and the per-car stage byte [0x66d936+i], which indexes the byte table 0x6f2c3e (constant: 0 x8, 1 x8, 2 x7, 3 x7, 4 x7, 5 x8, 0 x8, 8 x8, 0x10 ...; 'cmp cl,2; jge'). 0x66d936 is per-car race state written by 0x431bf7/0x431d1f/0x43cbac/0x441166/0x44126d/0x444ff1 (zero in the image, so cl was always 0); drawn 0..63 so the looked-up value is below 2, 2..5 and 8/0x10. A read-only index into in-image .data: nothing faults.",
+ "globals": [
+  {
+   "addr": "0x0066d936",
+   "type": "u8",
+   "count": 22,
+   "stride": 1,
+   "lo": 0,
+   "hi": 63
+  }
+ ]
+}

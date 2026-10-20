@@ -1,0 +1,11 @@
+{
+ "_evidence": "Overlay for 0x0042027f (fuzz:i32 varies only its own directly addressed globals). Its tail call 0x402ad1 tests byte [0x62599c] (cmp 0xff): that byte has no writer anywhere in the image (single reader 0x402ad3) and is 0xff, so 0x402ad1 always takes 0x402b4e, which loads the accumulated position dwords 0x638030/0x638034/0x638038 (RMW state of 0x401fed/0x4029d5/0x402a00/0x40e582/0x412e99/0x420c1f/0x424205..., zero in the image) into 0x402655 (eax/ebx/ecx, edx 0x20) and finally overwrites them: plain i32 state, the domain 0x402b4e itself was accepted with (globals=fuzz:i32). [0x62599c] keeps its image value (the 0x402ae0 branch is dead in the game) and the doubles 0x6f2a64 (2.0) and 0x6f2bdc (pi/2^31) are constants.",
+ "globals": [
+  {
+   "addr": "0x00638030",
+   "type": "i32",
+   "count": 3,
+   "stride": 4
+  }
+ ]
+}

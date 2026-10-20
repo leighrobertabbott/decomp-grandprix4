@@ -1,0 +1,8 @@
+{
+ "_evidence": "Inputs of 0x00445218 (called by 0x00444e81, 0x0044520a, 0x00445248): al = [0x7c2ead] & 0xf8, 'test byte [0x66d87c],0x80; je' (or al,2), 'cmp byte [0x95404e],0xff; jne' (or al,4). All three are run-time state bytes written by many routines (0x7c2ead: 35 references incl. 0x444e03/0x444e1e; 0x66d87c: 0x40b2a1/0x443996; 0x95404e: 0x4084e4/0x40fa3b/0x442baa), used only as bit masks and an equality test, so any byte is valid: 0x7c2ead is random, 0x66d87c mixes bit 7 set/clear, 0x95404e is 0xff in about a third of the cases and other values otherwise.",
+ "globals": [
+  {"addr": "0x007c2ead", "type": "u8", "lo": 0, "hi": 255},
+  {"addr": "0x0066d87c", "type": "u8", "values": [0, "0x80", "0x7f", "0xff", "0x81", "0x40"]},
+  {"addr": "0x0095404e", "type": "u8", "values": ["0xff", "0xff", "0xff", 0, 1, "0xfe", "0x7f"]}
+ ]
+}

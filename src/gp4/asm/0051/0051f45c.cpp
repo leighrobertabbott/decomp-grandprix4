@@ -1,0 +1,40 @@
+#include <gp4/gp4.h>
+#include <gp4/flags.h>
+
+// Prints the byte in al as 8 binary digits ('0'/'1', most significant bit first) through the character writer
+// 0x0051f3bd (al = character; edi is the output cursor of its buffer mode and starts at 0, the counter of the
+// original), advancing the glyph column byte 0x88fd96 after every 8 digits. The column byte is restored at the
+// end; pushal/popal keep every register. The flags are those of the last flag writer of the final pass:
+// `and eax, 7` (result 0) followed by the `inc byte [0x88fd96]` (CF stays clear).
+// FUNCTION: GP4 0x0051f45c
+void __cdecl FUN_0051f45c(gp4::Regs* r) {
+    const uint32_t column = GP4_GLOBAL(uint8_t, 0x0088fd96);
+
+    gp4::Regs c = *r;
+    uint32_t bits = r->eax & 0xffu;
+    c.ecx = 8u;
+    c.edi = 0u;
+    uint32_t flags;
+    do {
+        uint32_t digit = 0x30u;
+        if ((bits & 0x80u) != 0u) {
+            digit = 0x31u;
+        }
+        bits = (bits << 1) & 0xffu;
+        c.ebx = (c.ebx & 0xffffff00u) | bits;
+        c.eax = (c.eax & 0xffffff00u) | digit;
+        gp4::call_regs(0x0051f3bd, c);
+        c.edi += 1u;
+        c.eax = c.edi & 7u;
+        flags = gp4::flags::logic32(c.eax);
+        if (c.eax == 0u) {
+            const uint32_t before = GP4_GLOBAL(uint8_t, 0x0088fd96);
+            GP4_GLOBAL(uint8_t, 0x0088fd96) = (uint8_t)(before + 1u);
+            flags = (gp4::flags::add8(before, 1u) & ~gp4::CF) | (flags & gp4::CF);
+        }
+        c.ecx -= 1u;
+    } while (c.ecx != 0u);
+    GP4_GLOBAL(uint8_t, 0x0088fd96) = (uint8_t)column;
+    r->eflags = gp4::flags::merge(r->eflags, flags);
+}
+GP4_IMPL(0x0051f45c, FUN_0051f45c, "regs(eax:u32) -> (cf, pf, af, zf, sf, of); globals=fuzz:i32+layout=readout_00515187+glyph_0051d329+mode_0051f424")

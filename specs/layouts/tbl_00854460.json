@@ -1,0 +1,26 @@
+{
+ "_evidence": "0x552762 scans the active bit (+0x4c bit 0) of the 0x140 x 0xe0-byte records at 0x854414 (dword 0x854460 + k*0xe0) for the first free record; clc + index when one is free, stc when all 0x140 are in use. The array is zero in the image (record 0 always free). prefix: the first n records are active (odd values) and the rest free, n in {0,1,2,5,0x13f,0x140,0x140}, so the first-free position and the all-in-use exit both occur.",
+ "globals": [
+  {
+   "addr": "0x00854460",
+   "type": "u32",
+   "count": 320,
+   "stride": "0xe0",
+   "prefix": [
+    0,
+    1,
+    2,
+    5,
+    "0x13f",
+    "0x140",
+    "0x140"
+   ],
+   "values": [
+    1,
+    3,
+    "0x80000001",
+    "0xffffffff"
+   ]
+  }
+ ]
+}

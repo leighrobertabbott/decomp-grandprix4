@@ -1,0 +1,18 @@
+{
+  "_evidence": "edi of 0x00406f05: a track-segment record and the start of the next one (0x2b0 bytes; next = +0x160). With f1 = fistp([0x627950]*16384) it lerps, on the side chosen by the sign of edx, W = lerp(u16 +0x144|+0x14a << 6, next +0x2a4|+0x2aa << 6), A = lerp(i16 +0x146|+0x14c << 6, next +0x2a6|+0x2ac << 6) and S = lerp(i32 +0x100|+0x10c, next +0x260|+0x26c); with eax = fistp([0x627958]*16384)*S >> 14 it divides either (S-eax clamped to 0..ebp)*A by ebp = clamp(S-W, 1..S) (always in range: quotient <= |A|) or, when eax < W, eax*A by W (0 -> 1), which overflows (#DE, the original faulted 3/200 on fuzzed data) unless |eax*A| < 2^31*|W|. The fractions (frac_00627950) take t in -0.5..1.5, so the lerps also extrapolate: then W < 0, eax > S, eax < 0 and W = 0 with eax < 0 all occur (blocks 0x40701a/0x40702b/0x407034/0x40704e, dead for t in [0,1]). Domain that keeps every case fault-free: lengths S endpoints 0..0x1000 (|eax| <= 1.5*1.5*0x1000 = 9216) and offset words -0x300..0x300 (|A| <= 4*0x300<<6 = 196608), so |eax*A| < 1.82e9 < 2^31 and every quotient fits for any W; the width words are u16 drawn with zero in 3 of 10 picks (both zero gives W = 0) and otherwise small, mid, sign-bit and 0xffff values. The accepted spec used words -3..3 everywhere; unlisted bytes are never read.",
+  "size": 688,
+  "fields": [
+    {"off": "0x100", "type": "i32", "lo": 0, "hi": 4096},
+    {"off": "0x10c", "type": "i32", "lo": 0, "hi": 4096},
+    {"off": "0x260", "type": "i32", "lo": 0, "hi": 4096},
+    {"off": "0x26c", "type": "i32", "lo": 0, "hi": 4096},
+    {"off": "0x144", "type": "u16", "values": [0, 0, 0, 1, "0x40", "0x100", "0x1000", "0x7fff", "0x8000", "0xffff"]},
+    {"off": "0x14a", "type": "u16", "values": [0, 0, 0, 1, "0x40", "0x100", "0x1000", "0x7fff", "0x8000", "0xffff"]},
+    {"off": "0x2a4", "type": "u16", "values": [0, 0, 0, 1, "0x40", "0x100", "0x1000", "0x7fff", "0x8000", "0xffff"]},
+    {"off": "0x2aa", "type": "u16", "values": [0, 0, 0, 1, "0x40", "0x100", "0x1000", "0x7fff", "0x8000", "0xffff"]},
+    {"off": "0x146", "type": "i16", "lo": -768, "hi": 768},
+    {"off": "0x14c", "type": "i16", "lo": -768, "hi": 768},
+    {"off": "0x2a6", "type": "i16", "lo": -768, "hi": 768},
+    {"off": "0x2ac", "type": "i16", "lo": -768, "hi": 768}
+  ]
+}

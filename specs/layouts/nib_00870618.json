@@ -1,0 +1,6 @@
+{
+  "_evidence": "Packed nibble table 0x00870618 (two 4-bit values per byte) used by 0x0055adfe ('movzx edx,dx; shr edx,1; mov cl,[edx+0x870618]', even index = high nibble, odd = low nibble; it reads the old nibble, merges the new one and compares them) and reached from 0x0055ad9b with the nibble number [edi] (the record id word +0 of the 0x2c-byte records at 0x88eff2, 0..10 in the image; specs bound it to 0..0x3f, i.e. bytes 0x870618..0x870637). Zero in the image (runtime state written by 0x55adfe and read by 0x55a082/0x553f72), so all 0x20 bytes are drawn as independent random bytes: every pattern is a valid pair of nibbles, and old == new / old != new both occur.",
+  "globals": [
+    {"addr": "0x00870618", "type": "u8", "count": 32, "stride": 1}
+  ]
+}

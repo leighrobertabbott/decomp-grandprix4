@@ -17,8 +17,9 @@ void __cdecl FUN_0040ceb0(gp4::Regs* r) {
     const uint32_t addend = GP4_FIELD(uint32_t, record, 0xf4);
 
     const int32_t offset = static_cast<int32_t>(0u - ((base + 0x50u) << 8));
+    // fild/fmul/fild/fmulp stay on the x87 stack: one rounding at the fistp
     const int32_t scaled = gp4::x87::fistp32(
-        static_cast<double>(scale) * GP4_GLOBAL(double, 0x006f2a04) * static_cast<double>(offset));
+        gp4::x87::ext_i32(scale) * gp4::x87::ext(GP4_GLOBAL(double, 0x006f2a04)) * gp4::x87::ext_i32(offset));
     GP4_GLOBAL(int32_t, 0x006f2bf4) = scaled;
 
     // eax = scaled + [edi+0xf4]; the add leaves the arithmetic flags

@@ -1,0 +1,22 @@
+{
+  "_evidence": "0x004121c7 derives tables from the car geometry block. Five idivs: ((x338 -/+ x1ea4) << 13) / x338, ((x340 -/+ x1ea4) << 13) / x340 and ((x350 - x34c) << 14) / x334 (cdq; shld; shl; idiv). 0x004112e3 fills 0x601334/0x601338/0x601340 by fistp of positive car dimensions times a scale, so the divisors are 1..131071 (0 would #DE); with |x1ea4| <= 0x8000 and x34c/x350 in -65535..65535 every dividend magnitude is below 2^31 * divisor, so the quotients fit (no #DE). 0x601ea4 is read only here (image value 0x2aaa) and still varied in that band. The other scalars 0x60133c, 0x601344, 0x601348, 0x60136c, 0x601d68 and the four-dword arrays 0x601d8c, 0x601db4, 0x601df4, 0x601e04, 0x601e20, 0x601e40 only feed imul/shrd/mov, so they are full-range i32.",
+  "globals": [
+    {"addr": "0x00601334", "type": "i32", "lo": 1, "hi": 131071},
+    {"addr": "0x00601338", "type": "i32", "lo": 1, "hi": 131071},
+    {"addr": "0x00601340", "type": "i32", "lo": 1, "hi": 131071},
+    {"addr": "0x00601ea4", "type": "i32", "lo": -32768, "hi": 32768},
+    {"addr": "0x0060134c", "type": "i32", "lo": -65535, "hi": 65535},
+    {"addr": "0x00601350", "type": "i32", "lo": -65535, "hi": 65535},
+    {"addr": "0x0060133c", "type": "i32"},
+    {"addr": "0x00601344", "type": "i32"},
+    {"addr": "0x00601348", "type": "i32"},
+    {"addr": "0x0060136c", "type": "i32"},
+    {"addr": "0x00601d68", "type": "i32"},
+    {"addr": "0x00601d8c", "type": "i32", "count": 4, "stride": 4},
+    {"addr": "0x00601db4", "type": "i32", "count": 4, "stride": 4},
+    {"addr": "0x00601df4", "type": "i32", "count": 4, "stride": 4},
+    {"addr": "0x00601e04", "type": "i32", "count": 4, "stride": 4},
+    {"addr": "0x00601e20", "type": "i32", "count": 4, "stride": 4},
+    {"addr": "0x00601e40", "type": "i32", "count": 4, "stride": 4}
+  ]
+}

@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00558d9b copies, for every ring record from [0x866ec0] up to [0x866eb8], 0x18 dwords ('mov ecx,0x18; rep movsd') from 0x9559f8, or from 0x9559f8+0x60 when bit 2 of the record byte +0x48 is set (segs_00558d9b varies it), into the table at 0x6f6dc4. The two 0x60-byte source blocks 0x9559f8..0x955ab8 are run-time data (only their first dword was reached by fuzz:i32); they are copied verbatim, so all 48 dwords are random here (compose after ring_008943a0+ring_0043d30c+segs_00558d9b).",
+ "globals": [
+  {"addr": "0x009559f8", "type": "u32", "count": 48, "stride": 4}
+ ]
+}

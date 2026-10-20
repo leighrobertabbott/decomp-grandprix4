@@ -1,0 +1,11 @@
+{
+ "_evidence": "Read cursor [0x62d1a8] for 0x00444ff1, pointing to a stream record whose byte +8 is a tyre-set index (rec_00444ff1).",
+ "globals": [
+  {
+   "addr": "0x0062d1a8",
+   "type": "ptr",
+   "size": 64,
+   "fill": "layout=rec_00444ff1"
+  }
+ ]
+}

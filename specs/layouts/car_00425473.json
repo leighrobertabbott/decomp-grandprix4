@@ -1,0 +1,93 @@
+{
+ "_evidence": "Body record (ebx and esi) for 0x00425473 and its callees 0x40dc8a / 0x426100 -> 0x426091 -> 0x426031 (esi composes after rec_00426091 for +0xd6): words +0x68 (gap vs [0x603afc], jge exit), +0xe2 (body distance ebx-esi vs [0x603b66], jl exit; 0x40dc8a replaces it when byte +0x9c bit 1 is set on either body), +0x9a and +0x100 (squared by movsx/imul: s = w100^2 - w9a^2 < 2^30, never 0x80000000), +0xda (sign must equal sign(s), then (sx(da) << 17) idiv rate; da = 0 gives the 'ebp = 1' block 0x425503). The words draw small/equal values often (equal +0xe2 and |+0x100| = |+0x9a| make the second scale (q + d)*2 zero -> block 0x425570; |+0x100| >= 0x200 with da = 0 or 1/2 reaches the 0x4000 clamps) and extremes otherwise; +0x9c bit 1 is clear in most picks. Every other byte (0x40dc8a's +0x21d/+0x148..+0x14e, 0x426031's +0x98/+0xc4/+0xe0) is random background: only add/sub/imul/sar there, and both idivs of 0x425473 itself have nonzero divisors whose quotients fit (see state_00425473).",
+ "size": 550,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x68",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    1,
+    "0xffff",
+    "0x100",
+    "0x8000",
+    "0x7fff"
+   ]
+  },
+  {
+   "off": "0x9a",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    1,
+    3,
+    "0x10",
+    "0x200",
+    "0x7fff",
+    "0x8000",
+    "0xff00"
+   ]
+  },
+  {
+   "off": "0x9c",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    2,
+    "0xff"
+   ]
+  },
+  {
+   "off": "0xda",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    1,
+    "0xffff",
+    2,
+    "0x7fff",
+    "0x8000",
+    "0x123"
+   ]
+  },
+  {
+   "off": "0xe2",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    "0xffff",
+    "0x8000",
+    "0x7fff"
+   ]
+  },
+  {
+   "off": "0x100",
+   "type": "u16",
+   "values": [
+    0,
+    0,
+    1,
+    "0x200",
+    "0x400",
+    "0x1000",
+    "0x7fff",
+    "0x8000"
+   ]
+  }
+ ]
+}

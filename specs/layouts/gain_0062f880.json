@@ -1,0 +1,6 @@
+{
+  "_evidence": "Q14 grip factor 0x62f880: written as 0x4000 (0x4181c2, 0x41a0d0) or 0x4000 - (x*[0x62f88c] >> 14) floored at [0x62f888] (0x41a170..0x41a19a); read by 0x41724d ('imul dword [0x62f880]; shrd 14' at 0x417261). Runtime state: drawn 0..0x8000 (1.0 = 0x4000 inside; imul only, no faults).",
+  "globals": [
+    {"addr": "0x0062f880", "type": "i32", "lo": 0, "hi": 32768}
+  ]
+}

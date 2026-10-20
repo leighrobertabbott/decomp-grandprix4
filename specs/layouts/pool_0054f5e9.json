@@ -1,0 +1,19 @@
+{
+ "_evidence": "0x0054f5e9 ('mov eax,0x800; call 0x5389b9; or eax,eax; je' then 'mov [0x839169],eax' and 0x54f753; compose after pool_005389b9, whose coherent four-slot pool below the used end 0xa06100 it reuses): the fixed 0x800-byte request only fits when the free end [0x82fcb0] is at least the used end + 0x800, which pool_005389b9's free ends (0xa06100..0xa06300, sized for its own small requests) never are. The free end is therefore drawn from {0xa06100, 0xa06300} (no fit even after every eviction: fail, eax 0, store skipped), {0xa06840, 0xa06880, 0xa060c0+0x800} (fits only after evictions lower the used end: evict-and-retry then success) and {0xa06900, 0xa06a00, 0xa07100} (fits at once). The allocator only compares and stores the end pointers and the evictions move bytes inside 0xa06000..0xa06100, so no free end touches memory; free end >= used end as the pool keeps it.",
+ "globals": [
+  {
+   "addr": "0x0082fcb0",
+   "type": "u32",
+   "values": [
+    "0xa06100",
+    "0xa06300",
+    "0xa06840",
+    "0xa06880",
+    "0xa068c0",
+    "0xa06900",
+    "0xa06a00",
+    "0xa07100"
+   ]
+  }
+ ]
+}

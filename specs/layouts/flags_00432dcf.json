@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x00432dcf ORs 8 into byte +0x25f of each of the 22 car records at 0x0066fef0 (stride 0x41c) whose number bit is set in the mask (state_00432dcf). The byte is a car state flag byte (read-modify-write); varying it (any value) makes the OR observable against bits already set. Compose after state_00432dcf.",
+  "globals": [
+    {"addr": "0x0067014f", "type": "u8", "count": 22, "stride": "0x41c"}
+  ]
+}

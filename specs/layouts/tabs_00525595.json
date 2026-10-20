@@ -1,0 +1,150 @@
+{
+ "_evidence": "0x00525595: ebx = [0x679bd8] (the object index 0..31, as ptrtab_00524fa4) indexes seven parallel 32-entry dword tables 0x6f33ec/0x6f346c/0x6f34ec/0x6f356c/0x6f35ec/0x6f366c/0x6f36ec (0x80 bytes apart, filled per object at run time); for each, 'test [ebx*4+T],-1; je' keeps the default dword (0x6f396c/0x6f3974/0x6f3970/0x6f3978/0x6f397c/0x6f3980/0x6f3984) or takes the entry, and the result goes to 0x6f3988..0x6f39a0. All 32 entries of every table draw zero in about half the cases and assorted nonzero values otherwise; the seven defaults and the seven destinations (0x6f396c..0x6f39a3) are random. Plain loads/stores: every value is valid.",
+ "globals": [
+  {
+   "addr": "0x00679bd8",
+   "type": "u32",
+   "lo": 0,
+   "hi": 31
+  },
+  {
+   "addr": "0x6f33ec",
+   "type": "u32",
+   "count": 32,
+   "stride": 4,
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    "0x12345",
+    "0xffffffff",
+    "0x80000000",
+    "0x7fff",
+    "0x4000"
+   ]
+  },
+  {
+   "addr": "0x6f346c",
+   "type": "u32",
+   "count": 32,
+   "stride": 4,
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    "0x12345",
+    "0xffffffff",
+    "0x80000000",
+    "0x7fff",
+    "0x4000"
+   ]
+  },
+  {
+   "addr": "0x6f34ec",
+   "type": "u32",
+   "count": 32,
+   "stride": 4,
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    "0x12345",
+    "0xffffffff",
+    "0x80000000",
+    "0x7fff",
+    "0x4000"
+   ]
+  },
+  {
+   "addr": "0x6f356c",
+   "type": "u32",
+   "count": 32,
+   "stride": 4,
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    "0x12345",
+    "0xffffffff",
+    "0x80000000",
+    "0x7fff",
+    "0x4000"
+   ]
+  },
+  {
+   "addr": "0x6f35ec",
+   "type": "u32",
+   "count": 32,
+   "stride": 4,
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    "0x12345",
+    "0xffffffff",
+    "0x80000000",
+    "0x7fff",
+    "0x4000"
+   ]
+  },
+  {
+   "addr": "0x6f366c",
+   "type": "u32",
+   "count": 32,
+   "stride": 4,
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    "0x12345",
+    "0xffffffff",
+    "0x80000000",
+    "0x7fff",
+    "0x4000"
+   ]
+  },
+  {
+   "addr": "0x6f36ec",
+   "type": "u32",
+   "count": 32,
+   "stride": 4,
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    "0x12345",
+    "0xffffffff",
+    "0x80000000",
+    "0x7fff",
+    "0x4000"
+   ]
+  },
+  {
+   "addr": "0x006f396c",
+   "type": "u32",
+   "count": 14,
+   "stride": 4
+  }
+ ]
+}

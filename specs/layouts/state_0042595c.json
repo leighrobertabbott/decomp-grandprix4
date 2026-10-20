@@ -1,0 +1,19 @@
+{
+  "_evidence": "0x0042595c: RNG state 0x66d8c0 (u32) and 0x66d8bf (u8) read by 0x401462/0x42593d (as state_0066d8c0). Threshold: ebp = ((movsx [esi+0xb6] * [0x6223e4] + 0x4000) * word [0x62d228]) >> 14, then (3*word [0x7ad8a2] + 200) * ebp ('mul', unsigned 64-bit) 'div 500': with the word in 0..100 the multiplier is <= 500 so the quotient is < 2^32 and div never faults (larger words can #DE). word [0x7ad89e] indexes the 5-entry difficulty tables 0x602ae8 (u16), 0x602af4/0x602b08/0x602b1c (i32), so it is 0..4; those tables are constants (only this function references them) and keep their image values. The other scalars (words 0x62d224/0x62d226/0x62d24e/0x62d228, dwords 0x6223e4, 0x602b44, 0x602b48, 0x601f00, 0x601ee8, 0x601eec) only feed imul/shrd/compares: plain draws. 0x602aa0 is stored from eax first (output).",
+  "globals": [
+    {"addr": "0x0066d8c0", "type": "u32"},
+    {"addr": "0x0066d8bf", "type": "u8"},
+    {"addr": "0x007ad8a2", "type": "u16", "lo": 0, "hi": 100},
+    {"addr": "0x007ad89e", "type": "u16", "lo": 0, "hi": 4},
+    {"addr": "0x0062d224", "type": "u16"},
+    {"addr": "0x0062d226", "type": "u16"},
+    {"addr": "0x0062d228", "type": "u16"},
+    {"addr": "0x0062d24e", "type": "u16"},
+    {"addr": "0x006223e4", "type": "i32"},
+    {"addr": "0x00602b44", "type": "i32"},
+    {"addr": "0x00602b48", "type": "i32"},
+    {"addr": "0x00601f00", "type": "i32"},
+    {"addr": "0x00601ee8", "type": "i32"},
+    {"addr": "0x00601eec", "type": "i32"}
+  ]
+}

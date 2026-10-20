@@ -1,0 +1,8 @@
+{
+  "_evidence": "Record in esi for 0x00426091/0x426031: dword +0x98 (sar 22 -> table index, squared by imul), words +0xc4/+0xe0 (difference, imul by the gain) and +0xd6 (movzx multiplier; zero in about a third of the picks so both callee results can be 0 and the 'ebp = 1' block runs). Random background bytes; nothing is a pointer or divisor.",
+  "size": 232,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0xd6", "type": "u16", "values": [0, 0, 1, "0x100", "0x4000", "0xffff"]}
+  ]
+}

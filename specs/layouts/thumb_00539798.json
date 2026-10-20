@@ -1,0 +1,7 @@
+{
+ "_evidence": "Globals read by 0x00539798: [0x82fd98] is the pointer y (stored by the mouse code 0x53c512/0x53d9ba; screen rows) compared signed with the thumb bounds 'add eax,ebx; cmp eax,[0x82fd98]; jl' / 'jg' (0x539815/0x539835) and used in the tail 'mov ecx,[0x82fd98]; sub ecx,[0x82fda0]; sub ecx,ebx; jge'; [0x82fda0] is the drag offset: mode 2 writes it first (0 then the thumb grab y - top - 1 or page/2 scaled), modes 3 and 4-with-bit-2 read it as left by an earlier mode-2 call. y -16..640 around the item tops 100..300 and spans up to 432 lands above, inside and below the thumb; the offset -50..300 covers grab offsets (>= -1) and centred-page offsets, both signs of the tail's ecx. Plain compares and subtractions: every value is valid. Values are synthetic.",
+ "globals": [
+  {"addr": "0x0082fd98", "type": "i32", "lo": -16, "hi": 640},
+  {"addr": "0x0082fda0", "type": "i32", "lo": -50, "hi": 300}
+ ]
+}

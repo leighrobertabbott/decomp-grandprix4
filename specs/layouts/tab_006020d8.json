@@ -1,0 +1,6 @@
+{
+  "_evidence": "The f64 at +0x28 of each 0x60-byte slot of the 22-slot integrator table 0x6020b0 (0x6020d8 + slot*0x60, slot 0..21; integrated per frame by 0x41b035, so game state, static zero): 0x41b3d9 fistps it, sar 8, negates and stores it to 0x602928 (and its 0x679c1c difference to 0x60292c). Drawn as finite doubles -1e6..1e6 (fistp exact range; any finite value is valid). The tuning dwords 0x602930..0x602947 that 0x41b286 reads on the other branch are image constants (only reader, never written; they also bound that function's idivs) and keep their values.",
+  "globals": [
+    {"addr": "0x006020d8", "type": "f64", "count": 22, "stride": "0x60", "lo": -1000000, "hi": 1000000}
+  ]
+}

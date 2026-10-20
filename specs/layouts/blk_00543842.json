@@ -1,0 +1,10 @@
+{
+ "_evidence": "Block read by 0x00543842: u32 +4 tested 'mov ebx,[edi+4]; cmp ebx,0; je 0x543872' (zero exits, values {0,1,2,5} give both outcomes, 0 in ~1/4 of cases); pointer array at +0xc indexed by [0xabc088] (0..5, sel_00543842) read 'mov eax,[edi+4*i+0xc]' then 'test byte [eax+9],0x80' and, when clear, 'or byte [eax+9],0x80' after calling 0x5438a0 (which clears bit 7 of +9 in the forty 0x20-byte records at 0x830bb4 - the selection flag is exclusive over that array, so slots pointing into it are the realistic case). Slots 0..2 point at records 0..39 of 0x830bb4 (their +9 bytes are varied by recs_005438a0); slots 3..5 are separate 0x10-byte random buffers (byte +9 random: bit 7 set and clear, a record outside that array). Every pointer is readable/writable at +9.",
+ "size": 48,
+ "fill": "bytes",
+ "fields": [
+  {"off": 4, "type": "u32", "values": [0, 1, 2, 5]},
+  {"off": "0xc", "type": "u32", "count": 3, "stride": 4, "points_into": {"base": "0x830bb4", "stride": "0x20", "lo": 0, "hi": 39}},
+  {"off": "0x18", "type": "ptr", "count": 3, "stride": 4, "size": 16, "fill": "bytes"}
+ ]
+}

@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x0040af67 (eax = record index, the caller 0x40afb2 passes word [0x868558]>>1; spec 0..63) starts at the lap start [0x891504] + eax*0x160 and tests 8-record groups of the 0x160-byte segment array: it ors byte +0x48 & 0x30 of 8 consecutive records (loop) and returns the first group where all are clear (je 0x40afb1), else advances 8 records, at most 24 groups and only while the group start is below [0x866ecc]-0x5800 (64 records before the lap end); otherwise it executes int3 (0x40afb0, a deliberate debug break, i.e. a state the game never reaches: random pointers faulted every case). Domain: lap start 0x8943a0, lap end record 192..200 (limit record >= 128); bytes +0x48 of records 0..119 draw from 16 values, 3 of which have bit 4 and/or 5 (a group is free in about a fifth of the cases, so first-group hits and multi-group advances both occur), and records 120..134 have bits 4/5 clear (other bits vary): for every start 0..63 some group start eax+8g lies in 120..127 with g <= 15 (< 24 groups, below the 128 limit), so a free group is always found and the int3 block is unreachable in valid states. No other record is read.",
+  "globals": [
+    {"addr": "0x00891504", "type": "u32", "values": ["0x8943a0"]},
+    {"addr": "0x00866ecc", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 192, "hi": 200}},
+    {"addr": "0x008943e8", "type": "u8", "count": 120, "stride": "0x160",
+     "values": [0, 1, "0x0f", "0x40", "0x80", "0xcf", "0x10", "0x20", "0xc0", "0x05", "0x8f", "0x4a", "0x0c", "0x81", "0xc7", "0x33"]},
+    {"addr": "0x0089e8e8", "type": "u8", "count": 15, "stride": "0x160", "values": [0, 1, "0x0f", "0x40", "0x80", "0xcf", "0xc0", "0x8b"]}
+  ]
+}

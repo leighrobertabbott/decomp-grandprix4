@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x0052f1f0 adds 0xc to the dword 0x826e32 and passes it (eax) with 0x826e2e (ebx) to 0x54cb7e, which compares 'cmp eax,[0x822248]; jge' (signed) twice and on 'less' stores eax to 0x833cc9 and 0xff to 0x833f74. The limit 0x822248 is read only by the callee and was never varied. The counter and the limit draw small values around each other (so less / equal / greater all occur after the +0xc), negative values (signed and unsigned order differ) and values next to 0x7fffffff so the add overflows to negative. Plain dword compares: every value is valid.",
+ "globals": [
+  {"addr": "0x00826e2e", "type": "u32"},
+  {"addr": "0x00826e32", "type": "u32", "values": [4, "0xc", "0x10", "0x20", "0xfffffff4", "0xffffffec", "0x7ffffff8", "0x7ffffffa", "0x12345678", 0]},
+  {"addr": "0x00822248", "type": "u32", "values": [0, "0x10", "0x18", "0x1c", "0x2c", "0xfffffff8", "0x80000000", "0x7fffffff", "0x12345684", "0x18"]}
+ ]
+}

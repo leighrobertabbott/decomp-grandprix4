@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x004195e1: dword 0x00601dac is the positive scale s (imul then shrd 10 gives the divisor (a*s)>>10, and s+a scales the dividend), drawn 1024..32767 so the divisor is never zero and the quotient fits (rec_004195e1); dwords 0x00601d7c and 0x00601d84 are the origins subtracted from +0x2ec/+0x2f4, drawn -32767..32767 (|b - origin| <= 65534). A zero or tiny s, or larger magnitudes, make the original #DE.",
+  "globals": [
+    {"addr": "0x00601dac", "type": "i32", "lo": 1024, "hi": 32767},
+    {"addr": "0x00601d7c", "type": "i32", "lo": -32767, "hi": 32767},
+    {"addr": "0x00601d84", "type": "i32", "lo": -32767, "hi": 32767}
+  ]
+}

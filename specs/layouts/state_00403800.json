@@ -1,0 +1,10 @@
+{
+  "_evidence": "0x00403800: eax = [0x00866ed4] - 0x2940; when edi < [0x00891500] it reads the dword [eax+0x44] (a ring position) and compares it, after an optional wrap by [0x00866ec4] below [0x00866f10], with edi. The pointer therefore addresses 0x2940 bytes into a buffer whose dword +0x44 varies; edi, the limits and the wrap are plain u32 positions compared unsigned, so full-range values reach both sides of every compare.",
+  "globals": [
+    {"addr": "0x00866ed4", "type": "ptr", "size": "0x2950", "bias": "0x2940", "fill": "bytes"},
+    {"addr": "0x00891500", "type": "u32"},
+    {"addr": "0x00866f10", "type": "u32"},
+    {"addr": "0x00866ec4", "type": "u32"},
+    {"addr": "0x00852c44", "type": "u32", "count": 2, "stride": 4}
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "_evidence": "esi of 0x0041aea9: car record prefix (0x250 bytes), background random (fill bytes: flag bytes +0xe5/+0x6f/+0x7b, words +0x62/+0x9a, the car-number byte +0x7c (& 0x3f, -1, clamped to 0x15) and the 0x41242f byte table at +0x1c6 are plain operands; nothing is a pointer or divisor). The gear byte +0x72 (0x41aeb6 test 0xff: zero takes the neutral path 0x41aebc..0x41aed0; 0x41af6b cmp 1; 0x41af18 cmp with byte +0x1cd; |gear|*2 indexes the threshold row at 0x41af52; the callees test < 2 / sign) and the compared byte +0x1cd draw from one list of gears (0 neutral, 1..7, reverse 0xff/0xfe, and the extremes 0x7f/0x80, whose row offset stays inside the varied table area), so neutral, first gear and the equal-gear exit (never reached by random bytes) all occur.",
+  "size": 592,
+  "fill": "bytes",
+  "fields": [
+    {"off": "0x72", "type": "u8", "values": [0, 0, 1, 1, 2, 3, 4, 5, 6, 7, "0xff", "0xfe", "0x7f", "0x80"]},
+    {"off": "0x1cd", "type": "u8", "values": [0, 0, 1, 1, 2, 3, 4, 5, 6, 7, "0xff", "0xfe", "0x7f", "0x80"]}
+  ]
+}

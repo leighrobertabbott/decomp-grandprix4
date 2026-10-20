@@ -1,0 +1,290 @@
+{
+ "_evidence": "One coherent pit geometry for the pit-table builder 0x0040d644 and its callees 0x40d5ef (-> 0x406dbb lookups, accepted on the ring_00405a12 track) and 0x40d9e6 -> 0x40d8a5 (accepted on state_0040d8a5/pit_0040d9e6); compose LAST, after trackgeo_008943a0+tbl_00868598+state_00406b0a+ring_00406ac7+bounds_00406a57+ring_00405a12+links_00405a12+state_0040759e+trackfar_008943a0+pit_00406dbb, whose separate geometries (pit end 12..14 vs 16..20, window 10..24) never let both pit loops repeat (ed0 < pitstart+5, pitend < ed4+5) and gave 0x40d8a5 cursor walks without an end. Records (0x8943a0 + k*0x160): lap 0..5 (lap end [0x866ecc] = record 6), pit start [0x891500] 9..10 (> lap end, as the wrap rules need), window [0x866ed0] 14..15 < [0x866ed4] 16..17 (0x40d815 loops with jne from ed0 to ed4, and count = (ed4-ed0)/0x160 + 1 is an idiv divisor: ed0 < ed4 always), pit end [0x866ef8] 21..23 (0x40d9e6 walks from the pit start until it EQUALS the pit end; ed4 + 4 <= pit end in every case and above it in some, so the 0x40d6f4 loop runs once or repeats, as 0x40d6ae does from pitstart+3 to ed0), pit entry [0x866f00] 4..5 and exit [0x866f04] 1..3 on the lap (0x40d8a5 walks entry -> lap end -> wrap to record 0 -> exit; exit 0 would never end). Word +0x7a = k (row index) for records 0..24, so each pit record owns row k and its successor row k+1 (0x40d8a5 reads ecx+8); rows past the pit end stay zero after the rep stosb, the sentinel (0 unwraps to L<<14) that stops the cursor. Lap word +0x1a & 0x7ff of the walked lap records lies in ascending bands inside [L/2, L) with L = word 0x868558 in 0x700..0x800 (record 4: 0x400-0x4ff, 5: 0x500-0x5ff, 0: 0x600-0x63f, 1: 0x640-0x67f, 2: 0x680-0x6ff), so no lap position unwraps above the sentinel; other records keep trackgeo_008943a0's any-u16 +0x1a, and record -1 (0x894240, the record before the lap start that 0x40d644 reads as exit-3/exit-2 for exits 1..2; 0x553f72/0x40b652 address it directly) draws any u16, which also reaches the '>= L: sub L' reduce at 0x40d77b.",
+ "globals": [
+  {
+   "addr": "0x00868558",
+   "type": "u16",
+   "lo": 1792,
+   "hi": 2048
+  },
+  {
+   "addr": "0x00866ecc",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 6,
+    "hi": 6
+   }
+  },
+  {
+   "addr": "0x00891500",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 9,
+    "hi": 10
+   }
+  },
+  {
+   "addr": "0x00866ed0",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 14,
+    "hi": 15
+   }
+  },
+  {
+   "addr": "0x00866ed4",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 16,
+    "hi": 17
+   }
+  },
+  {
+   "addr": "0x00866ef8",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 21,
+    "hi": 23
+   }
+  },
+  {
+   "addr": "0x00866f00",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 4,
+    "hi": 5
+   }
+  },
+  {
+   "addr": "0x00866f04",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 1,
+    "hi": 3
+   }
+  },
+  {
+   "addr": "0x89441a",
+   "type": "u16",
+   "values": [
+    0
+   ]
+  },
+  {
+   "addr": "0x89457a",
+   "type": "u16",
+   "values": [
+    1
+   ]
+  },
+  {
+   "addr": "0x8946da",
+   "type": "u16",
+   "values": [
+    2
+   ]
+  },
+  {
+   "addr": "0x89483a",
+   "type": "u16",
+   "values": [
+    3
+   ]
+  },
+  {
+   "addr": "0x89499a",
+   "type": "u16",
+   "values": [
+    4
+   ]
+  },
+  {
+   "addr": "0x894afa",
+   "type": "u16",
+   "values": [
+    5
+   ]
+  },
+  {
+   "addr": "0x894c5a",
+   "type": "u16",
+   "values": [
+    6
+   ]
+  },
+  {
+   "addr": "0x894dba",
+   "type": "u16",
+   "values": [
+    7
+   ]
+  },
+  {
+   "addr": "0x894f1a",
+   "type": "u16",
+   "values": [
+    8
+   ]
+  },
+  {
+   "addr": "0x89507a",
+   "type": "u16",
+   "values": [
+    9
+   ]
+  },
+  {
+   "addr": "0x8951da",
+   "type": "u16",
+   "values": [
+    10
+   ]
+  },
+  {
+   "addr": "0x89533a",
+   "type": "u16",
+   "values": [
+    11
+   ]
+  },
+  {
+   "addr": "0x89549a",
+   "type": "u16",
+   "values": [
+    12
+   ]
+  },
+  {
+   "addr": "0x8955fa",
+   "type": "u16",
+   "values": [
+    13
+   ]
+  },
+  {
+   "addr": "0x89575a",
+   "type": "u16",
+   "values": [
+    14
+   ]
+  },
+  {
+   "addr": "0x8958ba",
+   "type": "u16",
+   "values": [
+    15
+   ]
+  },
+  {
+   "addr": "0x895a1a",
+   "type": "u16",
+   "values": [
+    16
+   ]
+  },
+  {
+   "addr": "0x895b7a",
+   "type": "u16",
+   "values": [
+    17
+   ]
+  },
+  {
+   "addr": "0x895cda",
+   "type": "u16",
+   "values": [
+    18
+   ]
+  },
+  {
+   "addr": "0x895e3a",
+   "type": "u16",
+   "values": [
+    19
+   ]
+  },
+  {
+   "addr": "0x895f9a",
+   "type": "u16",
+   "values": [
+    20
+   ]
+  },
+  {
+   "addr": "0x8960fa",
+   "type": "u16",
+   "values": [
+    21
+   ]
+  },
+  {
+   "addr": "0x89625a",
+   "type": "u16",
+   "values": [
+    22
+   ]
+  },
+  {
+   "addr": "0x8963ba",
+   "type": "u16",
+   "values": [
+    23
+   ]
+  },
+  {
+   "addr": "0x89651a",
+   "type": "u16",
+   "values": [
+    24
+   ]
+  },
+  {
+   "addr": "0x89493a",
+   "type": "u16",
+   "lo": 1024,
+   "hi": 1279
+  },
+  {
+   "addr": "0x894a9a",
+   "type": "u16",
+   "lo": 1280,
+   "hi": 1535
+  },
+  {
+   "addr": "0x8943ba",
+   "type": "u16",
+   "lo": 1536,
+   "hi": 1599
+  },
+  {
+   "addr": "0x89451a",
+   "type": "u16",
+   "lo": 1600,
+   "hi": 1663
+  },
+  {
+   "addr": "0x89467a",
+   "type": "u16",
+   "lo": 1664,
+   "hi": 1791
+  },
+  {
+   "addr": "0x0089425a",
+   "type": "u16"
+  }
+ ]
+}

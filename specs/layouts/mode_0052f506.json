@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x52f506 'cmp byte [0x826cd9],0xff; je': 0xff compares both strings through the translation table 0x833d18 (0x54d747; compose with xlat_00833d18, zero in the image), anything else uses 'repe cmpsb'. Both modes drawn; the gap table 0x826e43.. stays at its image values (no fuzz:i32, which would overwrite its first dword).",
+  "globals": [
+    {"addr": "0x00826cd9", "type": "u8", "values": ["0xff", "0xff", 0, 1]}
+  ]
+}

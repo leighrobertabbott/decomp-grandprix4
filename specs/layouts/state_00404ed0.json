@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x00404ed0 loads pointer global 0x00602d84 (or eax,eax / je 0x404f2d: null is a real case the code tests) and reads its block (body_00404ed0: words +0x00,+0x18,+0x26,+0x160,+0x178, byte +0x51). The lookup table 0x007c5c5c is initialised .data (a cosine table: 0x4000 at index 0, falling) and is a constant, so it stays unvaried. Output 0x006030b8 is write-only.",
+  "globals": [
+    {"addr": "0x00602d84", "type": "ptr", "size": 392, "fill": "layout=body_00404ed0", "nullable": true}
+  ]
+}

@@ -1,0 +1,25 @@
+{
+ "_evidence": "Byte table 0x66d94c (22 entries, one per car: 0x43c475 indexes it with (byte [esi+0x7c] & 0x3f) - 1 clamped to <= 0x15, 0x43bea9 loops esi 0..0x15): 0xff means 'not yet set' (cmp 0xff; jne skips the lookup, which then stores the 0x43bbad/0x43bb15 sub-record level or byte [0x62d27c]); other entries are levels. Values 0xff (most picks, so the lookup runs) and levels 0..2, 0x7f, 0x80 (0x43c475 clamps the result to <= 1 unsigned). Byte [0x62d27c] is the substitute level (any u8).",
+ "globals": [
+  {
+   "addr": "0x0066d94c",
+   "type": "u8",
+   "count": 22,
+   "stride": 1,
+   "values": [
+    "0xff",
+    "0xff",
+    "0xff",
+    0,
+    1,
+    2,
+    "0x7f",
+    "0x80"
+   ]
+  },
+  {
+   "addr": "0x0062d27c",
+   "type": "u8"
+  }
+ ]
+}

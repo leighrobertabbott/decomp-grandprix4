@@ -1,0 +1,14 @@
+{
+ "_evidence": "0x005587a0 / 0x00558802 (compose after ring_008943a0, which keeps [0x866eb8] (end, records 4..26) and [0x866ebc] (wrap, 1..4 records) coherent so the walk 'add ebx,0x160; cmp ebx,[0x866eb8]; jb; sub ebx,[0x866ebc]' from ebx = records 0..29 stays in records 0..29; 0x558802 also after mode_0086857c). Stream word +0 picks 0x8000 (edx = +0xb0 / +0x8e, ebp = 0x20 / 0x100000) or not (+0xb2 / +0x90, 0x10 / 0x80000). 0x5587a0: 'mov eax,ebp; and eax,[edi+0x2c]' (ring dword +0x2c bit 4/5) then 0x5583a3, at the start and at the end record. 0x558802: 'or dword [ebx+0x2c],ebp' on every walked record (RMW) and 0x5583a3 with eax = ebp. 0x5583a3 'test [ecx*4+0x875d50],eax; je; mov dx,[ecx*2+0x875d78]; or [edi+0x78],dx' for ten channels, then 0x559bc0 ORs eax into the record's dwords +0x30/+0x34/+0x38/+0x3c/+0x40 (RMW). Never varied before: ring +0x2c (except bits_0055616f-style low values), +0x30..+0x40, word +0x78 and the two mask tables. Domain: +0x2c of records 0..31 from {0, 0x10, 0x20, 0x30, 0x80000, 0x100000, 0x180030, 0x7800, 0xffffffff} (each tested bit set and clear), +0x30..+0x40 and word +0x78 random, the ten dword masks from {0, 0x10, 0x20, 0x30, 0x80000, 0x100000, 0x180000, 0xffffffff, 0x55555555, 0xaaaaaaaa} (both outcomes for both eax values), the ten word masks random. Plain flag data at fixed addresses: every value is valid (+0xb0/+0xb2/+0x8e/+0x90 are only stored).",
+ "globals": [
+  {"addr": "0x008943cc", "type": "u32", "count": 32, "stride": "0x160", "values": [0, 0, "0x10", "0x20", "0x30", "0x80000", "0x100000", "0x180030", "0x7800", "0xffffffff"]},
+  {"addr": "0x008943d0", "type": "u32", "count": 32, "stride": "0x160"},
+  {"addr": "0x008943d4", "type": "u32", "count": 32, "stride": "0x160"},
+  {"addr": "0x008943d8", "type": "u32", "count": 32, "stride": "0x160"},
+  {"addr": "0x008943dc", "type": "u32", "count": 32, "stride": "0x160"},
+  {"addr": "0x008943e0", "type": "u32", "count": 32, "stride": "0x160"},
+  {"addr": "0x00894418", "type": "u16", "count": 32, "stride": "0x160"},
+  {"addr": "0x00875d50", "type": "u32", "count": 10, "stride": 4, "values": [0, 0, "0x10", "0x20", "0x30", "0x80000", "0x100000", "0x180000", "0xffffffff", "0x55555555", "0xaaaaaaaa"]},
+  {"addr": "0x00875d78", "type": "u16", "count": 10, "stride": 2}
+ ]
+}

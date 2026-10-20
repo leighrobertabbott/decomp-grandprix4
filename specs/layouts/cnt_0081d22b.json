@@ -1,0 +1,16 @@
+{
+ "_evidence": "0x528b14: 'cmp byte [0x81d22b],0; jne' picks the mode (eax 0 or 3) passed with the static item chain 0x84eebe to 0x53e4db; the byte is only compared, so any value is valid (zero in the image). Layout-only (no fuzz): fuzz:i32 also rewrites the immediate-addressed chain header and makes 0x4fd2aa fault.",
+ "globals": [
+  {
+   "addr": "0x0081d22b",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    1,
+    2,
+    "0xff"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,9 @@
+{
+  "_evidence": "Setup-derived suspension parameters read by 0x0040fdfb, all written by 0x004112e3 from the car setup (so state, not constants; zero in the image): f64 0x6012d8 (fild/fmul then fistp: a stiffness ratio computed as product/quotient of setup doubles) and 0x6012e8 (16384/[0x60130c] * [0x6012e0]) drawn -8..8 (finite, both signs); limits 0x6012f8/0x6012fc (cmp; jle clamp) and offsets 0x601300/0x601304 (fistp of setup values * [0x601400]) drawn -0x100000..0x100000 against the car values of car_0040fdfb so both clamp outcomes occur; the weight pair 0x601308 (= -e) and 0x60130c (= e + 0x4000, Q14 split, imul; shrd 14) drawn -0x8000..0x8000 independently. fistp of an out-of-range product gives the indefinite integer on both sides; no divisor, index or pointer.",
+  "globals": [
+    {"addr": "0x006012d8", "type": "f64", "lo": -8, "hi": 8},
+    {"addr": "0x006012e8", "type": "f64", "lo": -8, "hi": 8},
+    {"addr": "0x006012f8", "type": "i32", "count": 4, "stride": 4, "lo": -1048576, "hi": 1048576},
+    {"addr": "0x00601308", "type": "i32", "count": 2, "stride": 4, "lo": -32768, "hi": 32768}
+  ]
+}

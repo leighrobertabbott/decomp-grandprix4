@@ -1,0 +1,18 @@
+{
+ "_evidence": "Car position pair read by 0x405cf8/0x405d65 (mov ecx,[esi]; mov ebx,[esi+4]) and passed to the walks 0x405c9a/0x405d05, which use x = ecx>>11, z = ebx>>11. Positions are coordinates of the i16 record frame <<11 (see ring_00405a12), so both dwords lie in -0x4000000..0x3fff7ff (z <= 32766): the pinned records 2 (CF=1) and 3 (CF=0) of ring_00405a12 then stop every walk inside records 0..14. Larger values never come from the game and let a walk run off the varied records.",
+ "size": 64,
+ "fields": [
+  {
+   "off": 0,
+   "type": "i32",
+   "lo": -67108864,
+   "hi": 67106815
+  },
+  {
+   "off": 4,
+   "type": "i32",
+   "lo": -67108864,
+   "hi": 67106815
+  }
+ ]
+}

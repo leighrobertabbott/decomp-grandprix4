@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x00427880: idiv [0x00603854] at 0x00427895 divides |ecx| << 18 (64-bit) by D, so D must be nonzero and |ecx|*2^18/D must fit int32, i.e. |ecx| < D*2^13; with the spec's ecx in -0xffffff..0xffffff and D in 0x800..0xffff the quotient stays below 2^31 (D is [0x007ad8b8] copied by 0x00412604, static 0x4000, used there as an unsigned divisor and clamped as D>>8 to 10..32; other layouts use it as a 16-bit positive value; the callers 0x00427a53/0x00427b5e build ecx as speed*D>>18, so q is of the order of the speed). The other inputs follow the division and cannot fault: [0x006247b0] (static 0x1d500, lower bound for the weight, cmp/jge at 0x004278b4; varied -0x20000..0x20000 so the weight can also be negative, reaching the neg at 0x004278ca), [0x006247ac] (static 0x5200, imul at 0x004278e7, quotient <= 0x20000000 so the shrd result is any 32-bit value; varied -0x10000..0x10000), [0x006247a8] (static 0x1000000, signed upper clamp at 0x004278f1; varied -0x1000000..0x30000000 for both outcomes). [0x006247b8] is only written. The block 0x004278d7 (edx+1 == 0) needs [esi+0x284]-q == 0x80000000 with weight 1 or 2 and is not targeted.",
+  "globals": [
+    {"addr": "0x00603854", "type": "i32", "lo": 2048, "hi": 65535},
+    {"addr": "0x006247b0", "type": "i32", "lo": -131072, "hi": 131072},
+    {"addr": "0x006247ac", "type": "i32", "lo": -65536, "hi": 65536},
+    {"addr": "0x006247a8", "type": "i32", "lo": -16777216, "hi": 805306368}
+  ]
+}

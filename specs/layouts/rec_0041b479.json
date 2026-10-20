@@ -1,0 +1,8 @@
+{
+  "size": 768,
+  "_evidence": "Car block at esi for 0x0041b479: only dwords +0x2f4 and +0x2f8 are read (fild factors of the two wheel terms); -1000..1000 like the other per-wheel factors, any value would be valid (x87 exceptions masked).",
+  "fields": [
+    {"off": "0x2f4", "type": "i32", "lo": -1000, "hi": 1000},
+    {"off": "0x2f8", "type": "i32", "lo": -1000, "hi": 1000}
+  ]
+}

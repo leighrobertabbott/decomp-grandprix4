@@ -1,0 +1,221 @@
+{
+ "_evidence": "Player-car timing fields read by the event handlers that 0x00513f45 reaches through the dispatcher 0x514152 (compose LAST, after player_0040f8d9+disp_005141b8+events_00514152, which make esi = [0x679d30] one of the 22 car records 0x66fef0 + k*0x41c and gate the handler call). 0x513f45 raises the events 2, 3, 0x12 and 0x13, whose table 0x8172a8 entries are 0x515033 (dword +0x38 -> 0x866074), 0x51547e (byte +0x74 indexes the lap-time dwords 'mov eax,[esi+ecx*4+0x20]', 'cmp eax,0x927c0; jl' then the BCD conversion 0x51fd6f, else the 0x2d dashes; RMW of +0x88), 0x5158e8 (constants only) and 0x515906 (byte +0x74 again, segment pointer +0x1c 'cmp edx,[0x891500]; jb' against the pit start, 'test byte [esi+0x82],2', the sector dwords 'cmp dword [esi+ebx*4+0x2c],0x20000000; jne', [0x893cec] or the selected sector dword into 0x86607c, RMW of +0x8a, and the discarded dwords 0x891bfc/0x891c00). The image zeros made every case take the same path. Here, for every car: +0x1c is a ring record address 0..26 and the pit start [0x891500] another (both sides of the jb), the lap times +0x20/+0x24/+0x28 draw values on both sides of 0x927c0 (10 minutes) including 0, the 1-hour step 0x36ee80 and negative ones (0x51fd6f's subtraction loops then run at most 9 times per digit: no hang), the sector dwords +0x2c/+0x30/+0x34 equal the 0x20000000 sentinel in about 3/10, +0x38 is any i32, the index +0x74 draws 0..3 and 0xff (0x515906's 'inc; cmp 3; jl' wrap and its bit-2 path that keeps it; index 0xff reads +0x41c, the next record's first dword or the dword after the array, still mapped .data), +0x82 has bit 1 both ways, +0x88/+0x8a any byte. No division, no pointer is formed from these values except the index above: every value is valid. Values are synthetic.",
+ "globals": [
+  {
+   "addr": "0x0066ff0c",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x8943a0",
+    "0x894500",
+    "0x894660",
+    "0x8947c0",
+    "0x894920",
+    "0x894a80",
+    "0x894be0",
+    "0x894d40",
+    "0x894ea0",
+    "0x895000",
+    "0x895160",
+    "0x8952c0",
+    "0x895420",
+    "0x895580",
+    "0x8956e0",
+    "0x895840",
+    "0x8959a0",
+    "0x895b00",
+    "0x895c60",
+    "0x895dc0",
+    "0x895f20",
+    "0x896080",
+    "0x8961e0",
+    "0x896340",
+    "0x8964a0",
+    "0x896600",
+    "0x896760"
+   ]
+  },
+  {
+   "addr": "0x0066ff10",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    1,
+    "0x5a3c",
+    "0x15f90",
+    "0x1d4c0",
+    "0x927bf",
+    "0x927c0",
+    "0x927c1",
+    "0x100000",
+    "0x36ee80",
+    "0x7fffffff",
+    "0x80000000",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x0066ff14",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    1,
+    "0x5a3c",
+    "0x15f90",
+    "0x1d4c0",
+    "0x927bf",
+    "0x927c0",
+    "0x927c1",
+    "0x100000",
+    "0x36ee80",
+    "0x7fffffff",
+    "0x80000000",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x0066ff18",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    1,
+    "0x5a3c",
+    "0x15f90",
+    "0x1d4c0",
+    "0x927bf",
+    "0x927c0",
+    "0x927c1",
+    "0x100000",
+    "0x36ee80",
+    "0x7fffffff",
+    "0x80000000",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x0066ff1c",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x20000000",
+    "0x20000000",
+    "0x20000000",
+    0,
+    1,
+    "0x5a3c",
+    "0x15f90",
+    "0x1fffffff",
+    "0x20000001",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x0066ff20",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x20000000",
+    "0x20000000",
+    "0x20000000",
+    0,
+    1,
+    "0x5a3c",
+    "0x15f90",
+    "0x1fffffff",
+    "0x20000001",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x0066ff24",
+   "type": "u32",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    "0x20000000",
+    "0x20000000",
+    "0x20000000",
+    0,
+    1,
+    "0x5a3c",
+    "0x15f90",
+    "0x1fffffff",
+    "0x20000001",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x0066ff28",
+   "type": "i32",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x0066ff64",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    0,
+    1,
+    1,
+    2,
+    2,
+    3,
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0066ff72",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c",
+   "values": [
+    0,
+    2,
+    "0x40",
+    "0x42",
+    "0xfd",
+    "0xff"
+   ]
+  },
+  {
+   "addr": "0x0066ff78",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x0066ff7a",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x41c"
+  },
+  {
+   "addr": "0x00891500",
+   "type": "u32",
+   "points_into": {
+    "base": "0x008943a0",
+    "stride": "0x160",
+    "lo": 0,
+    "hi": 26
+   }
+  },
+  {
+   "addr": "0x00891bfc",
+   "type": "u32",
+   "count": 2,
+   "stride": 4
+  }
+ ]
+}

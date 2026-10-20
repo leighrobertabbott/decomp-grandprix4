@@ -1,0 +1,14 @@
+{
+ "_evidence": "Globals read by 0x0054defe (pair with rec_0054defe for edi). Text: 'mov al,[esi]; cmp al,0x14; jb' (0x54df21) walks the bytes from the start (0xa20000..0xa2003f, 1..0xff: any non-zero byte; 0x01..0x13 end a line, 0x14/0x15/0x16..0x1f map to codes 0x20/0x2d/0x30..0x39) up to the terminator 0 at E = 0xa20040 (the record's end pointer; the moves 0x54e12a/0x54e13f never read past it). Font: 'sub eax,[0x833f48]; shl eax,2; mov ebx,[0x833f90]; mov eax,dword [eax+ebx]; add ebx,eax; movzx eax,byte [ebx]' reads a FULL dword entry, so the table is placed in the unreferenced bss block 0xa30000 with [0x833f90] = 0xa30080: the code minus the first code [0x833f48] (0..0x20, the code is 0x20..0xff) indexes entries 0..0xff at 0xa30080..0xa3047f, each a dword 0x400..0x4ff (zero upper words), so the glyph is at 0xa30480..0xa3057f whose first byte (width 0..0x20) is read. Room: 'mov edx,[0x838c20]; sub edx,[0x838c18]; sub edx,6' per line, and per glyph 'call 0x54d6f1 (a bare ret); add eax,ebx; add eax,[0x833f6c]; sub edx,eax; jl' charges width + glyph ADDRESS + [0x833f6c] (-16..64), i.e. 0xa30470..0xa305df. A room below one glyph's cost inserts a 0x0a before the same glyph on every pass: the original never terminates (the text grows until it faults), so the room must exceed 0xa305df: [0x838c18] 0..0x100 and [0x838c20] from 0xa30800 (1 glyph per line), 0x1460a80 (1 or 2: between 2x the smallest and 2x the largest cost), 0x1470000 (2), 0x1f00000 (3), 0x6000000 (9) and 0x7fff0000 (never wraps a 128-byte text). Everything written before it is read ([0x838c2a], [0x833f74..76], [0x833f78]) is not an input. Values are synthetic.",
+ "globals": [
+  {"addr": "0x00a20000", "type": "u8", "count": 64, "lo": 1, "hi": 255},
+  {"addr": "0x00a20040", "type": "u8", "values": [0]},
+  {"addr": "0x00838c18", "type": "u32", "lo": 0, "hi": 256},
+  {"addr": "0x00838c20", "type": "u32", "values": ["0xa30800", "0x1460a80", "0x1470000", "0x1f00000", "0x6000000", "0x7fff0000"]},
+  {"addr": "0x00833f48", "type": "u32", "lo": 0, "hi": 32},
+  {"addr": "0x00833f6c", "type": "i32", "lo": -16, "hi": 64},
+  {"addr": "0x00833f90", "type": "u32", "values": ["0xa30080"]},
+  {"addr": "0x00a30080", "type": "u32", "count": 256, "stride": 4, "lo": 1024, "hi": 1279},
+  {"addr": "0x00a30480", "type": "u8", "count": 256, "lo": 0, "hi": 32}
+ ]
+}

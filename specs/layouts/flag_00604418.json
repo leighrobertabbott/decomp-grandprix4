@@ -1,0 +1,16 @@
+{
+ "_evidence": "Byte flag 0x604418, tested by 0x40f6d0 ('cmp byte [0x604418],0; je': nonzero runs 0x409456) and set to 0xff by 0x410d04/0x410d4b: state that is 0 or 0xff in the game (1 added as a generic nonzero). Callers that reach 0x40f6d0 through another function (0x43552d, 0x436f5f, 0x43ad30, ...) do not address it directly, so fuzz:i32 left it at its static 0 there.",
+ "globals": [
+  {
+   "addr": "0x00604418",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    "0xff",
+    "0xff",
+    1
+   ]
+  }
+ ]
+}

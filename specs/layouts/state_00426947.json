@@ -1,0 +1,9 @@
+{
+  "_evidence": "Globals of 0x00426947 (compose frac_00624790 for F = [0x624790] in 1..0x3fff). idx = min(|[esi+0x98]|>>2, 0x16600000)>>20 (+0x168 when byte +0x8d bit 0) is 0..718 into three 719-dword tables that are zero in the image and filled at run time by 0x4405a4 (0x639654), 0x4407d3 (0x63a194) and 0x44099f (0x63acd4), so they are varied state. diff = eax - [0x6247b4]; on diff >= 0 the limit is ((tab0[idx]*word +0xd6)>>6 * i16 +0xf6)>>14 and 'idiv ecx' runs only for 0 <= diff < limit (|q| < 0x4000); on diff < 0 upper = tab2[idx]*w>>6 ('jg': upper < diff < 0 gives idiv by a negative nonzero upper, |q| < F) and lower = tab1[idx]*w>>6 ('jle': lower < diff gives |diff|<<14 idiv |lower| > |diff|). So no table value can fault; the ranges are chosen so every threshold lands within the diff range: [0x6247b4] i32 +-0x4000 (with the spec's eax +-20000), tab0 0..0x1000, tab2 -0x1000..0, tab1 -0x2000..0 (with word +0xd6 in 0..0x400 from rec_00426947 the limits are of the order 2^16, both sides of diff).",
+  "globals": [
+    {"addr": "0x006247b4", "type": "i32", "lo": -16384, "hi": 16384},
+    {"addr": "0x00639654", "type": "i32", "count": 719, "stride": 4, "lo": 0, "hi": 4096},
+    {"addr": "0x0063a194", "type": "i32", "count": 719, "stride": 4, "lo": -8192, "hi": 0},
+    {"addr": "0x0063acd4", "type": "i32", "count": 719, "stride": 4, "lo": -4096, "hi": 0}
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "_evidence": "0x004413b7 and 0x00441606 index the 22x44 tables by row = (byte [esi+0x7c] & 0x3f) - 1 clamped to <= 0x15 (row -1 when the low bits are 0, reading the 44 bytes/dwords before each table, which are other in-scope state) and column = byte 0x66d936[row]. 0x66d936 is runtime state written by 0x431d17/0x431da0/0x4411a6/0x4411cc/0x4412d1 (0 at 0x43cbff) as a column 0..43 (0x40f0dd clamps it to 0x2b): u8 count 22, 0..43. Byte tables 0x66dd2a/0x66e0f2/0x66e4ba/0x66e882 (968 bytes each, written by 0x441522/0x441544/0x441566/0x441588, zeroed by 0x43cbc9..) and the dword table 0x66ec60 (968 dwords, written by 0x4350da/0x4350e3/0x4415be) are runtime state, zero in the image: all patterns valid (they only feed movzx/shl/mul/div whose divisor the code makes nonzero and larger than the high dword). 0x602a9c is written by 0x40ca9e and is the divisor scale (edi = 0xf0*[0x602a9c]): values include 0 and small scales so edi <= the product high dword (the 'not above' paths 0x441425/0x44144b/0x441471/0x441497) as well as large ones. 0x6020a8 is never written (only read at 0x441419/0x44143f/0x441465/0x44148b): image value 0 most of the time, plus a few other bit patterns (no value faults). Row -1 (car byte & 0x3f == 0) also reads byte 0x66d935 (no direct reference in the code: only reached as 0x66d936[-1]; any u8, the tables it then indexes lie in mapped in-scope data) and the tail of the 0x66d962 counter table before 0x66dd2a (compose counter_0040f0dd BEFORE this layout: its 0x66d936 is full-range, this one bounds it to 0..43).",
+  "globals": [
+    {
+      "addr": "0x0066d935",
+      "type": "u8"
+    },
+    {
+      "addr": "0x0066d936",
+      "type": "u8",
+      "count": 22,
+      "lo": 0,
+      "hi": 43
+    },
+    {
+      "addr": "0x0066dd2a",
+      "type": "u8",
+      "count": 968
+    },
+    {
+      "addr": "0x0066e0f2",
+      "type": "u8",
+      "count": 968
+    },
+    {
+      "addr": "0x0066e4ba",
+      "type": "u8",
+      "count": 968
+    },
+    {
+      "addr": "0x0066e882",
+      "type": "u8",
+      "count": 968
+    },
+    {
+      "addr": "0x0066ec60",
+      "type": "u32",
+      "count": 968,
+      "values": [
+        0,
+        1,
+        "0x4000",
+        "0x10000",
+        "0x3fffff",
+        "0x7fffffff",
+        "0x80000000",
+        "0xffc00000",
+        "0xffffffff",
+        12345,
+        "0x12345678",
+        "0xdeadbeef"
+      ]
+    },
+    {
+      "addr": "0x00602a9c",
+      "type": "u32",
+      "values": [
+        0,
+        0,
+        1,
+        2,
+        8,
+        "0x100",
+        "0x1000",
+        "0x10000",
+        "0x1000000",
+        "0x7fffffff",
+        "0xffffffff",
+        "0x11111111"
+      ]
+    },
+    {
+      "addr": "0x006020a8",
+      "type": "u32",
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        "0x3fff",
+        "0x7fffffff",
+        "0xc0000000",
+        "0xffffffff"
+      ]
+    }
+  ]
+}

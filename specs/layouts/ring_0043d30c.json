@@ -1,0 +1,9 @@
+{
+  "_evidence": "0x0043d30c walks backward from edi (spec rec 0..25) for the static counts [0x6269a0]/[0x6269a4]/[0x6269a8] (10, 8, 2: real constants, not varied - zero would loop 2^32 times), stepping ebx -= 0x160 and wrapping by + [0x00866ebc] when ebx drops below the ring start [0x00866ec0]. The ring start is a record-aligned pointer (records 0..6) and the ring length a whole number of records (8..20), so after a wrap ebx = start-1+len stays inside records 0..25 and every visited record is one of the 32 varied records (u8 +0x12 is or-ed with dl, u16 +0xca compared: the second loop continues while the word rises by >= 0xc0 per step back). Nothing faults.",
+  "globals": [
+    {"addr": "0x00866ec0", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 6}},
+    {"addr": "0x00866ebc", "type": "u32", "values": ["0xb00", "0xc60", "0xdc0", "0xf20", "0x1080", "0x11e0", "0x1340", "0x14a0", "0x1600", "0x1760", "0x18c0", "0x1a20", "0x1b80"]},
+    {"addr": "0x008943b2", "type": "u8", "count": 32, "stride": "0x160"},
+    {"addr": "0x0089446a", "type": "u16", "count": 32, "stride": "0x160"}
+  ]
+}

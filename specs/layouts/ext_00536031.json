@@ -1,0 +1,11 @@
+{
+ "_evidence": "Pointer global 0x826d11 (the current file record) read by 0x00536031 ('mov esi,[0x826d11]'): a fresh 0x58-byte record from extrec_00536031 (name +0..+5, extension mask dword +0x4c; see its evidence). Compose after upper_00833d18 and lower_00833e18 (the fold tables 0x54d747 and 0x52f208/0x54d755 read).",
+ "globals": [
+  {
+   "addr": "0x00826d11",
+   "type": "ptr",
+   "size": 88,
+   "fill": "layout=extrec_00536031"
+  }
+ ]
+}

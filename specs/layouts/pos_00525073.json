@@ -1,0 +1,62 @@
+{
+ "_evidence": "State of 0x00525073 (compose after ptrtab_00524fa4+ring_00525205, which give [0x679bd8] 0..31, the pit start [0x891500] = ring record 4..26, the half-lap [0x866ed8] 0..0x2a00 and the lap length [0x866ec4]). 'or byte [0x66d7a6],0x40; call 0x524fdc': the key byte bit 7 picks inc (index+1 < [0x6f3ad8] else 0) or dec (index-1 < [0x6f3ad8] unsigned, else [0x6f3ad8]-1), so with the object count [0x6f3ad8] drawn 1..32 (the 32-entry parallel tables; 0x524fdc's own bound) the new index is always 0..31 and 'mov edx,[ebx*4+0x6f326c]' stays in the table; the key byte is any value (both bit-7 outcomes; bit 6 is forced by the or). The 32 entries of 0x6f326c (one of the 0x80-byte parallel per-object tables beside 0x6f2f6c/0x6f306c) are ring positions compared with [0x891500] and subtracted, never dereferenced: they draw the ring record addresses 0x8943a0 + k*0x160 (k 0..30) plus 0 and 0xffffffff, like ring_00525205's 0x6f2f6c list, so both sides of each 'cmp ...,[0x891500]; jae', both sides of 'cmp ecx,0xdc0; jae' (|d| < 10 records) and both signs of the difference occur. [0x679d30] (the selected car record) is a fresh buffer seg_00525073 whose +0x1c draws the same addresses.",
+ "globals": [
+  {
+   "addr": "0x0066d7a6",
+   "type": "u8"
+  },
+  {
+   "addr": "0x006f3ad8",
+   "type": "u32",
+   "lo": 1,
+   "hi": 32
+  },
+  {
+   "addr": "0x006f326c",
+   "type": "u32",
+   "count": 32,
+   "stride": 4,
+   "values": [
+    "0x8943a0",
+    "0x894500",
+    "0x894660",
+    "0x8947c0",
+    "0x894920",
+    "0x894a80",
+    "0x894be0",
+    "0x894d40",
+    "0x894ea0",
+    "0x895000",
+    "0x895160",
+    "0x8952c0",
+    "0x895420",
+    "0x895580",
+    "0x8956e0",
+    "0x895840",
+    "0x8959a0",
+    "0x895b00",
+    "0x895c60",
+    "0x895dc0",
+    "0x895f20",
+    "0x896080",
+    "0x8961e0",
+    "0x896340",
+    "0x8964a0",
+    "0x896600",
+    "0x896760",
+    "0x8968c0",
+    "0x896a20",
+    "0x896b80",
+    "0x896ce0",
+    0,
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x00679d30",
+   "type": "ptr",
+   "size": 32,
+   "fill": "layout=seg_00525073"
+  }
+ ]
+}

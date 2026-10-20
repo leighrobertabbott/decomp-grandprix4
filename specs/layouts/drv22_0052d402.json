@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x0052d402: 'and byte [edi],0x3f' over the 22 bytes 0x7c2a48..0x7c2a5d (per-driver bytes read and written by ~70 routines: state). Each byte is random so both cleared bits 6/7 matter; the byte after the run (0x7c2a5e) is random too, so an over-long loop is visible.",
+ "globals": [
+  {
+   "addr": "0x007c2a48",
+   "type": "u8",
+   "count": 23,
+   "stride": 1
+  }
+ ]
+}

@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x0051d798 runs 0x4112dd -> 0x410dd2 on the car record [0x66d820] and, when byte 0x7aafd4 != 0, on [0x66d828] (state_0040fa01: null or one of the 22 records 0x66fef0 + k*0x41c). 0x410dd2 read-modify-writes car byte +0xcf: 'and byte [esi+0xcf],0xf7', then 'or 8' / 'or 4' (control byte +1 bits with 0x7a97a0), 'and 0xdf', 'or 0x20' (+0x10 != +0x11); bits 0,1,4,6,7 (and bit 2 when not set) pass through unchanged, so the byte is state whose untouched bits must survive: all 22 records' +0xcf (0x66ffbf + k*0x41c) are drawn over the full u8 range (zero in the image). A flag byte: no pointer, index or divisor, every value valid.",
+ "globals": [
+  {"addr": "0x0066ffbf", "type": "u8", "count": 22, "stride": "0x41c"}
+ ]
+}

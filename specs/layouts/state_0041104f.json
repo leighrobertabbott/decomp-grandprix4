@@ -1,0 +1,13 @@
+{
+  "_evidence": "0x0041104f handles two car-record pointer globals, 0x0066d820 and 0x0066d82c (the second only when byte 0x007c2e6c != 0); each is null (or eax,eax / je - 0x409b87 stores 0) or a record of the 0x41c-stride array at 0x0066fef0 (0x409c13 searches it). For a non-null record without +0x8d bit 1 it toggles +0x71 bit 7 and updates +0xfe bit 2 and +0x230 bit 7 or +0x231 bit 5. Both pointers draw from null or records 0..5, so they are null, distinct or the same record (the second toggle then sees the first's write). The bytes +0x71 (0x0066ff61), +0x8d (0x0066ff7d), +0xfe (0x0066ffee), +0x230/+0x231 (0x00670120/1) of those records vary fully.",
+  "globals": [
+    {"addr": "0x0066d820", "type": "u32", "values": [0, 0, "0x0066fef0", "0x0067030c", "0x00670728", "0x00670b44", "0x00670f60", "0x0067137c"]},
+    {"addr": "0x0066d82c", "type": "u32", "values": [0, 0, "0x0066fef0", "0x0067030c", "0x00670728", "0x00670b44", "0x00670f60", "0x0067137c"]},
+    {"addr": "0x007c2e6c", "type": "u8", "values": [0, 0, 1, "0xff"]},
+    {"addr": "0x0066ff61", "type": "u8", "count": 6, "stride": "0x41c"},
+    {"addr": "0x0066ff7d", "type": "u8", "count": 6, "stride": "0x41c"},
+    {"addr": "0x0066ffee", "type": "u8", "count": 6, "stride": "0x41c"},
+    {"addr": "0x00670120", "type": "u8", "count": 6, "stride": "0x41c"},
+    {"addr": "0x00670121", "type": "u8", "count": 6, "stride": "0x41c"}
+  ]
+}

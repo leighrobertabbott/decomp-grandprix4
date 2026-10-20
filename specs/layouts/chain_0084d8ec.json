@@ -1,0 +1,327 @@
+{
+ "size": 4669,
+ "fill": "bytes",
+ "_evidence": "Static menu item list whose head cell is 0x84d8ec (the image holds a chain of variable-size items 0x84d942, 0x84d968, ...; they are .data, i.e. runtime-mutable menu state). Walkers: 0x52bb48 ('mov esi,0x84d8ec' then 'mov esi,[esi]' x0x13, word +0x30 store, then 6 nodes 'and/or byte [esi+0x1f]' with 'mov esi,[esi]'), 0x52bbae (x0x21, word +0x30, then 3 nodes 'or byte [esi+0x1f],0x20'), 0x52bc14 (x0x26, +0x30, 3 nodes), 0x52bc7a (x0x2b, then 3 nodes +0x1f), 0x52bca6 (x0x31, then 5 nodes). The only node fields any of them touch are dword +0 (the link), byte +0x1f (RMW flag byte) and word +0x30 (store). This buffer holds 64 DISTINCT nodes at irregular, partly unaligned offsets (spacing cycles 0x42,0x4a,0x55,0x40,0x4f,0x46, every node >= 0x40 bytes so +0x30/+0x1f never overlap a later link); node k's +0 is a 'self' field = buffer + offset of node k+1, the last node links to itself, so every walk of up to 63 hops lands on a distinct node (a wrong hop count or a fixed-address shortcut writes a different node and the memory compare sees it) and any longer walk stays inside the buffer (no null link: none of the walkers tests for one). Background 'bytes': +0x1f (both states of bit 0x20) and +0x30 are random.",
+ "fields": [
+  {
+   "off": "0x0",
+   "type": "self",
+   "bias": "0x42"
+  },
+  {
+   "off": "0x42",
+   "type": "self",
+   "bias": "0x8c"
+  },
+  {
+   "off": "0x8c",
+   "type": "self",
+   "bias": "0xe1"
+  },
+  {
+   "off": "0xe1",
+   "type": "self",
+   "bias": "0x121"
+  },
+  {
+   "off": "0x121",
+   "type": "self",
+   "bias": "0x170"
+  },
+  {
+   "off": "0x170",
+   "type": "self",
+   "bias": "0x1b6"
+  },
+  {
+   "off": "0x1b6",
+   "type": "self",
+   "bias": "0x1f8"
+  },
+  {
+   "off": "0x1f8",
+   "type": "self",
+   "bias": "0x242"
+  },
+  {
+   "off": "0x242",
+   "type": "self",
+   "bias": "0x297"
+  },
+  {
+   "off": "0x297",
+   "type": "self",
+   "bias": "0x2d7"
+  },
+  {
+   "off": "0x2d7",
+   "type": "self",
+   "bias": "0x326"
+  },
+  {
+   "off": "0x326",
+   "type": "self",
+   "bias": "0x36c"
+  },
+  {
+   "off": "0x36c",
+   "type": "self",
+   "bias": "0x3ae"
+  },
+  {
+   "off": "0x3ae",
+   "type": "self",
+   "bias": "0x3f8"
+  },
+  {
+   "off": "0x3f8",
+   "type": "self",
+   "bias": "0x44d"
+  },
+  {
+   "off": "0x44d",
+   "type": "self",
+   "bias": "0x48d"
+  },
+  {
+   "off": "0x48d",
+   "type": "self",
+   "bias": "0x4dc"
+  },
+  {
+   "off": "0x4dc",
+   "type": "self",
+   "bias": "0x522"
+  },
+  {
+   "off": "0x522",
+   "type": "self",
+   "bias": "0x564"
+  },
+  {
+   "off": "0x564",
+   "type": "self",
+   "bias": "0x5ae"
+  },
+  {
+   "off": "0x5ae",
+   "type": "self",
+   "bias": "0x603"
+  },
+  {
+   "off": "0x603",
+   "type": "self",
+   "bias": "0x643"
+  },
+  {
+   "off": "0x643",
+   "type": "self",
+   "bias": "0x692"
+  },
+  {
+   "off": "0x692",
+   "type": "self",
+   "bias": "0x6d8"
+  },
+  {
+   "off": "0x6d8",
+   "type": "self",
+   "bias": "0x71a"
+  },
+  {
+   "off": "0x71a",
+   "type": "self",
+   "bias": "0x764"
+  },
+  {
+   "off": "0x764",
+   "type": "self",
+   "bias": "0x7b9"
+  },
+  {
+   "off": "0x7b9",
+   "type": "self",
+   "bias": "0x7f9"
+  },
+  {
+   "off": "0x7f9",
+   "type": "self",
+   "bias": "0x848"
+  },
+  {
+   "off": "0x848",
+   "type": "self",
+   "bias": "0x88e"
+  },
+  {
+   "off": "0x88e",
+   "type": "self",
+   "bias": "0x8d0"
+  },
+  {
+   "off": "0x8d0",
+   "type": "self",
+   "bias": "0x91a"
+  },
+  {
+   "off": "0x91a",
+   "type": "self",
+   "bias": "0x96f"
+  },
+  {
+   "off": "0x96f",
+   "type": "self",
+   "bias": "0x9af"
+  },
+  {
+   "off": "0x9af",
+   "type": "self",
+   "bias": "0x9fe"
+  },
+  {
+   "off": "0x9fe",
+   "type": "self",
+   "bias": "0xa44"
+  },
+  {
+   "off": "0xa44",
+   "type": "self",
+   "bias": "0xa86"
+  },
+  {
+   "off": "0xa86",
+   "type": "self",
+   "bias": "0xad0"
+  },
+  {
+   "off": "0xad0",
+   "type": "self",
+   "bias": "0xb25"
+  },
+  {
+   "off": "0xb25",
+   "type": "self",
+   "bias": "0xb65"
+  },
+  {
+   "off": "0xb65",
+   "type": "self",
+   "bias": "0xbb4"
+  },
+  {
+   "off": "0xbb4",
+   "type": "self",
+   "bias": "0xbfa"
+  },
+  {
+   "off": "0xbfa",
+   "type": "self",
+   "bias": "0xc3c"
+  },
+  {
+   "off": "0xc3c",
+   "type": "self",
+   "bias": "0xc86"
+  },
+  {
+   "off": "0xc86",
+   "type": "self",
+   "bias": "0xcdb"
+  },
+  {
+   "off": "0xcdb",
+   "type": "self",
+   "bias": "0xd1b"
+  },
+  {
+   "off": "0xd1b",
+   "type": "self",
+   "bias": "0xd6a"
+  },
+  {
+   "off": "0xd6a",
+   "type": "self",
+   "bias": "0xdb0"
+  },
+  {
+   "off": "0xdb0",
+   "type": "self",
+   "bias": "0xdf2"
+  },
+  {
+   "off": "0xdf2",
+   "type": "self",
+   "bias": "0xe3c"
+  },
+  {
+   "off": "0xe3c",
+   "type": "self",
+   "bias": "0xe91"
+  },
+  {
+   "off": "0xe91",
+   "type": "self",
+   "bias": "0xed1"
+  },
+  {
+   "off": "0xed1",
+   "type": "self",
+   "bias": "0xf20"
+  },
+  {
+   "off": "0xf20",
+   "type": "self",
+   "bias": "0xf66"
+  },
+  {
+   "off": "0xf66",
+   "type": "self",
+   "bias": "0xfa8"
+  },
+  {
+   "off": "0xfa8",
+   "type": "self",
+   "bias": "0xff2"
+  },
+  {
+   "off": "0xff2",
+   "type": "self",
+   "bias": "0x1047"
+  },
+  {
+   "off": "0x1047",
+   "type": "self",
+   "bias": "0x1087"
+  },
+  {
+   "off": "0x1087",
+   "type": "self",
+   "bias": "0x10d6"
+  },
+  {
+   "off": "0x10d6",
+   "type": "self",
+   "bias": "0x111c"
+  },
+  {
+   "off": "0x111c",
+   "type": "self",
+   "bias": "0x115e"
+  },
+  {
+   "off": "0x115e",
+   "type": "self",
+   "bias": "0x11a8"
+  },
+  {
+   "off": "0x11a8",
+   "type": "self",
+   "bias": "0x11fd"
+  },
+  {
+   "off": "0x11fd",
+   "type": "self",
+   "bias": "0x11fd"
+  }
+ ]
+}

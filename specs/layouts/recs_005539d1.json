@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x005539d1: 'mov ecx,0xd; mov ebx,0x866248' then 'mov eax,[ebx+0xdc]; mov [ebx+0x6c],eax; add ebx,0xe0; loop' copies dword +0xdc to +0x6c in each of the 13 records of 0xe0 bytes at 0x866248 (zero in the image: runtime state reached only through ebx, so fuzz:i32 left it unvaried and the copies were of zeros onto zeros). The source dwords +0xdc and the destination dwords +0x6c of all 13 records are drawn at random (plain copies, every value valid), so each copy changes memory and eax = the last value copied is non-trivial.",
+ "globals": [
+  {"addr": "0x00866324", "type": "u32", "count": 13, "stride": "0xe0"},
+  {"addr": "0x008662b4", "type": "u32", "count": 13, "stride": "0xe0"}
+ ]
+}

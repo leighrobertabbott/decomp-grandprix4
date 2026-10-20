@@ -1,0 +1,7 @@
+{
+  "size": 1053,
+  "_evidence": "0x0040ea09 and 0x0040ea46 read only byte +0x415 of the car record in ESI (shr 1 -> order index bl). Its only writer, 0x00408f42, stores 2*i (i = the car's position 0..21 in the 0x0066fe3c list) or 0, so the game passes even values 0..42; a few odd/high bytes are kept (bl up to 127 stays inside the varied order span of carno_0066ff6c), so the domain is a superset of the callers'.",
+  "fields": [
+    {"off": "0x415", "type": "u8", "values": [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 1, "0x55", "0xfe", "0xff"]}
+  ]
+}

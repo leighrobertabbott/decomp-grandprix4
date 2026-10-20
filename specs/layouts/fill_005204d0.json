@@ -1,0 +1,25 @@
+{
+ "_evidence": "0x005204d0: ecx = [0x7a8e2c] - [0x7a8e28] (sub ecx,edi at 0x5204f1), then rep stosb zeroes [start, end) through edi = [0x7a8e28]: the pair is a buffer start and end, so end >= start and both bound one writable buffer (random pointers faulted at 0x5204f7). The buffer is modelled, as in dlog_00537f02, by the unreferenced zero-initialised .data stretch at 0xa06000 (no instruction addresses it directly): start in 0xa06000..0xa06040, end in 0xa06040..0xa0607f, so 0..0x7f bytes are cleared, never outside the stretch, and end == start (ecx = 0, rep does nothing) in about 1/8 of the cases. The callee 0x00520584 (eax = 2) takes its tables from rows_00520584, composed before this layout.",
+ "globals": [
+  {
+   "addr": "0x007a8e28",
+   "type": "u32",
+   "values": [
+    "0xa06000",
+    "0xa06001",
+    "0xa06013",
+    "0xa06040"
+   ]
+  },
+  {
+   "addr": "0x007a8e2c",
+   "type": "u32",
+   "values": [
+    "0xa06040",
+    "0xa06040",
+    "0xa06041",
+    "0xa0607f"
+   ]
+  }
+ ]
+}

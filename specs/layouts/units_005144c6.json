@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x5144c6, in-range negative arm (eax < 0, eax != 0x80000000, 'neg al; cmp al,0xa; jae' leaves al 0..9): 'mov esi,0x2e; mov esi,[esi*4+0x891bd0]' and, unless al = 1, 'mov esi,0x2d; mov esi,[esi*4+0x891bd0]', then 0x51f3c3 prints the string at esi. 0x891bd0 is the 0x44-entry HUD text table filled at load time by 0x51488e (its only writer: 'mov [ecx*4+0x891bd0],edi' for ecx = 0..0x43, 'cmp ecx,0x44; jne'), so entries 0x2d (0x891c84) and 0x2e (0x891c88) are always valid text pointers once the HUD runs; they are zero in the image only because the table is .bss. Each points at its own text_005144c6 buffer (NUL-terminated, at most 8 characters). Values are synthetic.",
+ "globals": [
+  {"addr": "0x00891c84", "type": "ptr", "size": 16, "fill": "layout=text_005144c6"},
+  {"addr": "0x00891c88", "type": "ptr", "size": 16, "fill": "layout=text_005144c6"}
+ ]
+}

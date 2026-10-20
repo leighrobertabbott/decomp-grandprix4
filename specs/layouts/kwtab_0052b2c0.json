@@ -1,0 +1,33 @@
+{
+ "_evidence": "Keyword table in edx scanned by 0x0052b2c0 (callers pass the static tables 0x81d478 / one built at 0x81d5ec, zero in the image): 8-byte entries, +4 a pointer to a NUL-terminated keyword (kw_0052b2c0), +0 a nonzero handler/value; 'add edx,8; cmp dword [edx],0; jne' - the scan stops at the first entry whose +0 is 0 (entry 0's +0 is never tested). Entries 1..4 draw +0 from {0, 1, 0x12345678} so the terminator falls at entry 1..4 (or entry 5, whose +0 stays 0: the table always ends inside the 0x30-byte buffer); every entry up to it has a valid keyword pointer. A match returns eax = the entry (clc), no match stc after the terminator.",
+ "size": 48,
+ "fields": [
+  {
+   "off": 0,
+   "type": "u32",
+   "values": [
+    "1",
+    "0x12345678"
+   ]
+  },
+  {
+   "off": 4,
+   "type": "ptr",
+   "size": 8,
+   "fill": "layout=kw_0052b2c0",
+   "count": 5,
+   "stride": 8
+  },
+  {
+   "off": 8,
+   "type": "u32",
+   "count": 4,
+   "stride": 8,
+   "values": [
+    "0",
+    "1",
+    "0x12345678"
+   ]
+  }
+ ]
+}

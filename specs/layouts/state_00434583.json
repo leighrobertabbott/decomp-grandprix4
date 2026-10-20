@@ -1,0 +1,6 @@
+{
+  "_evidence": "Pointer global 0x0062ff64 -> the block of 9 per-category car bit masks (0x00434594 clears exactly 9 dwords from it; its caller 0x004343f3 calls 0x00434583 with eax = category 0..8 and edx = car 0..21, and 0x00432dcf tests bits of dword +0x10). 0x00434583 does bts dword [ptr + eax*4], edx (register bit offset: edx 0..31 stays inside that dword). The buffer is 64 random bytes, so the spec's eax 0..15 / edx 0..31 (a superset of the callers' 0..8 / 0..21) keeps every access inside it and finds both old bit values (CF). 0x00434594 writes the first 0x24 bytes. Random fuzz:i32 pointers faulted.",
+  "globals": [
+    {"addr": "0x0062ff64", "type": "ptr", "size": 64, "fill": "bytes"}
+  ]
+}

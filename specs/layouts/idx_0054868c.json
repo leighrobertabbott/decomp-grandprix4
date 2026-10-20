@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x0054868c walks 'mov ebx,0x7a943c; mov ecx,0x15; ... inc ebx; loop': for each of the 21 adjacent pairs of the 22-byte table 0x7a943c it reads 'movzx esi,[ebx]; movzx edi,[ebx+1]' (bytes 0..21), uses them as word indices into the 22-word table 0x7a93fa ('movzx eax,[esi*2+0x7a93fa]', words_0054888e), compares the 15-bit values (jne 0x5486f2 / or eax,eax; je) and, when equal and nonzero, passes both indices as rows edx to 0x548836 (which ignores rows >= 0x16) for rounds bl = 1..0x1a ('cmp eax,edx; jne' at 0x5486dd), finally 'or word [edi*2+0x7a93fa],0x8000'. The table is a list of driver indices into the 22-entry tables (zero in the image, so every pair compared equal words), so each byte is drawn from 0..21; repeats are allowed (and valid: the same word and the same row compare equal), so the equal-word path, the all-rounds-equal path (0x5486df..0x5486ec) and the early exits at 0x5486bc/0x5486dd all occur.",
+ "globals": [
+  {"addr": "0x007a943c", "type": "u8", "count": 22, "stride": 1, "lo": 0, "hi": 21}
+ ]
+}

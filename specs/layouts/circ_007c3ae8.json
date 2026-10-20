@@ -1,0 +1,15 @@
+{
+ "_evidence": "0x00548cec (compose after trk_007ad894, circuit 0..16): 'mov eax,[0x7ad894]; imul eax,eax,0xc; add eax,0x7c3ae4; movzx eax,word [eax+4]; mov edx,0xa; mul edx' reads word +4 of the 12-byte per-circuit entry 0x7c3ae4 + 12*circuit (17 entries, i.e. the words 0x7c3ae8 + 12k). The table is initialised in the image (right after the 0x7ad890..0x7c3ae4 state block; its readers 0x51bf6d/0x53af0c/0x4ff760/0x53ba4d only read it or take entry addresses), so it is constant data; it is varied here anyway because the products and quotients built from it (0x831a59, 0x831a55, the two guarded divides) were exercised on only 17 fixed words. Any u16 is valid: the result feeds 32-bit muls, and both 'div ebx' / 'div [0x831a5d]' are guarded by 'cmp divisor,edx; jbe skip' (no quotient overflow, a zero divisor always skips). Values are random, not the image's. Also the key dword 0x675a68 = 0x675970 + 4*62: 'movzx eax,byte [0x675958]; and eax,0x3f; dec eax; mov eax,[eax*4+0x675970]' with order_00675958's list byte 0x7f (car number 63) reads key index 62, beyond the 22 keys order_00675958 varies; any i32 (it only feeds the guarded divide).",
+ "globals": [
+  {
+   "addr": "0x007c3ae8",
+   "type": "u16",
+   "count": 17,
+   "stride": 12
+  },
+  {
+   "addr": "0x00675a68",
+   "type": "i32"
+  }
+ ]
+}

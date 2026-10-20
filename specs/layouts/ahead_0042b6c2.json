@@ -1,0 +1,7 @@
+{
+  "_evidence": "Look-ahead inputs of 0x0042b6c2 (compose after ring_00405a12+links_00405a12): the dword 0x603e9c is the byte offset 0x42b17e stores for its callers (0x160 or the 0x603ea0 count of records), added to the segment pointer edi (0x42b6db/0x42b6f7), so it draws 0, 1, 2 or 3 records; on the lap side a pointer at or past the lap end [0x866ecc] (records 6..8 in ring_00405a12) is wrapped back by [0x866ec4], drawn as 4..6 records (never more than the shortest lap end, so the wrapped pointer stays a record 0..7); on the pit side it is clamped to the pit end - 0x160. The record's link +0x44 (links_00405a12: zero or a record 0..11) is then followed for word +0x16. Static zero for both meant the pointer never moved.",
+  "globals": [
+    {"addr": "0x00603e9c", "type": "u32", "values": [0, "0x160", "0x2c0", "0x420"]},
+    {"addr": "0x00866ec4", "type": "u32", "values": ["0x580", "0x6e0", "0x840"]}
+  ]
+}

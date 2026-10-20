@@ -1,0 +1,8 @@
+{
+ "size": 1056,
+ "fill": "bytes",
+ "_evidence": "Car heading word +0x18 for 0x00428216 (compose LAST on its esi chain car_004129fa): read by 0x4283d7 'sub ax,[esi+0x18]' against the interpolated record heading (hdg_00428216) and by 0x427e7c as an angle; a plain 16-bit angle, any value valid. Draws 0x8000/0x8001 in a third of the picks (perpendicular to a zero record heading: block 0x4283f1 and the clamp 0x428450) and a spread of angles otherwise.",
+ "fields": [
+  {"off": "0x18", "type": "u16", "values": ["0x8000", "0x8001", "0x8000", "0x8001", "0xc000", "0x4000", 0, "0x1234", "0x6dd3", "0xa5a5", "0xf00f", "0x3c3c"]}
+ ]
+}

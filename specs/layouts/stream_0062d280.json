@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x0040cdc3 loads esi = [0x0062d280] and hands it to 0x40cd00, which parses a u16 segment stream from it (stream_0040cd00: four header words, 0xffff terminators, segment indexes 0..25). The pointer is null in the image, so it is drawn as a pointer to a 256-byte stream.",
+ "globals": [
+  {"addr": "0x0062d280", "type": "ptr", "size": 256, "fill": "layout=stream_0040cd00"}
+ ]
+}

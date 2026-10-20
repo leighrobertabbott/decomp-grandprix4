@@ -1,0 +1,7 @@
+{
+  "_evidence": "0x0051c59a remaps every texel byte b of mip level L (ebx = 0..7) as 'mov al,[eax+0x948858]' (256-byte map indexed by b) then 'mov ah,bl; mov al,[eax+0x947e10]' (the 8 x 256 byte table indexed by (L << 8) | map[b], 0x800 bytes). Both tables are zero in the image (built at runtime by 0x527592/0x5278e5), so each byte is drawn independently; any byte is a valid index of the next table, nothing faults.",
+  "globals": [
+    {"addr": "0x00948858", "type": "u8", "count": 256, "stride": 1},
+    {"addr": "0x00947e10", "type": "u8", "count": 2048, "stride": 1}
+  ]
+}

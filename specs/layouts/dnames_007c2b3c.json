@@ -1,0 +1,448 @@
+{
+ "_evidence": "Driver-name table 0x7c2b3c: 22 slots of 0x18 bytes (car index (b & 0x3f) - 1 via 0x51f2af), runtime state written by the name loader 0x540825 ('imul 0x18; add 0x7c2b3c', up to 0x17 bytes copied, then 'mov al,0; stosb', so every slot ends in a zero at the latest at +0x17) and read as NUL-terminated text by 0x516d94 (<= 0x17 bytes) and the unbounded copy loops of 0x481020. Each byte +0..+0x16 is drawn from lower/upper-case letters, space and '-' (zero allowed from +3 on, giving names of 3..23 characters), +0x17 is zero. The team names after slot 21 are not covered (car numbers from carno/order map to slots 0..21 except the few out-of-range draws). Values are synthetic.",
+ "globals": [
+  {
+   "addr": "0x7c2b3c",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    "0x61",
+    "0x65",
+    "0x69",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x20",
+    "0x2d",
+    "0x41",
+    "0x5a"
+   ]
+  },
+  {
+   "addr": "0x7c2b3d",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    "0x61",
+    "0x65",
+    "0x69",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x20",
+    "0x2d",
+    "0x41",
+    "0x5a"
+   ]
+  },
+  {
+   "addr": "0x7c2b3e",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    "0x61",
+    "0x65",
+    "0x69",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x20",
+    "0x2d",
+    "0x41",
+    "0x5a"
+   ]
+  },
+  {
+   "addr": "0x7c2b3f",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    "0x61",
+    "0x65",
+    "0x69",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x20",
+    "0x2d",
+    "0x41",
+    "0x5a",
+    0
+   ]
+  },
+  {
+   "addr": "0x7c2b40",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    "0x61",
+    "0x65",
+    "0x69",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x20",
+    "0x2d",
+    "0x41",
+    "0x5a",
+    0
+   ]
+  },
+  {
+   "addr": "0x7c2b41",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    "0x61",
+    "0x65",
+    "0x69",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x20",
+    "0x2d",
+    "0x41",
+    "0x5a",
+    0
+   ]
+  },
+  {
+   "addr": "0x7c2b42",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    "0x61",
+    "0x65",
+    "0x69",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x20",
+    "0x2d",
+    "0x41",
+    "0x5a",
+    0
+   ]
+  },
+  {
+   "addr": "0x7c2b43",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    "0x61",
+    "0x65",
+    "0x69",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x20",
+    "0x2d",
+    "0x41",
+    "0x5a",
+    0
+   ]
+  },
+  {
+   "addr": "0x7c2b44",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    "0x61",
+    "0x65",
+    "0x69",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x20",
+    "0x2d",
+    "0x41",
+    "0x5a",
+    0
+   ]
+  },
+  {
+   "addr": "0x7c2b45",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    "0x61",
+    "0x65",
+    "0x69",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x20",
+    "0x2d",
+    "0x41",
+    "0x5a",
+    0
+   ]
+  },
+  {
+   "addr": "0x7c2b46",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    "0x61",
+    "0x65",
+    "0x69",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x20",
+    "0x2d",
+    "0x41",
+    "0x5a",
+    0
+   ]
+  },
+  {
+   "addr": "0x7c2b47",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    "0x61",
+    "0x65",
+    "0x69",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x20",
+    "0x2d",
+    "0x41",
+    "0x5a",
+    0
+   ]
+  },
+  {
+   "addr": "0x7c2b48",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    "0x61",
+    "0x65",
+    "0x69",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x20",
+    "0x2d",
+    "0x41",
+    "0x5a",
+    0
+   ]
+  },
+  {
+   "addr": "0x7c2b49",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    "0x61",
+    "0x65",
+    "0x69",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x20",
+    "0x2d",
+    "0x41",
+    "0x5a",
+    0
+   ]
+  },
+  {
+   "addr": "0x7c2b4a",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    "0x61",
+    "0x65",
+    "0x69",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x20",
+    "0x2d",
+    "0x41",
+    "0x5a",
+    0
+   ]
+  },
+  {
+   "addr": "0x7c2b4b",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    "0x61",
+    "0x65",
+    "0x69",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x20",
+    "0x2d",
+    "0x41",
+    "0x5a",
+    0
+   ]
+  },
+  {
+   "addr": "0x7c2b4c",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    "0x61",
+    "0x65",
+    "0x69",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x20",
+    "0x2d",
+    "0x41",
+    "0x5a",
+    0
+   ]
+  },
+  {
+   "addr": "0x7c2b4d",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    "0x61",
+    "0x65",
+    "0x69",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x20",
+    "0x2d",
+    "0x41",
+    "0x5a",
+    0
+   ]
+  },
+  {
+   "addr": "0x7c2b4e",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    "0x61",
+    "0x65",
+    "0x69",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x20",
+    "0x2d",
+    "0x41",
+    "0x5a",
+    0
+   ]
+  },
+  {
+   "addr": "0x7c2b4f",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    "0x61",
+    "0x65",
+    "0x69",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x20",
+    "0x2d",
+    "0x41",
+    "0x5a",
+    0
+   ]
+  },
+  {
+   "addr": "0x7c2b50",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    "0x61",
+    "0x65",
+    "0x69",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x20",
+    "0x2d",
+    "0x41",
+    "0x5a",
+    0
+   ]
+  },
+  {
+   "addr": "0x7c2b51",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    "0x61",
+    "0x65",
+    "0x69",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x20",
+    "0x2d",
+    "0x41",
+    "0x5a",
+    0
+   ]
+  },
+  {
+   "addr": "0x7c2b52",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    "0x61",
+    "0x65",
+    "0x69",
+    "0x6e",
+    "0x72",
+    "0x73",
+    "0x20",
+    "0x2d",
+    "0x41",
+    "0x5a",
+    0
+   ]
+  },
+  {
+   "addr": "0x7c2b53",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x18",
+   "values": [
+    0
+   ]
+  }
+ ]
+}

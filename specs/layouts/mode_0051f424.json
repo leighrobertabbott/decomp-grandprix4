@@ -1,0 +1,15 @@
+{
+ "_evidence": "0x51f424/0x51f45c set edi = 0 themselves ('mov edi,0') and pass it to the glyph writer 0x51d2ec, which stores through edi (stosb) when [0x89152b] == 1 (direct-buffer mode): the original faults at address 0 for that value, so the game never calls them in that mode. Any other mode value is drawn; composed last after readout_00515187+glyph_0051d329.",
+ "globals": [
+  {
+   "addr": "0x0089152b",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    2,
+    "0xff"
+   ]
+  }
+ ]
+}

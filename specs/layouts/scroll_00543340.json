@@ -1,0 +1,9 @@
+{
+ "_evidence": "0x00543340 (and its byte-identical twin 0x0054328e with the block 0x8310c0 / divisor 0x83137b) reads a 3-dword block through esi = 0x8310cc: +0 position, +4 limit, +8 previous quotient. 'mov eax,[esi+4]; mov edx,0x4000; imul edx; cmp [0x83137f],edx; jbe' divides edx:eax by [0x83137f] only when the divisor is above edx (so it is nonzero and the quotient fits: no input can fault), else takes the divisor itself; then +8 = quotient, +0 = clamp(+0 + (old +8 - quotient)/2, 0, +4 - +8). fuzz:i32 varies only the directly addressed +0 and divisor; here all four dwords of each block are drawn (any i32, the scalar mix gives small and large magnitudes of both signs, so both the div and the clamp branches occur).",
+ "globals": [
+  {"addr": "0x008310cc", "type": "i32", "count": 3, "stride": 4},
+  {"addr": "0x0083137f", "type": "u32"},
+  {"addr": "0x008310c0", "type": "i32", "count": 3, "stride": 4},
+  {"addr": "0x0083137b", "type": "u32"}
+ ]
+}

@@ -1,0 +1,39 @@
+{
+ "_evidence": "Car record for 0x0043d7be / 0x0043d909 (same body; 0x43d909 negates the difference). Word +0x9a is the high half of the dword +0x98 (speed): it is clamped to <= 0x5800 and stored, 0x426a66 forms [0x6037fc] from (+0xc4 - +0xe0) * +0xd6 * [0x62d28c] * hi(+0x98^2), 0x425eca returns eax = sx([0x6039bc]) << 14 (negated when +0x71 bit 2 is set) when +0xfe bit 5 and +0x25f bit 1 are clear (else 0x425e19 / the [0x62786c]*rate path), and +0x98 += 4*eax - [0x6037fc] (clamped >= 0). The difference d = hi16(new +0x98) - clamped +0x9a is therefore exactly +-[0x6039bc] when [0x6037fc] = 0 and nothing clamps, and dx = 2d (16-bit: (d*0x800) << 6 leaves ax = 0) is compared with -+half the rate. Domain: +0x9a i16 drawn -0x800..0x7fff (both clamp sides; mostly non-negative as the game's clamped speed is, negatives still occur), +0xfe bit 5 and +0x25f bit 1 clear in most picks (both states occur), everything else random background (accepted callees 0x426a66/0x425eca/0x425e19 take any record bytes).",
+ "size": 615,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x9a",
+   "type": "i16",
+   "lo": -2048,
+   "hi": 32767
+  },
+  {
+   "off": "0xfe",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    "0x10",
+    "0xdf",
+    "0x20",
+    "0xff"
+   ]
+  },
+  {
+   "off": "0x25f",
+   "type": "u8",
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    "0xfd",
+    "2"
+   ]
+  }
+ ]
+}

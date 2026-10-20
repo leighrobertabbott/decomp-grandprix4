@@ -1,0 +1,12 @@
+{
+ "_evidence": "0x00446012 clears its pit-board state then calls 0x00445e86, which loads esi = [0x62f8b0] ('or esi,esi; je' exit) and dereferences it (+0x81 bit 4, +0xe5 bit 2 RMW, then 0x40f6d0 car reset): [0x62f8b0] is the selected-car pointer, so it is 0 (a quarter) or a record of the 22-car array 0x66fef0 stride 0x41c (points_into 0..21; random dwords faulted at 0x445ed3). 0x679d30 is compared with esi ('cmp esi,[0x679d30]; jne', then 0x51f094/0x51f07a) and equals it in about half the cases (alias), otherwise any dword (only compared). Byte 0x7a8dfb selects the two halves ('cmp byte [0x7a8dfb],0xff; jne': 0xff and others). The deadline dword 0x62f8d8 is tested for zero and compared with the race clock 0x66d814 ('neg; add [0x66d814]; js'), so it is a plain i32 draw (0 in about an eighth of the cases, both signs of clock-deadline with clock_0066d814 0..0x10000); 0x62ad74 is an i32 added before the 1000..5000 clamp in 0x445f46. The car bytes +0x81 and +0xe5 of all 22 records are varied as u8 (bit tests; +0xe5 is read-modify-written).",
+ "globals": [
+  {"addr": "0x0062f8b0", "type": "u32", "points_into": {"base": "0x0066fef0", "stride": "0x41c", "lo": 0, "hi": 21}, "nullable": true},
+  {"addr": "0x00679d30", "type": "u32", "alias": "0x0062f8b0"},
+  {"addr": "0x007a8dfb", "type": "u8", "values": ["0xff", "0xff", 0, 1, "0xfe"]},
+  {"addr": "0x0062f8d8", "type": "i32"},
+  {"addr": "0x0062ad74", "type": "i32"},
+  {"addr": "0x0066ff71", "type": "u8", "count": 22, "stride": "0x41c"},
+  {"addr": "0x0066ffd5", "type": "u8", "count": 22, "stride": "0x41c"}
+ ]
+}

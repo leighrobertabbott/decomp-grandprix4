@@ -1,0 +1,23 @@
+{
+ "_evidence": "0x00541fad clears [0x6b35f0] bytes (rep stosb) at the pointer [0x6975cc]: a 0x1000-byte buffer and a count 0..0x1000 (0 and 1 frequent).",
+ "globals": [
+  {
+   "addr": "0x006975cc",
+   "type": "ptr",
+   "size": 4096,
+   "fill": "bytes"
+  },
+  {
+   "addr": "0x006b35f0",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    "0x10",
+    "0x100",
+    "0x1000"
+   ]
+  }
+ ]
+}

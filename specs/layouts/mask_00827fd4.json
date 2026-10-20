@@ -1,0 +1,8 @@
+{
+ "_evidence": "The 8 wrappers 0x53d90c/0x53d917/0x53d922/0x53d92d/0x53d938/0x53d943/0x53d94e/0x53d959 load eax = 1 << k (k = 0..7) and call 0x0053d964: 'and eax,[0x827fd4]; je ret' (the enable mask), else 'xor [0x827fd8],eax' (toggle the option bit), save byte [0x82fd45], zero it for the redraw 0x53dc57 (compose after menu_0084300a+items_0053dc57) and restore it. fuzz:i32 varies only globals the wrapper addresses itself, so the mask kept its image value. Domain: 0x827fd4 from {0, each single bit 1..0x80, 0x55, 0xaa, 0xff, 0xffffffff} (every wrapper's bit set and clear), 0x827fd8 any dword (the toggled state), 0x82fd45 any byte (the restore is observable). Plain and/xor/byte moves: every value is valid.",
+ "globals": [
+  {"addr": "0x00827fd4", "type": "u32", "values": [0, 0, 1, 2, 4, 8, "0x10", "0x20", "0x40", "0x80", "0x55", "0xaa", "0xff", "0xffffffff", "0xffffffff"]},
+  {"addr": "0x00827fd8", "type": "u32"},
+  {"addr": "0x0082fd45", "type": "u8"}
+ ]
+}

@@ -1,0 +1,31 @@
+{
+  "_evidence": "Family layout for the four 0x300-byte records at 0x6380d8 and the scalars their per-frame routines combine. Record dwords (count 4, stride 0x300): +0x14 is OR-ed across the four records by 0x0041fdd5 (je 0x41fdf8: all zero skips the 0x41fbef call), so it is zero in ~60% of the picks (both outcomes); +0x14 and +0x38 are fild-ed and multiplied by the f64 column 0x622ef8/0x622f10/0x622f28 (a rotation matrix, [-1,1]) and fistp-ed (0x41fbef, 0x41fdd5); +0xc8 is copied into the 32-entry rings by 0x004208f3; +0x174 feeds 0x0041f353 (sums/differences clamped to +-0x80000). 0x0041f353 divides: (A*[0x601350])/[0x601334] and (B*[0x60134c])/[0x601334] with |A|,|B| <= 2^20, [0x601334] in 64..131071 (positive car dimension from 0x4112e3, never 0) and the gains in +-65535 keep |quotient| <= 2^30; (clamp(diff,+-2^19)<<26)/([0x638da4]+[0x638da8]) with each in 0x4000..0x3fffffff (sum >= 2^15) gives |q| <= 2^30; (q3<<25)/[0x638dac] and /[0x638db0] with |q3| <= 2^29 and divisors in 2^24..2^31-1 give |q| <= 2^30: no #DE. 0x0041fdd5 multiplies fistp results by the Q12 gains 0x638d6c..0x638d94 (+-2^12, imul/shrd 12) and clamps the three sums by the unaligned unsigned limits 0x6224ad/0x6224b1/0x6224b5 (0..2^24: both outcomes on both signs). 0x004208f3 uses ring index [0x62291c] in 0..31 (writes [idx*4+0x622940..0x622ac0], 32-entry arrays), window [0x6228b0] in 0..32 (idx-window, +0x20 if negative, stays 0..31) and counter [0x622918] in 0..40 (inc then jle against the window: both ways); a wild index makes the original fault. Everything else read (0x637f40/44, 0x638034/38/44, ring arrays and sums 0x622930..0x62293c) is plain i32.",
+  "globals": [
+    {"addr": "0x006380ec", "type": "u32", "count": 4, "stride": "0x300", "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, "0xffffffff", "0x12345", "0xfffedcba", "0x100000", "0xfff00000"]},
+    {"addr": "0x00638110", "type": "i32", "count": 4, "stride": "0x300", "lo": -1048576, "hi": 1048576},
+    {"addr": "0x006381a0", "type": "i32", "count": 4, "stride": "0x300"},
+    {"addr": "0x0063824c", "type": "i32", "count": 4, "stride": "0x300", "lo": -1048576, "hi": 1048576},
+    {"addr": "0x00622ef8", "type": "f64", "count": 3, "stride": "0x18", "lo": -1, "hi": 1},
+    {"addr": "0x00637f40", "type": "i32"},
+    {"addr": "0x00637f44", "type": "i32"},
+    {"addr": "0x00638d6c", "type": "i32", "count": 11, "stride": 4, "lo": -4096, "hi": 4096},
+    {"addr": "0x006224ad", "type": "u32", "lo": 0, "hi": 16777216},
+    {"addr": "0x006224b1", "type": "u32", "lo": 0, "hi": 16777216},
+    {"addr": "0x006224b5", "type": "u32", "lo": 0, "hi": 16777216},
+    {"addr": "0x00601334", "type": "i32", "lo": 64, "hi": 131071},
+    {"addr": "0x0060134c", "type": "i32", "lo": -65535, "hi": 65535},
+    {"addr": "0x00601350", "type": "i32", "lo": -65535, "hi": 65535},
+    {"addr": "0x00638da4", "type": "i32", "lo": 16384, "hi": 1073741823},
+    {"addr": "0x00638da8", "type": "i32", "lo": 16384, "hi": 1073741823},
+    {"addr": "0x00638dac", "type": "i32", "lo": 16777216, "hi": 2147483647},
+    {"addr": "0x00638db0", "type": "i32", "lo": 16777216, "hi": 2147483647},
+    {"addr": "0x00638034", "type": "i32"},
+    {"addr": "0x00638038", "type": "i32"},
+    {"addr": "0x00638044", "type": "i32"},
+    {"addr": "0x0062291c", "type": "i32", "lo": 0, "hi": 31},
+    {"addr": "0x006228b0", "type": "i32", "lo": 0, "hi": 32},
+    {"addr": "0x00622918", "type": "i32", "lo": 0, "hi": 40},
+    {"addr": "0x00622930", "type": "i32", "count": 4, "stride": 4},
+    {"addr": "0x00622940", "type": "i32", "count": 128, "stride": 4}
+  ]
+}

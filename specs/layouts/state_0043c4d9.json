@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x0043c4d9 calls the accepted 0x0043c4c1, which returns (0xea60/2 + [0x0066d814]) / 0xea60 (xor edx,edx; idiv ebp: the dividend is a zero-extended u32, so the quotient is at most 71582 and never faults), clamps it to 0xff (cmp/jle at 0x0043c4df) and stores the byte at [esi+0x233]. The only data input is the millisecond counter dword 0x0066d814, read by the callee and hence not fuzzed by globals=fuzz; it is unconstrained u32 here, so both small (<= 255 minutes) and large values occur.",
+  "globals": [
+    {"addr": "0x0066d814", "type": "u32"}
+  ]
+}

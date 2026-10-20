@@ -1,0 +1,115 @@
+{
+ "_doc": "Lead-proven regs-convention flags the oracle does not compare for one function: stack-address-dependent garbage left by a compiled-C callee (add esp,N) that no caller reads. Each entry needs evidence.",
+ "0x005141b8": {
+  "flags": [
+   "pf",
+   "af"
+  ],
+  "evidence": "Modes 4 and 13 reach the drawing routine 0x4a96a0 whose last flag writer is 'add esp,0x28', so PF/AF depend on the stack address (gp4::call_regs runs it on a different stack). The four callers of 0x5141b8 do not read flags after the call (checked by L25)."
+ },
+ "0x005297ba": {
+  "flags": [
+   "pf",
+   "af"
+  ],
+  "evidence": "Menu item handler (referenced only from the static item record at 0x840344); its last flag writer is 'add esp,N' at the end of a compiled stdcall callee (0x503230), so PF/AF depend on the stack address (gp4::call_regs runs it on a different stack). Every handler dispatch site in the binary ('call [reg+0x16]' / 'call [reg+0x1a]', all in R3: 0x53cb60, 0x53d233, 0x53d2e8, 0x53d567, 0x53db2f, 0x53dc81, 0x53eb77) writes the flags (or/cmp/dec, or 0x53dbbc's cmp) before any flag read (lead scan 2026-10-20)."
+ },
+ "0x005297cf": {
+  "flags": [
+   "pf",
+   "af"
+  ],
+  "evidence": "Menu item handler (referenced only from the static item record at 0x8403d2); its last flag writer is 'add esp,N' at the end of a compiled stdcall callee (0x503230), so PF/AF depend on the stack address (gp4::call_regs runs it on a different stack). Every handler dispatch site in the binary ('call [reg+0x16]' / 'call [reg+0x1a]', all in R3: 0x53cb60, 0x53d233, 0x53d2e8, 0x53d567, 0x53db2f, 0x53dc81, 0x53eb77) writes the flags (or/cmp/dec, or 0x53dbbc's cmp) before any flag read (lead scan 2026-10-20)."
+ },
+ "0x005297e4": {
+  "flags": [
+   "pf",
+   "af"
+  ],
+  "evidence": "Menu item handler (referenced only from the static item record at 0x84f6a6); its last flag writer is 'add esp,N' at the end of a compiled stdcall callee (0x503140), so PF/AF depend on the stack address (gp4::call_regs runs it on a different stack). Every handler dispatch site in the binary ('call [reg+0x16]' / 'call [reg+0x1a]', all in R3: 0x53cb60, 0x53d233, 0x53d2e8, 0x53d567, 0x53db2f, 0x53dc81, 0x53eb77) writes the flags (or/cmp/dec, or 0x53dbbc's cmp) before any flag read (lead scan 2026-10-20)."
+ },
+ "0x0051d49a": {
+  "flags": [
+   "pf",
+   "af"
+  ],
+  "evidence": "On the [0x7ad844]==0xff / [0x7ad869]!=0 path the last flag writer is 'add esp,0x28' at the end of the compiled drawing routine 0x4a96a0 (via 0x51d1d0/0x51d1df), so PF/AF depend on the stack address. No code reaches 0x51d49a by call, jmp, jcc (rel8/rel32 scan of .text) or absolute dword (lead scan 2026-10-20), so no known code reads its flags; the preceding 0x51d494 ends in ret."
+ },
+ "0x0051f293": {
+  "flags": [
+   "pf",
+   "af"
+  ],
+  "evidence": "The callee chain (0x5146b3 -> ... -> compiled 0x4a96a0) ends in 'add esp,0x28', so PF/AF depend on the stack address. 0x51f293 is reached only by 'call 0x51f293; ret' tails in 0x442cd4/0x442cdf/0x442cea/0x442cf5, whose callers (0x442d9d, 0x44293f, 0x44276c, 0x442742, 0x442ae7, 0x442b48) write the flags (test/add, or a call) before any flag read (lead scan 2026-10-20)."
+ },
+ "0x00548c47": {
+  "flags": [
+   "pf",
+   "af"
+  ],
+  "evidence": "pushal; call 0x4fed30; popal; ret thunk whose compiled callee ends 'add esp,0x104; ret 8', so PF/AF depend on the stack address. No code calls or jumps to it; it is referenced only from static menu item records (0x8491d0, 0x84948a, 0x84cc96, 0x84d758), and every handler dispatch site in the binary ('call [reg+0x16]', 'call [reg+0x1a]', 'call [reg+0x20]': 0x53cb60, 0x53d233, 0x53d2e8, 0x53d567, 0x53db2f, 0x53dc81, 0x53eb77, 0x53cd3f, 0x53d536, 0x55f4f3, 0x55fd2c, 0x55fd60) writes the flags before any flag read (lead scans 2026-10-20)."
+ },
+ "0x00548c4f": {
+  "flags": [
+   "pf",
+   "af"
+  ],
+  "evidence": "pushal; call 0x4fec00; popal; ret thunk whose compiled callee ends 'add esp,0x104; ret 8', so PF/AF depend on the stack address. No code calls or jumps to it; it is referenced only from static menu item records (0x84d400, 0x84d4e6), and every handler dispatch site in the binary ('call [reg+0x16]', 'call [reg+0x1a]', 'call [reg+0x20]': 0x53cb60, 0x53d233, 0x53d2e8, 0x53d567, 0x53db2f, 0x53dc81, 0x53eb77, 0x53cd3f, 0x53d536, 0x55f4f3, 0x55fd2c, 0x55fd60) writes the flags before any flag read (lead scans 2026-10-20)."
+ },
+ "0x0051d1d0": {
+  "flags": [
+   "pf",
+   "af"
+  ],
+  "evidence": "pushal thunk 0x51d1df over compiled 0x4a96a0, whose last flag writer is 'add esp,0x28': PF/AF depend on the stack address. tools/flag_live.py: 0 live reads, 12 dead paths; the two paths that return through handlers 0x515bf8/0x515eb2 (event tables 0x817280/0x8172a4) reach the dispatcher 0x5141b8 ('call [edx*4+0x817270]; popal; pop esi; ret'), whose 27 caller paths are all dead too (lead 2026-10-20)."
+ },
+ "0x0051d25e": {
+  "flags": [
+   "pf",
+   "af"
+  ],
+  "evidence": "Byte-identical twin of 0x51d1d0 (thunk 0x51d26d over compiled 0x4a96a0, 'add esp,0x28'). tools/flag_live.py: 0 live reads, 24 dead paths, no data references (lead 2026-10-20)."
+ },
+ "0x0053af99": {
+  "flags": [
+   "pf",
+   "af"
+  ],
+  "evidence": "pushal thunk over a compiled chain ending 'add esp,0x140' (PF/AF depend on the stack address). No code calls or jumps to it (tools/flag_live.py); it is referenced only from static menu item records (0x842fb2, 0x846f80), and every handler dispatch site ('call [reg+0x16/0x1a/0x20]': 0x53cb60, 0x53d233, 0x53d2e8, 0x53d567, 0x53db2f, 0x53dc81, 0x53eb77, 0x53cd3f, 0x53d536, 0x55f4f3, 0x55fd2c, 0x55fd60) writes the flags before any read (lead 2026-10-20)."
+ },
+ "0x0054358d": {
+  "flags": [
+   "pf",
+   "af"
+  ],
+  "evidence": "Menu item handler whose edx==2 path ends in compiled 0x4fe160 ('add esp,4'): PF/AF depend on the stack address. No code calls or jumps to it (tools/flag_live.py); it is referenced only from static menu item records (0x845e82), and every handler dispatch site ('call [reg+0x16/0x1a/0x20]': 0x53cb60, 0x53d233, 0x53d2e8, 0x53d567, 0x53db2f, 0x53dc81, 0x53eb77, 0x53cd3f, 0x53d536, 0x55f4f3, 0x55fd2c, 0x55fd60) writes the flags before any read (lead 2026-10-20)."
+ },
+ "0x005437f4": {
+  "flags": [
+   "pf",
+   "af"
+  ],
+  "evidence": "Menu item handler whose edx==2 path ends in compiled 0x4fe160 ('add esp,4'): PF/AF depend on the stack address. No code calls or jumps to it (tools/flag_live.py); it is referenced only from static menu item records (0x845e36, 0x845e5c), and every handler dispatch site ('call [reg+0x16/0x1a/0x20]': 0x53cb60, 0x53d233, 0x53d2e8, 0x53d567, 0x53db2f, 0x53dc81, 0x53eb77, 0x53cd3f, 0x53d536, 0x55f4f3, 0x55fd2c, 0x55fd60) writes the flags before any read (lead 2026-10-20)."
+ },
+ "0x005435f3": {
+  "flags": [
+   "pf",
+   "af"
+  ],
+  "evidence": "Menu item handler whose edx==2 path ends in compiled 0x4fe160 ('add esp,4'): PF/AF depend on the stack address. No code calls or jumps to it (tools/flag_live.py); it is referenced only from static menu item records (0x8460f0, 0x846116), and every handler dispatch site ('call [reg+0x16/0x1a/0x20]': 0x53cb60, 0x53d233, 0x53d2e8, 0x53d567, 0x53db2f, 0x53dc81, 0x53eb77, 0x53cd3f, 0x53d536, 0x55f4f3, 0x55fd2c, 0x55fd60) writes the flags before any read (lead 2026-10-20)."
+ },
+ "0x00527aad": {
+  "flags": [
+   "pf",
+   "af"
+  ],
+  "evidence": "call 0x5ae990; pushal; call 0x4fee30; popal; call 0x5ae990 (empty) - the compiled 0x4fee30 ends 'add esp,N', so PF/AF depend on the stack address. Its only caller is 0x53240a ('call; jmp/fallthrough to ret'), which returns the flags to its own callers - and 0x53240a has no call/jmp sites and no data references (tools/flag_live.py, corrected 2026-10-20: an earlier evidence text wrongly said 'no call sites'), so no known code reads them."
+ },
+ "0x00527b0c": {
+  "flags": [
+   "pf",
+   "af"
+  ],
+  "evidence": "call 0x5ae990; pushal; call 0x4ff070; popal; call 0x5ae990 (empty) - the compiled 0x4ff070 ends 'add esp,N', so PF/AF depend on the stack address. Its only caller is 0x53240a ('call; jmp/fallthrough to ret'), which returns the flags to its own callers - and 0x53240a has no call/jmp sites and no data references (tools/flag_live.py, corrected 2026-10-20: an earlier evidence text wrongly said 'no call sites'), so no known code reads them."
+ }
+}

@@ -1,0 +1,23 @@
+{
+ "_evidence": "Geometry words of the 0x160-byte track-segment records at 0x8943a0, records 0..33 (every record a ring_008943a0 position plus one step can reach): signed word +0 is the heading angle (0x40404c / 0x403d57: |w|>>2 & 0xfffe and |0x4000-w|>>2 & 0xfffe index the 0x2000-byte static cosine table 0x7c5c5c, so any i16 stays inside it: max index 0x2000 -> 0x7c7c5c, still .data), words +4 and +8 are the x/y origin subtracted from / added to the 16.16 products (sar/rcr/sub arithmetic only). Every i16 pattern is valid: no division, no pointer, no loop count.",
+ "globals": [
+  {
+   "addr": "0x008943a0",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x008943a4",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  },
+  {
+   "addr": "0x008943a8",
+   "type": "i16",
+   "count": 34,
+   "stride": "0x160"
+  }
+ ]
+}

@@ -1,0 +1,23 @@
+{
+ "_evidence": "0x00542c43 computes 0x269300 * [0x83137b] (imul, 64-bit) and divides by [0x8310c4] when it is nonzero (idiv at 0x542c58): with |x| <= 0x100000 the quotient fits 32 bits for every divisor >= 0x1000 (0x269300 * 2^20 / 2^12 < 2^31), so the divisor is 0 (skipped) or 0x1000 and above.",
+ "globals": [
+  {
+   "addr": "0x0083137b",
+   "type": "i32",
+   "lo": -1048576,
+   "hi": 1048576
+  },
+  {
+   "addr": "0x008310c4",
+   "type": "u32",
+   "values": [
+    0,
+    "0x1000",
+    "0x10000",
+    "0x7fffffff",
+    "0x2000",
+    "0x123456"
+   ]
+  }
+ ]
+}

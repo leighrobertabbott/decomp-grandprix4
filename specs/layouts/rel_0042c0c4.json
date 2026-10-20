@@ -1,0 +1,14 @@
+{
+  "_evidence": "Added to cars_0066fef0 for 0x0042c0c4 (esi = car rec[0x66fef0,0x41c,0..21]). Car bytes +0xe5 (bit 0) and +0x71 (bit 7) gate the test (value lists keep both outcomes and reach the inner path often); edi = car +0x1c (a segment record 0..25 from cars_0066fef0) is compared with the pit start [0x891500] (cars_0066fef0: 0..26) and its link +0x44 tested (cars_0066fef0: zero or a record). The accepted 0x4062b1 (four calls) takes eax/edx record pointers: [0x62d2d4], [0x866f04] (eax) and [0x866f00], [0x62d2d8] (edx, dereferenced at +0x44 when on the other side of the pit start), so all four are record-aligned pointers into the 0x8943a0 ring (0..30; cars_0066fef0 already places [0x866f00]); the +0x44 dwords of records 26..30 are plain (only read as a position). [0x866ed8] (wrap threshold, signed jl) and [0x866ec4] (lap length subtracted) are small positive values; byte 0x868582 xors the sign of word +0x90's high byte (full range).",
+  "globals": [
+    {"addr": "0x0066ffd5", "type": "u8", "count": 22, "stride": "0x41c", "values": [1, 1, "0xff", 0, "0xfe"]},
+    {"addr": "0x0066ff61", "type": "u8", "count": 22, "stride": "0x41c", "values": ["0x80", "0x80", "0xff", 0, "0x7f"]},
+    {"addr": "0x0062d2d4", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 30}},
+    {"addr": "0x0062d2d8", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 30}},
+    {"addr": "0x00866f04", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 30}},
+    {"addr": "0x008967a4", "type": "u32", "count": 5, "stride": "0x160"},
+    {"addr": "0x00866ed8", "type": "i32", "values": [0, "0x160", "0x580", "0xb00", "0x1600", "0x2000"]},
+    {"addr": "0x00866ec4", "type": "u32", "values": ["0x160", "0x2c0", "0x420", "0x580", "0x2300"]},
+    {"addr": "0x00868582", "type": "u8"}
+  ]
+}

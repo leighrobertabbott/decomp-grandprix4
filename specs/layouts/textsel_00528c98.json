@@ -1,0 +1,33 @@
+{
+ "_evidence": "Bounds for the R3 date/selector wrappers that index the text table: [0x7c2f28] = current driver slot 0x16..0x2b as the 0x528c98/0x528cc5/0x528dd4 callers expect (id = [0x7c2f28]+0xb90 lands in 0xba6..0xbbb); date bytes [0x81d36c] day 0..31, [0x81d36d] month 1..12, [0x81d36e] {0xff,0xff,0,1}.",
+ "globals": [
+  {
+   "addr": "0x007c2f28",
+   "type": "u32",
+   "lo": "0x16",
+   "hi": "0x2b"
+  },
+  {
+   "addr": "0x0081d36c",
+   "type": "u8",
+   "lo": 0,
+   "hi": 31
+  },
+  {
+   "addr": "0x0081d36d",
+   "type": "u8",
+   "lo": 1,
+   "hi": 12
+  },
+  {
+   "addr": "0x0081d36e",
+   "type": "u8",
+   "values": [
+    "0xff",
+    "0xff",
+    0,
+    1
+   ]
+  }
+ ]
+}

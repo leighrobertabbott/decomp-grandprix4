@@ -1,0 +1,13 @@
+{
+ "_evidence": "Track heading word +0 of the 0x160-byte segment records 0..29 at 0x8943a0 (edi = rec[0x8943a0,0x160,0..29] in 0x41464c: 'mov ax,[esi+0xe]; sub ax,[edi]'); a 16-bit angle, any i16 (links_00405a12 varies the same word for its records 0..26 as an imul/shrd operand). Nothing faults. Drawn uniformly over the full range (lo/hi).",
+ "globals": [
+  {
+   "addr": "0x8943a0",
+   "type": "i16",
+   "count": 30,
+   "stride": "0x160",
+   "lo": -32768,
+   "hi": 32767
+  }
+ ]
+}

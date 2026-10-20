@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x00533dc5 deletes the byte at cursor [0x8280ed] of the text buffer 0x82811f: 'mov ecx,[0x8280f5]; mov esi,[0x8280ed]; sub ecx,esi; je -> call 0x54e232 (empty)'; 'add esi,0x82811f; mov edi,esi; inc esi; rep movsb; dec [0x8280f5]'. ecx = length - cursor is a rep count: a cursor above the length gives a negative count (~2^32 byte moves, the original runs off the image), a state callers never produce. The buffer holds at most 0x40 chars (0x500c49 passes 0x40 with 0x82811f to 0x4fdca0). Domain: cursor 0x8280ed in 0..0x20; length 0x8280f5 equal to the cursor in about half the cases (the zero-count branch calling 0x54e232), else 0x20..0x40 (never below the cursor, at most the buffer size). The 0x41 bytes 0x82811f..0x82815f (source reaches index 0x40) are random. Compose after state_00533dc5 (this layout overrides its 0x8280f5 values that could fall below the cursor).",
+ "globals": [
+  {"addr": "0x008280ed", "type": "u32", "lo": 0, "hi": 32},
+  {"addr": "0x008280f5", "type": "u32", "lo": 32, "hi": 64, "alias": "0x008280ed"},
+  {"addr": "0x0082811f", "type": "u8", "count": 65, "stride": 1}
+ ]
+}

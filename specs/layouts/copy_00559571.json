@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x00559571: 'mov edi,[0x891500]; mov esi,[0x866f00]; sub esi,0x160; sub edi,0x160; mov ecx,0x160; rep movsb' copies the ring record just before [0x866f00] over the one just before the pit start [0x891500]. Both are record-aligned pointers into the 0x160-byte ring at 0x8943a0 (as in ring_008943a0/records_008943a0); they are drawn as records 1..29 so source and destination (records 0..28) are real ring records (the same record or disjoint ones, never a partial overlap). Every byte of records 0..28 is random (88 dwords per record), so the copied 0x160 bytes are varied; a plain byte copy accepts any pattern.",
+ "globals": [
+  {"addr": "0x00866f00", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 1, "hi": 29}},
+  {"addr": "0x00891500", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 1, "hi": 29}},
+  {"addr": "0x008943a0", "type": "u32", "count": 2552, "stride": 4}
+ ]
+}

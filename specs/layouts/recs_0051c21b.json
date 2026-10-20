@@ -1,0 +1,22 @@
+{
+ "_evidence": "0x0051c21b (compose after count_0096a368, count 1..8): 'mov ebx,[0x6975dc]' is the 0x20-byte record table (zero in the image, set to 0x6975ec by 0x51bfb6 at run time), here a 0x100-byte buffer of 8 records (rec20_0051c21b) so every record the count reaches is readable. 'cmp byte [ecx+0x965914],0xff; je' reads one slot byte per record index (indices 0..7 for count <= 8): the caller 0x51c292 zeroes the slots ('rep stosb' of [0x96a368] bytes) and each call marks the chosen slot 0xff, so slots are 0 or 0xff (0xff in a quarter of the draws). With every record skipped the original keeps esi = 0x7fffffff (stc exit) and writes the slot of the caller's ebp, which the spec bounds to 0..7. The int3 at 0x51c26f needs a count >= 0x80 after the loop: impossible with the count bounded to 1..8 by count_0096a368 (the loop exits when ecx reaches the count), so that block is proposed for coverage exemption.",
+ "globals": [
+  {
+   "addr": "0x006975dc",
+   "type": "ptr",
+   "size": 256,
+   "fill": "layout=rec20_0051c21b"
+  },
+  {
+   "addr": "0x00965914",
+   "type": "u8",
+   "count": 8,
+   "values": [
+    0,
+    0,
+    0,
+    "0xff"
+   ]
+  }
+ ]
+}

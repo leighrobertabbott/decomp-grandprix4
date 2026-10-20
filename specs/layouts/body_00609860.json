@@ -1,0 +1,10 @@
+{
+  "_evidence": "0xd0-byte orientation body (angles, sin/cos scratch, 3x3 matrix, vector, rotated vector) addressed by the dwords +0x40/+0x44 of the record behind pointer global 0x00609860 (and laid out like the fixed bodies 0x622cf8/0x6231d8/0x622e98). Reads: 0x401d5c fild dword [edx], [edx+4], [edx+8] (i32 angles, every pattern valid; 0x402051 overwrites them first); 0x401d80 fld qword [edx+0x10/0x18/0x20] then fsincos, 0x401da2 reads [edx+0x28..0x50] (all written by 0x401d5c/0x401d80 before they are read); 0x4020ef and 0x401e2e fmul the matrix qwords +0x58..+0x98 (finite rotation entries in [-1,1]); 0x401e2e reads the vector +0xa0..+0xb0 that its callers (0x425321/0x425395/0x4253e3) store first and writes +0xb8..+0xc8. All doubles are finite, nothing is a pointer, so no input faults.",
+  "size": 208,
+  "fields": [
+    {"off": 0, "type": "i32", "count": 3, "stride": 4},
+    {"off": "0x10", "type": "f64", "count": 9, "stride": 8, "lo": -1000, "hi": 1000},
+    {"off": "0x58", "type": "f64", "count": 9, "stride": 8, "lo": -1, "hi": 1},
+    {"off": "0xa0", "type": "f64", "count": 6, "stride": 8, "lo": -1000, "hi": 1000}
+  ]
+}

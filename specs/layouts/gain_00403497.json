@@ -1,0 +1,6 @@
+{
+  "_evidence": "0x00403497 multiplies the halved threshold difference by dword 0x00602fb8 (imul; shrd 14): any i32 is valid (state_004094e3 also draws it freely). Only this function reads it, but it sits in the writable .data tuning block next to state dwords, so it is varied rather than trusted at its static 0x779.",
+  "globals": [
+    {"addr": "0x00602fb8", "type": "i32"}
+  ]
+}

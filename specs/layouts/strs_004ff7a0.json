@@ -1,0 +1,33 @@
+{
+ "_evidence": "Plain C-string text entries [0x835846 + 4*id] read by the circuit-info dialog filler 0x4ff7a0 (zero in the image, filled when the text resources load, never null-tested): 'mov edx,[eax*4+0x838346]' (ids 0xac0 + circuit, circuit 0..16 by trk_007ad894: dwords 0x838346 + 4k, k = 0..16) is the second '%s' of sprintf '%s - %s' into a 0x100-byte stack buffer; [0x836286] (id 0x290) is the '(%s)' argument when a record time dword is zero; [0x838422] (id 0xaf7), [0x83841e] (id 0xaf6) and [0x838672] (id 0xb8b) are passed to the dialog setter 0x5b4620 (which returns at once while the dialog object [0xb2dd0c] is null, its image value). Each points at its own 0x40-byte NUL-terminated string (msgtxt_00536920 bytes), so every sprintf result fits its buffer (<= 0x20 + 3 + 0x3f with cname_00838236).",
+ "globals": [
+  {
+   "addr": "0x00838346",
+   "type": "ptr",
+   "count": 17,
+   "stride": 4,
+   "size": 64,
+   "fill": "layout=msgtxt_00536920"
+  },
+  {
+   "addr": "0x00836286",
+   "type": "ptr",
+   "size": 64,
+   "fill": "layout=msgtxt_00536920"
+  },
+  {
+   "addr": "0x0083841e",
+   "type": "ptr",
+   "count": 2,
+   "stride": 4,
+   "size": 64,
+   "fill": "layout=msgtxt_00536920"
+  },
+  {
+   "addr": "0x00838672",
+   "type": "ptr",
+   "size": 64,
+   "fill": "layout=msgtxt_00536920"
+  }
+ ]
+}

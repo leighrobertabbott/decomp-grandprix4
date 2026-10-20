@@ -1,0 +1,8 @@
+{
+  "_evidence": "0x52f506 shell-sorts the string-pointer table at ebx+0xc (caller 0x52e58f passes ebx = 0x824b60 and afterwards hands [ebx+4] and ebx+0xc to 0x4fe030): 'cmp dword [ebx+4],2; jb' (unsigned) then 'mov ecx,[ebx+4]; sub ecx,gap; jle' for the image-constant gaps 0x445,0x16c,0x79,0x28,0xd,4,1 at 0x826e43 (7 unaligned dwords, .data, never written). The count is drawn from 0..64 (0/1 skip, 2..64 run the gaps 13/4/1 and with 41/64 also 40): a count above the 64 pointers here, or a huge one that is positive after 'sub', would walk past the table (the game's table holds its real entries). Entries +0xc + 4*k ('mov esi,[edx+ebx]', 'mov edi,[ebx]') are 64 distinct 0x30-byte strings compared by 'repe cmpsb' (ecx = 0x30) or through 0x54d747; bytes come only from a small alphabet so long equal prefixes occur and both 'ja' outcomes and both loope exits are taken. The pointers are only permuted in place.",
+  "size": 268,
+  "fields": [
+    {"off": 4, "type": "u32", "values": [0, 1, 2, 2, 3, 4, 5, 6, 8, 9, 13, 14, 20, 41, 64]},
+    {"off": "0xc", "type": "ptr", "count": 64, "stride": 4, "size": 48, "fill": "u8{=0x41,0x41,0x41,0x61,0x42,0,0xff}"}
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "_evidence": "Overlay for 0x004240ff, composed AFTER state_0042320a (which redraws 0x608010 in +-0x800000 for its own fistp chain and so allows 0 and tiny gains). 0x004240ff runs 0x424011 first when [0x60827e]==0xff: ebp = n*[0x608010] (imul at 0x4240d4, n = 1..8 below-ground points) is the divisor of 'idiv ebp' at 0x4240f6 with a dividend ((([0x608184]-([0x639630]<<8)) >= 0) << 14) < 2^45, so |[0x608010]| >= 0x4000 is required (0 or a small gain #DEs; observed: 1/200 UC_ERR_EXCEPTION at eip 0x4240f6 with state_0042320a's range). The loop then runs 0x4236f1 -> 0x42320a, whose fistp chain needs |gain| <= 0x800000 (state_0042320a evidence; image value 0x4000). So the gain is drawn from 0x4000..0x800000 in both signs (the intersection of both callees' valid domains). [0x639630] is the target depth subtracted at 0x4240e7 (image 0): 0x424011 adds the quotient (sum(|depth|*gain>>14) - [0x639630]<<8) * 2^14 / (n*gain), i.e. the mean depth minus the target, to the ground offset [0x607f2c], which the following 0x42320a call adds to every projected point; a full-range [0x639630] makes that correction up to 2^31 and pushes the 0x42320a projections out of int32. It is drawn in +-0x1000 (<<8: +-2^20, the size of the projected depths, so both js outcomes at 0x4240ec occur). [0x6080d8] (read by 0x4240ff itself at 0x424164 and copied to [0x6080d4] each step) is the clamp length passed as ecx to 0x402cd0 by 0x423ea1 (shr/cmp/fsqrt/fdiv by the computed length only when it exceeds ecx: any value is valid) and may be replaced by 0x4239dc with [0x6080dc]: drawn as any u32.",
+  "globals": [
+    {
+      "addr": "0x00608010",
+      "type": "u32",
+      "values": [
+        "0x4000",
+        "0x4001",
+        "0x7fff",
+        "0x8000",
+        "0x12345",
+        "0x100000",
+        "0x400000",
+        "0x7fffff",
+        "0x800000",
+        "0xffffc000",
+        "0xffff0000",
+        "0xffc00000",
+        "0xff800000"
+      ]
+    },
+    {
+      "addr": "0x00639630",
+      "type": "i32",
+      "lo": -4096,
+      "hi": 4096
+    },
+    {
+      "addr": "0x006080d8",
+      "type": "u32"
+    }
+  ]
+}

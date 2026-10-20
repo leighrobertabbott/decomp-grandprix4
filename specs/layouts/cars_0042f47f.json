@@ -1,0 +1,20 @@
+{
+  "_evidence": "Other-car fields and thresholds for 0x0042f47f (compose LAST, after state_0042f3c7, whose [0x6043e4] points_into the 22 cars at 0x66fef0). Other car (stride 0x41c): byte +0x415 0x670305 (position 2*i, compared with esi +0x415 + 2), word +0x68 0x66ff58, word +0x9a 0x66ff8a, byte +0x9c 0x66ff8c (bit 1 -> 0x40dc8a), word +0xe2 0x66ffd2: values paired with car_0042f47f so every compare goes both ways (see there). The thresholds 0x603b12 (0x19), 0x603b7a (0x200), 0x603b7c (0x60), 0x603b7e (-16), 0x603b80 (0x300), 0x603bac (0x40), 0x603bb0 (8), 0x62ac50 (0x6400), 0x62ac54 (0x2c00) and the 0x42a0cf step 0x6223ec (4) are never written (each read only here, 0x62ac50 also read by 0x40f8b6/0x429e36/0x43e0d7..): their image values dominate the picks, plus 0 and the extremes (all compares, sub and imul: no faults).",
+  "globals": [
+    {"addr": "0x00670305", "type": "u8", "count": 22, "stride": "0x41c", "values": [2, 4, "0x2a", 1, "0x10"]},
+    {"addr": "0x0066ff58", "type": "u16", "count": 22, "stride": "0x41c", "values": [0, 8, 16, 24, 32, "0x7fff", "0x8000"]},
+    {"addr": "0x0066ff8a", "type": "u16", "count": 22, "stride": "0x41c", "values": ["0x1100", "0x2100", "0x3100", "0x4100", "0x5100", "0x6000", 0, "0x7fff", "0x8000"]},
+    {"addr": "0x0066ff8c", "type": "u8", "count": 22, "stride": "0x41c", "values": [0, 0, 0, 0, 2, "0xff"]},
+    {"addr": "0x0066ffd2", "type": "u16", "count": 22, "stride": "0x41c", "values": [0, 0, "0x100", "0x100", "0x8000", "0x7fff"]},
+    {"addr": "0x00603b12", "type": "u16", "values": ["0x19", "0x19", "0x19", "0x19", 0, "0x7fff", "0x8000"]},
+    {"addr": "0x00603b7a", "type": "u16", "values": ["0x200", "0x200", "0x200", "0x200", "0x60", "0x7fff", "0x8000"]},
+    {"addr": "0x00603b7c", "type": "u16", "values": ["0x60", "0x60", "0x60", "0x60", "0x200", "0x8000"]},
+    {"addr": "0x00603b7e", "type": "u16", "values": ["0xfff0", "0xfff0", "0xfff0", "0xfff0", 0, "0x7fff", "0x8000"]},
+    {"addr": "0x00603b80", "type": "u16", "values": ["0x300", "0x300", "0x300", "0x300", 0, "0x7fff", "0x8000"]},
+    {"addr": "0x00603bac", "type": "u32", "values": ["0x40", "0x40", "0x40", "0x40", 0, "0x7fffffff", "0x80000000"]},
+    {"addr": "0x00603bb0", "type": "u32", "values": [8, 8, 8, 8, 0, "0x7fffffff", "0x80000000"]},
+    {"addr": "0x0062ac50", "type": "u32", "values": ["0x6400", "0x6400", "0x6400", "0x6400", 0, "0x7fffffff", "0x80000000", "0xffffffff"]},
+    {"addr": "0x0062ac54", "type": "u32", "values": ["0x2c00", "0x2c00", "0x2c00", "0x2c00", 0, "0xffff", "0x10000"]},
+    {"addr": "0x006223ec", "type": "u32", "values": [4, 4, 4, 4, 0, "0x7fffffff", "0xffff8000"]}
+  ]
+}

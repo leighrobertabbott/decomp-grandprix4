@@ -72,6 +72,21 @@ end. Express the computation; never transliterate register shuffling. Spec:
   changes and callers read afterwards is an output; all GPR effects are also
   compared because the runtime adapter restores the complete register block.
 
+**Many `c`-track items in R1-asm-core are hand-written routines.** If the
+original reads registers other than its stack arguments, leaves esi/edi/ebx/ebp
+changed, or its callers consume flags or edx, write it as `regs` even when the
+suggestion says `cdecl() -> i32` (a cdecl version fails on callee-saved
+registers or flags). Verified across dozens of accepts.
+
+Register idioms (verified): a routine that writes only `ax`/`dx`/`bl` needs the
+full register declared as an input (`eax:u32`), else "hidden input". `popal`
+does not restore flags: a `pushal ... popal` wrapper leaves the flags of the
+last flag writer inside. `clc`/`stc` epilogues keep the other flags of the last
+`cmp`/`test` and REPLACE CF: `flags = (writer_flags & ~1u) | carry` - never OR
+the forced carry onto a helper's CF (0x0042a9cf passed weak tests that way and
+failed once a layout reached the carrying case). Wrappers that call another asm routine use `gp4::call_regs`.
+A 64-bit `edx:eax` result is `regs(...) -> (eax, edx)` (no `u64` return type).
+
 The register adapter restores every GPR and arithmetic flag from `Regs`, so
 the oracle now compares all seven GPRs and CF/PF/AF/ZF/SF/OF, including values
 preserved by the original. Preserve unrelated `r->eflags` bits and compute
@@ -84,13 +99,41 @@ suggestion is provisional: a routine returning flags may need `regs`.
 - Another GP4 function: through its original address, never a re-implementation:
   `gp4::cdecl_<0x00412340, int>(a, b)`, `gp4::stdcall_<0x..., void>(x)`,
   `gp4::thiscall_<0x..., int>(self, x)`, asm routines `gp4::call_regs(0x..., regs)`.
+  A stdcall routine (Win32 thunk, C wrapper) called by hand-written code with live registers
+  whose leftover registers/flags matter (no push/pop around the call):
+  `gp4::call_regs_stdcall(0x..., regs, args)` with `const uint32_t args[N]` (args[0] pushed
+  last); the callee pops them, regs come back with its eax/ecx/edx/eflags. Never substitute a
+  value the original does not produce because "the caller ignores it".
   Calling a different function than the original does is a wrong callee (shape gate).
 - Globals: `GP4_GLOBAL(float, 0x006a1234)`, arrays `GP4_ARRAY(int16_t, 0x...)`.
   A string the original references: `GP4_ARRAY(const char, 0x...)` or the identical literal.
-- Win32: `GP4_IAT(fn_type, <slot from the packet>)(args)` - no `<windows.h>`;
-  add `; emu=skip:win32 <Api>` to the spec (accepted pending an in-game check).
+- Win32: `GP4_IAT(fn_type, <slot from the packet>)(args)` - no `<windows.h>`.
+  The emulator models GetProcessHeap, HeapAlloc/HeapFree/HeapReAlloc/HeapSize,
+  OutputDebugStringA, GetTickCount, timeGetTime, QueryPerformanceCounter/Frequency,
+  Sleep, GlobalAlloc (fixed)/GlobalFree/GlobalHandle/GlobalMemoryStatus,
+  GetLocalTime/GetSystemTime, a seeded fake file system (CreateFileA, ReadFile,
+  WriteFile, SetFilePointer, GetFileSize, CloseHandle, FindFirstFileA/FindNextFileA/
+  FindClose, DeleteFileA, GetFileAttributesA, CreateDirectoryA, Set/GetCurrentDirectoryA),
+  MapVirtualKeyA, MessageBoxA/MessageBoxExA, PostMessageA and SelectObject/SetTextColor/
+  SetBkColor/GetTextExtentPoint32A, GetKeyNameTextA, LoadCursorA/SetCursor/ShowCursor,
+  GetLogicalDrives/GetDriveTypeA. File handles 0x3000..0x3ffc that the run did not open are
+  files a caller opened earlier (seeded size/contents) - give handle globals such values.
+  PeekMessageA/GetMessageA/DispatchMessageA (message pumps)
+  are NOT modelled: a case reaching one ends external, and a function whose every case does is
+  accepted-runtime (pending the in-game check). `emu=skip:win32 <Api>` does not switch the
+  emulator off: it still compares up to 64 cases, and a mismatch or hidden input on a case that
+  never reaches the API FAILS the function; only the remaining cases are left to the in-game check. The oracle runs the CRT's _cfltcvt_init
+  (0x5da8f7) before every case, so sprintf %f/%g/%e work.
+  (gp4re/stubs.py): no skip for those; the original's and your call sequence and
+  arguments must match exactly (strings and written file data by content). For any
+  other API add `; emu=skip:win32 <Api>` to the spec (accepted pending an in-game check).
+- A known function start the original uses as a plain operand (`mov esi, 0x549dcc`,
+  a handler address pushed as an argument) may appear in your code the same way:
+  the shape gate accepts it - do not hide it behind arithmetic.
 - One-off field offsets: `GP4_FIELD(float, p, 0x2c)`. When a layout is clear,
-  declare a struct instead (fields named from evidence, else `UnknownXX`).
+  declare a struct instead (fields named from evidence, else `UnknownXX`), inside
+  `#pragma pack(push, 1)` / `#pragma pack(pop)` - game records are unaligned (a
+  pointer at +0xe), and MSVC silently pads an unpacked struct.
 
 ## x87 fidelity (the oracle compares bits)
 
@@ -100,10 +143,27 @@ suggestion is provisional: a routine returning flags may need `regs`.
 - Match load/store widths: `fld dword` is float, `fld qword` is double. An
   intermediate the original stores to a float slot: `gp4::x87::to_f32(x)`.
 - Keep the original operation order (`a*b + c` vs `c + a*b` can differ).
+- Values the original keeps ON THE x87 STACK across several instructions (no
+  store in between) are 80-bit. Use `gp4::x87::Ext`: `ext(double)`,
+  `ext_i32(int)` (FILD), `ext_f32(float)`, `+ - * /`, `fsqrt(Ext)`,
+  `fpatan(Ext y, Ext x)`, `fistp32(Ext)`/`fistp16(Ext)`, and `narrow(Ext)` /
+  `narrow_f32(Ext)` at the original's qword/dword store. Also on Ext:
+  `fsin fcos fsincos fptan frndint f2xm1 fabs fchs fscale(x,e) fyl2x(y,x)
+  fprem(x,y)`, constants `ext_one/zero/pi/l2e/l2t/lg2/ln2()`, loads
+  `ext_i16/ext_i64`, and compares `fucom(a,b)`/`fcom(a,b)`/`ftst(a)` returning
+  the status bits C3|C2|C0 (after `fnstsw ax; sahf`: CF=C0, PF=C2, ZF=C3) -
+  do not decode Ext bytes by hand. Doubles between the
+  steps give 1-ulp mismatches. Verified on 0x00402305 (atan2 of an fsqrt) and
+  0x0041fbef (fistp of an FILD*FMUL product).
 - x87 inputs/outputs must be contiguous from `st0`. Output capture checks raw
-  80-bit x87 values before rounding. If an output cannot survive the `Regs`
-  double slot exactly, the oracle reports INCONCLUSIVE; defer for an extended
-  precision adapter rather than relaxing tolerance.
+  80-bit x87 values before rounding. A `regs` routine that leaves an 80-bit
+  value on the x87 stack (the oracle says "a double cannot hold") returns it
+  with `gp4::x87::set_out_st(r, k, Ext)`; read x87 inputs at full precision
+  with `gp4::x87::in_st(r, k)` (callers in the game pass 80-bit values, so
+  prefer `in_st` over `r->st[k]` whenever the input feeds arithmetic). Around
+  `gp4::call_regs`, `set_in_st(regs, k, Ext)` / `out_st(regs, k)` pass 80-bit
+  values to and from the original. The oracle compares these bytes exactly;
+  never relax tolerance instead.
 
 ## Spec checklist (the emulator needs plausible inputs)
 
@@ -113,13 +173,19 @@ suggestion is provisional: a routine returning flags may need `regs`.
   provided one, else ask in `needs`.
 - Indices into GP4 tables: ranges (`i32[0..21]`), or the original faults.
 - `tol=` only after the bit-exact attempt shows tiny float noise you cannot remove.
-- "INCONCLUSIVE ... external" means the original calls Win32: use `emu=skip:win32 <Api>`.
+- "INCONCLUSIVE ... external" means the original calls an unmodelled Win32 API: use
+  `emu=skip:win32 <Api>`.
 
 - Every generated original case must be valid for full acceptance. Basic block
   and branch coverage are enforced, with bounded extra input search. Missing
   GPR, arithmetic-flag and stack inputs are checked by changing the original's
   undeclared inputs. Report the missing input or layout when these gates fail.
-- Lead-provided global field layouts use `; globals=layout=<name>`. They vary
+- Lead-provided global field layouts use `; globals=layout=<name>`; combine
+  several existing ones with `layout=<a>+<b>` (later ones win on overlap), and
+  `fuzz:i32+layout=<a>` fuzzes every directly addressed global, then applies the
+  layout (bounded divisors/indices) on top. Pointer arguments compose too:
+  `esi:ptr[0x420]:layout=rec_a+rec_b` (the first sets size/background, later
+  layouts overlay only their fields). They vary
   only evidenced fields and may repeat fields across records. For example,
   `search_0066d82c` supplies the byte discriminator/table read by `0x00409c13`.
 - Memory comparison includes globals, pointer buffers and live caller stack.
@@ -130,9 +196,116 @@ suggestion is provisional: a routine returning flags may need `regs`.
   unknown name unless separate provenance proves it is a compiler artefact.
 - `tol=` never relaxes raw memory bytes, integer/pointer values, signed zero
   or NaN payloads. Runtime skip requires an evidenced reachable named import.
+- `globals=fuzz:i32` varies only globals the code addresses DIRECTLY. Data
+  reached through a register (`mov ebx,0x6380d8` then `[ebx+0x114]`, record
+  arrays, tables) keeps its static image value. `work try` then prints
+  `warning: unvaried data inputs: ...`. If those bytes are state (records,
+  counters, flags, pointers) rather than constant lookup tables, the pass is
+  weak: put "strengthen 0x<addr>: layout for <bytes>" in your summary `needs`.
+- The oracle runs GP4's own startup routines 0x527453 and 0x527476 first, so
+  the x87 control words 0x6f29a4/6 and the angle scales 0x6f2be4 (2^31/pi),
+  0x6f2bbc, 0x6f2bc4, 0x6f2bcc, 0x6f2bd4, 0x6f2bdc (pi/2^31) hold their real
+  values: treat them as constants (an "unvaried" warning on them is fine).
+  The Q14 cosine/sine word table at 0x7c5c5c (16384 = 1.0, 0x2000 words) is
+  real data in the image: also a constant. Car/record arrays such as 0x63bd7c,
+  0x66fef0, 0x6380d8, 0x8943a0 and the order list 0x66fe3c are ZERO in the
+  image - they are runtime state and need layouts.
+- Existing layouts in `specs/layouts/*.json` (read their `_evidence`) may be
+  reused when they describe exactly the data your function reads. Lead layouts
+  support nested pointer fields, pointer globals (optionally null, or pointing
+  into the middle of a buffer), record-aligned pointers into fixed arrays,
+  globals equal to another global in half the cases, value lists, ranges and
+  repeated records. Ask for one precisely in `needs`: addresses, offsets,
+  widths, ranges, and why (e.g. "divisor 0x60351c nonzero, |q| < 2^31").
 - For a single 32-bit scalar global getter/setter that does not dereference it
   or use it as an index/divisor, use `globals=fuzz:i32` without another lead
   request. Byte/word fields, mixed-width state and bounded tables need layouts.
+- 64/32 division: int64 `/` does not link (no `__alldiv`). Use
+  `gp4::idiv64(int64 n, int32 d, int32* rem)` / `gp4::div64(uint64, uint32,
+  uint32*)` from gp4.h: they compile to the single IDIV/DIV (verified on
+  0x0041eba5). Do not hand-write shift-subtract loops. IDIV/DIV leave the flags
+  of the preceding instruction in the oracle (verified).
+- Shift flags in the oracle (verified on several accepts): for SHL/SHR/SHRD/SHLD
+  by n > 1, CF = last bit shifted out, AF = 0, OF = bit31(value shifted by n-1
+  XOR result); SAR gives OF = 0; logic ops and TEST give CF = OF = AF = 0.
+- Shape gate tips (verified): MSVC folds `global_a - global_b` into a constant,
+  hiding both globals - compute it in a `static __declspec(noinline)` helper.
+  Fields far from a global array's base compile to absolute addresses that
+  count as extra globals - walk a record pointer instead (`base + k*stride`).
+- Spec ranges accept decimal or hex (`u32[0..0x3fff]`). A pointer buffer can
+  be filled with one bounded element type: `ptr[0x310]:i16[-32767..32767]`
+  (every word in range - e.g. to keep an idiv from overflowing); per-field
+  domains still need a lead layout. `nptr[size]:fill` is
+  a pointer that is null in about a quarter of the cases (`or esi,esi; je`).
+  `rec[base,stride,lo..hi]` is a register holding a record-aligned address
+  into a fixed array, e.g. `esi:rec[0x66fef0,0x41c,0..21]` (the 22-record
+  array) or `edi:rec[0x8943a0,0x160,0..25]`; the records' fields then come
+  from a globals layout (ask the lead). A global that must sometimes EQUAL a
+  register argument (`cmp esi,[0x66d820]`) is a lead layout option too.
+  `u32{0x36314c20,0x36314c41,...}` (any integer type) draws mostly from a value
+  set: use it for magic-constant dispatchers (FourCC, command codes).
+  Pointer fills take value sets too: `esi:ptr[0x40]:u8{0x20,0x22,0x09}`.
+  `u32{=a,b}` draws ONLY from the set (use it for indexes and fixed pointers).
+  Global layouts: `alias_reg` can be combined with `points_into` (+`nullable`), so
+  the non-alias half is still a valid record pointer, never a random one.
+  `rel[reg,stride,lo..hi]` ties a register to an EARLIER input register:
+  `edi:rec[0x8943a0,0x160,0..11], ebp:rel[edi,0x160,1..12]` gives
+  ebp = edi + k*0x160 (a [edi,ebp) record range; stride may be negative).
+- A run is capped at 4M instructions (`; maxinsn=<n>` raises it for a long but
+  legitimate loop) and the whole emu gate at 300 s (`; wall=<s>`, up to 3600,
+  for a routine whose 200 legitimate cases simply take longer). A case that hits the cap is
+  invalid; an unbounded loop on random inputs needs a lead layout, not a
+  bigger cap.
+- Layout order matters (later layouts win where they overlap): put
+  `state_00403800` BEFORE `ring_00405a12`/`links_00405a12` (it overwrites the
+  coherent pit start 0x891500 otherwise) and `widths_00852c44` AFTER it
+  (0x852c44/48 are i16; full-range values divide-fault 0x403bb6); lane layouts
+  (`lanes_0040da62`, `pend_0040daeb`) also go before the ring/link layouts.
+  Known composition hazards: `eq_0042ba87` (random 0x6043d8/dc pointers),
+  `state_0042f16d` (redraws 0x891500/0x866f00), `geom_008943a0` (overrides the
+  pinned ring records 2/3 -> endless walks) and `counter_0040f0dd` AFTER
+  `scale_0066ec60` (randomises 0x66d936) - leave them out or reorder.
+  In car pointer layouts put `car_0043c677` LAST: it keeps +0x1c on ring
+  records 0..25 (records 26..29 fault the ring walkers).
+  Never-written constants (0x6f2bdc, 0x6f2bf0, 0x7c5c5c, 0x603554/58,
+  0x601c38/50) must keep their image values: avoid `fuzz:i32` when fuzzing
+  would overwrite them and use layouts only.
+- int3 assertion guards (`cmp x,N; jb ok; int3`): call `__debugbreak()` on that path
+  (declare `extern "C" void __cdecl __debugbreak(void);`), bound the guarded counter
+  in a layout request so valid cases never reach the int3, and defer with the int3
+  block for a lead exemption.
+- Not every queued start is a function: entries right after a computed
+  `jmp [reg]` (jump tables), starts inside another instruction, and bytes with
+  `in/out/retf/sldt` or calls into unmapped memory are data decoded as code.
+  Defer them with `"not a function: <evidence>"`; the lead excludes them.
+- R3 `add reg,TABLE; jmp [reg]` switches: the lead attached their case bodies to the
+  parent (tools/fix_switches.py) and excluded the table dwords, so the shape gate
+  expects the case bodies' callees/globals in the parent - write the cases inline.
+  The analyzer follows these switches (`add reg,TABLE` directly before `jmp [reg]`),
+  so `work show` lists the case bodies and the coverage gate counts them.
+  `add reg,TABLE; call [reg]` handler tables: the handlers are separate functions
+  (registered by the lead); call them with gp4::call_regs through the table entry.
+- Shared case bodies (kind evidence "switch case body shared by several functions"):
+  pieces of R3 jump-table state machines that several functions jump into. Write one
+  as regs; each tail jump to another piece or function is `gp4::call_regs(<target>, *r);
+  return;` (stack depth differs from the original's jmp, which only matters if the
+  piece reads its caller's stack - the emulator would then report it).
+- Pointer chains of any depth (`mov esi,[esi]` N times from a cell): a layout node
+  with a `"type": "self"` link field (specs/layouts/README.md) - request that.
+- Flag helpers: `#include <gp4/flags.h>` gives `gp4::flags::sub32/sub16/sub8`
+  (cmp/sub), `add32/16/8`, `neg32/16`, `logic32/16/8` (and/or/xor/test: CF=OF=AF=0),
+  `inc32/dec32(a, in_flags)` (keep CF) and `merge(eflags, arith)`; verified against
+  the CPU (tests/native/test_flags.cpp). Prefer them to hand-written parity code.
+- The regs convention always compares all six flags. A wrapper whose callee
+  chain ends in compiled C (`add esp,N` / stack arithmetic: AF/PF depend on the
+  stack address, so the oracle and the reconstruction disagree) cannot pass as
+  regs. If every call site's next instruction overwrites or ignores the flags
+  (check `work show <caller>`), write it as `cdecl() -> u32` with a local
+  `gp4::Regs c = {}; c.eax = k; gp4::call_regs(callee, c); return c.eax;`
+  (verified on 0x00442cd4/0x00442cdf/0x00442cea).
+- Provably dead blocks (a test the code just made impossible) are not a
+  reason to force coverage: defer with the proof in `needs`; the lead can
+  exempt them (verdicts then list `exempt_blocks`).
 - Verified with Unicorn 2.1.4: SHRD32 by 12 uses CF=`(low>>11)&1`, AF=0,
   and OF=`bit31(previous ^ result)`, where `previous` is the concatenated
   64-bit value shifted by 11 and `result` by 12. OF/AF here are undefined

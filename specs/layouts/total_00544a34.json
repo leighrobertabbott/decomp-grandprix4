@@ -1,0 +1,43 @@
+{
+ "_evidence": "0x00544a34 releases 0x1ae8 bytes through 0x538a24: ebx = [0x82fcb0] + 0x1ae8, 'jb' (carry) takes the reset path 0x53872f (0x53873a: [0x829868+0x14] -> 0x82fcac and dwords +0/+8/+0xc of the 0x400 slot records 0x829cac+0x18*k cleared; 0x538771: [+0x14]+[+0x10] -> 0x82fcb0), else the new total is stored and compared with [+0x14]+[+0x10] (pool_00538a24 varies those two). The running total 0x82fcb0 is drawn on both sides of 2^32 - 0x1ae8 (0xffffe517/18/19) so the carry and no-carry paths both occur, and the used end 0x82fcac and the first 16 slot records' cleared dwords are varied so the reset's stores are visible. Plain adds/compares/stores: every value is valid.",
+ "globals": [
+  {
+   "addr": "0x0082fcb0",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    "0xa06100",
+    "0x12345678",
+    "0x7fffffff",
+    "0xffffe517",
+    "0xffffe518",
+    "0xffffe519",
+    "0xfffffff0",
+    "0xffffffff"
+   ]
+  },
+  {
+   "addr": "0x0082fcac",
+   "type": "u32"
+  },
+  {
+   "addr": "0x829cac",
+   "type": "u32",
+   "count": 16,
+   "stride": "0x18"
+  },
+  {
+   "addr": "0x829cb4",
+   "type": "u32",
+   "count": 16,
+   "stride": "0x18"
+  },
+  {
+   "addr": "0x829cb8",
+   "type": "u32",
+   "count": 16,
+   "stride": "0x18"
+  }
+ ]
+}

@@ -1,0 +1,16 @@
+{
+ "_evidence": "Dispatcher 0x0054fd4d: 'movzx ecx,al; and ecx,7' then 'call cs:[0x54fd62+4*ecx]' (a fixed .text table: 0x54fd86, ret, 0x54fd8d, ret, ret, 0x54fd9a, 0x54fda0 x2). Case 2 (0x54fd8d) clears dword 0x83e69e, so that dword is random (the store becomes visible). Cases 0 and 5 call 0x53ca14, whose first instruction 'cmp dword [0x82fd34],0; je' returns at once when there is no current menu: [0x82fd34] = 0 here (its image value, and a state the routine explicitly handles), so those cases run without the deep menu-closing path (0x54ec64/0x53d4f9, unverified) and leave the flags of that compare (ZF=1), which differ from the 'ret' cases - a wrong dispatch is visible. The non-null menu path of 0x53ca14 is not exercised by this layout.",
+ "globals": [
+  {
+   "addr": "0x0083e69e",
+   "type": "u32"
+  },
+  {
+   "addr": "0x0082fd34",
+   "type": "u32",
+   "values": [
+    0
+   ]
+  }
+ ]
+}

@@ -1,0 +1,322 @@
+{
+ "_evidence": "Car fields read by 0x420ed6 under 0x00420d3f (esi buffer overlay, compose last; see wheels_00420d3f for the integrator bounds): velocity dwords +0x30c..+0x318 and position dwords +0x32c..+0x358 (copied into 0x602b80..9c and integrated) in +-0x4000, coupling dwords +0x40c/+0x410 (0x42181c copies them to the four records' +0x110) in 0..0x4000; the rest of the 0x420-byte car keeps its random background. 0x41f805 (called first by 0x420d3f) derives the integrator coefficients from this car: per wheel (esi += 4) +0x120 = damper rate +0x3ac/+0x3bc/+0x3cc/+0x3dc, +0x11c = +0x2cc (+ [0x601df0] or the record's +0x1d0), the product terms +0x124..+0x150 from positions +0x2fc/+0x32c/+0x33c/+0x34c/+0x35c/+0x37c and the record fields; with these full-range (the random car background) +0x11c/+0x120 reached +-2^30 (snapshots at 0x420efd) and the effective masses lost their bound. So the rates +0x2cc..+0x2d8 and +0x3ac..+0x3e8 draw 0..0x1000 and the position dwords +0x2fc..+0x308, +0x33c..+0x348, +0x35c..+0x368, +0x37c..+0x388 +-0x4000 (setup rates and suspension positions of a real car). Dword +0x1a8 ('test 0xffffffff; je 0x420df8' in 0x420d3f itself: four packed byte impulses, each <<13 * [0x629e60] >> 14 added to a record's +0x38) is zero in a third of the picks so both outcomes occur (random dwords were never zero); any value is valid.",
+ "size": 1056,
+ "fill": "bytes",
+ "fields": [
+  {
+   "off": "0x30c",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x310",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x314",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x318",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x32c",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x330",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x334",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x338",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x34c",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x350",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x354",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x358",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x40c",
+   "type": "i32",
+   "lo": 0,
+   "hi": 16384
+  },
+  {
+   "off": "0x410",
+   "type": "i32",
+   "lo": 0,
+   "hi": 16384
+  },
+  {
+   "off": "0x2cc",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "off": "0x2d0",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "off": "0x2d4",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "off": "0x2d8",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "off": "0x2fc",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x300",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x304",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x308",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x33c",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x340",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x344",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x348",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x35c",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x360",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x364",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x368",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x37c",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x380",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x384",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x388",
+   "type": "i32",
+   "lo": -16384,
+   "hi": 16384
+  },
+  {
+   "off": "0x3ac",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "off": "0x3b0",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "off": "0x3b4",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "off": "0x3b8",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "off": "0x3bc",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "off": "0x3c0",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "off": "0x3c4",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "off": "0x3c8",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "off": "0x3cc",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "off": "0x3d0",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "off": "0x3d4",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "off": "0x3d8",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "off": "0x3dc",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "off": "0x3e0",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "off": "0x3e4",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "off": "0x3e8",
+   "type": "i32",
+   "lo": 0,
+   "hi": 4096
+  },
+  {
+   "off": "0x1a8",
+   "type": "u32",
+   "values": [
+    0,
+    0,
+    0,
+    1,
+    "0xff",
+    "0x01020304",
+    "0xffffffff",
+    "0x80808080",
+    "0x7f7f7f7f"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,7 @@
+{
+  "_evidence": "Uniform variant of state_0066d8c0 for the shift-register generator 0x00401462 (al = (w[0x66d8c0] >> 4) ^ (w[0x66d8c2] >> 1), state <<= 8 | byte 0x66d8bf): the generic u32 mix is mostly 0/1/-1/2/small values, whose output byte has bit 0 clear, so callers that branch on the drawn bits (0x428c38 shr ebp,1; jae) rarely saw the other outcome. Here the state dword is drawn uniformly over the full u32 range (lo/hi, so the edges 0, 1, 0xffffffff still occur) and the byte stays free. Every state is one the game's generator passes through; nothing faults.",
+  "globals": [
+    {"addr": "0x0066d8c0", "type": "u32", "lo": 0, "hi": 4294967295},
+    {"addr": "0x0066d8bf", "type": "u8"}
+  ]
+}

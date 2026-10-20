@@ -1,0 +1,9 @@
+{
+ "_evidence": "0x0054d32e -> 0x54d6f9 'mov ebx,[0x822244]; shr ebx,1' then the empty 0x54d707: the dword is read only through the callee (so globals=fuzz never reached it) and only shifted; any u32 is valid and both CF outcomes of the shr occur.",
+ "globals": [
+  {
+   "addr": "0x00822244",
+   "type": "u32"
+  }
+ ]
+}

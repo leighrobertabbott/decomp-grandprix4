@@ -1,0 +1,17 @@
+{
+ "_evidence": "Gate state of 0x00443996 (compose LAST, after cars_0066fef0+...+state_004320f2+state_0044334d). Entry 'cmp byte [0x7c2e75],0; je': 0x7c2e75 is 0 in most picks (the lap-gate path) and nonzero otherwise, where eax = movzx [0x7ad89c] * movzx [0x7c2eb8] is compared with movzx [0x66d894] (je 0x443ab3). The lap path: 'cmp [0x66d8cc],0x1d4c0; jg' then 'test [0x66d8cc]; jne': 0x66d8cc takes 0 (both tests pass), small values, -1, and the boundary 0x1d4c0/0x1d4c1; byte 0x63b85c (0 runs 0x418fd0 with esi = [0x679d30] and is then set to 0xff); byte 0x66d87a sign ('js'); word 0x66d878 is incremented and masked with 0xf ('jne' unless (v+1)&0xf == 0), so it mostly takes v with low nibble 0xf (0xf, 0x1f, 0xffff -> 0) plus 0 and 1; 'cmp word [0x7c2eb8],2; jge' splits the two tails: below 2 tests byte 0x66d87f sign (0x441a78/0x441c92 run when clear) then 0x443955 (CF from the 22-car scan over cars_0066fef0); 2 and above tests byte 0x7c2ea9 bit 0x40, bytes 0x88f63a and 0x852d6a (nonzero exits) and compares word 0x66d894 with dx, 2dx, 3dx (je) and 4dx (jl), so 0x7c2eb8 is 0..4 (and 0xffff, negative) and 0x66d894 is drawn from small multiples of 2..4 (2,3,4,6,8,9,12,16) and non-multiples/extremes (0,1,5,7,0x7fff,0xffff) so every equality and both jl outcomes occur; 0x7ad89c 0..4 makes the entry product equal 0x66d894 in some cases. All fields are compared only (plus the RMW of 0x66d878/0x63b85c/0x66d87c/0x66d87f): nothing can fault. The branch 0x4439ec:taken is dead: 0x4439c3 is reached only from 'je 0x4439c3' at 0x44399d ([0x7c2e75] == 0; a scan of every executable section finds no other rel8/rel32/absolute reference into 0x4439c3..0x4439ec), and 0x4439c3..0x4439e4 store nothing except three stack pushes, so 'cmp byte [0x7c2e75],0; jne' at 0x4439e5/0x4439ec always falls through.",
+ "globals": [
+  {"addr": "0x007c2e75", "type": "u8", "values": [0, 0, 0, 0, "0xff", 1]},
+  {"addr": "0x0066d8cc", "type": "i32", "values": [0, 0, 0, 1, "0xffffffff", "0x1d4c0", "0x1d4c1"]},
+  {"addr": "0x0063b85c", "type": "u8", "values": [0, "0xff"]},
+  {"addr": "0x0066d87a", "type": "u8", "values": [0, 1, "0x7f", "0x80", "0xff"]},
+  {"addr": "0x0066d878", "type": "u16", "values": ["0xf", "0xf", "0x1f", "0xffff", 0, 1]},
+  {"addr": "0x007c2eb8", "type": "u16", "values": [0, 1, 1, 2, 2, 3, 4, "0xffff"]},
+  {"addr": "0x0066d87f", "type": "u8", "values": [0, "0x80"]},
+  {"addr": "0x007c2ea9", "type": "u8", "values": [0, "0x40", "0x44", "0x80", "0xc4"]},
+  {"addr": "0x0088f63a", "type": "u8", "values": [0, 0, 0, 1]},
+  {"addr": "0x00852d6a", "type": "u8", "values": [0, 0, 0, 1]},
+  {"addr": "0x0066d894", "type": "u16", "values": [2, 3, 4, 6, 8, 9, 12, 16, 0, 1, 5, 7, "0x7fff", "0xffff"]},
+  {"addr": "0x007ad89c", "type": "u16", "values": [0, 1, 2, 3, 4]}
+ ]
+}

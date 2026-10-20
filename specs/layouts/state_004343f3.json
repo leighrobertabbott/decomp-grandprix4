@@ -1,0 +1,26 @@
+{
+ "_evidence": "Overlay for 0x004343f3 (compose LAST, after state_00433ff8+state_00434557+clock_0066d814+recs_004340b1). The timer table 0x63b9e4 has 22 rows of 9 due-time dwords (row stride 0x24: 0x434436 'imul ecx,esi,0x24' over esi 0..21, column ebx 0..8; 0x43410d writes clock + delay into the same cells): each is tested nonzero (test; je) and compared with the race clock (neg; add [0x66d814]; js), clock_0066d814 drawing 0..0x10000, so all 198 cells are drawn 0..0x10000 (zero edge included) to reach due, not-yet-due and empty timers in every row and column; the image zeros left all but cell 0 empty. Byte +0x19 of the 0x1c-byte records 0x62ffac (0x43410d case 0xb: 0x4340b1 returns it, 'cmp al,0xff; je') is 0xff in about two fifths of the picks (recs_004340b1 draws it uniformly, so 0xff almost never occurred). Compares and stores only: nothing faults.",
+ "globals": [
+  {
+   "addr": "0x0063b9e4",
+   "type": "u32",
+   "count": 198,
+   "stride": 4,
+   "lo": 0,
+   "hi": 65536
+  },
+  {
+   "addr": "0x0062ffc5",
+   "type": "u8",
+   "count": 22,
+   "stride": "0x1c",
+   "values": [
+    "0xff",
+    "0xff",
+    0,
+    1,
+    "0x7f"
+   ]
+  }
+ ]
+}

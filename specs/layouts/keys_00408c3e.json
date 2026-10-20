@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x00408c3e copies three per-car dwords into the car record before calling 0x408659: 'push dword [eax*4+0x675970]; pop [esi+0x34]', '[eax*4+0x6759c8] -> [esi+0x2c]', '[eax*4+0x675a20] -> [esi+0x30]' with eax = (byte [esi+0x7c] & 0x3f) - 1. The three 22-dword tables are contiguous runtime state (zero in the image; 0x52283a copies keys into 0x675970, 0x40f06c stores 0x6759c8/0x675a20 at the car index, see keys_0044329f/state_0040f06c); the values are only copied (0x408659 does not read +0x2c/+0x30/+0x34), so every pattern is valid: i32, any value, all 66 entries.",
+ "globals": [
+  {"addr": "0x00675970", "type": "i32", "count": 22, "stride": 4},
+  {"addr": "0x006759c8", "type": "i32", "count": 22, "stride": 4},
+  {"addr": "0x00675a20", "type": "i32", "count": 22, "stride": 4}
+ ]
+}

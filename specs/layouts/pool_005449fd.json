@@ -1,0 +1,6 @@
+{
+ "_evidence": "Overlay for 0x005449fd on pool_005389b9 (compose after it): 'mov eax,0x1ae8; call 0x5389b9; jb' requests 0x1ae8 bytes, which 0x5389b9 grants only when free end [0x82fcb0] - 0x1ae8 >= used end [0x82fcac] (0xa06100 in pool_005389b9, lowered by evictions to no less than 0xa06000); pool_005389b9 caps the free end at 0xa06300, so the request never fitted and the store 'mov [0x831568],eax' / the formatter 0x544a15 (writes 0x54 lines of 0x50 spaces + CR LF = 0x1ae8 bytes at the granted block) never ran. Here the free end is drawn from the old values 0xa06100/0xa06200/0xa06300 (request fails after the evictions: stc, eax 0), 0xa07bd0 (fits only once an eviction has lowered the used end by >= 0x18) and 0xa07be8 (exact fit), 0xa07c00, 0xa08000, 0xa09000 (fit at once): about half the cases succeed. The granted block [free end - 0x1ae8, free end) lies inside 0xa06000..0xa09000, the zero-initialised .data stretch that pool_005389b9 already uses as the pool (no instruction addresses 0xa05c40..0xa0a000 directly), so every write stays in writable data.",
+ "globals": [
+  {"addr": "0x0082fcb0", "type": "u32", "values": ["0xa06100", "0xa06200", "0xa06300", "0xa07bd0", "0xa07be8", "0xa07c00", "0xa08000", "0xa09000"]}
+ ]
+}
