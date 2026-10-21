@@ -1,85 +1,86 @@
-"""Rewrite the README "Status" section from the shared ledger.
+"""Regenerate the README progress block from the shared ledger.
 
-    python tools/readme_status.py
+    python tools/readme_status.py [--readme README.md]
 
-Reads state/gp4re.sqlite (and the exemption/layout spec files) and replaces the text between
-the markers `<!-- status:begin -->` and `<!-- status:end -->` in README.md. Run it after
-`python -m gp4re export` at every checkpoint so the README always matches the ledger
-(progress/ledger.txt, progress/report.json).
+Reads progress/report.json (the numbers `python -m gp4re status` prints) and state/gp4re.sqlite,
+and replaces the text between `<!-- status:begin -->` and `<!-- status:end -->` with progress
+badges and a per-region table. Run it after `python -m gp4re export` at every checkpoint so the
+README always matches the ledger (progress/ledger.txt, progress/report.json).
 """
+import argparse
 import json
 import sqlite3
 import time
 from pathlib import Path
+from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parent.parent
 BEGIN, END = "<!-- status:begin -->", "<!-- status:end -->"
-REGION_NAMES = {
-    "R1-asm-core": "R1 simulation core (hand-written x87 asm)",
-    "R2-cpp-renderer": "R2 renderer (D3D8 C++)",
-    "R3-c-legacy": "R3 legacy game logic (GP3-heritage C/asm)",
-    "R4-libs": "R4 libraries (excluded)",
-    "R5-cpp-mixed": "R5 mixed C++",
-    "R6-crt": "R6 C runtime",
+REGIONS = {   # label -> (what it is, address range); ranges from progress/regions.json
+    "R1-asm-core": "Simulation core (hand-written x87 assembly)",
+    "R2-cpp-renderer": "Renderer and front end (Direct3D 8 C++)",
+    "R3-c-legacy": "Game logic (GP3-heritage C and assembly)",
+    "R4-libs": "Libraries: D3DX, libpng, zlib (excluded)",
+    "R5-cpp-mixed": "Mixed C++ and DirectX error tables",
+    "R6-crt": "Visual C++ 6 runtime",
 }
 
 
-def count_entries(path: Path) -> int:
-    try:
-        return len([k for k in json.loads(path.read_text()) if not k.startswith("_")])
-    except (OSError, ValueError):
-        return 0
+def badge(label: str, value: str, colour: str) -> str:
+    esc = lambda s: quote(s.replace("-", "--").replace("_", "__").replace(" ", "_"), safe="_.")
+    return f"![{label}](https://img.shields.io/badge/{esc(label)}-{esc(value)}-{colour})"
 
 
 def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--readme", default=str(ROOT / "README.md"))
+    readme = Path(ap.parse_args().readme)
+    report = json.loads((ROOT / "progress" / "report.json").read_text())
+    states = report["by_state"]
     con = sqlite3.connect(ROOT / "state" / "gp4re.sqlite")
-    states = dict(con.execute("SELECT state, count(*) FROM ledger GROUP BY state").fetchall())
-    report = json.loads((ROOT / "progress" / "report.json").read_text())   # same numbers as `gp4re status`
-    game_bytes, acc_bytes = report["game_bytes"] or 1, report["accepted_bytes"]
     rows = con.execute("SELECT f.region, l.state, count(*), SUM(f.size) FROM ledger l JOIN functions f USING(addr) "
                        "GROUP BY f.region, l.state").fetchall()
+    ranges = {r["label"]: (r["start"], r["end"]) for r in json.loads((ROOT / "progress" / "regions.json").read_text())["regions"]}
     regions: dict[str, dict[str, list[int]]] = {}
     for region, state, n, size in rows:
         regions.setdefault(region or "?", {}).setdefault(state, [0, 0])
         regions[region or "?"][state][0] += n
         regions[region or "?"][state][1] += size or 0
-    lines = [BEGIN, "", f"## Status ({time.strftime('%Y-%m-%d')}, generated from the ledger)", ""]
-    lines.append(f"- **{report['progress_pct']:.2f}% of game code bytes accepted** "
-                 f"({acc_bytes:,} of {game_bytes:,} bytes).")
-    lines.append(f"- Ledger: **{states.get('accepted', 0):,} accepted** (full differential emulation, T1), "
-                 f"**{states.get('accepted-runtime', 0):,} accepted-runtime** (every emulated case ends at an "
-                 f"unmodelled Windows API: pending the in-game check, T2), {states.get('deferred', 0):,} deferred "
-                 f"with an explained blocker, {states.get('todo', 0):,} todo, {states.get('excluded', 0):,} excluded "
-                 f"(library, compiler and data rows).")
-    lines += ["", "| Region | Accepted | Accepted-runtime | Deferred | Todo | Excluded | Bytes accepted |",
-              "|---|---:|---:|---:|---:|---:|---:|"]
-    for region in sorted(regions):
-        d = regions[region]
-        total = sum(v[1] for k, v in d.items() if k != "excluded") or 1
+    verified, pending = states.get("accepted", 0), states.get("accepted-runtime", 0)
+    lines = [BEGIN, "",
+             " ".join([badge("code", f"{report['progress_pct']:.2f}%", "blue"),
+                       badge("verified", f"{verified:,} functions", "brightgreen"),
+                       badge("pending in-game", f"{pending:,}", "yellow"),
+                       badge("deferred", f"{states.get('deferred', 0):,}", "orange"),
+                       badge("todo", f"{states.get('todo', 0):,}", "lightgrey")]),
+             "",
+             f"**{report['progress_pct']:.2f}%** of GP4.exe's game code ({report['accepted_bytes']:,} of "
+             f"{report['game_bytes']:,} bytes) is reconstructed and accepted: **{verified:,}** functions verified by "
+             f"differential emulation, **{pending:,}** accepted pending the in-game check, "
+             f"{states.get('deferred', 0):,} deferred with a recorded blocker, {states.get('todo', 0):,} still to do.",
+             "",
+             "| Region | Address range | Verified | Pending in-game | Deferred | To do | Code accepted |",
+             "|---|---|---:|---:|---:|---:|---:|"]
+    for label in sorted(regions):
+        d = regions[label]
+        total = sum(v[1] for k, v in d.items() if k != "excluded")
         done = d.get("accepted", [0, 0])[1] + d.get("accepted-runtime", [0, 0])[1]
-        lines.append(f"| {REGION_NAMES.get(region, region)} | {d.get('accepted', [0])[0]:,} | "
-                     f"{d.get('accepted-runtime', [0])[0]:,} | {d.get('deferred', [0])[0]:,} | {d.get('todo', [0])[0]:,} | "
-                     f"{d.get('excluded', [0])[0]:,} | {100 * done / total:.1f}% |")
-    specs = ROOT / "specs"
-    layouts = len(list((specs / "layouts").glob("*.json")))
+        share = f"{100 * done / total:.1f}%" if total else "excluded"
+        lo, hi = ranges.get(label, ("?", "?"))
+        lines.append(f"| {REGIONS.get(label, label)} | `{lo}`-`{hi}` | {d.get('accepted', [0])[0]:,} | "
+                     f"{d.get('accepted-runtime', [0])[0]:,} | {d.get('deferred', [0])[0]:,} | "
+                     f"{d.get('todo', [0])[0]:,} | {share} |")
     lines += ["",
-              f"- Verifier inputs: {layouts:,} emulator input layouts (`specs/layouts/`), "
-              f"{count_entries(specs / 'coverage_exempt.json')} lead-proven dead-code exemptions, "
-              f"{count_entries(specs / 'flag_exempt.json')} stack-dependent flag exemptions (checked with "
-              f"`tools/flag_live.py`), {count_entries(specs / 'heavy.json')} fixed-work routines verified with a reduced "
-              f"case count (`specs/heavy.json`).",
-              "- Canonical per-function state: [progress/ledger.txt](progress/ledger.txt) and "
-              "[progress/report.json](progress/report.json) (`python -m gp4re export`). This section is "
-              "regenerated by `python tools/readme_status.py`.",
+              f"<sub>Generated {time.strftime('%Y-%m-%d')} from the ledger by `python tools/readme_status.py`; "
+              "per-function state is in [progress/ledger.txt](progress/ledger.txt).</sub>",
               "", END]
-    readme = ROOT / "README.md"
     text = readme.read_text(encoding="utf-8")
     start, end = text.find(BEGIN), text.find(END)
     if start < 0 or end < 0:
-        raise SystemExit("README.md has no status markers")
+        raise SystemExit(f"{readme} has no status markers")
     readme.write_text(text[:start] + "\n".join(lines) + text[end + len(END):], encoding="utf-8")
-    print(f"README status updated: {report['progress_pct']:.2f}% bytes, "
-          f"{states.get('accepted', 0)} accepted, {states.get('accepted-runtime', 0)} accepted-runtime")
+    print(f"{readme.name} progress block updated: {report['progress_pct']:.2f}% code, "
+          f"{verified} verified, {pending} pending in-game")
 
 
 if __name__ == "__main__":
