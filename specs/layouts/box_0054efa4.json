@@ -1,0 +1,16 @@
+{
+ "_evidence": "0x0054efa4 (save the pixels under the hovered hotspot's box and draw it); compose LAST after tip_0054ee4f+pend_0054ef46+pool_005389b9+list_00549db9+script_all_00835846+textout_0054d211 (pool_005389b9 after the two layouts that draw [0x82fcb0] at random, so the pool's free end stays coherent). 'cmp byte [0x838e3e],2; jne' mode {2,2,2,0,1,0xff}; [0x838e48] the nullable tipnode_0054ee4f node (tip_0054ee4f; +0xc id 0..0x3ff, 'mov esi,[esi+0xc]; call 0x54d1a2' = table[id] drawn by 0x54d211 -> 0x4fd820, every id a pointer under script_all_00835846). Saved-pixel buffer [0x838e88]: 'cmp dword [0x838e88],0; jne' - null in about a quarter of the draws, else a 0x400-byte buffer (tip_0054ee4f's 1/0x400/-1 values are not buffers and fault in 0x54a15b's rep movsb at 0x54a183). When null, eax = [0x838e60]*[0x838e64]*2 goes to 0x5389b9: w 0..31 and h 0..15 request 0..0x3a2 bytes from the pool_005389b9 pool (free end 0xa06100..0xa06300 above the used end 0xa06100, evictable 0x40-byte slots), so it both succeeds (eax = new free end, >= 0xa06000) and fails (CF: jb exit). Rectangle 0x838e50/54/58/5c (x0, y0, x1, y1) copied to 0x838e78.. and read by 0x54a15b as (x1-x0+1)*2 bytes x (y1-y0+1) rows at [0x822258] + y0*[0x82224c] + 2*x0: x1 < x0 or y1 < y0 make a negative rep count (2^32 moves, fault), never a saved box (0x54ee4f builds it with x1 > x0, y1 > y0), so x0 0..15 with x1 = x0 (alias) or 15..30, y0 0..7 with y1 = y0 or 7..14: at most 31*2 x 15 = 930 bytes, inside the 0x400-byte buffer, and when written at a pool address >= 0xa06000 it ends below 0xa066a2, inside the writable .data section (0x601000..0xb48ea5); the source stays inside pend_0054ef46's 0x1000-byte surface with pitch 64..128 (last byte <= 14*128 + 61). The colours [0x838e68]/[0x838e6c] (0x531af4 'and eax,0xffff; mov [0x827559],eax', 0x54cc96) are any dword; [0x838e70] 'cmp dword [0x838e70],1; je' as tip_0054ee4f (around 1); 0x54cb7e compares y0+4 with [0x822248] (tip_0054ee4f sizes).",
+ "globals": [
+  {"addr": "0x00838e3e", "type": "u8", "values": [2, 2, 2, 0, 1, "0xff"]},
+  {"addr": "0x00838e88", "type": "ptr", "size": 1024, "fill": "bytes", "nullable": true},
+  {"addr": "0x00838e60", "type": "u32", "lo": 0, "hi": 31},
+  {"addr": "0x00838e64", "type": "u32", "lo": 0, "hi": 15},
+  {"addr": "0x00838e50", "type": "u32", "lo": 0, "hi": 15},
+  {"addr": "0x00838e58", "type": "u32", "lo": 15, "hi": 30, "alias": "0x00838e50"},
+  {"addr": "0x00838e54", "type": "u32", "lo": 0, "hi": 7},
+  {"addr": "0x00838e5c", "type": "u32", "lo": 7, "hi": 14, "alias": "0x00838e54"},
+  {"addr": "0x00838e68", "type": "u32"},
+  {"addr": "0x00838e6c", "type": "u32"},
+  {"addr": "0x00838e70", "type": "u32", "values": [1, 1, 1, 0, 2, "0x10", "0x40", "0xfffffff8"]}
+ ]
+}

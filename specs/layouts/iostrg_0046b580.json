@@ -1,0 +1,8 @@
+{
+ "_evidence": "A CRT FILE (0x20 bytes: _ptr, _cnt, _base, _flag +0xc, _file +0x10, _charbuf, _bufsiz, _tmpfname) as fclose 0x5dc52c reads it: 0x5dc535 tests _flag & 0x40 (_IOSTRG) and then only clears _flag (0x5dc53b). The other path (_lock_file 0x5dd6e7 -> _lock / EnterCriticalSection, _fclose_lk -> _close -> CloseHandle) calls unmodelled kernel32 imports and ends every case external, so the flag always has bit 0x40 set (with read/write/eof/error bits mixed in). Other bytes random (never read on this path).",
+ "size": 32,
+ "fill": "bytes",
+ "fields": [
+  {"off": "0xc", "type": "u32", "values": ["0x40", "0x41", "0x42", "0x49", "0x4b", "0x60", "0xc3"]}
+ ]
+}

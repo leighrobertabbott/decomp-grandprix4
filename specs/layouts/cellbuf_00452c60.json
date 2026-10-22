@@ -1,0 +1,8 @@
+{
+ "_evidence": "Collision-mesh grid [0x9fb0a0] as 0x452c60 sees it: 6-byte cells, dword +0 a pointer into the triangle-index store and word +4 the number of entries written so far (0x452c83 movzx count, 0x452c88 load pointer, 0x452c8b store the u16 at ptr + 2*count, 0x452c96 inc word count). The builder 0x452dc0 first counts the triangles per cell, points each cell at its slice of one buffer and resets the counts (0x452f8e..0x452fb0), then passes 0x452c60 as the callback of 0x4527b0, so a count stays below the slice length. Four cells (width/height 1..2), each slice 16 bytes (8 entries, random) with count 0..7, so every store stays inside its slice.",
+ "size": 24,
+ "fields": [
+  {"off": 0, "type": "ptr", "size": 16, "fill": "bytes", "count": 4, "stride": 6},
+  {"off": 4, "type": "u16", "lo": 0, "hi": 7, "count": 4, "stride": 6}
+ ]
+}

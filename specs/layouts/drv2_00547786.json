@@ -1,0 +1,11 @@
+{
+ "_evidence": "0x00547786 (pushal wrapper, compare-only; nothing here is dereferenced). 'cmp byte [0x7ad8b2],0xff; jne' gates everything: 0xff in 3/5 of the draws. 0x52ceef counts the 22 driver bytes 0x7c2a48 (eax = bit 7 set and bit 6 clear, edx = bits 7 and 6 set) and 'add ebx,edx; cmp ebx,2; jne' needs exactly two bytes with bit 7 set: the table is a filled prefix of n bytes (n from {0,1,2,2,2,2,3,22}) drawn from {0x80,0x85,0xc0,0xd6} (bit 7 set, bit 6 mixed so eax == 2, edx == 2 and 1+1 all occur), the rest zero. 'cmp dword [0x7ad898],0; jne' {0,0,1,5}; 'cmp byte [0x7ab756],2; ja' and 'cmp byte [0x7a93b2],2; ja' each {0,1,2,3,0xff}; 'cmp byte [0x7c2e7f],1; je' {0,1,1,2}. Every pattern of these bytes is valid game state for compares.",
+ "globals": [
+  {"addr": "0x007ad8b2", "type": "u8", "values": ["0xff", "0xff", "0xff", 0, 1]},
+  {"addr": "0x007c2a48", "type": "u8", "count": 22, "stride": 1, "values": ["0x80", "0x85", "0xc0", "0xd6"], "prefix": [0, 1, 2, 2, 2, 2, 3, 22]},
+  {"addr": "0x007ad898", "type": "u32", "values": [0, 0, 1, 5]},
+  {"addr": "0x007ab756", "type": "u8", "values": [0, 1, 2, 3, "0xff"]},
+  {"addr": "0x007a93b2", "type": "u8", "values": [0, 1, 2, 3, "0xff"]},
+  {"addr": "0x007c2e7f", "type": "u8", "values": [0, 1, 1, 2]}
+ ]
+}

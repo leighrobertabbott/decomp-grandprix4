@@ -1,0 +1,10 @@
+{
+ "_evidence": "Renderer owner object (the class whose vtables 0x5f046c/0x5f0550/0x5f0614 hold 0x4596b0 in slot 4; 0x458360 reads the same +0x1ec count / +0x1f0 array). 0x4596b0 reads +0x18 (cmp 1 -> 0x15, cmp 2 -> 0x25, else 5) and +0x1f0, then writes +0x198 of record idx; 0x4596f0 reads +0x1ec (the record count, unsigned loop bound at 0x459700) and +0x1f0 (re-read every iteration) and tests +0x130 of each record. +0x1f0 points to 8 records (recs_004596b0), so the count is 0..8 and record indices 0..7 are valid; +0x18 takes 0, 1, 2, 3 and -1 so all three values occur. Other bytes random.",
+ "size": 504,
+ "fill": "bytes",
+ "fields": [
+  {"off": "0x18", "type": "u32", "values": [0, 1, 2, 3, "0xffffffff"]},
+  {"off": "0x1ec", "type": "u32", "lo": 0, "hi": 8},
+  {"off": "0x1f0", "type": "ptr", "size": 3680, "fill": "layout=recs_004596b0"}
+ ]
+}

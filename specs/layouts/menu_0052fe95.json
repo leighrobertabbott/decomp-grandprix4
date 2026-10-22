@@ -1,0 +1,21 @@
+{
+ "_evidence": "0x52fe95 (memory/texture options screen set-up) walks the STATIC menu item chain of the image: the head cell 0x843404 links 0x843454 -> 0x84347a -> 0x8434a0 -> 0x8434c6 -> 0x8434f4 -> 0x843526 -> 0x843554 -> 0x84357e -> 0x8435a8 -> 0x8435d2 -> 0x8435fc -> 0x843626 -> 0x84365b -> 0x843689 -> 0x8436bf -> null (15 items, .data). 'mov esi,0x843404; mov ecx,0xe; mov esi,[esi]; dec ecx; jne' lands on item 14 (writes +0x26/+0x2e, then +0x26 of item 15), the walk 0x53e4db/0x53e4e5 (esi = 0x843404) runs over items 1..15 to the null link testing/setting bits 0x20/0x40 of byte +0x1f, and '4 hops, 0x530774, 3 hops' reaches item 7 for the 5-item loop (writes +0xe/+0x12/+0x26, bit 7 of +0x1f set/cleared). So this layout does NOT replace the chain (hop_00843404's 12 fresh nodes fault at hop 13): the links stay the image's, and only the item flag bytes +0x1f of items 1..15 are varied (random: every bit pattern is a valid flag byte; the head's +0x1f is never read). [0x827056] is the device slot: its only writer 0x52fa60 stores 0 or ([0x7ad86c] & 1) + 1, so 0..2; it selects the device record 0x827160 + slot*0x3c (dev_0053106d's three records) and the key dwords 0x7ad870 + 4*slot / 0x7ad880 + 4*slot. Byte +4 of each record ('movzx eax,byte [ebx+4]; xor eax,0x1f; shl eax,6') becomes the bit pattern the walk shifts into the item flags: random. The 5-item loop compares the record keys +0x14..+0x24 with [0x7ad870+4*slot] (the selected key: 0x530c59/0x530c6e store one of the record's keys there) and [0x7ad880+4*slot] (dev_0053106d: 0 or a record key): 0x7ad870/74/78 copy key columns 1/3/0 of records 0/1/2 in about half the cases (redrawn here from dev_0053106d's key value set), else a random dword, so both sides of 'cmp eax,[edx]; jne' occur. Byte [0x7aafd4] ('test byte [0x7aafd4],0xff; je') draws zero and nonzero. dwTotalPhys (+8 of the MEMORYSTATUS 0x8270e3) comes from the GlobalMemoryStatus stub, which draws totals on both sides of each size threshold.",
+ "globals": [
+  {"addr": "0x00827056", "type": "u32", "values": [0, 1, 2]},
+  {"addr": "0x007aafd4", "type": "u8", "values": [0, 0, 1, "0xff"]},
+  {"addr": "0x00827164", "type": "u8"},
+  {"addr": "0x008271a0", "type": "u8"},
+  {"addr": "0x008271dc", "type": "u8"},
+  {"addr": "0x00827178", "type": "u32", "values": [0, 1, 2, 3, 3, 4, 5, 6, "0x41", "0x80000001"]},
+  {"addr": "0x008271bc", "type": "u32", "values": [0, 1, 2, 3, 3, 4, 5, 6, "0x41", "0x80000001"]},
+  {"addr": "0x008271ec", "type": "u32", "values": [0, 1, 2, 3, 3, 4, 5, 6, "0x41", "0x80000001"]},
+  {"addr": "0x007ad870", "type": "u32", "alias": "0x00827178"},
+  {"addr": "0x007ad874", "type": "u32", "alias": "0x008271bc"},
+  {"addr": "0x007ad878", "type": "u32", "alias": "0x008271ec"},
+  {"addr": "0x00843473", "type": "u8"}, {"addr": "0x00843499", "type": "u8"}, {"addr": "0x008434bf", "type": "u8"},
+  {"addr": "0x008434e5", "type": "u8"}, {"addr": "0x00843513", "type": "u8"}, {"addr": "0x00843545", "type": "u8"},
+  {"addr": "0x00843573", "type": "u8"}, {"addr": "0x0084359d", "type": "u8"}, {"addr": "0x008435c7", "type": "u8"},
+  {"addr": "0x008435f1", "type": "u8"}, {"addr": "0x0084361b", "type": "u8"}, {"addr": "0x00843645", "type": "u8"},
+  {"addr": "0x0084367a", "type": "u8"}, {"addr": "0x008436a8", "type": "u8"}, {"addr": "0x008436de", "type": "u8"}
+ ]
+}

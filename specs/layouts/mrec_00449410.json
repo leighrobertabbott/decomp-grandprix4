@@ -1,0 +1,8 @@
+{
+ "_evidence": "Second argument b of 0x449410: a 0x1cc-byte record of the owner's +0x1f0 array (0x458424..0x45842f pushes [owner+0x1f0] + k*0x1cc). 0x449410 reads only dword +4 (0x449418), a pointer to the object whose +0x20c is the texture-index table (mown_00449410); it is not null-checked. Only the first 8 bytes are touched; other bytes random.",
+ "size": 8,
+ "fill": "bytes",
+ "fields": [
+  {"off": 4, "type": "ptr", "size": 528, "fill": "layout=mown_00449410"}
+ ]
+}

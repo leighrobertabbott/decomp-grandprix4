@@ -1,0 +1,8 @@
+{
+ "_evidence": "Element object of the menu list (list_0047f3a0): built by HeapAlloc(0xc4) + ctor 0x47de20 ('mov [esi],0x5f0884' at 0x47de79) or HeapAlloc(0xc8) + ctor 0x47e680 ('mov [esi],0x5f08b4' at 0x47e6e3), so dword +0 is one of those two real .rdata vtables and the object is up to 0xc8 bytes. Both vtables have slot +0x1c = 0x47dd80 ('mov al,[esp+4]; mov [ecx+0xb0],al; ret 4': stores the selection byte +0xb0, returns al = the argument), the method 0x47f3a0/0x47f330/0x47f3c0 call. The other bytes are random so the store to +0xb0 is visible.",
+ "size": 200,
+ "fill": "bytes",
+ "fields": [
+  {"off": 0, "type": "u32", "values": ["0x5f0884", "0x5f08b4"]}
+ ]
+}

@@ -1,0 +1,8 @@
+{
+ "_evidence": "Second record array of the texture manager (texmgr_00451540 +0x28), 0x54 bytes each (0x45137d..0x45138a: idx*7*3*4 = idx*0x54; 0x44965c..0x449671 index [[0x9fb348]+0x28] the same way). 0x45138f..0x451396 reads the first dword, decrements it when nonzero, 0x45139b compares it with 0 again (reference count: when it reaches 0 the index goes to mgr+0x34). Eight records for indices 0..7; the counter takes 0..3 so the zero skip, the decrement to zero and the decrement to nonzero all occur. Other bytes are random.",
+ "size": 672,
+ "fill": "bytes",
+ "fields": [
+  {"off": 0, "type": "u32", "values": [0, 1, 2, 3], "count": 8, "stride": "0x54"}
+ ]
+}

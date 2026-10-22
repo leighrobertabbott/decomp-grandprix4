@@ -1,0 +1,14 @@
+{
+ "_evidence": "0x530e10's ebx is a device record (the caller 0x530df2 passes 0x827160 + k*0x3c, k 0..2, when byte +5 == 4). Reads: +0xc = a and +0x10 = b ('mov eax,[ebx+0xc]; cmp eax,[ebx+0x10]; jne'; 'mov edx,[edx*4+0x8273e3]', 'mov eax,[ebx+eax*4+0x28]'), +4 the column mask ('test byte [ebx+4],al' with al = 1<<c, c 0..6), +0x28..+0x40 the seven column values S[0..6] ('cmp dword [ebx+ecx*4+0x28],0', written back for zero columns), +0 the table selector of 0x531445 ('cmp dword [ebx],0': 0 -> 0x5314da, else 0x531582). a and b are only ever set by 0x530d28/0x530d81 (a = first slot of the static order 1,0,2,3,4 with a nonzero value) and 0x530d52/0x530dab (b = first slot of the static order 3,4,2,1,0 other than a with a nonzero value, else b = a via 0x530c40), so a, b are in 0..4 and the only reachable pair with b < a is (a,b) = (1,0). The divide 'idiv ecx' (ecx = T[b]-T[a] of the constant table 0x8273e3 = 0x200,0x280,0x320,0x400,0x500) is guarded by 'shr esi(=ecx),1; cmp esi,|diff>>16|; jbe saturate' only for ecx > 0; for b < a ecx = -0x80 passes the unsigned guard and the original raises #DE once |S[0]-S[1]| >= 0x80<<15 = 2^22. Domain: a draws 0 or 1 and b 0..4 (a == b early exit, the reachable b < a pair (1,0), and b > a pairs with both signs of the difference); S[0], S[1] stay within +-2^21 (so (1,0) never faults: |q| <= 0x3fffff*0x200 < 2^31), S[2..4] draw zero (filled by the loop), small and huge values of both signs (so b > a reaches the 0x7fffffff / 0x80000001 saturate arms: |diff>>16| >= ecx>>1), S[5], S[6] zero or any value. The pairs a in 2..4 are left out because with these S[2..4] magnitudes their (unreachable) b < a partners would fault; a = 2/3 with b = 3/4 run the same instructions as a = 0/1 with larger b. Mask byte +4 and selector +0 any (0 / nonzero both).",
+ "size": 68,
+ "fields": [
+  {"off": 0, "type": "u32", "values": [0, 0, 1, 2]},
+  {"off": 4, "type": "u8"},
+  {"off": 5, "type": "u8", "values": [4]},
+  {"off": "0xc", "type": "u32", "values": [0, 1]},
+  {"off": "0x10", "type": "u32", "values": [0, 1, 2, 3, 4]},
+  {"off": "0x28", "type": "u32", "count": 2, "stride": 4, "values": [0, 0, 1, "0x10000", "0x100000", "0x1fffff", "0xfff00000", "0xffe00000", "0xffffffff"]},
+  {"off": "0x30", "type": "u32", "count": 3, "stride": 4, "values": [0, 0, 0, 1, "0x10000", "0x400000", "0x1000000", "0x7fff0000", "0x80000000", "0xffff0000", "0xff000000", "0x12345678", "0xedcba988"]},
+  {"off": "0x3c", "type": "u32", "count": 2, "stride": 4, "values": [0, 0, 0, 1, "0x20000", "0x7fffffff", "0x80000000", "0xfffe0000"]}
+ ]
+}

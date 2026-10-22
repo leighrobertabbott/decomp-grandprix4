@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x5219bb: ebx = the descriptor 0x52197e returns for [0x66d8d8] (static descriptors in the image, byte +0 = b0 1..4, byte +1 = c = column count 1..5), then 'mov esi,[0x66d8e0]' is the column: 'mov dl,[ebx+esi*2+2]/[ebx+esi*2+3]', 'mov dl,[esi+ebx+2+2c]' (low bound), '[esi+ebx+2+3c]' (high bound) and 'mul esi' by 4*b0 for the final 4-byte read. Every writer keeps the column a small index: 0x521ce9 / 0x521d6f load it from the static tables 0x893f00 / 0x893f50 (0 or 1), 0x521b37 clamps it to 0..c-1 of the current descriptor ('movzx ebp,byte [ebx+1]; dec ebp; cmp eax,ebp; jle; cmp eax,0; jge') before 0x521cc7 stores it, 0x521e32/0x521f03 store 0. So [0x66d8e0] is 0..4 (the largest c is 5); grid_00521eb0's 0x7fffffff/0x80000000 make 'esi*2' / 'mul esi' leave .data (the 40 faults at 0x5219fe) and no caller can store them. [0x66d8dc] is the row, signed-clamped here to [low, high] ('cmp eax,edx; jge' / 'jle') before it is used, so any i32 is valid: values below, inside and above the static bounds (0..3) and both extremes.",
+ "globals": [
+  {"addr": "0x0066d8e0", "type": "u32", "values": [0, 0, 1, 1, 2, 3, 4]},
+  {"addr": "0x0066d8dc", "type": "u32", "values": ["0xffffffff", 0, 1, 2, 3, 4, 5, "0x7fffffff", "0x80000000"]}
+ ]
+}

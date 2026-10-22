@@ -1,0 +1,7 @@
+{
+ "_evidence": "Second argument of 0x466490: a cell holding an IDirect3DIndexBuffer8*. The paired getter 0x466410 fills it (its second argument) from [this+0x140] or, with a mesh in this+0x130, with [mesh]->GetIndexBuffer(cell) (ID3DXMesh +0x34, 0x46647b..0x466483). 0x4664ad..0x4664b6 loads the cell and calls Release (+8) without a null test, then clears the cell. Modelled COM object (gp4re/com.py).",
+ "size": 4,
+ "fields": [
+  {"off": 0, "type": "ptr", "size": 16, "fill": "com=IDirect3DIndexBuffer8"}
+ ]
+}

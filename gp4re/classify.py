@@ -21,7 +21,9 @@ import collections
 import re
 
 EVIDENCE = {
-    "d3dx": re.compile(r"D3DX|ID3DX|d3dxof|DirectXFile|DisableD3DXPSGP|x file data|DebugSetMute|"
+    # (?<!GP4...): GP4's own classes and wrappers are named GP4VB::FinaliseD3DXObjects and
+    # GP4D3DXCreateTexture - game code that uses D3DX, not D3DX (lib audit 2026-10-22)
+    "d3dx": re.compile(r"(?<!GP4)(?<!GP4VB::Finalise)D3DX|ID3DX|d3dxof|DirectXFile|DisableD3DXPSGP|x file data|DebugSetMute|"
                        r"Bowtie|D3DXValid|Software\\Microsoft\\Direct3D", re.I),
     "zlib": re.compile(r"zlib|incorrect header check|invalid block type|invalid distance|"
                        r"oversubscribed|incomplete (literal|distance)|inflate |deflate ", re.I),
@@ -88,7 +90,9 @@ def classify(rows: list[dict], entry: int) -> dict[int, tuple[str, str]]:
                 kind[r["addr"]] = ("crt", f"import {sorted(imps)[0]}")
     kind.setdefault(entry, ("crt", "entry point (WinMainCRTStartup)"))
 
-    # propagate: a function whose every caller is library X belongs to X
+    # propagate: a function whose every caller is library X belongs to X. The entry point is not a
+    # source: WinMainCRTStartup calls GP4's own WinMain (0x508740), and before 2026-10-22 its
+    # label spread through WinMain to the game's startup, main loop and closedown code.
     changed = True
     while changed:
         changed = False
@@ -96,7 +100,7 @@ def classify(rows: list[dict], entry: int) -> dict[int, tuple[str, str]]:
             a = r["addr"]
             if a in kind or not callers[a]:
                 continue
-            ks = {kind.get(c, ("game",))[0] for c in callers[a]}
+            ks = {"game" if c == entry else kind.get(c, ("game",))[0] for c in callers[a]}
             if len(ks) == 1 and (k := ks.pop()) in LIBS:
                 kind[a] = (k, "only called from " + k)
                 changed = True

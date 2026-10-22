@@ -1,0 +1,7 @@
+{
+ "_evidence": "Globals read by 0x452c60 (a cdecl callback of 0x4527b0, pushed at 0x452fb7: args value (u16), x, y): 0x452c60 reads the grid width [0x9fb0ac] (imul with y, + x), 0x452c70/0x452c8f the grid pointer [0x9fb0a0] (cellbuf_00452c60: 4 six-byte cells). Width 1..2 with x, y in 0..1 keeps width*y + x < 4 (inside the 4 cells), as in mesh_00453330.",
+ "globals": [
+  {"addr": "0x009fb0a0", "type": "ptr", "size": 24, "fill": "layout=cellbuf_00452c60"},
+  {"addr": "0x009fb0ac", "type": "u32", "values": [1, 2]}
+ ]
+}

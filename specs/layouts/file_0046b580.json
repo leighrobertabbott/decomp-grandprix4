@@ -1,0 +1,6 @@
+{
+ "_evidence": "Globals of 0x46b580 (closes a file opened by 0x46b4a0 with fopen(name, \"rb\")): 0x46b580 tests [0xa03a18] (the FILE* stored by 0x46b4a0 at 0x46b504 from fopen 0x5dc713), null = nothing to do; else clears 0xa05c28, calls fclose 0x5dc52c (excluded CRT, called at its original address by the reconstruction too), clears 0xa03a18 and HeapFree's [0xa03a20] (the buffer HeapAlloc'd at 0x46b53a; the HeapFree model accepts any pointer, so the fuzz value is fine). The FILE is null in about a quarter of the cases, else iostrg_0046b580 (_IOSTRG set, so fclose returns without the CRT lock imports, which are unmodelled and would end every case external). Compose as globals=fuzz:i32+layout=file_0046b580.",
+ "globals": [
+  {"addr": "0x00a03a18", "type": "ptr", "size": 32, "fill": "layout=iostrg_0046b580", "nullable": true}
+ ]
+}

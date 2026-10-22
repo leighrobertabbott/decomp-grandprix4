@@ -1,0 +1,9 @@
+{
+ "_evidence": "this of 0x44c480: an element of the owner's 0x34-byte array [owner+0x1b4] (call sites 0x458a68/0x458af1/0x458c90/0x45d043/0x45d225: ecx = [esi+0x1b4] + k*0x34, k < [esi+0x1b0]; 0x44c1a7 passes ebx). 0x44c486 reads dword +0xc (record index) and 0x44c48b/0x44c4a2 dword +8 (pointer to the record-array holder, cell_0044c480), neither null- nor range-checked. +8 points to a holder of 16 records and +0xc is 0..15. Other bytes random.",
+ "size": 52,
+ "fill": "bytes",
+ "fields": [
+  {"off": 8, "type": "ptr", "size": 4, "fill": "layout=cell_0044c480"},
+  {"off": "0xc", "type": "u32", "lo": 0, "hi": 15}
+ ]
+}

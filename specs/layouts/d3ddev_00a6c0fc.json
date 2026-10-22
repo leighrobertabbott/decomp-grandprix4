@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00a6c0fc is a second IDirect3DDevice8 pointer: the device-creation code 0x5056ff..0x505729 calls IDirect3D8::CreateDevice on [0xa6c100] ('mov ecx,[0xa6c100]; ...; push 0xa6c0fc (ppDevice); push 0xae6620 (present params); push ebx (flags); push edi (hwnd [0xb1c7f0]); push eax (device type); push [0xae6710] (adapter); push ecx; call [edx+0x3c]' - slot 15 of IDirect3D8 with 6 arguments = CreateDevice), so [0xa6c0fc] receives the device. Its users match IDirect3DDevice8 slots and argument counts: 0x47251e 'call [ecx+0x50]' with (0x100, 0x100, 1, 0, 0x1a, ...) = CreateTexture, 0x4967c1 'call [ecx+0xa4]' (GetViewport-like, 1 pointer arg), 0x4b22a0 'push 8; push 0x17; push eax; call [ecx+0xc8]' = SetRenderState(D3DRS_ZFUNC = 0x17, D3DCMP_ALWAYS = 8). The object is modelled by gp4re/com.py.",
+ "globals": [
+  {"addr": "0x00a6c0fc", "type": "ptr", "size": 16, "fill": "com=IDirect3DDevice8"}
+ ]
+}

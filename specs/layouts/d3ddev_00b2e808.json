@@ -1,0 +1,6 @@
+{
+  "_about": "GP4's Direct3D 8 device pointer (0x00b2e808, read by the R2/R5 renderer before every IDirect3DDevice8 call: slot offsets 0x0c/0x3c/0x40/0x50/0x5c/0x88..0x94/0xa0/0xa8/0xc8/0xf4/0xfc/0x118/0x130/0x14c match TestCooperativeLevel/Present/GetBackBuffer/CreateTexture/CreateVertexBuffer/BeginScene/EndScene/Clear/SetTransform/SetViewport/SetMaterial/SetRenderState/SetTexture/SetTextureStageState/DrawPrimitive/SetVertexShader/SetStreamSource and their pushed argument counts). The object is modelled by gp4re/com.py.",
+  "globals": [
+    {"addr": "0x00b2e808", "type": "ptr", "size": 16, "fill": "com=IDirect3DDevice8"}
+  ]
+}

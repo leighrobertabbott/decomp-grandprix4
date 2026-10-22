@@ -1,0 +1,7 @@
+{
+ "_evidence": "Three-slot object table at +0 of the object built by 0x475f70 (stored in [0xa502e4] at 0x4984b3, also reached as [esi+0x34]/[esi+0x38]/[esi+4] by callers): the constructor zeroes dwords +0/+4/+8 (0x4761cd..0x4761d6), 0x476580 fills a slot with a HeapAlloc'd 0xb30-byte object (0x4765cf push 0xb30, ctor 0x4754c0, 0x47661f mov [ebp],eax) and the destructor 0x476210 walks exactly 3 slots (0x47625c cmp edi,3). The twins 0x4778a0/0x4779a0/0x4779c0/0x4779e0/0x477a00/0x477a20/0x477a40 load ecx=[this+idx*4] and call a setter on it without a null test (the setters 0x472d90/0x472da0/0x472dc0/0x472dd0/0x472de0/0x472db0 write +0x47c/+0x47d/+0x484/+0x47e/+0x488/+0x489; call sites pass idx 0..2), so idx is 0..2 and each slot is a valid 0xb30-byte object (random contents).",
+ "size": 12,
+ "fields": [
+  {"off": 0, "type": "ptr", "size": "0xb30", "fill": "bytes", "count": 3, "stride": 4}
+ ]
+}

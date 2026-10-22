@@ -1,0 +1,8 @@
+{
+ "_evidence": "Third (last) node of the list freed by 0x459880: 0x4598a4 reads the link dword +0x44 before HeapFree; it is 0 here so the loop (0x4598af test edi,edi) ends. 0x48-byte node, other bytes random (never read).",
+ "size": 72,
+ "fill": "bytes",
+ "fields": [
+  {"off": "0x44", "type": "u32", "values": [0]}
+ ]
+}

@@ -23,6 +23,16 @@ Run everything from the repository root with `GP4RE_AGENT=lead`.
    `globals`; options count/stride, lo/hi, values, points_into, alias,
    bias, nullable, bit_scan). Reuse an existing layout when it describes
    exactly the same data.
+   - DirectX COM objects (Direct3D 8, DirectInput 8, DirectSound) are a pointer
+     field with `"fill": "com=<Interface>"` (size 16): the oracle models every
+     method (gp4re/com.py, gp4re/com_dx.py). Identify the interface from the
+     slot offsets and pushed argument counts (prompts/worker.md lists the
+     common ones); the device global is `d3ddev_00b2e808`. Never point a COM
+     slot at an unrelated GP4 routine: that drops the call's arguments from
+     the comparison.
+   - GP4's own C++ objects: dword +0 `values` = the class's real vtable in
+     .rdata (from its constructor's `mov [ecx], 0x5f....`), so virtual calls
+     run the original methods; list the fields those methods read too.
 4. Put the new spec action in a JSON file under `build/` and run
    `python tools/lead_retry.py build/<file>.json`:
    - `"<full spec>"` to replace the spec (e.g. switch `esi:ptr[..]:bytes`

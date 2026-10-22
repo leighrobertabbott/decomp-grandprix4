@@ -32,7 +32,8 @@ from unicorn import x86_const as X
 
 from .binary import Binary
 from .spec import FLAG_BITS, GPRS, Arg, ArgType, Spec
-from .stubs import HEAP_BASE, HEAP_SIZE, ImportStubs, Unsupported, first_difference
+from . import com
+from .stubs import HEAP_BASE, HEAP_SIZE, VALLOC_BASE, VALLOC_SIZE, ImportStubs, Unsupported, first_difference
 
 PAGE = 0x1000
 STACK_LO, STACK_SIZE = 0x0E000000, 0x00200000
@@ -54,6 +55,9 @@ GPR_ID = {"eax": X.UC_X86_REG_EAX, "ebx": X.UC_X86_REG_EBX, "ecx": X.UC_X86_REG_
           "edx": X.UC_X86_REG_EDX, "esi": X.UC_X86_REG_ESI, "edi": X.UC_X86_REG_EDI,
           "ebp": X.UC_X86_REG_EBP}
 LAYOUT_DIR = Path(__file__).resolve().parent.parent / "specs" / "layouts"
+
+
+NARROW_RET = {"u8": (0xFF, "al"), "i8": (0xFF, "al"), "u16": (0xFFFF, "ax"), "i16": (0xFFFF, "ax")}
 
 
 _REP_SITE = re.compile(b"(?:" + re.escape(bytes([0x66])) + b")?[" + bytes([0xF2, 0xF3]) + b"](?:" + re.escape(bytes([0x66])) + b")?[" + bytes([0xA4, 0xA5, 0xAA, 0xAB, 0xAC, 0xAD]) + b"]")
@@ -189,7 +193,10 @@ class Machine:
         self._map(SCRATCH, bytes(SCRATCH_SIZE))
         self._map(REGS_ADDR & ~0xFFFF, bytes(0x10000))
         self._map(TRAP, b"\xF4" * TRAP_SIZE)
+        for va, data in com.vtable_image():          # synthetic COM vtables (gp4re/com.py)
+            uc.mem_write(va, data)
         self._map(HEAP_BASE, bytes(HEAP_SIZE))      # the modelled process heap (gp4re/stubs.py)
+        self._map(VALLOC_BASE, bytes(VALLOC_SIZE))  # VirtualAlloc'd pages (CRT small-block heap)
         self.import_names: dict[int, str] = {}
         for i, (slot, name) in enumerate(sorted(gp4.imports.items())):
             t = IMPORT_TRAPS + 4 * i
@@ -289,6 +296,15 @@ class Machine:
         return False
 
     def _on_import(self, uc, address, size, user):
+        if com.COM_TRAPS <= address < com.COM_VTABLES:
+            try:
+                self.stubs.com.call(address)   # a modelled COM method: logged, returns to the caller
+                return
+            except Unsupported as e:
+                found = com.method_at(address)
+                self.external.append(f"{found[0]}::{found[1].name} ({e})" if found else str(e))
+                uc.emu_stop()
+                return
         if address in self.import_names:
             name = self.import_names[address]
             if self.stubs.handles(name):
@@ -496,6 +512,23 @@ class CaseGen:
             return b"".join(struct.pack("<i", r.randint(-1000, 1000)) for _ in range(size // 4)).ljust(size, b"\0")
         if fill.startswith("layout="):
             return self.layout(fill.split("=", 1)[1], size)
+        if fill.startswith("{"):        # inline buffer (spec.struct_fill): typed fields, nested pointers
+            from .spec import _width, struct_fill
+            background, fields = struct_fill(fill)
+            buf = bytearray(r.randbytes(size) if background == "bytes" else bytes(size))
+            for off, count, stride, t in fields:
+                for k in range(count):
+                    kind, v = self.value(Arg(t))
+                    o = off + k * stride
+                    if kind == "f32":
+                        struct.pack_into("<f", buf, o, v)
+                    elif kind == "f64":
+                        struct.pack_into("<d", buf, o, v)
+                    else:
+                        buf[o: o + _width(t)] = (v & 0xFFFFFFFF).to_bytes(4, "little")[: _width(t)]
+            return bytes(buf)
+        if fill.startswith("com="):     # a COM object: first dword = that interface's synthetic vtable
+            return struct.pack("<I", com.vtable(fill.split("=", 1)[1])) + bytes(max(0, size - 4))
         if "[" in fill or "{" in fill:   # typed range / value-set fill, e.g. i16[-32767..32767], u8{0x20,0x22}
             from .spec import _type
             t = _type(fill)
@@ -591,7 +624,7 @@ class CaseGen:
         if t.kind == "ptr":
             if t.nullable and self.rng.randrange(4) == 0:
                 return ("int", 0)
-            return ("int", self.alloc(self.fill(t.size, t.fill)))
+            return ("int", self.alloc(self.fill(t.size, t.fill)) + t.bias)
         v = self.scalar(t)
         if t.kind in ("f32", "f64"):
             return (t.kind, v)
@@ -803,6 +836,19 @@ def differential(gp4: Binary, dll: Binary, rec: Impl, spec: Spec, *, fpucw: int,
                 if probe.get("status") == "pass" else {})
         return {"gate": "emu", "status": "skipped", "reason": spec.emu_skip, **note,
                 "probe": {k: probe.get(k) for k in ("passed", "invalid", "invalid_reasons", "reason")}}
+    narrow_unchecked: list[str] = []
+    if spec.ret in NARROW_RET:     # only al/ax compared: every direct caller must ignore the rest of eax
+        from .retwidth import check as _retwidth
+        starts = sorted(function_starts or ())
+        import bisect
+        def _owner(va):
+            k = bisect.bisect_right(starts, va) - 1
+            return starts[k] if k >= 0 else None
+        violations, narrow_unchecked = _retwidth(gp4, rec.addr, 1 if spec.ret in ("u8", "i8") else 2, _owner)
+        if violations:
+            return {"gate": "emu", "status": "fail",
+                    "reason": f"return type {spec.ret} compares only {NARROW_RET[spec.ret][1]}, but a caller of the "
+                              f"original reads more of eax: declare i32/u32", "callers": violations[:6]}
     try:
         cov = target_coverage(gp4, rec.addr, function_starts)
     except (ValueError, SystemExit) as e:
@@ -848,6 +894,9 @@ def differential(gp4: Binary, dll: Binary, rec: Impl, spec: Spec, *, fpucw: int,
     invalid_reasons: dict[str, int] = {}
     invalid_sites: dict[str, int] = {}
     warnings: set[str] = set()
+    if narrow_unchecked:
+        warnings.add(f"return type {spec.ret}: {len(narrow_unchecked)} caller path(s) could not be checked statically "
+                     f"(e.g. {narrow_unchecked[0]})")
     if heavy:
         warnings.add(f"heavy fixed-work routine: {n} cases, {heavy.get('ni_cases', 1)} hidden-input checks (specs/heavy.json)")
     seen_blocks: set[int] = set()
@@ -1079,6 +1128,11 @@ def differential(gp4: Binary, dll: Binary, rec: Impl, spec: Spec, *, fpucw: int,
         elif spec.ret in ("i32", "u32"):
             if orig.regs["eax"] != recon.regs["eax"]:
                 problems.append(f"return eax: original {orig.regs['eax']:#010x} vs reconstruction {recon.regs['eax']:#010x}")
+        elif spec.ret in NARROW_RET:
+            mask, reg = NARROW_RET[spec.ret]
+            if orig.regs["eax"] & mask != recon.regs["eax"] & mask:
+                problems.append(f"return {reg}: original {orig.regs['eax'] & mask:#x} vs reconstruction "
+                                f"{recon.regs['eax'] & mask:#x}")
         elif spec.ret == "i64":
             if (orig.regs["eax"], orig.regs["edx"]) != (recon.regs["eax"], recon.regs["edx"]):
                 problems.append("return edx:eax differs")
@@ -1166,6 +1220,10 @@ def _ni_problems(base: RunResult, variant: RunResult, spec: Spec, entry: dict, v
         for r in ret_regs:
             if base.regs[r] != variant.regs[r]:
                 problems.append(f"return {r} changes")
+        if spec.ret in NARROW_RET:
+            mask, reg = NARROW_RET[spec.ret]
+            if base.regs["eax"] & mask != variant.regs["eax"] & mask:
+                problems.append(f"return {reg} changes")
         for r in ("ebx", "esi", "edi", "ebp"):
             if base.regs[r] == entry[r] and variant.regs[r] == ventry[r]:
                 continue

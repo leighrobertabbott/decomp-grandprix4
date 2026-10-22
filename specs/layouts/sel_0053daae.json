@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x0053daae (menu event dispatch; compose AFTER menu_0084300a+state_0053d9a6+items_0053dc57+sel_0053d8c5, globals=layout only so the static 13-item menu 0x84300a keeps its links and handlers). After 0x53d9a6 (case 2 overwrites [0x82fd88] with the hit-test result 0..13), 'mov ecx,[0x82fd88]; cmp ecx,0; je' exits, else 0x53d98c hops ecx links from [[0x82fd34]] (no null test: 1..13 stay on the 13 items, 0 is 2^32 hops and 14+ walk past item 13's null link). The pending hit id [0x82fd88] persists between calls (set by case 2, cleared by 0x52c43d/0x53dbbc for modes 5/6 and by 0x53c9bb), so with the other modes (the release event 5 etc.) it holds an earlier hit: drawn 0..13 as a byte (upper bytes keep the image zero), equal to the selection [0x82fd45] in about half the cases (the 'cmp ecx,[0x82fd88]; je' selection test), else its own draw. [0x82fd45] stays 1..13 as sel_0053d8c5 bounds it: 'movzx ecx,[0x82fd45]; call 0x53d999' hops that many links (0 = 2^32 hops, 14+ fault). Item handlers [item+0x1a] are the static 0x538e1a (items 1-5) / 0x52c43d (items 6-13) called with edx = the event code [0x82fd9c] from state_0053d9a6.",
+ "globals": [
+  {"addr": "0x0082fd45", "type": "u8", "lo": 1, "hi": 13},
+  {"addr": "0x0082fd88", "type": "u8", "lo": 0, "hi": 13, "alias": "0x0082fd45"}
+ ]
+}

@@ -7,10 +7,16 @@ Grammar (whitespace-insensitive)::
     arg     := type                       # stack/ecx/edx args for compiled conventions
              | reg ":" type               # regs convention: eax..ebp, st0..st7, arithmetic flags
     type    := i32 | u32 | i16 | u16 | i8 | u8 | f32 | f64 [ "[" lo ".." hi "]" ]
-             | ptr "[" size "]" [":" fill]   # nptr[...]: same, null in ~1/4 of cases
+             | ptr "[" size "]" ["+" bias] [":" fill]   # nptr[...]: null in ~1/4 of cases; +bias: the
+                                                      # value points bias bytes into the buffer
              | rec "[" base "," stride "," lo ".." hi "]"   # base + k*stride, k in lo..hi
-    fill    := f32 | f64 | i32 | bytes | zero | layout=<name>
-    ret     := void | i32 | u32 | f32 | f64 | i64 | "(" out ("," out)* ")" | "()"
+    fill    := f32 | f64 | i32 | bytes | zero | layout=<name> | com=<Interface>   # gp4re/com.py
+             | "{" ["*bytes" ","] field ("," field)* "}"     # inline buffer, unlisted bytes zero
+    field   := off ["*" count ["/" stride]] ":" type          # e.g. {8:ptr[0x40]:bytes, 0xc:u32[0..15]}
+    ret     := void | i32 | u32 | u8 | i8 | u16 | i16 | f32 | f64 | i64 | "(" out ("," out)* ")" | "()"
+               # u8/i8 compare al only, u16/i16 ax only (compiled bool/char/short returns that leave
+               # the upper eax bits undefined); the emu gate fails them if any direct caller of the
+               # original reads eax beyond that width (gp4re/retwidth.py)
     out     := eax|ebx|ecx|edx|esi|edi|ebp|st0..st7|cf|pf|af|zf|sf|of
     opt     := tol=<float> | cases=<n> | fpucw=<hex> | globals=keep|fuzz:<f32|f64|i32>|[fuzz:<k>+]layout=<name>[+<name>...]
              | emu=skip:<reason> | maxinsn=<n> | seed=<n>
@@ -54,6 +60,7 @@ class ArgType:
     ref: str = ""            # rel[reg,stride,lo..hi]: value = <earlier input reg> + k*stride
     choices: tuple = ()      # u32{a,b,c}: drawn from the set in about 3/4 of the cases
     exclusive: bool = False  # u32{=a,b,c}: drawn only from the set (indexes, pointers)
+    bias: int = 0            # ptr[N]+B: the value is buffer + B (a count kept at ptr-4, a biased base)
 
 
 @dataclass
@@ -99,14 +106,25 @@ def _bound(text: str) -> float:
 
 def _type(tok: str) -> ArgType:
     tok = tok.strip()
-    m = re.fullmatch(r"(n?)ptr\[(0x[0-9a-fA-F]+|\d+)\](?::(.+))?", tok)
+    m = re.fullmatch(r"(n?)ptr\[(0x[0-9a-fA-F]+|\d+)\](?:\+(0x[0-9a-fA-F]+|\d+))?(?::(.+))?", tok)
     if m:
-        nullable, m = bool(m.group(1)), re.fullmatch(r"n?ptr\[(0x[0-9a-fA-F]+|\d+)\](?::(.+))?", tok)
+        nullable, bias = bool(m.group(1)), int(m.group(3), 0) if m.group(3) else 0
+        m = re.fullmatch(r"n?ptr\[(0x[0-9a-fA-F]+|\d+)\](?:\+(?:0x[0-9a-fA-F]+|\d+))?(?::(.+))?", tok)
         fill = (m.group(2) or "bytes").strip()
         ranged = re.fullmatch(r"(i8|u8|i16|u16|i32|u32|f32|f64)\[([-+0-9.eExXa-fA-F]+)\.\.([-+0-9.eExXa-fA-F]+)\]", fill)
         valueset = re.fullmatch(r"(i8|u8|i16|u16|i32|u32)\{=?[-+0-9xXa-fA-F, ]+\}", fill)
         if ranged or valueset:   # every element of the buffer drawn from this typed range / value set
             _type(fill)   # validates the range or set against the element type
+        elif fill.startswith("{") and fill.endswith("}"):   # inline buffer: nested pointers and typed fields
+            _, fields = struct_fill(fill)
+            size = int(m.group(1), 0)
+            for off, count, stride, t in fields:
+                if off + (count - 1) * stride + _width(t) > size:
+                    raise SpecError(f"inline field at {off:#x} (x{count}) runs past the {size:#x}-byte buffer")
+        elif fill.startswith("com="):
+            from .com import IFACES
+            if fill[4:] not in IFACES:
+                raise SpecError(f"unknown COM interface {fill[4:]!r} (modelled: {', '.join(IFACES)})")
         elif not (fill in ("f32", "f64", "i32", "bytes", "zero") or fill.startswith("layout=")):
             raise SpecError(f"bad ptr fill {fill!r}")
         size = int(m.group(1), 0)
@@ -114,7 +132,9 @@ def _type(tok: str) -> ArgType:
             raise SpecError("pointer buffers must have positive size")
         if fill.startswith("layout=") and not re.fullmatch(r"layout=[A-Za-z0-9_-]+(\+[A-Za-z0-9_-]+)*", fill):
             raise SpecError("layout names must be plain file stems (layout=a or layout=a+b)")
-        return ArgType("ptr", size=size, fill=fill, nullable=nullable)
+        if bias >= size:
+            raise SpecError(f"ptr[{size:#x}]+{bias:#x}: the bias must lie inside the buffer")
+        return ArgType("ptr", size=size, fill=fill, nullable=nullable, bias=bias)
     m = re.fullmatch(r"rec\[(0x[0-9a-fA-F]+|\d+),(0x[0-9a-fA-F]+|\d+),(0x[0-9a-fA-F]+|\d+)\.\.(0x[0-9a-fA-F]+|\d+)\]", tok)
     if m:   # a record-aligned address into a fixed array (e.g. esi = 0x66fef0 + k*0x41c)
         base, stride, lo, hi = (int(m.group(k), 0) for k in (1, 2, 3, 4))
@@ -154,6 +174,39 @@ def _type(tok: str) -> ArgType:
             if not lo.is_integer() or not hi.is_integer() or lo < lower or hi > upper:
                 raise SpecError("integer input range must fit its type")
     return ArgType(m.group(1), lo, hi)
+
+
+def _width(t: ArgType) -> int:
+    return {"f32": 4, "f64": 8, "ptr": 4, "rec": 4}.get(t.kind) or INT_TYPES[t.kind]
+
+
+def struct_fill(fill: str) -> tuple[str, list[tuple[int, int, int, ArgType]]]:
+    """An inline buffer '{[*bytes,] off[*count[/stride]]:type, ...}' -> (background, fields).
+
+    Every type the spec allows works for a field, including nested pointers with their own fill
+    (another inline buffer, a layout, com=<Interface>) and value sets such as u32{=0x5f0758} for a
+    real GP4 vtable pointer. Unlisted bytes are zero unless the first item is *bytes."""
+    background, fields = "zero", []
+    for part in (p.strip() for p in _split_args(fill[1:-1])):
+        if not part:
+            continue
+        if part in ("*bytes", "*zero"):
+            background = part[1:]
+            continue
+        m = re.fullmatch(r"(0x[0-9a-fA-F]+|\d+)(?:\*(\d+)(?:/(0x[0-9a-fA-F]+|\d+))?)?\s*:\s*(.+)", part, re.S)
+        if not m:
+            raise SpecError(f"bad inline field {part!r} (off[*count[/stride]]:type)")
+        t = _type(m.group(4))
+        if t.kind == "rel":
+            raise SpecError("rel[...] is for registers, not buffer fields")
+        count = int(m.group(2) or 1)
+        stride = int(m.group(3), 0) if m.group(3) else _width(t)
+        if not 1 <= count <= 4096 or stride < _width(t):
+            raise SpecError(f"inline field {part!r}: count 1..4096 and stride >= its width")
+        fields.append((int(m.group(1), 0), count, stride, t))
+    if not fields:
+        raise SpecError("an inline buffer needs at least one field")
+    return background, fields
 
 
 def parse(text: str) -> Spec:
@@ -201,7 +254,7 @@ def parse(text: str) -> Spec:
             if names != [f"st{i}" for i in range(len(names))]:
                 raise SpecError("x87 inputs and outputs must be contiguous from st0")
     else:
-        if retstr not in ("void", "i32", "u32", "f32", "f64", "i64"):
+        if retstr not in ("void", "i32", "u32", "u8", "i8", "u16", "i16", "f32", "f64", "i64"):
             raise SpecError(f"bad return type {retstr!r}")
         spec.ret = retstr
         if conv == "thiscall" and (not args or args[0].t.kind not in ("ptr", "u32", "i32")):

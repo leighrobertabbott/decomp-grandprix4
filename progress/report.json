@@ -1,32 +1,34 @@
 {
-  "accepted_bytes": 401386,
+  "accepted_bytes": 421538,
   "active_goal": "core",
   "by_state": {
-    "accepted": 3953,
-    "accepted-runtime": 149,
-    "deferred": 82,
-    "excluded": 2793,
-    "todo": 5954
+    "accepted": 4464,
+    "accepted-runtime": 185,
+    "claimed": 26,
+    "deferred": 107,
+    "excluded": 4455,
+    "todo": 3748
   },
   "by_track": {
     "asm": {
-      "accepted": 1725,
-      "accepted-runtime": 29,
-      "deferred": 14,
-      "todo": 1061
+      "accepted": 1742,
+      "accepted-runtime": 27,
+      "deferred": 12,
+      "todo": 240
     },
     "c": {
-      "accepted": 2225,
-      "accepted-runtime": 119,
-      "deferred": 68,
+      "accepted": 2719,
+      "accepted-runtime": 157,
+      "claimed": 26,
+      "deferred": 95,
       "excluded": 1,
-      "todo": 4893
+      "todo": 3508
     }
   },
   "fpucw": "0x37f",
-  "functions": 12931,
-  "game_bytes": 1682784,
+  "functions": 12985,
+  "game_bytes": 1580985,
   "name_conflicts": 0,
-  "names": 8,
-  "progress_pct": 23.852
+  "names": 42,
+  "progress_pct": 26.663
 }

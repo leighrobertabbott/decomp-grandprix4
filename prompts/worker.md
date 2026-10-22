@@ -61,6 +61,15 @@ Exactly one `// FUNCTION:` line and one `GP4_IMPL` (for your address). Small
 `cdecl` (ret), `stdcall` (`ret N`: N/4 args), thiscall written as
 `R __fastcall Name(Self* self, void* /*edx*/, args...)` with spec
 `thiscall(ptr[size]:fill, ...)`.
+Known gap (defer at once with `--needs "regs stack args"`, do not burn attempts): a routine
+that takes STACK arguments (`ret N`) AND must leave caller register bits (an al/ax-only result
+whose callers read eax, so `u8`/`u16` are refused) or return an 80-bit st0 (sqrt/log of a stack
+float; a compiled `double` return is rounded) - `regs` cannot read or pop stack arguments yet.
+A `bool`/`char` result in al only (`setne al; ret`, `mov al, 1`) is spec return `u8` (or `i8`),
+a `short` in ax is `u16`/`i16`: only those bits are compared, and the gate checks every direct
+caller of the original - if one reads more of eax (`test eax, eax`, `push eax`) it fails and you
+must use `i32` and reproduce the upper bits. Spec syntax slips (lint/build failures) do not use
+up an attempt.
 
 **asm track (hand-written x87 assembly, Crammond's core).** The function takes
 inputs in registers, flags or on the x87 stack. Write
@@ -127,9 +136,48 @@ suggestion is provisional: a routine returning flags may need `regs`.
   (gp4re/stubs.py): no skip for those; the original's and your call sequence and
   arguments must match exactly (strings and written file data by content). For any
   other API add `; emu=skip:win32 <Api>` to the spec (accepted pending an in-game check).
+- **Never inline code the original reaches by `jmp` into another place.** A forwarder
+  (`jmp X`, `mov ecx, imm; jmp X`) or a tail jump into a body that `work show` lists as part of
+  your function but that lies elsewhere (a shared tail several functions jump to) is a call to
+  another function, even when X is not a registered start yet: defer with
+  `--needs "register start X (shared body)"` instead of writing X's code inline. Inlined shared
+  bodies are reverted once the lead registers the start (2026-10-22: 0x45ef30, 0x4cadd0,
+  0x5bcbf0, 0x5c3a90). If X is already a start, call it: `gp4::thiscall_<X, R>(self, ...)`.
 - A known function start the original uses as a plain operand (`mov esi, 0x549dcc`,
   a handler address pushed as an argument) may appear in your code the same way:
   the shape gate accepts it - do not hide it behind arithmetic.
+- **Direct3D 8 (COM) calls.** `#include <gp4/d3d8.h>` declares IDirect3D8, IDirect3DDevice8,
+  the textures/surfaces/volumes, vertex/index buffers and swap chains with their methods in
+  SDK vtable order: write `GP4_D3D_DEVICE->SetRenderState(7, 1)` (the device pointer at
+  0x00b2e808) or `tex->LockRect(0, &lr, nullptr, 0)`, never a hand-cast vtable slot. The
+  emulator models every method (gp4re/com.py): it logs each call with its arguments and a hash
+  of every input structure (matrix, viewport, material, light, rects, the vertices of
+  DrawPrimitiveUP, ...) - the original's and your call sequence must be identical - returns
+  seeded HRESULTs (failures in about 1 call in 8: cover the error paths), writes seeded outputs,
+  creates child objects with consistent state and hands out lock buffers whose contents are
+  compared. Give COM pointers the fill `com=<Interface>`: the device global is the layout
+  `d3ddev_00b2e808`; a member is a buffer-layout field `{"off": "0x10", "type": "ptr", "size":
+  16, "fill": "com=IDirect3DTexture8"}`; an argument is `ptr[16]:com=IDirect3DVertexBuffer8`.
+  Identify the interface from the slot offsets and argument counts (device: +0x90 Clear,
+  +0x94 SetTransform, +0xc8 SetRenderState, +0xf4 SetTexture, +0xfc SetTextureStageState,
+  +0x118 DrawPrimitive, +0x14c SetStreamSource; vertex buffer: +0x2c Lock, +0x30 Unlock).
+  QueryInterface, GetPrivateData, GetContainer, GetInfo and patches end a case external.
+  **DirectInput 8 and DirectSound** are modelled too (gp4re/com_dx.py; headers
+  `<gp4/dinput8.h>`, `<gp4/dsound.h>`; fills `com=IDirectInput8A`, `com=IDirectInputDevice8A`,
+  `com=IDirectInputEffect`, `com=IDirectSound8`, `com=IDirectSoundBuffer` (or `...Buffer8`),
+  `com=IDirectSound3DBuffer`, `com=IDirectSound3DListener`, `com=IDirectSoundNotify`):
+  device +0x1c Acquire, +0x20 Unacquire, +0x24 GetDeviceState, +0x28 GetDeviceData,
+  +0x2c SetDataFormat, +0x34 SetCooperativeLevel, +0x48 CreateEffect, +0x64 Poll; effect +0x18
+  SetParameters (only the DIEP_* fields its flags name are read), +0x1c Start, +0x20 Stop; sound
+  buffer +0x2c Lock (ring buffer: two parts), +0x30 Play, +0x3c SetVolume, +0x40 SetPan, +0x44
+  SetFrequency, +0x48 Stop, +0x4c Unlock; QueryInterface works for the DirectSound/DirectInput
+  IIDs (a buffer's IDirectSound3DBuffer, the primary buffer's listener). DirectInput8Create and
+  DirectSoundCreate8 are modelled imports. Enumerations (callbacks) end a case external. Other
+  COM objects (CoCreateInstance: DirectPlay, DirectMusic) are NOT modelled: defer with
+  `--needs "COM model for <interface>"`.
+  A C++ virtual call on a GP4 object (`mov eax,[ecx]; call [eax+N]` with a GP4 vtable in
+  .rdata) is different: give the object's vptr the real GP4 vtable address (`values`) so the
+  original's own method runs.
 - One-off field offsets: `GP4_FIELD(float, p, 0x2c)`. When a layout is clear,
   declare a struct instead (fields named from evidence, else `UnknownXX`), inside
   `#pragma pack(push, 1)` / `#pragma pack(pop)` - game records are unaligned (a
@@ -166,6 +214,20 @@ suggestion is provisional: a routine returning flags may need `regs`.
   never relax tolerance instead.
 
 ## Spec checklist (the emulator needs plausible inputs)
+
+- **Inline buffers (no lead layout needed).** A pointer fill can describe the buffer field by
+  field: `ptr[N]:{off:type, off*count/stride:type, ...}`; unlisted bytes are zero (start with
+  `*bytes,` for random background). Field types are any spec type, so pointers nest:
+  `thiscall(ptr[0x20]:{8:ptr[0x140]:bytes, 0xc:u32[0..15]}, u32) -> void` (this+8 -> a record
+  array, this+0xc an index), a COM member `{0:nptr[16]:com=IDirectInputDevice8A}`, a GP4 object
+  with its real vtable `{0x17d4:nptr[0x40]:{0:u32{=VTBL}, 4:i32[0..3]}}` (VTBL = the .rdata
+  address that class's constructor stores with `mov [ecx], VTBL`; its methods then run), a 20-slot pointer
+  table `{0xc*20/4:nptr[0x100]:bytes}`, a terminating list of 1..3 nodes
+  `{4:nptr[0x48]:{0x44:nptr[0x48]:{0x44:nptr[0x48]:{0x44:u32{=0}}}}}`, a pointer biased into
+  its block (`ptr[0x80]+4:{0:u32[0..3]}`: the value is buffer+4, the count at ptr-4). Use it before asking the
+  lead; a lead layout is still needed for aliasing (`alias`, `points_into`, cyclic `self`
+  links), fixed globals and tables shared by many functions. No `;` inside (it separates
+  options).
 
 - Pointer sizes: largest displacement used + 8. Fill floats where the code reads
   floats (`ptr[0x60]:f64`); random bytes become NaNs and the original's cases go

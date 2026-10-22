@@ -1,0 +1,9 @@
+{
+ "_evidence": "The renderer object held in [0xa4dc28]: callers of 0x44d280 (0x495f00, 0x497d10) pass ecx=[0xa4dc28]; 0x44d280 reads +8 and calls [[+8]]+0x14 with one pushed argument (0) = IDirect3DDevice8::ResourceManagerDiscardBytes (slot 5: QI, AddRef, Release, TestCooperativeLevel, GetAvailableTextureMem, ResourceManagerDiscardBytes), so +8 is the device (modelled, gp4re/com.py). +4 is the texture manager (texmgr_00451540): the 0x451540 call sites load ecx=[[0xa4dc28]+4], and 0x449410 reads [[a+4]+0x24] with a = owner+0x1ac (pushed at 0x458430). Neither pointer is null-checked before use. Other bytes random.",
+ "size": 16,
+ "fill": "bytes",
+ "fields": [
+  {"off": 4, "type": "ptr", "size": "0x40", "fill": "layout=texmgr_00451540"},
+  {"off": 8, "type": "ptr", "size": 16, "fill": "com=IDirect3DDevice8"}
+ ]
+}

@@ -1,0 +1,38 @@
+{
+ "_evidence": "Shared by 0x0055a71c and its mirror 0x0055a7d2 (compose AFTER ring_008943a0, which places lap start [0x891504] 0..4, lap end [0x866ecc] 4..26, pit start [0x891500] 0..30, pit end [0x866ef8] 1..32 and wrap [0x866ec4] 1..4 records). Outer loop: dx = word [0x8705e8] + 0x100, 'sub dx,1; jns' (do-while), so word w runs w+0x101 records when w+0x100 < 0x8000, one record when w+0x100 is 0x8001..0xffff (dx-1 negative) and 32768 when w+0x100 = 0x8000 (w = 0x7f00, a 4M-instruction walk, not drawn); the game's counter is a record count (0x55a636 increments it, 0x55450a stores w-1 and asserts (w-1)>>5 <= 0x32, so w <= ~0x660) and 0x554616 zeroes it: values 0..0x3ff plus 0xff00/0xffff (w+0x100 wraps to 0 / 0xff: 1 / 256 records) and 0x8000 (dx = 0x8100: one record). Records: the outer forward step of 0x55a71c (+0x160; >= lap end and < pit start: - wrap; >= pit end: pit end - 0x160) and backward step of 0x55a7d2 (< pit start: -0x160, below lap start + wrap; else -0x160 clamped at pit start) and the inner walks (the opposite step) stay in records 0..31 (ring_008943a0 evidence: forward p+1-D >= lap end - D >= 0, pit end - 1 <= 31; backward lap start - 1 + D <= 7, pit-start clamp). Fields of records 0..31: byte +0x16 (0x55a732 'mov al,[edi+0x16]', 0x55a71c) and byte +0x17 (0x55a7e8, 0x55a7d2): 0 skips, >= 0x3c skips, 1..0x3b starts an inner walk with cx = al up to 0x3c (both bytes from {0,0,1,2,5,0x1d,0x3b,0x3c,0x80,0xff}); byte +0x1a bit 0 (test [edi+0x1a],1: 0x55a71c stores when clear, 0x55a7d2 when set) {0,1,2,3}; byte +0x20 (cmp [edi+0x20],0x3c jae; cmp cl,[edi+0x20] jae; RMW store of cl) {0,1,5,0x1d,0x3b,0x3c,0x3d,0xff} so both compares go both ways. Nothing is dereferenced except the ring records, so every value is fault-free.",
+ "globals": [
+  {
+   "addr": "0x008705e8",
+   "type": "u16",
+   "values": [0, 1, 2, 5, "0x1f", "0x40", "0x100", "0x3ff", "0xff00", "0xffff", "0x8000"]
+  },
+  {
+   "addr": "0x008943b6",
+   "type": "u8",
+   "count": 32,
+   "stride": "0x160",
+   "values": [0, 0, 1, 2, 5, "0x1d", "0x3b", "0x3c", "0x80", "0xff"]
+  },
+  {
+   "addr": "0x008943b7",
+   "type": "u8",
+   "count": 32,
+   "stride": "0x160",
+   "values": [0, 0, 1, 2, 5, "0x1d", "0x3b", "0x3c", "0x80", "0xff"]
+  },
+  {
+   "addr": "0x008943ba",
+   "type": "u8",
+   "count": 32,
+   "stride": "0x160",
+   "values": [0, 1, 2, 3]
+  },
+  {
+   "addr": "0x008943c0",
+   "type": "u8",
+   "count": 32,
+   "stride": "0x160",
+   "values": [0, 1, 5, "0x1d", "0x3b", "0x3c", "0x3d", "0xff"]
+  }
+ ]
+}

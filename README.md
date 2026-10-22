@@ -48,20 +48,20 @@ refuses any other `GP4.exe` unless given `--allow-other-exe`.
 
 <!-- status:begin -->
 
-![code](https://img.shields.io/badge/code-23.85%25-blue) ![verified](https://img.shields.io/badge/verified-3%2C953_functions-brightgreen) ![pending in-game](https://img.shields.io/badge/pending_in--game-149-yellow) ![deferred](https://img.shields.io/badge/deferred-82-orange) ![todo](https://img.shields.io/badge/todo-5%2C954-lightgrey)
+![code](https://img.shields.io/badge/code-26.66%25-blue) ![verified](https://img.shields.io/badge/verified-4%2C464_functions-brightgreen) ![pending in-game](https://img.shields.io/badge/pending_in--game-185-yellow) ![deferred](https://img.shields.io/badge/deferred-107-orange) ![todo](https://img.shields.io/badge/todo-3%2C748-lightgrey)
 
-**23.85%** of GP4.exe's game code (401,386 of 1,682,784 bytes) is reconstructed and accepted: **3,953** functions verified by differential emulation, **149** accepted pending the in-game check, 82 deferred with a recorded blocker, 5,954 still to do.
+**26.66%** of GP4.exe's game code (421,538 of 1,580,985 bytes) is reconstructed and accepted: **4,464** functions verified by differential emulation, **185** accepted pending the in-game check, 107 deferred with a recorded blocker, 3,748 still to do.
 
 | Region | Address range | Verified | Pending in-game | Deferred | To do | Code accepted |
 |---|---|---:|---:|---:|---:|---:|
 | Simulation core (hand-written x87 assembly) | `0x00401000`-`0x00446160` | 1,849 | 3 | 31 | 12 | 93.8% |
-| Renderer and front end (Direct3D 8 C++) | `0x00446160`-`0x00510000` | 54 | 0 | 0 | 2,485 | 0.0% |
-| Game logic (GP3-heritage C and assembly) | `0x00510000`-`0x00560000` | 2,049 | 146 | 51 | 969 | 47.8% |
+| Renderer and front end (Direct3D 8 C++) | `0x00446160`-`0x00510000` | 315 | 13 | 31 | 1,609 | 1.1% |
+| Game logic (GP3-heritage C and assembly) | `0x00510000`-`0x00560000` | 2,150 | 167 | 39 | 941 | 49.2% |
 | Libraries: D3DX, libpng, zlib (excluded) | `0x00560000`-`0x005a4000` | 0 | 0 | 0 | 0 | excluded |
-| Mixed C++ and DirectX error tables | `0x005a4000`-`0x005d8000` | 1 | 0 | 0 | 1,601 | 0.0% |
-| Visual C++ 6 runtime | `0x005d8000`-`0x005f0000` | 0 | 0 | 0 | 887 | 0.0% |
+| Mixed C++ and DirectX error tables | `0x005a4000`-`0x005da800` | 150 | 2 | 6 | 1,186 | 1.2% |
+| Visual C++ 6 runtime | `0x005da800`-`0x005f0000` | 0 | 0 | 0 | 0 | excluded |
 
-<sub>Generated 2026-10-21 from the ledger by `python tools/readme_status.py`; per-function state is in [progress/ledger.txt](progress/ledger.txt).</sub>
+<sub>Generated 2026-10-22 from the ledger by `python tools/readme_status.py`; per-function state is in [progress/ledger.txt](progress/ledger.txt).</sub>
 
 <!-- status:end -->
 

@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x005420a8 datalog list build (compose AFTER sort_00542224+sortkeys_005421e5+recs_005438a0+cur_00543942). Count [0x830bac]: 'cmp ecx,0x28; jle' (signed) then 'or ecx,ecx; je' and 'mov [edi],esi; add esi,0x20; add edi,4; loop' - a negative count passes the jle unclamped and the loop would run ~2^32 times writing past the table (invalid), so the count is 0..50: 41..50 take the clamp path (pushfd/pushal, empty 0x54e232, ecx = 0x28). 0x543942 -> 0x543917 then walks the UNCLAMPED [0x830bac] entries of the table 0x830b0c with lodsd, stopping at the first record whose byte +9 has bit 7 set (recs_005438a0 draws those bytes at random, so a 41st entry - the dword 0x830bac itself - is read only if all 40 records have bit 7 clear, p = 2^-40). Selector byte [0x8310b4]: 'cmp eax,3; jb; mov eax,2' then 'jmp [0x542128+4*eax]' = 0x542134 (0x542257) / 0x54213b (0x5421e5) / 0x542142 (0x542224): values {0,1,2,3,0xff}. Record byte +7 (0x830bbb + k*0x20, the signed primary key 'mov al,[esi+7]; cmp al,[edi+7]; jl/jne' of 0x542257, zero in the image and varied by no other layout): small signed set with duplicates and extremes; the 0x542257 order (ascending +7, then descending word +0xa, the dword +0xc compare is against itself) is a consistent preorder, so its bubble sort ends.",
+ "globals": [
+  {"addr": "0x00830bac", "type": "u32", "values": [0, 1, 2, 5, 12, 39, 40, 41, 41, 50]},
+  {"addr": "0x008310b4", "type": "u8", "values": [0, 1, 2, 3, "0xff"]},
+  {"addr": "0x00830bbb", "type": "u8", "count": 40, "stride": "0x20", "values": ["0xfe", "0xff", 0, 0, 1, 2, "0x7f", "0x80"]}
+ ]
+}

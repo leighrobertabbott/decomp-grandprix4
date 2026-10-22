@@ -1043,5 +1043,30 @@
    "0x00537707:fallthrough"
   ],
   "evidence": "'je 0x537709' at 0x537707 jumps to the next instruction: both directions continue at 0x537709 with identical state, so the coverage tracker cannot tell them apart (degenerate branch; m194, lead check)."
+ },
+ "0x005590b4": {
+  "blocks": [
+   "0x005590eb",
+   "0x005590f6",
+   "0x00559116"
+  ],
+  "branches": [
+   "0x005590e9:fallthrough",
+   "0x005590f4:fallthrough",
+   "0x00559114:fallthrough"
+  ],
+  "evidence": "int3 assertion guards ('cmp edi,0x738fe4; jb' at 0x5590e9 and 0x559114, 'or ecx,ecx; jne' at 0x5590f4): reaching one faults in the original, so every case that reaches them is invalid; the reconstruction keeps them as __debugbreak() (m198, lead check)."
+ },
+ "0x004d2f70": {
+  "blocks": [
+   "0x004d2f9e"
+  ],
+  "evidence": "'and eax,0xff' at 0x4d2f91 then 'and eax,0x80000003' at 0x4d2f96 leave bit 31 clear, so SF=0 ('push esi' at 0x4d2f9b does not write flags) and the 'jns 0x4d2fa3' at 0x4d2f9c is always taken: the signed-remainder fixup block 0x4d2f9e (dec/or/inc) is the compiler's dead path for a value already known non-negative (lead check 2026-10-22, from r18's report)."
+ },
+ "0x005a8940": {
+  "blocks": [
+   "0x005a8946"
+  ],
+  "evidence": "0x5a8946 is 'jmp 0x5a8946' (jmp $): when byte [ecx+0x3c] == 1 the original never returns, so no finite run can cover it; specs exclude that input value (a non-returning input, like a fault). Lead check 2026-10-22."
  }
 }

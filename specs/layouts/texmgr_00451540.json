@@ -1,0 +1,9 @@
+{
+ "_evidence": "The renderer's texture manager: [[0xa4dc28]+4] at the 0x451540 call sites 0x4a639a/0x4a650f/0x4a6524 (and [[ecx]+4] at 0x4b4f15), [[owner+0x1ac]+4] at the 0x451370 call 0x4595d0, [[a]+4] in 0x449410 (a = owner+0x1ac, pushed at 0x458430); 0x449450 reads the same object from [0x9fb348]. +0x24 is a pointer to 0x4c-byte texture records (texrecs_00451540; read by 0x45154e, 0x449435, 0x4496b2/0x4496f7), +0x28 a pointer to 0x54-byte reference records (texrefs_00451370; read by 0x45137a/0x451398 and 0x44966e), +0x34 a dword 0x451370 writes (0x4513a2) and never reads. Both arrays have 8 records, so record indices 0..7 are valid. Other bytes random.",
+ "size": 64,
+ "fill": "bytes",
+ "fields": [
+  {"off": "0x24", "type": "ptr", "size": "0x260", "fill": "layout=texrecs_00451540"},
+  {"off": "0x28", "type": "ptr", "size": "0x2a0", "fill": "layout=texrefs_00451370"}
+ ]
+}

@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x0054d7c0 script expansion, opcode 4: 0x54d834 always returns eax = 0 (it re-runs 'mov eax,0' at 0x54d836 on every loop pass), so 'cmp eax,5; jae' falls through and 'call [0x54d7ac + 0]' runs handler 0x54d856: 0x54d834 again, inc esi, eax = [[0x833f1c] + 4*0] (0x54d85f add eax,[0x833f1c]; 0x54d865 mov eax,[eax]), then 0x54dac1 formats that dword as unsigned decimal (bh = 0: no sign, no padding, at most 10 digits + NUL) at edi and runs 0x4fd640 on the output pointer [0xaa3578] = edi (outside 0x823100..0x8233ff, so 0x4fd640 only runs 0x4fdd40 and returns; 0x54dac1 was accepted that way). [0x833f1c] is zero in the image and only read (0x54d85f/0x54d876), so the image state faults at 0x54d865 on every opcode 4; this layout gives it a pointer to an 8-byte buffer of random bytes (only dword +0 is ever read, since eax = 0) so the opcode-4 path runs without a fault. The length table 0x833f98.. (constants 2,2,3,9,2,2,2,1,...) stays static.",
+ "globals": [
+  {"addr": "0x00833f1c", "type": "ptr", "size": 8, "fill": "bytes"}
+ ]
+}

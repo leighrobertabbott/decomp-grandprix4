@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x0054d8a5 (entry 4 of the script handler table 0x54d7ac = {0x54d856,0x54d86d,0x54d884,0x54d895,0x54d8a5}; compose AFTER script_0054d798). It skips three digit runs (0x54d834 always returns eax = 0), so esi = eax = 0 and 'call 0x54d1ad' loads esi = [0x835846] (table entry 0), then 0x54d798 runs 0x54d1ad AGAIN: esi = [0x835846 + 4*[0x835846]] and 0x54d7c0 expands that script. Entry 0 is therefore used as an id: a pointer value there (script_0054d798 makes it one) indexes 4*ptr bytes past the table and faults in every case, so entry 0 is drawn as a script id whose own entry script_0054d798 fills with a pointer to a 0x40-byte script: ids 1..7 (0x83584a..0x835862) and 0xba6/0xbb1/0xbbb (0x8386de.., 22 entries). Nothing else is read.",
+ "globals": [
+  {"addr": "0x00835846", "type": "u32", "values": [1, 2, 3, 4, 5, 6, 7, "0xba6", "0xbb1", "0xbbb"]}
+ ]
+}

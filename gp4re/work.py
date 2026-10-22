@@ -277,7 +277,8 @@ def try_candidate(con, addr: int, file: str, agent: str, cap: int, record: bool 
     if prev and record and not rerun:
         return {"overall": "refused", "why": f"byte-identical to an earlier attempt ({prev['file']}); change something"}
     res = verify.run(addr, candidate=cand, agent=agent)
-    counted = not any(g["gate"] == "build" and g["status"] == "fail" for g in res["gates"])
+    # lint (annotation/spec syntax) and build failures are mechanical: they do not use up the cap
+    counted = not any(g["gate"] in ("lint", "build") and g["status"] == "fail" for g in res["gates"])
     res["why"] = _why(res)
     if record:
         n_prev = con.execute("SELECT COUNT(*) FROM attempts WHERE addr=? AND verdict!='build-failed'", (addr,)).fetchone()[0]

@@ -1,0 +1,8 @@
+{
+ "_evidence": "this of 0x466490 (and of its getter 0x466410): dword +0x130 is an optional ID3DXMesh* (0x466410 calls its +0x18/+0x30/+0x34 when nonzero). 0x466490 only tests it for zero (0x466490..0x466498) and releases the two buffer cells when it is set (the mesh getters AddRef'd them); it never dereferences it. Null in about a quarter of the cases, else a pointer to an unused buffer, so both outcomes occur. Other bytes random.",
+ "size": 308,
+ "fill": "bytes",
+ "fields": [
+  {"off": "0x130", "type": "ptr", "size": 16, "fill": "bytes", "nullable": true}
+ ]
+}

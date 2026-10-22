@@ -1,0 +1,18 @@
+{
+ "_evidence": "0x5109d5 walks the 0x140 x 0xe0-byte part array at 0x854414 ('mov ebx,0x854414', 'add ebx,0xe0; inc ecx; cmp ecx,0x140; jb'); zero in the image, so no record is active and the snapshot path 0x5109f4 is never reached. Records 0..7 vary, records 8..0x13f keep the static zero (inactive), which bounds the work to <= 8 calls of 0x408351/0x552c61 per case. Per record (offsets from the record): +0x4c u32 'test dword [ebx+0x4c],1; je 0x510a5a' - values with bit 0 set (1,3,0x80000001,0xffffffff) and clear (0,2) so both outcomes occur. +0x74 'mov esi,[ebx+0x74]; call 0x408351' which reads byte [esi+0x202] (accepted spec esi:ptr[0x20a]:bytes; a null or small pointer faults in the original, so a 0x20a-byte random buffer per record). +0x48 u32 copied to the table (any value). +0x18 / +0x1c / +0x20 i32 copied into [0x934df0] / ecx / [0x934df4] and only reduced by 0x552c61 (sub, any value). 0x552c61 (accepted with ebx:ptr[0xd2]:bytes, i.e. any record contents) reads the angle words +0xc2/+0xc6/+0xca (also copied by 0x5109d5 itself as movzx words) and the vector +0x78/+0x7c/+0x80: any value. [0xa69878] is the output table cursor: only written (two dwords cleared at the start, 0x20 bytes per active record, two closing zero dwords), so a random 0x2808-byte buffer (0x140*0x20 + 8, the largest table the loop can write) is valid for any number of active records.",
+ "globals": [
+  {"addr": "0x00a69878", "type": "ptr", "size": "0x2808", "fill": "bytes"},
+  {"addr": "0x00854460", "type": "u32", "count": 8, "stride": "0xe0", "values": [1, 1, 3, "0x80000001", "0xffffffff", 0, 2]},
+  {"addr": "0x00854488", "type": "ptr", "count": 8, "stride": "0xe0", "size": "0x20a", "fill": "bytes"},
+  {"addr": "0x0085445c", "type": "u32", "count": 8, "stride": "0xe0"},
+  {"addr": "0x0085442c", "type": "i32", "count": 8, "stride": "0xe0"},
+  {"addr": "0x00854430", "type": "i32", "count": 8, "stride": "0xe0"},
+  {"addr": "0x00854434", "type": "i32", "count": 8, "stride": "0xe0"},
+  {"addr": "0x0085448c", "type": "i32", "count": 8, "stride": "0xe0"},
+  {"addr": "0x00854490", "type": "i32", "count": 8, "stride": "0xe0"},
+  {"addr": "0x00854494", "type": "i32", "count": 8, "stride": "0xe0"},
+  {"addr": "0x008544d6", "type": "u16", "count": 8, "stride": "0xe0"},
+  {"addr": "0x008544da", "type": "u16", "count": 8, "stride": "0xe0"},
+  {"addr": "0x008544de", "type": "u16", "count": 8, "stride": "0xe0"}
+ ]
+}

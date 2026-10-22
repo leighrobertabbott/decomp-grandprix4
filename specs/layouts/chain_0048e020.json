@@ -1,0 +1,462 @@
+{
+ "_evidence": "0x0048e020 (thiscall, ret 4, returns al): 'mov esi,[esp+0xc]; mov al,1; test esi,esi; je ret' then the loop 'lea edx,[esi*8]; sub edx,esi; lea edx,[edx+edx*2]; shl edx,5; add edx,ecx' (record = this + idx*0x2a0), 'mov bl,[edx+0x174]; test bl,bl; je ->al=0' and 'mov esi,[edx+0x168]; test esi,esi; jne loop' (al stays 1): a walk up a parent chain until a record whose byte +0x174 is clear (0) or a parent index 0 (1). The callers 0x4d9080/0x4d90e0/0x4d9350 pass this = [0xa51fd8 + 4*k] and walk the records 'add esi,0x2a0; cmp esi,0x41a0; jl': the object holds 25 records of 0x2a0 bytes (0x41a0), indices 0..24, index 0 meaning 'no parent'. Record 0 is never read (index 0 ends the walk before the load). A parent index outside 0..24 reads past the object (fault) and a cyclic chain never ends (the game's records form a tree), so each record k = 1..24 draws its parent +0x168 from 0..k-1 (strictly decreasing: every chain ends at 0; any acyclic chain behaves the same for this walk) and its byte +0x174 from {0, 1, 1, 0xff} (stop / continue). Other bytes are not read (zero). The start index argument is 0..24 (0 returns 1 at once).",
+ "size": 16800,
+ "fields": [
+  {
+   "off": "0x414",
+   "type": "u8",
+   "values": [
+    0,
+    1,
+    1,
+    "0xff"
+   ],
+   "count": 24,
+   "stride": "0x2a0"
+  },
+  {
+   "off": "0x408",
+   "type": "u32",
+   "values": [
+    0
+   ]
+  },
+  {
+   "off": "0x6a8",
+   "type": "u32",
+   "values": [
+    0,
+    1
+   ]
+  },
+  {
+   "off": "0x948",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2
+   ]
+  },
+  {
+   "off": "0xbe8",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3
+   ]
+  },
+  {
+   "off": "0xe88",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4
+   ]
+  },
+  {
+   "off": "0x1128",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ]
+  },
+  {
+   "off": "0x13c8",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ]
+  },
+  {
+   "off": "0x1668",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ]
+  },
+  {
+   "off": "0x1908",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ]
+  },
+  {
+   "off": "0x1ba8",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ]
+  },
+  {
+   "off": "0x1e48",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+   ]
+  },
+  {
+   "off": "0x20e8",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+   ]
+  },
+  {
+   "off": "0x2388",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+   ]
+  },
+  {
+   "off": "0x2628",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13
+   ]
+  },
+  {
+   "off": "0x28c8",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+   ]
+  },
+  {
+   "off": "0x2b68",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+   ]
+  },
+  {
+   "off": "0x2e08",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+   ]
+  },
+  {
+   "off": "0x30a8",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17
+   ]
+  },
+  {
+   "off": "0x3348",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18
+   ]
+  },
+  {
+   "off": "0x35e8",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ]
+  },
+  {
+   "off": "0x3888",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+   ]
+  },
+  {
+   "off": "0x3b28",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21
+   ]
+  },
+  {
+   "off": "0x3dc8",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22
+   ]
+  },
+  {
+   "off": "0x4068",
+   "type": "u32",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ]
+  }
+ ]
+}

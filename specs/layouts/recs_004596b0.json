@@ -1,0 +1,8 @@
+{
+ "_evidence": "The owner's record array [owner+0x1f0]: 0x1cc-byte records (0x4596d9..0x4596e1: idx*3*8 - idx = 23*idx, *5*4 = idx*0x1cc; 0x459718 add edx,0x1cc; 0x4583c4.. walks it the same way). 0x4596e4 writes dword +0x198 of record idx; 0x45970a reads dword +0x130 of each record and stops the scan at the first zero. Eight records (indices 0..7, counts 0..8); +0x130 is 0 in about a quarter of the records so the early exit and the full scan both occur. Other bytes random.",
+ "size": 3680,
+ "fill": "bytes",
+ "fields": [
+  {"off": "0x130", "type": "u32", "values": [0, 1, "0x3f800000", "0xffffffff"], "count": 8, "stride": "0x1cc"}
+ ]
+}

@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x004ad3d0 (thiscall, ecx = an input-device holder): 'mov eax,[ecx]; test eax,eax; je ret' then 'mov ecx,[eax]; push eax; call [ecx+0x20]' - the only field read is the dword +0, a COM pointer called at slot +0x20 with no argument besides this. The holder's +0 is written by IDirectInput8A::CreateDevice in the same class: 0x4ad235 'mov eax,[0xa66194]; push 0; push esi; push 0x5f63f0 (GUID); push eax; call [ecx+0xc]' stores the device into [esi], then 0x4ad2d4 calls [edx+0x2c] (SetDataFormat, 1 arg 0x5f605c) and 0x4ad2f0 [ecx+0x34] (SetCooperativeLevel(hwnd [0xb1c7f0], 5)) on it, so +0 is an IDirectInputDevice8A and slot +0x20 is Unacquire. The device is null before CreateDevice succeeds (the je), so the pointer is nullable: null returns eax = 0 (the loaded dword), non-null returns Unacquire's HRESULT (modelled by gp4re/com_dx.py, the call logged and compared). Nothing else of the holder is read; 16 bytes cover the dword.",
+ "size": 16,
+ "fields": [
+  {"off": 0, "type": "ptr", "size": 16, "fill": "com=IDirectInputDevice8A", "nullable": true}
+ ]
+}

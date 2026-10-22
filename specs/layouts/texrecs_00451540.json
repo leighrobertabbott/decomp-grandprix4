@@ -1,0 +1,9 @@
+{
+ "_evidence": "Texture records of the renderer's texture manager (texmgr_00451540 +0x24), 0x4c bytes each: 0x451551..0x451557 index them as [mgr+0x24] + idx*0x4c + 0x38 = the record's IDirect3DTexture8* (0x45155b..0x451563: call [vtbl+0x44] = UnlockRect with one pushed argument; 0x4496a9..0x4496b8 reads the same slot for SetTexture state), 0x449432..0x44943b reads byte +0x20 (test dl,dl: alpha/flag byte; 0x4496fd/0x449724 read +0x20/+0x21 too). Eight records: callers' texture indices 0..7 stay inside. The texture pointer is never null-checked before the call, so every record holds a modelled texture (gp4re/com.py); +0x20 mixes 0, 1 and 0xff so both outcomes of the byte test occur. Other bytes are random.",
+ "size": 608,
+ "fill": "bytes",
+ "fields": [
+  {"off": "0x20", "type": "u8", "values": [0, 1, "0xff"], "count": 8, "stride": "0x4c"},
+  {"off": "0x38", "type": "ptr", "size": 16, "fill": "com=IDirect3DTexture8", "count": 8, "stride": "0x4c"}
+ ]
+}

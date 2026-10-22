@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x004a4660 (cdecl, byte argument): 'push 0xe; call 0x45ee70' returns dword [0x9fb3f8 + 14*4] = [0x9fb430], then 'mov cl,[0xa4d5e8]; test cl,cl; je' and 'mov cl,[esp+4]; test cl,cl; je' select between 'mov ecx,[0xa58ad8]; mov [eax+0xb0],ecx' and 'mov [eax+0xb0],0xffffffff'. The object pointer is never tested for null: it is written once by the screen-object setup 0x45ea84 'mov [0x9fb430],eax' from HeapAlloc(0xc4) + the constructor 0x4694d0, so it is a 0xc4-byte object (null only on an allocation failure the game does not survive; null faults the original). Its bytes are random so the store to +0xb0 is visible against the old value. [0xa4d5e8] is a byte flag only tested for zero: 0, 1, 2, 0xff. [0xa58ad8] is a plain dword copied into the object (random). No index, divisor or other pointer is read.",
+ "globals": [
+  {"addr": "0x009fb430", "type": "ptr", "size": "0xc4", "fill": "bytes"},
+  {"addr": "0x00a4d5e8", "type": "u8", "values": [0, 0, 1, 2, "0xff"]},
+  {"addr": "0x00a58ad8", "type": "u32"}
+ ]
+}

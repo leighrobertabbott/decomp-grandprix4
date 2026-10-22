@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x004e4510 (thiscall, ret 8: index, out pointer) on a pointer vector: 'mov eax,[ecx+0xc]' (count), 'lea esi,[eax-1]; cmp edx,esi; jle' (signed index <= count-1, else eax = 4), 'test eax,eax; je' (count 0, eax = 3: reachable only with a negative index), then 'mov eax,[ecx+4]; mov ecx,[eax+edx*4]; mov edx,[esp+8]; xor eax,eax; mov [edx],ecx' (element dword copied to *out). The only caller 0x4cb050 loops index 0..count-1 over the vector at [obj+8] after 'mov ebp,[ebx+0xc]; test ebp,ebp; jle' (so counts <= 0 occur in the game and are skipped there). Domain: count +0xc in -1..20, the data pointer +4 to a 0x100-byte buffer of random dwords with bias 0x40 so the spec's index range -2..22 reads inside the buffer for every count (index -2 with count -1 or 1..20 reads buffer+0x38; index 19 with count 20 reads buffer+0x8c): the original never faults, and both early returns (3 and 4) and the copy path are reached. Bytes +0/+8 of the vector are not read.",
+ "size": 16,
+ "fields": [
+  {"off": 4, "type": "ptr", "size": "0x100", "fill": "bytes", "bias": "0x40"},
+  {"off": "0xc", "type": "i32", "lo": -1, "hi": 20}
+ ]
+}

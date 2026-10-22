@@ -1,0 +1,8 @@
+{
+ "_evidence": "Second node of the list freed by 0x459880: link dword +0x44 (0x4598a4) is null in about a quarter of the cases (list of 2), else a distinct third node (node3_00459880). Distinct nodes, not a self link: the loop only ends on a null link. 0x48-byte node, other bytes random.",
+ "size": 72,
+ "fill": "bytes",
+ "fields": [
+  {"off": "0x44", "type": "ptr", "size": 72, "fill": "layout=node3_00459880", "nullable": true}
+ ]
+}

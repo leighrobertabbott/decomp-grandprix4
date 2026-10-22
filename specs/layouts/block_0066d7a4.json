@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x00512c8d copies the state block 0x66d7a4..0x6975bc (0x29e18 bytes; 'mov esi,0x66d7a4; mov edx,0x6975bc; movsb; cmp esi,edx; jne') to the buffer at edi after 0x49efc0 has rewritten the leading 0x1ca4 + 4n bytes (+ the byte at +0x9c3f) of its 0xa000-byte tail 0x68d5bc..0x6975bc (see rend_00a539c0 / robj_004dd7f0). The block is run-time .data state (game variables; 0x66d7a4.. holds e.g. the car-state family 0x66d8xx), never interpreted here: every byte is copied as is, so any pattern is valid. All 0xa786 dwords are random so a wrong source offset, length or order, or a wrong blob region rewritten by the callee, shows in the copied bytes (the image block is mostly zero).",
+ "globals": [
+  {"addr": "0x0066d7a4", "type": "u32", "count": 42886, "stride": 4}
+ ]
+}

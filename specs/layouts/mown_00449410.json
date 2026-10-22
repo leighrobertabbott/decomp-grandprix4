@@ -1,0 +1,8 @@
+{
+ "_evidence": "Object reached through +4 of the second argument of the virtual method 0x449410 (vtables 0x5f04a0/0x5f0664 slot 4; caller 0x458437 passes b = [owner+0x1f0] + k*0x1cc, a 0x1cc-byte record of the owner): 0x449418 loads [b+4], 0x44941d loads its +0x20c, a pointer to a dword table that 0x449423 indexes with [c] (c = [rec+0x174], 0x4583ca). The entries are texture-record indices or -1 (0x449426 cmp eax,-1; the sibling method 0x449450 reads the same +0x20c table from [0x9fb448] and indexes [[0x9fb348]+0x24] records with it after its own -1 test at 0x4496a0). Table of 8 dwords in -1..7 (texrecs_00451540 has 8 records), so [c] in 0..7 is valid. Other bytes random.",
+ "size": 528,
+ "fill": "bytes",
+ "fields": [
+  {"off": "0x20c", "type": "ptr", "size": 32, "fill": "i32[-1..7]"}
+ ]
+}

@@ -1,0 +1,9 @@
+{
+ "_evidence": "0x004f4120 (thiscall, ret 4: group index; returns al) on the object at [0xa539bc] (callers 0x4e7322 'mov ecx,[0xa539bc]; push ebp; call'): 'mov edx,[ecx+0x18]; mov edx,[edx+esi*4]' reads the group's first item index from the dword array +0x18, 'mov edi,[ecx+0x650]; shl esi,5; mov bl,[edi+esi+0xc]; test bl,bl; je ->0' tests byte +0xc of 0x20-byte item record i, then 'mov ecx,[ecx+0x654]; lea edx,[edx+edx*2]; mov bl,[ecx+edx*8+0xc]; test bl,bl; jne ->0' byte +0xc of 0x18-byte item record i; al = 1 only when the first is set and the second clear. The setup 0x4f9aa0 allocates +0x14 and +0x18 as [obj+0x30] dwords (groups) and fills +0x18 with the running sum of the group sizes +0x14 ('mov [edx+eax*4],ecx; ... add ecx,ebx'), and allocates +0x650 = [obj+0x54]*0x20 and +0x654 = [obj+0x54]*0x18 bytes (0x4f9d7d/0x4f9d90): the +0x18 entries are item indices below [obj+0x54]. Domain: 8 groups (the index argument 0..7), +0x18 dwords drawn from 0..15, 16 item records in each table (0x200 and 0x180 bytes) whose bytes (including +0xc) come mostly from {0, 1, 0xff}, so both tests see zero and nonzero. Every read stays inside its buffer.",
+ "size": 1624,
+ "fields": [
+  {"off": "0x18", "type": "ptr", "size": "0x20", "fill": "i32[0..15]"},
+  {"off": "0x650", "type": "ptr", "size": "0x200", "fill": "u8{0,1,0xff}"},
+  {"off": "0x654", "type": "ptr", "size": "0x180", "fill": "u8{0,1,0xff}"}
+ ]
+}

@@ -1,0 +1,8 @@
+{
+ "_evidence": "The 8-byte heap block freed by 0x004b3890 (see cell_004b3890): dword +4 'mov eax,[eax+4]; test eax,eax; je' is a nullable pointer to a second heap buffer that is only passed to HeapFree; dword +0 is not read (random background). Null +4 skips the first HeapFree, non-null frees it before the block.",
+ "size": 8,
+ "fill": "bytes",
+ "fields": [
+  {"off": 4, "type": "ptr", "size": 8, "fill": "bytes", "nullable": true}
+ ]
+}

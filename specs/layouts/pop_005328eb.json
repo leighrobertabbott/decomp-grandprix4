@@ -1,0 +1,6 @@
+{
+ "_evidence": "Menu-stack pop 0x54fb87 (tail of 0x5328eb; compose AFTER tbl_0054fbfb, whose records it uses): 'dec byte [0x83e55c]; pushfd; pushal; jl' - an empty stack (depth 0) takes the 'Bad Window Close' debug path and then 'movzx eax,byte [0x83e55c]; imul eax,0x28; add eax,0x83e55e' indexes record 0xff, 0x2768 bytes past the 8-record stack (unrelated .data whose kind byte is dispatched through 0x54fd4d / 0x54fc6f, kind 4 = 'jmp esi' to an arbitrary dword): a pop the game never issues (every pop matches a 0x54faff push of the same screen), so the depth is 1..8 here (8 = the stack's capacity, the dword after record 7 is the box pointer [0x83e69e]). After the pop, 0x54fd4d (dl = 0) closes the top record, 0x54fc6f (dl = 1) re-enters record depth-2 when the new depth is >= 1, and 0x54fbfb redraws the rest - the record kinds/operands are tbl_0054fbfb's handler-safe pairs.",
+ "globals": [
+  {"addr": "0x0083e55c", "type": "u8", "values": [1, 1, 2, 2, 3, 4, 5, 8]}
+ ]
+}

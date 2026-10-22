@@ -1,0 +1,7 @@
+{
+ "_evidence": "First argument of 0x466490: a cell holding an IDirect3DVertexBuffer8*. The paired getter 0x466410 fills the same cell (its first argument) from [this+0x13c] or, when this+0x130 (an ID3DXMesh: +0x18 GetFVF, +0x30 GetVertexBuffer, +0x34 GetIndexBuffer, each AddRef'ing) is set, with [mesh]->GetVertexBuffer(cell) (0x46646e..0x466472); 0x454010 calls Unlock (+0x30) on it at 0x45421e before passing the cell to 0x466490. 0x46649f..0x4664a7 loads the cell and calls Release (+8) without a null test, then clears the cell. Modelled COM object (gp4re/com.py).",
+ "size": 4,
+ "fields": [
+  {"off": 0, "type": "ptr", "size": 16, "fill": "com=IDirect3DVertexBuffer8"}
+ ]
+}

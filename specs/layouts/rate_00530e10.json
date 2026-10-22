@@ -1,0 +1,6 @@
+{
+ "_evidence": "[0x833c98] is the rate read by 0x531445 (called from 0x530e10's column loop for zero columns outside [a,b]): 'test eax,eax' then 0x4c9a988 / rate (unsigned div, skipped for 0), the key clamped to 0x10a..0x3e8. Zero, small, mid and huge values reach both clamps and the interpolated rows; no value faults. 0x530e10 itself reads no other global except the constant table 0x8273e3 (kept at its image values: no instruction writes it) and its own outputs 0x82745d/61/65 (written before they are read).",
+ "globals": [
+  {"addr": "0x00833c98", "type": "u32", "values": [0, 1, "0x1000", "0x10000", "0x200000", "0x4c9a988", "0x80000000"]}
+ ]
+}

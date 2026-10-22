@@ -111,3 +111,17 @@ The emulator's fake file system (gp4re/stubs.py) treats a handle value in 0x3000
 ## Pointer pools
 
 A repeated `ptr` field (count >= 2) may set `"pool": k` (1..64): k buffers are allocated per case and every entry points at one of them, chosen at random. Use it for large pointer tables (e.g. the 3136-entry text table in script_all_00835846) where one page-guarded buffer per entry would overflow the 16 MB input arena.
+
+## COM objects (DirectX)
+
+A pointer field (global, buffer field or spec argument) with `"fill": "com=<Interface>"` points
+to a 16-byte object whose first dword is that interface's synthetic vtable in the oracle's trap
+page. Every method is modelled (gp4re/com.py for Direct3D 8, gp4re/com_dx.py for DirectInput 8
+and DirectSound): the call is logged with its arguments and the content of its input
+structures and must match between the original and the reconstruction; results and outputs
+are seeded; child objects (textures, surfaces, buffers, effects) and lock buffers are created
+by the model. State such as a texture's size or a sound buffer's length is seeded on first use.
+Example: `{"addr": "0x00b2e808", "type": "ptr", "size": 16, "fill": "com=IDirect3DDevice8"}`
+(layout `d3ddev_00b2e808`), or in a buffer layout `{"off": "0x10", "type": "ptr", "size": 16,
+"fill": "com=IDirectSoundBuffer", "nullable": true}`.
+

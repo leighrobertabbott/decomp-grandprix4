@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x513aa0 (state snapshot around the command-0x1f dialog): 'mov edi,[0x7a93e0]; call 0x40b264' appends three blocks (0x7ad890..0x7adb4c, 0x7c28bc..0x7c3ae4, 0x66d7a4..0x6975bc = 0x2c4 + 0x1228 + 0x29e18 = 0x2b304 bytes, the accepted 0x40b264 spec's edi:ptr[176900]) to the stream buffer, the dialog handler 0x532502 passes [0x7a93e0] as ebx to 0x54b6ff, and on the restore arm 'mov esi,[0x7a93e0]; call 0x40b2a1' reads the same 0x2b304 bytes back (accepted esi:ptr[176900]). The game allocates its stream buffer once for whole records (0x512f2a writes up to 0xa0000 bytes there), so a 0xa0000-byte buffer is valid; its contents are only copied (random). Byte [0x7ab1a0] ('cmp byte [0x7ab1a0],0xff; jne' restore arm vs plain 0x5139ed) draws 0xff and other values.",
+ "globals": [
+  {"addr": "0x007a93e0", "type": "ptr", "size": "0xa0000", "fill": "bytes"},
+  {"addr": "0x007ab1a0", "type": "u8", "values": ["0xff", "0xff", 0, 1, "0x80"]}
+ ]
+}

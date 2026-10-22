@@ -1,0 +1,7 @@
+{
+ "_evidence": "Object reached through +8 of the 0x34-byte element passed to 0x44c480 (elem_0044c480): its first dword is the base of an array of 0x14-byte records (0x44c491/0x44c4a5 mov reg,[ecx]; 0x44c497/0x44c4a7 lea eax,[base + idx*5*4]); 0x44c185..0x44c18a reads the same array ([ecx] then +idx*0x14+0x10, a float). 0x44c480 or-s / and-not-s the record's first dword. The base points to 16 records (0x140 bytes, random contents), so element indices 0..15 are valid.",
+ "size": 4,
+ "fields": [
+  {"off": 0, "type": "ptr", "size": "0x140", "fill": "bytes"}
+ ]
+}

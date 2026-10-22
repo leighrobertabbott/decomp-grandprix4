@@ -1,0 +1,6 @@
+{
+ "_evidence": "0x004e89b0 'mov eax,[0x645950]; dec eax; push eax; call 0x510abf': 0x510abf does 'inc eax; call 0x51006c' and the restore routine reads the slot-valid dword [0x853efc + 4*(n-1)] and the slot tables of save_00510309. The save/restore slot area has exactly three slots (0x510309 'imul eax,0x50; add 0x853ac2' ends at 0x853bb2 where the next table starts after 3*0x50; slot-valid dwords 0x853efc/0x853f00/0x853f04, then other state), so the player number [0x645950] that selects the slot is 1..3 here: with 4 (allowed by view_00a4df50, composed earlier) the original reads 0x853f08 as a slot pointer (random save data) and faults at 0x510ad2 ('movzx eax,byte [esi+0x7c]'). Compose LAST, after save_00510309+carbg_0066fef0+slotcar_00510abf+view_00a4df50, so this bound wins. [0xa69878] is written by 0x510abf ((car +0x7c & 0x3f) - 1, clamped to <= 0x15, so -1..0x15) and only used as the shift count of 'shl edx,cl' (& 31 by the CPU); [0xa6987c] is rewritten by 0x51f9d4 to the image table 0x62ff6c whose dword +0x3c is read-modify-written.",
+ "globals": [
+  {"addr": "0x00645950", "type": "u32", "lo": 1, "hi": 3}
+ ]
+}

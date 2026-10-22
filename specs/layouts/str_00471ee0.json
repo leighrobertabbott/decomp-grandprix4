@@ -1,0 +1,8 @@
+{
+ "_evidence": "An MSVC 6 std::string (allocator byte +0, _Ptr +4, _Len +8, _Res +0xc; the copy constructor 0x477bb0 writes exactly these and calls 0x471ee0 as _Eos). 0x471ee0 stores the length argument to +8 and writes a NUL at [_Ptr + len] (0x471ee7/0x471eea). _Ptr points to a 0x100-byte buffer, so lengths 0..0xff (len <= _Res as the callers guarantee) are valid. Other bytes random.",
+ "size": 16,
+ "fill": "bytes",
+ "fields": [
+  {"off": 4, "type": "ptr", "size": "0x100", "fill": "bytes"}
+ ]
+}

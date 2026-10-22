@@ -40,21 +40,21 @@
     },
     {
       "start": "0x005a4000",
-      "end": "0x005d8000",
+      "end": "0x005da800",
       "label": "R5-cpp-mixed",
       "kind": "mixed",
       "exclude": false,
       "confidence": "provisional",
-      "note": "16-byte aligned C++ like R2, plus DirectX error-string tables (D3DERR_*, DMUS_S_* - dxerr8.lib) and zlib inflate strings. Needs function-level library identification; queued at low priority."
+      "note": "16-byte aligned C++ like R2, plus DirectX error-string tables (D3DERR_*, DMUS_S_* - dxerr8.lib) and zlib inflate strings. Needs function-level library identification; queued at low priority. Boundary moved 2026-10-22 from 0x5d8000 to 0x5da800: the R6 triage found 0x5d8030-0x5da7ff is game C++ continuing R5 (thiscall methods, calls into 0x5b..-0x5d.., GP4 globals 0xb2xxxx-0xb4xxxx, the Bink video player with binkw32 imports and 'BINK ERROR' strings, the Objects\\EnvFace%s.tga loader); libcmt starts at _fpmath 0x5da8e0. The R5 triage found no library code in 0x5be000-0x5d8000 and only dinput8 data formats (c_dfDIMouse 0x5a4560, c_dfDIJoystick 0x5a45e0) in 0x5a4000-0x5be000."
     },
     {
-      "start": "0x005d8000",
+      "start": "0x005da800",
       "end": "0x005f0000",
       "label": "R6-crt",
       "kind": "library",
       "exclude": false,
       "confidence": "provisional",
-      "note": "Visual C++ 6 runtime tail (entry point 0x5ddec6, 'Runtime Error', heap selection, locale) with a few D3DX/game functions interleaved. Evidence-labelled CRT functions are excluded individually."
+      "note": "Visual C++ 6 runtime tail (entry point 0x5ddec6, 'Runtime Error', heap selection, locale) with a few D3DX/game functions interleaved. Evidence-labelled CRT functions are excluded individually. 2026-10-22 triage: 486 CRT routines and 295 compiler EH funclets/handlers identified function by function (each checked by a refuter) and excluded; the region holds no game code after 0x5da800."
     }
   ]
 }

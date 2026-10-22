@@ -111,5 +111,26 @@
    "af"
   ],
   "evidence": "call 0x5ae990; pushal; call 0x4ff070; popal; call 0x5ae990 (empty) - the compiled 0x4ff070 ends 'add esp,N', so PF/AF depend on the stack address. Its only caller is 0x53240a ('call; jmp/fallthrough to ret'), which returns the flags to its own callers - and 0x53240a has no call/jmp sites and no data references (tools/flag_live.py, corrected 2026-10-20: an earlier evidence text wrongly said 'no call sites'), so no known code reads them."
+ },
+ "0x00515eb2": {
+  "flags": [
+   "pf",
+   "af"
+  ],
+  "evidence": "Wrapper over the 2-D overlay drawer chain 0x51d1d0 -> 0x51d1df -> compiled 0x4a96a0, whose last flag writer is 'add esp,0x28', so PF/AF depend on the stack address. tools/flag_live.py: 0 live reads; every path is dead or ends at handlers in the table 0x817270 (0x515bf8 at 0x817280, 0x515eb2 at 0x8172a4), which are dispatched by 'call [edx*4+0x817270]; popal; pop esi; ret' at 0x5141f2 inside 0x5141b8 (flag-neutral popal/pop; 0x5141b8: 0 live reads, 27 dead paths, already exempt), or at functions with no call/jmp sites or data references (lead check 2026-10-22)."
+ },
+ "0x00515ecc": {
+  "flags": [
+   "pf",
+   "af"
+  ],
+  "evidence": "Wrapper over the 2-D overlay drawer chain 0x51d1d0 -> 0x51d1df -> compiled 0x4a96a0, whose last flag writer is 'add esp,0x28', so PF/AF depend on the stack address. tools/flag_live.py: 0 live reads; every path is dead or ends at handlers in the table 0x817270 (0x515bf8 at 0x817280, 0x515eb2 at 0x8172a4), which are dispatched by 'call [edx*4+0x817270]; popal; pop esi; ret' at 0x5141f2 inside 0x5141b8 (flag-neutral popal/pop; 0x5141b8: 0 live reads, 27 dead paths, already exempt), or at functions with no call/jmp sites or data references (lead check 2026-10-22)."
+ },
+ "0x005178a2": {
+  "flags": [
+   "pf",
+   "af"
+  ],
+  "evidence": "Wrapper over the 2-D overlay drawer chain 0x51d1d0 -> 0x51d1df -> compiled 0x4a96a0, whose last flag writer is 'add esp,0x28', so PF/AF depend on the stack address. tools/flag_live.py: 0 live reads; every path is dead or ends at handlers in the table 0x817270 (0x515bf8 at 0x817280, 0x515eb2 at 0x8172a4), which are dispatched by 'call [edx*4+0x817270]; popal; pop esi; ret' at 0x5141f2 inside 0x5141b8 (flag-neutral popal/pop; 0x5141b8: 0 live reads, 27 dead paths, already exempt), or at functions with no call/jmp sites or data references (lead check 2026-10-22)."
  }
 }

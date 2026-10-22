@@ -1,0 +1,20 @@
+{
+ "_evidence": "0x00558f50 (and its pushal wrapper 0x00558ff4); compose AFTER slots_0051cc50+attr_00558e7b (this layout overrides two of their fields). Geometry (record = 0x8943a0 + k*0x160): the start e = one record back from record 0: record 0 >= pit start PS (PS = 0) gives record -1 < PS -> e = PS = 0 (0x558f69 'jae' would need PS <= record -1, 0x558f7f 'jae' a lap start S <= record -1: both below the ring; the image holds S = PS = 0x8943a0 and only 0x55458e writes PS, as lap end + 3 records); otherwise e = record -1 + wrap D (S >= 0). Then f = e+1 (1 or D) is stepped once with the lap/pit rules: f < lap end L keeps f; f >= L and f < PS gives f - D = record 0; f >= PS and f >= pit end PE gives PE - 1; f >= PS and f < PE keeps f >= L, and the walk 'add edi,0x160; cmp edi,[0x866ecc]; jne' then never meets L and runs off the ring (the original faults: 0x558faa taken is not a valid input). So PE is drawn at or below every L (PE 1..4, L 4..12 records): PE only matters when f >= max(L, PS), where PE <= L is exactly the valid domain. D (0x866ec4) 1..8 records (f >= L happens for D >= L), PS 0..6 (0 = the e = 0 path), S 0..4. Visited records: e <= 7 and e1..L-1 <= 11. The game itself has S = 0, D = L, PS = L+3 (0x554570..0x55458e), which this domain contains. Records 0..31: dword +0x2c (0x558e7b 'test [edi+0x2c],ebp' for the bits 0x800..0x40000; 0x558fc9 RMW) weighted to all-present 0x7f800/0xffffffff, single-bit-missing, single-bit and 0; word +0x56 entry 0..7 (0x558e82, indexes the 8 entries attr_00558e7b varies; larger reads past them, as rec_00558ece); dwords +0x30/+0x34/+0x38/+0x3c/+0x40 random (RMW 'and'). Overrides: slot words 0x9e1b20 (64) less often 0xffff and the three tested words 0x697600/0x697620/0x697640 more often with bit 3 clear, so 0x558ece returns masks with few bits and 'and eax,esi; je' (disjoint consecutive masks) goes both ways. [0x96548c] (0x558ff4 'test [0x96548c],0x7f800; jne') with and without those bits.",
+ "globals": [
+  {"addr": "0x00891504", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 4}},
+  {"addr": "0x00891500", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 0, "hi": 6}},
+  {"addr": "0x00866ecc", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 4, "hi": 12}},
+  {"addr": "0x00866ef8", "type": "u32", "points_into": {"base": "0x008943a0", "stride": "0x160", "lo": 1, "hi": 4}},
+  {"addr": "0x00866ec4", "type": "u32", "values": ["0x160", "0x2c0", "0x420", "0x580", "0x6e0", "0x840", "0x9a0", "0xb00"]},
+  {"addr": "0x008943cc", "type": "u32", "count": 32, "stride": "0x160", "values": ["0x7f800", "0x7f800", "0x7f800", "0x7f800", "0xffffffff", "0xffffffff", "0x7f000", "0x7e800", "0x7b800", "0x3f800", 0, "0x800", "0x10000", "0x40000", "0x5555d555"]},
+  {"addr": "0x008943f6", "type": "u16", "count": 32, "stride": "0x160", "lo": 0, "hi": 7},
+  {"addr": "0x008943d0", "type": "u32", "count": 32, "stride": "0x160"},
+  {"addr": "0x008943d4", "type": "u32", "count": 32, "stride": "0x160"},
+  {"addr": "0x008943d8", "type": "u32", "count": 32, "stride": "0x160"},
+  {"addr": "0x008943dc", "type": "u32", "count": 32, "stride": "0x160"},
+  {"addr": "0x008943e0", "type": "u32", "count": 32, "stride": "0x160"},
+  {"addr": "0x009e1b20", "type": "u16", "count": 64, "stride": 2, "values": ["0xffff", 0, "0x20", "0x40", 0, "0x20", "0x40"]},
+  {"addr": "0x00697600", "type": "u16", "count": 3, "stride": "0x20", "values": [0, 0, "0xfff7", 8, "0x18"]},
+  {"addr": "0x0096548c", "type": "u32", "values": [0, 0, 0, "0x800", "0x7f800", "0x7ff", "0xfff807ff", "0xffffffff"]}
+ ]
+}

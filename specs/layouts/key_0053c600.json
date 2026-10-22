@@ -1,0 +1,14 @@
+{
+ "_evidence": "0x0053c600 menu keyboard step (compose LAST after keyq_008245c0+menu_0084300a+state_0053d9a6+mouse_0053c500+sel_0053d8c5). 'cmp byte [0x82fd49],0xff; jne' and 'cmp byte [0x82fd79],0xff; jne' gate it (0xff in 3/4 of the draws). 0x52d7c8 peeks the key word at the read cursor (keyq_008245c0's cursors, empty = ax 0) and 0x52d7e2 pops it (once, or twice on the Esc reject path 0x53c738): ring words from {0x0420,0x040d,0x041b,0x0441,0x061b,0x0620,0x060d,0x0000,0x0141,0x0300} (ah = class 4 'key down' / 6 'key up' / 0 / other, al = Space/Enter/Esc/other: 'cmp ah,4/6/0', 'cmp al,0x20/0xd/0x1b'). Latch [0x82fd6b] bit 0 (test 1) {0,1,0xfe,0xff}. Pending key word [0x7ab00e]: its low byte is 'cmp al,dl' for the class-6 release and 'cmp byte [0x7ab00e],0x1b', so {0x1b,0x20,0x0d,0x41}; high byte any (stored over). Repeat countdown [0x7ab003] 'cmp ,0' {0,0,2,0xa,0xff}. Esc path: esi = [0x82fd34] = the static menu 0x84300a (as state_0053d9a6), 'movzx eax,[esi+0xe]; or eax,eax; je' then 0x53d999 hops that many links (no null test: 14+ walks past item 13's null link and faults at 0x53c6d0), so the header byte 0x843018 (image 2) is {0,1,2,2,5,13}; 'test [edi+0x1f],0x30' uses menu_0084300a's flag bytes; [0x82fd45] stays 1..13 (sel_0053d8c5: 'movzx ecx,[0x82fd45]; call 0x53d98c', 0 = 2^32 hops); 0x53c713 then reads the static item words +8/+0xa. Plain .data scalars otherwise; no other pointer is formed.",
+ "globals": [
+  {"addr": "0x0082fd49", "type": "u8", "values": ["0xff", "0xff", "0xff", 0]},
+  {"addr": "0x0082fd79", "type": "u8", "values": ["0xff", "0xff", "0xff", 1]},
+  {"addr": "0x008245c8", "type": "u16", "count": 64, "stride": 2, "values": ["0x0420", "0x040d", "0x041b", "0x0441", "0x061b", "0x0620", "0x060d", "0x0000", "0x0141", "0x0300"]},
+  {"addr": "0x0082fd6b", "type": "u8", "values": [0, 1, "0xfe", "0xff"]},
+  {"addr": "0x007ab00e", "type": "u8", "values": ["0x1b", "0x20", "0x0d", "0x41"]},
+  {"addr": "0x007ab00f", "type": "u8"},
+  {"addr": "0x007ab003", "type": "u8", "values": [0, 0, 2, "0x0a", "0xff"]},
+  {"addr": "0x0082fd34", "type": "u32", "values": ["0x84300a"]},
+  {"addr": "0x00843018", "type": "u8", "values": [0, 1, 2, 2, 5, 13]}
+ ]
+}

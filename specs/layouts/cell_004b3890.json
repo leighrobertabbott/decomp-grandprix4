@@ -1,0 +1,7 @@
+{
+ "_evidence": "0x004b3890 (cdecl, one argument: a pointer to a pointer cell): 'mov ebx,[esp+8]; mov eax,[ebx]; test eax,eax; je ret' - the cell holds a nullable pointer to an 8-byte heap block; 'mov eax,[eax+4]; test eax,eax; je' reads the block's dword +4, a nullable pointer to a second heap buffer that is freed first ('push eax; push 0; call GetProcessHeap; push eax; call HeapFree'), then the block itself is freed and 'mov [ebx],0' clears the cell. Nothing else is dereferenced (the buffer at +4 is only passed to HeapFree), so the domain is: cell null (early return) or a block (blk_004b3890) whose +4 is null or a buffer. HeapFree of these arena pointers is a modelled, logged import (gp4re/stubs.py), compared between the runs.",
+ "size": 4,
+ "fields": [
+  {"off": 0, "type": "ptr", "size": 8, "fill": "layout=blk_004b3890", "nullable": true}
+ ]
+}

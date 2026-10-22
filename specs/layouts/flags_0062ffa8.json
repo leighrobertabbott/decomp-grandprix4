@@ -1,0 +1,6 @@
+{
+ "_evidence": "Flags dword +0x3c of the image table 0x62ff6c (0x433fe0 'mov eax,0x62ff6c; ret', stored to [0xa6987c] by 0x51f9d4). 0x4e89b0 does 'mov ecx,[eax+0x3c]; or ecx,1<<cl; mov [eax+0x3c],ecx' on it, so it is run-time state (bits set during play), not a constant: any dword is valid (only OR-ed and stored), and a random value makes a wrong bit or a plain store instead of the OR visible.",
+ "globals": [
+  {"addr": "0x0062ffa8", "type": "u32"}
+ ]
+}

@@ -16,6 +16,15 @@ modelled APIs have no effect outside memory the oracle already compares:
   user32    GetKeyNameTextA, LoadCursorA, SetCursor, ShowCursor, MapVirtualKeyA, MessageBoxA, MessageBoxExA, PostMessageA (queued, no effect here)
   gdi32     SelectObject, SetTextColor, SetBkColor, GetTextExtentPoint32A
   winmm     timeGetTime
+  CRT support (single-threaded run): Initialize/Enter/Leave/DeleteCriticalSection (XP field
+            semantics), InterlockedIncrement/Decrement/Exchange, GetCurrentThreadId/ProcessId,
+            TlsAlloc/GetValue/SetValue/Free (per-run slots), GetLastError/SetLastError,
+            VirtualAlloc/VirtualFree (bump allocator in a mapped region; the CRT small-block
+            heap), MultiByteToWideChar/WideCharToMultiByte (code page 1252), GetStdHandle,
+            GetModuleFileNameA
+  d3d8      Direct3DCreate8 (the IDirect3D8 it returns and every object made from it: gp4re/com.py)
+  dinput8   DirectInput8Create (IDirectInput8A and its devices/effects: gp4re/com_dx.py)
+  dsound    #11 DirectSoundCreate8 (IDirectSound8 and its buffers: gp4re/com_dx.py)
 
 Files are a seeded fake file system private to the run: CreateFileA opens a new file of
 seeded size and contents (or fails, sometimes), reads/seeks/sizes act on it, writes are
@@ -44,6 +53,9 @@ from unicorn import UcError
 from unicorn import x86_const as X
 
 HEAP_BASE, HEAP_SIZE = 0x30000000, 0x01000000
+VALLOC_BASE, VALLOC_SIZE = 0x31000000, 0x01000000      # VirtualAlloc'd pages (CRT small-block heap)
+THREAD_ID, PROCESS_ID = 0x00000F00, 0x00000E00
+MODULE_PATH = "C:\\GP4\\GP4.exe"
 HEAP_HANDLE = 0x00150000
 MAX_BLOCK = 0x00400000
 QPC_FREQUENCY = 3579545
@@ -61,8 +73,7 @@ class _File:
         self.data, self.pos = bytearray(data), 0
 
 
-class Unsupported(Exception):
-    """The model cannot represent this call faithfully: the run is external."""
+from .com import ComModel, Unsupported   # noqa: E402  (Unsupported: the run is external)
 
 
 class ImportStubs:
@@ -71,6 +82,7 @@ class ImportStubs:
         self.mark_dirty = mark_dirty          # (addr, size) -> None: pages the stub wrote
         self.stack_lo, self.stack_hi = stack_range
         self.seed = 0
+        self.com = ComModel(self)
         self.reset()
 
     # ---------------------------------------------------------------- state
@@ -87,6 +99,11 @@ class ImportStubs:
         self.finds: dict[int, list[str]] = {}
         self.next_file, self.next_find = FILE_HANDLE_BASE, FIND_HANDLE_BASE
         self.closed: set[int] = set()
+        self.com.reset()
+        self.last_error = 0
+        self.tls: dict[int, int] = {}
+        self.tls_next = 1
+        self.valloc_next = VALLOC_BASE
 
     def handles(self, name: str) -> bool:
         return name in STUBS
@@ -183,7 +200,7 @@ class ImportStubs:
         return p, (self._norm(p),)
 
     def global_memory_status(self, p):
-        total = self.rng.choice([0x04000000, 0x08000000, 0x10000000, 0x20000000, 0x40000000])
+        total = self.rng.choice([0x01000000, 0x02000000, 0x03000000, 0x04000000, 0x08000000, 0x10000000, 0x20000000, 0x40000000])
         page = total * 2
         self._write(p, struct.pack("<8I", 32, self.rng.randrange(101), total, self.rng.randrange(total + 1),
                                    page, self.rng.randrange(page + 1), 0x7FFE0000, self.rng.randrange(0x7FFE0001)))
@@ -211,6 +228,7 @@ class ImportStubs:
     def create_file(self, name, access, share, sec, creation, flags, template):
         logged = (self._cstring(name), access, share, self._norm(sec), creation, flags, template)
         if self.rng.randrange(5) == 0:
+            self.last_error = 2                      # ERROR_FILE_NOT_FOUND
             return INVALID_HANDLE, logged
         h, self.next_file = self.next_file, self.next_file + 4
         self.files[h] = _File(self._new_file_data(creation))
@@ -399,6 +417,158 @@ class ImportStubs:
     def set_color(self, hdc, color):
         return self.rng.randrange(1 << 24), (hdc, color)
 
+    # CRT support: the runs are single-threaded, so locks never block and interlocked ops are plain
+    def _dword(self, p):
+        try:
+            return struct.unpack("<I", bytes(self.uc.mem_read(p, 4)))[0]
+        except UcError:
+            raise Unsupported(f"pointer {p:#010x} is not mapped")
+
+    def _ints(self, p, n):
+        try:
+            return struct.unpack(f"<{n}i", bytes(self.uc.mem_read(p, 4 * n)))
+        except UcError:
+            raise Unsupported(f"pointer {p:#010x} is not mapped")
+
+    def cs_init(self, p):                    # XP layout: DebugInfo, LockCount, RecursionCount, Owner, Sem, Spin
+        self._write(p, struct.pack("<IiiIII", 0, -1, 0, 0, 0, 0))
+        return 0, (self._norm(p),)
+
+    def cs_enter(self, p):
+        lock, rec = self._ints(p + 4, 2)
+        self._write(p + 4, struct.pack("<iiI", lock + 1, rec + 1, THREAD_ID))
+        return 0, (self._norm(p),)
+
+    def cs_leave(self, p):
+        lock, rec = self._ints(p + 4, 2)
+        self._write(p + 4, struct.pack("<iiI", lock - 1, rec - 1, THREAD_ID if rec - 1 > 0 else 0))
+        return 0, (self._norm(p),)
+
+    def cs_delete(self, p):
+        return 0, (self._norm(p),)
+
+    def interlocked_inc(self, p):
+        v = (self._dword(p) + 1) & 0xFFFFFFFF
+        self._write(p, struct.pack("<I", v))
+        return v, (self._norm(p),)
+
+    def interlocked_dec(self, p):
+        v = (self._dword(p) - 1) & 0xFFFFFFFF
+        self._write(p, struct.pack("<I", v))
+        return v, (self._norm(p),)
+
+    def interlocked_xchg(self, p, v):
+        old = self._dword(p)
+        self._write(p, struct.pack("<I", v))
+        return old, (self._norm(p), v)
+
+    def thread_id(self):
+        return THREAD_ID, ()
+
+    def process_id(self):
+        return PROCESS_ID, ()
+
+    def tls_alloc(self):
+        i, self.tls_next = self.tls_next, self.tls_next + 1
+        self.tls[i] = 0
+        return i, ()
+
+    def tls_get(self, i):
+        self.last_error = 0
+        return self.tls.setdefault(i, 0), (i,)      # a slot allocated before this run starts empty
+
+    def tls_set(self, i, v):
+        self.tls[i] = v
+        return 1, (i, self._norm(v))
+
+    def tls_free(self, i):
+        self.tls.pop(i, None)
+        return 1, (i,)
+
+    def get_last_error(self):
+        return self.last_error, ()
+
+    def set_last_error(self, v):
+        self.last_error = v
+        return 0, (v,)
+
+    def virtual_alloc(self, addr, size, kind, protect):
+        if addr:                              # committing pages of an earlier reservation: mapped already
+            if not VALLOC_BASE <= addr < self.valloc_next:
+                raise Unsupported(f"VirtualAlloc at {addr:#010x}, outside this run's reservations")
+            return addr, (addr, size, kind, protect)
+        size = (size + 0xFFFF) & ~0xFFFF          # allocation granularity
+        if self.valloc_next + size > VALLOC_BASE + VALLOC_SIZE:
+            return 0, (0, size, kind, protect)
+        p = self.valloc_next
+        self.valloc_next += size
+        return p, (0, size, kind, protect)
+
+    def virtual_free(self, addr, size, kind):
+        return 1, (self._norm(addr), size, kind)
+
+    def mb_to_wc(self, cp, flags, src, n, dst, cap):
+        raw = (self._cstring(src).encode("latin1") + bytes(1)) if n == 0xFFFFFFFF else bytes(self.uc.mem_read(src, n))
+        out = raw.decode("cp1252", errors="replace").encode("utf-16-le")
+        chars = len(out) // 2
+        if cap:
+            if chars > cap:
+                self.last_error = 122             # ERROR_INSUFFICIENT_BUFFER
+                return 0, (cp, flags, raw.hex(), cap)
+            self._write(dst, out)
+        return chars, (cp, flags, raw.hex(), cap)
+
+    def wc_to_mb(self, cp, flags, src, n, dst, cap, default, used):
+        if n == 0xFFFFFFFF:
+            buf = bytearray()
+            while len(buf) < 0x10000:
+                ch = bytes(self.uc.mem_read(src + len(buf), 2))
+                buf += ch
+                if ch == bytes(2):
+                    break
+            raw = bytes(buf)
+        else:
+            raw = bytes(self.uc.mem_read(src, 2 * n))
+        out = raw.decode("utf-16-le", errors="replace").encode("cp1252", errors="replace")
+        if used:
+            self._write(used, struct.pack("<I", int(b"?" in out)))
+        if cap:
+            if len(out) > cap:
+                self.last_error = 122
+                return 0, (cp, flags, raw.hex(), cap)
+            self._write(dst, out)
+        return len(out), (cp, flags, raw.hex(), cap, self._norm(default))
+
+    def std_handle(self, which):
+        return {0xFFFFFFF6: 0x00000F10, 0xFFFFFFF5: 0x00000F14, 0xFFFFFFF4: 0x00000F18}.get(which, INVALID_HANDLE), (which,)
+
+    def module_file_name(self, h, buf, n):
+        text = MODULE_PATH.encode()
+        if n:
+            self._write(buf, (text + bytes(1))[:n])
+        return min(len(text), max(n - 1, 0)), (h, n)
+
+    # DirectX entry points (the objects' methods are modelled in gp4re/com.py)
+    def direct3d_create(self, sdk):
+        return (self.com.new("IDirect3D8") if self.rng.randrange(16) else 0), (sdk,)
+
+    def direct_input_create(self, hinst, version, riid, pp, outer):
+        from .com_dx import IIDS
+        want = IIDS.get(bytes(self.uc.mem_read(riid, 16)))
+        if want != "IDirectInput8A" or outer:
+            raise Unsupported("DirectInput8Create for another interface or with aggregation")
+        ok = self.rng.randrange(16)
+        self._write(pp, struct.pack("<I", self.com.new("IDirectInput8A") if ok else 0))
+        return (0 if ok else 0x80040154), (hinst, version, "IID_IDirectInput8A", self._norm(pp))
+
+    def direct_sound_create(self, guid, pp, outer):
+        if outer:
+            raise Unsupported("DirectSoundCreate8 with aggregation")
+        device = bytes(self.uc.mem_read(guid, 16)).hex() if guid else None
+        ok = self.rng.randrange(8)
+        self._write(pp, struct.pack("<I", self.com.new("IDirectSound8") if ok else 0))
+        return (0 if ok else 0x88780078), (device, self._norm(pp))
+
     # ---------------------------------------------------------------- dispatch
     def call(self, name: str) -> None:
         """Run the model at an import trap: pop the stdcall frame and return to the caller."""
@@ -464,6 +634,30 @@ STUBS = {
     "gdi32.dll!SetBkColor": (2, ImportStubs.set_color),
     "gdi32.dll!GetTextExtentPoint32A": (4, ImportStubs.text_extent),
     "winmm.dll!timeGetTime": (0, ImportStubs.tick),
+    "kernel32.dll!InitializeCriticalSection": (1, ImportStubs.cs_init),
+    "kernel32.dll!EnterCriticalSection": (1, ImportStubs.cs_enter),
+    "kernel32.dll!LeaveCriticalSection": (1, ImportStubs.cs_leave),
+    "kernel32.dll!DeleteCriticalSection": (1, ImportStubs.cs_delete),
+    "kernel32.dll!InterlockedIncrement": (1, ImportStubs.interlocked_inc),
+    "kernel32.dll!InterlockedDecrement": (1, ImportStubs.interlocked_dec),
+    "kernel32.dll!InterlockedExchange": (2, ImportStubs.interlocked_xchg),
+    "kernel32.dll!GetCurrentThreadId": (0, ImportStubs.thread_id),
+    "kernel32.dll!GetCurrentProcessId": (0, ImportStubs.process_id),
+    "kernel32.dll!TlsAlloc": (0, ImportStubs.tls_alloc),
+    "kernel32.dll!TlsGetValue": (1, ImportStubs.tls_get),
+    "kernel32.dll!TlsSetValue": (2, ImportStubs.tls_set),
+    "kernel32.dll!TlsFree": (1, ImportStubs.tls_free),
+    "kernel32.dll!GetLastError": (0, ImportStubs.get_last_error),
+    "kernel32.dll!SetLastError": (1, ImportStubs.set_last_error),
+    "kernel32.dll!VirtualAlloc": (4, ImportStubs.virtual_alloc),
+    "kernel32.dll!VirtualFree": (3, ImportStubs.virtual_free),
+    "kernel32.dll!MultiByteToWideChar": (6, ImportStubs.mb_to_wc),
+    "kernel32.dll!WideCharToMultiByte": (8, ImportStubs.wc_to_mb),
+    "kernel32.dll!GetStdHandle": (1, ImportStubs.std_handle),
+    "kernel32.dll!GetModuleFileNameA": (3, ImportStubs.module_file_name),
+    "d3d8.dll!Direct3DCreate8": (1, ImportStubs.direct3d_create),
+    "dinput8.dll!DirectInput8Create": (5, ImportStubs.direct_input_create),
+    "dsound.dll!#11": (3, ImportStubs.direct_sound_create),       # DirectSoundCreate8
 }
 
 
