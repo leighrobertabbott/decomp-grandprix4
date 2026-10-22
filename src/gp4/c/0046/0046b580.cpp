@@ -17,4 +17,4 @@ void __cdecl FUN_0046b580() {
         GP4_IAT(HeapFree_t, 0x005f02a0)(GP4_IAT(GetProcessHeap_t, 0x005f02a4)(), 0, buffer);
     }
 }
-GP4_IMPL(0x0046b580, FUN_0046b580, "cdecl() -> void; globals=fuzz:i32+layout=file_0046b580")
+GP4_IMPL(0x0046b580, FUN_0046b580, "cdecl() -> u32; globals=fuzz:i32+layout=file_0046b580")

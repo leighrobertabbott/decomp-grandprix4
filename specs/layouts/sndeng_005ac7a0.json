@@ -1,0 +1,24 @@
+{
+ "_evidence": "GP4's DirectSound engine object (class vtable 0x5f9c80 from ctor 0x5ac7a0, 0x290 bytes; bases 0x5b2b70 vtable 0x5f9eb8 and 0x5a7f80 vtable 0x5f9a40), IDLE state: constructed, no sample loaded on any channel, not running. Fields read on the paths that reach it from the sound manager (0x4d6b60/0x4d6ae0/0x4d67a0 via [mgr+0x238]) and from the S object's shutdown (0x5b42d0 -> vtbl+0x74, 0x5b1990 -> vtbl+0x18): +0 the real vtable (virtual calls +0x58 = 0x5ae660, +0x74 = 0x5ae2c0, +0x80 = 0x5ad9f0, +0x140 = 0x5a8940, +0x148 = 0x5a87d0 -> +8 = 0x5ae9a0 (al=1) -> +0x144 = 0x5a8810 run the original methods). Word +0x36 = channel count (set by the base ctor 0x5a7f80 'mov [esi+0x36],di'; GP4's only engine has 0x20) drawn {0, 1, 4, 0x20}; the per-channel tables are 0x80-byte buffers (32 dwords): +0x14 (0x5a95a0 'mov [ecx+eax*4],0', random so the clears show), +0x25c (channel sound buffer: zero = empty -> 0x5ad9f0 returns 0xbbf, 0x5ae660 skips), +0x260 (3D buffer: zero), +0x278 (zero: 0x5ad9f0 skips the Release loop), +0x18 (per-channel objects: zero, the destructor 0x5a83c0 skips them). Byte +0x3c is the busy flag set only transiently by the ctor/dtor (0x5b2bf0/0x5ac8d2 set 1 then clear it): 0x5a8940 'cmp byte [ecx+0x3c],1; jne; jmp $' spins forever on 1, so it is 0. Byte +0x3d = 0 (not running: 0x5a8810 'mov al,[esi+0x3d]; test al,al; jne' returns 0x1f4 at once; the running arm walks the sample list +8, not modelled). Sub-objects +4 (0x5b1eb0 list), +8 (0x5a73a0 list), +0xc (bank list read by 0x5a9ef0) and +0x10 (0x34-byte pool 0x5ae9c0) are null - the allocation-failure state every destructor/method on these paths tests for ('test ecx,ecx; je'); a loaded engine needs layouts for those classes. COM members, each nullable and only Released (vtbl+8) by the close 0x5ae2c0: +0x1a4 IDirectSound8 (DirectSoundCreate8 output in 0x5ac956), +0x1cc primary IDirectSoundBuffer (CreateSoundBuffer output 0x5ac9be), +0x1d0 IDirectSound3DListener (QueryInterface IID 0x5f62d0 output 0x5ac9e2), +0x284 a channel IDirectSoundBuffer (compared with +0x278 entries in 0x5ad9f0). Every other dword on these paths is only passed to HeapFree by the destructors (0x5ac8a0: +0x278/+0x26c/+0x270, 0x5b2cd0: +0x25c/+0x260/+0x19c, 0x5a83c0: +0x18/+0x1c/+0x20/+0x24/+0x2c/+0x30/+0x28/+0x14/+0x54/+0x5c/+0x58/+0x60/+0x64/+0x68/+0x6c) or written (+0xe8 by 0x5a9e80, +0x3b/+0x194/+0x195/+0x1a0/+0x288/+0x289 by the close): random background. Byte +0x288 (initialised flag) only gates the +0x278 Release loop (entries zero): random.",
+ "size": 656,
+ "fill": "bytes",
+ "fields": [
+  {"off": 0, "type": "u32", "values": ["0x5f9c80"]},
+  {"off": 4, "type": "u32", "values": [0]},
+  {"off": 8, "type": "u32", "values": [0]},
+  {"off": "0xc", "type": "u32", "values": [0]},
+  {"off": "0x10", "type": "u32", "values": [0]},
+  {"off": "0x14", "type": "ptr", "size": "0x80", "fill": "bytes"},
+  {"off": "0x18", "type": "ptr", "size": "0x80", "fill": "zero"},
+  {"off": "0x36", "type": "u16", "values": [0, 1, 4, "0x20"]},
+  {"off": "0x3c", "type": "u8", "values": [0]},
+  {"off": "0x3d", "type": "u8", "values": [0]},
+  {"off": "0x1a4", "type": "ptr", "size": 16, "fill": "com=IDirectSound8", "nullable": true},
+  {"off": "0x1cc", "type": "ptr", "size": 16, "fill": "com=IDirectSoundBuffer", "nullable": true},
+  {"off": "0x1d0", "type": "ptr", "size": 16, "fill": "com=IDirectSound3DListener", "nullable": true},
+  {"off": "0x25c", "type": "ptr", "size": "0x80", "fill": "zero"},
+  {"off": "0x260", "type": "ptr", "size": "0x80", "fill": "zero"},
+  {"off": "0x278", "type": "ptr", "size": "0x80", "fill": "zero"},
+  {"off": "0x284", "type": "ptr", "size": 16, "fill": "com=IDirectSoundBuffer", "nullable": true}
+ ]
+}

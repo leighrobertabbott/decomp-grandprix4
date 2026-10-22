@@ -20,6 +20,10 @@ Grammar (whitespace-insensitive)::
     out     := eax|ebx|ecx|edx|esi|edi|ebp|st0..st7|cf|pf|af|zf|sf|of
     opt     := tol=<float> | cases=<n> | fpucw=<hex> | globals=keep|fuzz:<f32|f64|i32>|[fuzz:<k>+]layout=<name>[+<name>...]
              | emu=skip:<reason> | maxinsn=<n> | seed=<n>
+             | comfail=off      # no injected COM failures: for code that ignores an HRESULT and would
+               # crash on a failed call (a failure is then outside the domain the original survives)
+             | gfields={addr:type, addr*count/stride:type, ...}   # fixed-address game data, applied
+               # after globals= (same field grammar as an inline buffer; addresses in writable data)
 
 Examples::
 
@@ -83,6 +87,8 @@ class Spec:
     maxinsn: int = 4_000_000          # per run; raise with maxinsn=<n> for long legitimate loops
     wall: int = 0                     # emu gate wall clock (s) for very heavy routines; 0 = config default
     seed: int = 0
+    gfields: list = field(default_factory=list)   # [(addr, count, stride, ArgType)] from gfields={...}
+    comfail: bool = True                          # comfail=off: COM methods always succeed
     raw: str = ""
 
     @property
@@ -288,6 +294,16 @@ def parse(text: str) -> Spec:
                 raise SpecError("wall=<seconds> must be 1..3600")
         elif k == "seed":
             spec.seed = int(v)
+        elif k == "comfail":
+            if v not in ("off", "on"):
+                raise SpecError("comfail=off|on")
+            spec.comfail = v == "on"
+        elif k == "gfields":
+            if not (v.startswith("{") and v.endswith("}")):
+                raise SpecError("gfields={addr:type, ...} needs braces")
+            background, spec.gfields = struct_fill(v)
+            if background != "zero":
+                raise SpecError("gfields has no background fill (*bytes applies to buffers only)")
         else:
             raise SpecError(f"unknown option {k!r}")
     if not math.isfinite(spec.tol) or spec.tol < 0:

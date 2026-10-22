@@ -11,4 +11,4 @@ int32_t __fastcall FUN_005cb020(const Unknown_005cb020* self, void* /*edx*/, int
     const int32_t field = self->Value20;
     return (int32_t)(((uint32_t)field & 0xffffff00u) | (uint32_t)(field == value));
 }
-GP4_IMPL(0x005cb020, FUN_005cb020, "thiscall(ptr[0x100]:bytes, i32) -> i32")
+GP4_IMPL(0x005cb020, FUN_005cb020, "thiscall(ptr[0x100]:{*bytes, 0x20:i32{=0,1,-1,2}}, i32{=0,1,-1,2}) -> i32")

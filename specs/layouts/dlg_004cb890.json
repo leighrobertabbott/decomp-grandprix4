@@ -1,0 +1,9 @@
+{
+ "_evidence": "The 'F1 Audio Data Receiver' object (0x14 bytes; 0x509f00 'push 0x14; HeapAlloc; push [0xb1c7f0]; call 0x4cac70', error text 0x66d6d8 'F1 Audio Data Receiver Class not created'; ctor 0x4cac70 'mov [esi],0x5f0d14', +4 = HeapAlloc(0x274) + 0x4d87e0 the sound manager). Its vtable 0x5f0d14 slots +0x10..+0x24 = 0x4cabb0/0x4cabd0/0x4cabf0/0x4cac10/0x4cac30/0x4cac50, each 'push esi; mov esi,ecx; call 0x5ae990 (ret); mov ecx,[esi+4]; pop esi; jmp <manager method>' (0x4d66d0/0x4d6bf0/0x4d6c60/0x4d6ae0/0x4d6b60/0x4d67a0): only +4 is read, never tested for null, so it is always the manager (gpaudio_004cb890). +8/+0xc/+0x10 (stored by slots 1..3) are not read: random.",
+ "size": 20,
+ "fill": "bytes",
+ "fields": [
+  {"off": 0, "type": "u32", "values": ["0x5f0d14"]},
+  {"off": 4, "type": "ptr", "size": 628, "fill": "layout=gpaudio_004cb890"}
+ ]
+}

@@ -150,6 +150,24 @@ class Coverage:
     blocks: set[int]
     branches: dict[int, tuple[int, int]]  # conditional address -> (taken, fallthrough)
     constants: list[int] = field(default_factory=list)
+    # branchless conditionals (setcc/cmovcc) -> condition code: both outcomes are obligations like
+    # branch directions (true counts as "taken"), so a constant-result reconstruction cannot pass
+    conds: dict[int, str] = field(default_factory=dict)
+
+
+_CC = {"o": lambda f: f >> 11 & 1, "no": lambda f: not f >> 11 & 1,
+       "b": lambda f: f & 1, "c": lambda f: f & 1, "nae": lambda f: f & 1,
+       "ae": lambda f: not f & 1, "nb": lambda f: not f & 1, "nc": lambda f: not f & 1,
+       "e": lambda f: f >> 6 & 1, "z": lambda f: f >> 6 & 1, "ne": lambda f: not f >> 6 & 1, "nz": lambda f: not f >> 6 & 1,
+       "be": lambda f: (f & 1) or (f >> 6 & 1), "na": lambda f: (f & 1) or (f >> 6 & 1),
+       "a": lambda f: not ((f & 1) or (f >> 6 & 1)), "nbe": lambda f: not ((f & 1) or (f >> 6 & 1)),
+       "s": lambda f: f >> 7 & 1, "ns": lambda f: not f >> 7 & 1,
+       "p": lambda f: f >> 2 & 1, "pe": lambda f: f >> 2 & 1, "np": lambda f: not f >> 2 & 1, "po": lambda f: not f >> 2 & 1,
+       "l": lambda f: (f >> 7 & 1) != (f >> 11 & 1), "nge": lambda f: (f >> 7 & 1) != (f >> 11 & 1),
+       "ge": lambda f: (f >> 7 & 1) == (f >> 11 & 1), "nl": lambda f: (f >> 7 & 1) == (f >> 11 & 1),
+       "le": lambda f: (f >> 6 & 1) or (f >> 7 & 1) != (f >> 11 & 1), "ng": lambda f: (f >> 6 & 1) or (f >> 7 & 1) != (f >> 11 & 1),
+       "g": lambda f: not (f >> 6 & 1) and (f >> 7 & 1) == (f >> 11 & 1),
+       "nle": lambda f: not (f >> 6 & 1) and (f >> 7 & 1) == (f >> 11 & 1)}
 
 
 def target_coverage(gp4: Binary, addr: int, function_starts: set[int] | None = None) -> Coverage:
@@ -159,7 +177,7 @@ def target_coverage(gp4: Binary, addr: int, function_starts: set[int] | None = N
     body = analyzer.explore(addr)
     if body.invalid or not body.insns:
         raise ValueError("target body cannot be decoded completely for coverage")
-    blocks, branches, constants = {addr}, {}, set()
+    blocks, branches, constants, conds = {addr}, {}, set(), {}
     for va, ins in body.insns.items():
         nxt, dest = va + ins.size, _int(ins.ops)
         conditional = (ins.mn.startswith("j") and ins.mn != "jmp") or ins.mn in COND_EXTRA
@@ -171,6 +189,9 @@ def target_coverage(gp4: Binary, addr: int, function_starts: set[int] | None = N
             blocks.update(v for v in (dest, nxt) if v in body.insns)
         if ins.mn in TERMINATORS and nxt in body.insns:
             blocks.add(nxt)
+        for prefix in ("set", "cmov"):
+            if ins.mn.startswith(prefix) and ins.mn[len(prefix):] in _CC:
+                conds[va] = ins.mn[len(prefix):]
         if ins.mn == "cmp":
             imm = _int(ins.ops.rsplit(",", 1)[-1].strip())
             if imm is not None:
@@ -178,7 +199,7 @@ def target_coverage(gp4: Binary, addr: int, function_starts: set[int] | None = N
     for table, count in body.jtables:
         blocks.update(gp4.u32(table + 4 * k) for k in range(count)
                       if gp4.u32(table + 4 * k) in body.insns)
-    return Coverage(set(body.insns), blocks, branches, sorted(constants))
+    return Coverage(set(body.insns), blocks, branches, sorted(constants), conds)
 
 
 class Machine:
@@ -241,6 +262,8 @@ class Machine:
             r = self.call(a, regs={}, stack=b"", st_in=[], n_st_out=0, capture_flags=False, maxinsn=2_000_000)
             if r.status != "ok":
                 problems.append(f"init {a:#x}: {r.status} {r.detail}")
+            s = self.stubs            # what an initialiser allocated is part of every case's start state
+            s.floor, s.floor_blocks, s.floor_valloc = s.heap_next, dict(s.blocks), s.valloc_next
         self.pristine = {a: bytes(self.uc.mem_read(a, n)) for a, n in self.regions}
         self.dirty.clear()
         self.fault, self.external = None, []
@@ -348,6 +371,8 @@ class Machine:
             self.pending_branch = None
         if address in cov.blocks:
             self.trace_blocks.add(address)
+        if address in cov.conds:    # outcome of a setcc/cmovcc, from the flags it is about to read
+            self.trace_branches.add((address, bool(_CC[cov.conds[address]](uc.reg_read(X.UC_X86_REG_EFLAGS)))))
         if address in cov.branches:
             taken, fallthrough = cov.branches[address]
             self.pending_branch = (address, taken, fallthrough)
@@ -818,6 +843,7 @@ def differential(gp4: Binary, dll: Binary, rec: Impl, spec: Spec, *, fpucw: int,
                  cases: int | None = None, function_starts: set[int] | None = None,
                  _wall: float | None = None) -> dict:
     m = Machine(gp4, dll, fpucw=spec.fpucw if spec.fpucw is not None else fpucw)
+    m.stubs.com.failures = spec.comfail
     from .config import oracle
     init_problems = m.run_init(list(oracle("init_calls")))
     if init_problems:
@@ -837,6 +863,18 @@ def differential(gp4: Binary, dll: Binary, rec: Impl, spec: Spec, *, fpucw: int,
         return {"gate": "emu", "status": "skipped", "reason": spec.emu_skip, **note,
                 "probe": {k: probe.get(k) for k in ("passed", "invalid", "invalid_reasons", "reason")}}
     narrow_unchecked: list[str] = []
+    if spec.ret == "void" and spec.conv != "regs":   # eax not compared: no direct caller may read it
+        from .retwidth import check as _retwidth
+        starts = sorted(function_starts or ())
+        import bisect
+        def _owner(va):
+            k = bisect.bisect_right(starts, va) - 1
+            return starts[k] if k >= 0 else None
+        violations, _ = _retwidth(gp4, rec.addr, 0, _owner)
+        if violations:
+            return {"gate": "emu", "status": "fail",
+                    "reason": "return type void, but a caller of the original reads eax after the call: declare "
+                              "the return (i32/u32, or u8/u16 when only al/ax is read)", "callers": violations[:6]}
     if spec.ret in NARROW_RET:     # only al/ax compared: every direct caller must ignore the rest of eax
         from .retwidth import check as _retwidth
         starts = sorted(function_starts or ())
@@ -859,8 +897,8 @@ def differential(gp4: Binary, dll: Binary, rec: Impl, spec: Spec, *, fpucw: int,
         def _block_of(va):
             prior = [b for b in starts if b <= va]
             return prior[-1] if prior else None
-        dead_branches = {va for va in cov.branches if _block_of(va) in exempt}
-        cov = Coverage(cov.insns, cov.blocks - exempt, cov.branches, cov.constants)
+        dead_branches = {va for va in list(cov.branches) + list(cov.conds) if _block_of(va) in exempt}
+        cov = Coverage(cov.insns, cov.blocks - exempt, cov.branches, cov.constants, cov.conds)
     m.coverage = cov
     n = spec.cases if cases is None else cases
     if n < 1:
@@ -901,13 +939,16 @@ def differential(gp4: Binary, dll: Binary, rec: Impl, spec: Spec, *, fpucw: int,
         warnings.add(f"heavy fixed-work routine: {n} cases, {heavy.get('ni_cases', 1)} hidden-input checks (specs/heavy.json)")
     seen_blocks: set[int] = set()
     seen_branches: set[tuple[int, bool]] = set()
-    dead_dirs = {d for d in _dead_directions(rec.addr) if d[0] in cov.branches}
+    dead_dirs = {d for d in _dead_directions(rec.addr) if d[0] in cov.branches or d[0] in cov.conds}
     seen_branches |= dead_dirs
     if exempt:   # directions into, or branches inside, lead-proven dead blocks are not obligations
         for va, (taken, fall) in cov.branches.items():
             for direction, target in ((True, taken), (False, fall)):
                 if va in dead_branches or target in exempt:
                     seen_branches.add((va, direction))
+        for va in cov.conds:
+            if va in dead_branches:
+                seen_branches |= {(va, True), (va, False)}
     ignored_flags = _ignored_flags(rec.addr)
     ni_checked = 0
     ni_target = max(0, int(oracle("ni_cases")))
@@ -918,9 +959,11 @@ def differential(gp4: Binary, dll: Binary, rec: Impl, spec: Spec, *, fpucw: int,
     attempted = 0
     import_models: dict[str, int] = {}   # modelled import calls made by passing cases (gp4re/stubs.py)
 
+    n_points = len(cov.branches) + len(cov.conds)     # branches plus branchless conditionals
+
     def coverage_ok():
         return (len(seen_blocks) / len(cov.blocks) >= float(oracle("min_block_coverage")) and
-                (not cov.branches or len(seen_branches) / (2 * len(cov.branches)) >= float(oracle("min_branch_coverage"))))
+                (not n_points or len(seen_branches) / (2 * n_points) >= float(oracle("min_branch_coverage"))))
 
     try:
         wall_cap = float(oracle("max_wall_s"))
@@ -999,6 +1042,23 @@ def differential(gp4: Binary, dll: Binary, rec: Impl, spec: Spec, *, fpucw: int,
                     g.buffers.extend(global_buffers(g, layout_name, gp4, regs=regs))
             except (ValueError, KeyError, OSError, struct.error) as e:
                 return {"gate": "emu", "status": "inconclusive", "reason": f"invalid global input layout: {e}"}
+        if spec.gfields:   # inline fixed-address fields (spec gfields=): applied last, so they win on overlap
+            from .spec import _width
+            for addr, count, stride, t in spec.gfields:
+                for k in range(count):
+                    a = addr + k * stride
+                    sec = gp4.section_of(a)
+                    if not sec or not sec.in_scope or not sec.writable or a + _width(t) > sec.end:
+                        return {"gate": "emu", "status": "inconclusive",
+                                "reason": f"gfields address {a:#x} is outside GP4's writable in-scope data"}
+                    kind, v = g.value(Arg(t))
+                    if kind == "f32":
+                        data = struct.pack("<f", v)
+                    elif kind == "f64":
+                        data = struct.pack("<d", v)
+                    else:
+                        data = (v & 0xFFFFFFFF).to_bytes(4, "little")[: _width(t)]
+                    g.buffers.append((a, data))
         bufs = list(g.buffers)
         for a, data in bufs:
             varied.update(range(a, a + len(data)))
@@ -1181,12 +1241,12 @@ def differential(gp4: Binary, dll: Binary, rec: Impl, spec: Spec, *, fpucw: int,
                      f"({shown}); the pass rests on their static values - state needs a layout, constant tables are fine")
     coverage = {"blocks_hit": len(seen_blocks), "blocks_total": len(cov.blocks),
                 "block_fraction": len(seen_blocks) / len(cov.blocks),
-                "branch_directions_hit": len(seen_branches), "branch_directions_total": 2 * len(cov.branches),
-                "branch_fraction": len(seen_branches) / (2 * len(cov.branches)) if cov.branches else 1.0,
+                "branch_directions_hit": len(seen_branches), "branch_directions_total": 2 * n_points,
+                "branch_fraction": len(seen_branches) / (2 * n_points) if n_points else 1.0,
                 "missing_blocks": [hex(a) for a in sorted(cov.blocks - seen_blocks)][:20],
                 "missing_branch_directions": [f"{va:#x}:{'taken' if taken else 'fallthrough'}"
-                                              for va in sorted(cov.branches) for taken in (False, True)
-                                              if (va, taken) not in seen_branches][:20],
+                                              for va in sorted(set(cov.branches) | set(cov.conds))
+                                              for taken in (False, True) if (va, taken) not in seen_branches][:20],
                 **({"exempt_blocks": [hex(a) for a in sorted(exempt)]} if exempt else {}),
                 **({"exempt_branches": [f"{va:#x}:{'taken' if t else 'fallthrough'}" for va, t in sorted(dead_dirs)]}
                    if dead_dirs else {})}

@@ -1,0 +1,10 @@
+{
+ "_evidence": "The 0x10-byte sound-system object stored at [mgr+0x234] by 0x4d8840 (HeapAlloc(0x10) + ctor 0x5b18c0 'mov [esi],0x5f9e7c'; base ctor 0x5b4200 vtable 0x5fa05c): +0 = the real vtable 0x5f9e7c (slot 0 = deleting dtor 0x5b1970, slot 2 = 0x5b42d0 'mov ecx,[ecx+4]; test; je -> eax 4; jmp [vtbl+0x74]'), +4 = the engine (operator new 0x290 + ctor 0x5ac7a0; null when that allocation fails, tested by 0x5b42d0 and the dtor 0x5b1990): nullable sndeng_005ac7a0, +8 = a 0xc-byte object (new 0xc + ctor 0x5b42f0, vtable 0x5fa068; dtor 0x5b1990 'call [edx+0x28]' with 1 when non-null): nullable o8_005b42f0, +0xc = a 0x10-byte object (new 0x10 + ctor 0x5b4480, vtable 0x5fa094; base dtor 0x5b4290 'call [eax+0x2c]' with 1 when non-null): nullable oc_005b4480. The deleting dtor frees the object itself with 0x446a60 (HeapFree, logged).",
+ "size": 16,
+ "fields": [
+  {"off": 0, "type": "u32", "values": ["0x5f9e7c"]},
+  {"off": 4, "type": "ptr", "size": 656, "fill": "layout=sndeng_005ac7a0", "nullable": true},
+  {"off": 8, "type": "ptr", "size": 12, "fill": "layout=o8_005b42f0", "nullable": true},
+  {"off": "0xc", "type": "ptr", "size": 16, "fill": "layout=oc_005b4480", "nullable": true}
+ ]
+}

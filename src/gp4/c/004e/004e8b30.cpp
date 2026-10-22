@@ -16,4 +16,4 @@ struct Unknown_004e8b30 {
 void __fastcall FUN_004e8b30(Unknown_004e8b30* self, void* /*edx*/, int value) {
     self->Buffer0c[(value - self->Base10) / self->Divisor04] = 0;
 }
-GP4_IMPL(0x004e8b30, FUN_004e8b30, "thiscall(ptr[0x20]:{4:i32{=1,2,4,8}, 0xc:ptr[0x100]:bytes, 0x10:i32{=0}}, i32[0..0xff]) -> void")
+GP4_IMPL(0x004e8b30, FUN_004e8b30, "thiscall(ptr[0x20]:{4:i32{=1,2,4,8}, 0xc:ptr[0x100]:bytes, 0x10:i32{=0}}, i32[0..0xff]) -> u32")

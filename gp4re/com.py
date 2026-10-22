@@ -598,6 +598,7 @@ class ComModel:
         self.children: dict[tuple, int] = {}
         self.locks: dict[tuple, tuple[int, int]] = {}
         self.next_handle = 0x00010000
+        self.failures = getattr(self, "failures", True)   # spec comfail=off turns injected failures off
 
     @property
     def rng(self):
@@ -720,7 +721,7 @@ class ComModel:
         self.stubs.log.append((name, norm(this)) + tuple(norm(v) for v in a) + hashes)
         rng = self.rng
         if m.ret == "hr":
-            ok = not (m.fails and rng.randrange(m.rate) == 0)
+            ok = not (m.fails and self.failures and rng.randrange(m.rate) == 0)
             eax = S_OK if ok else rng.choice(m.fails)
         else:
             ok = True

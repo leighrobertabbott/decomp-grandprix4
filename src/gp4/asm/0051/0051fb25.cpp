@@ -25,4 +25,4 @@ void __cdecl FUN_0051fb25(gp4::Regs* r) {
     r->eax = GP4_GLOBAL(uint32_t, 0x00a69878);
     r->eflags = c.eflags;
 }
-GP4_IMPL(0x0051fb25, FUN_0051fb25, "regs(eax:u32, ecx:u32, edx:u32, esi:u32{0,1}) -> (eax, cf, pf, af, zf, sf, of); globals=fuzz:i32; emu=skip:win32 GetLastError")
+GP4_IMPL(0x0051fb25, FUN_0051fb25, "regs(eax:u32, ecx:u32, edx:u32, esi:u32{0,1}) -> (eax, cf, pf, af, zf, sf, of); globals=fuzz:i32")

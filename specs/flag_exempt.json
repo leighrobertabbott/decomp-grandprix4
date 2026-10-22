@@ -132,5 +132,12 @@
    "af"
   ],
   "evidence": "Wrapper over the 2-D overlay drawer chain 0x51d1d0 -> 0x51d1df -> compiled 0x4a96a0, whose last flag writer is 'add esp,0x28', so PF/AF depend on the stack address. tools/flag_live.py: 0 live reads; every path is dead or ends at handlers in the table 0x817270 (0x515bf8 at 0x817280, 0x515eb2 at 0x8172a4), which are dispatched by 'call [edx*4+0x817270]; popal; pop esi; ret' at 0x5141f2 inside 0x5141b8 (flag-neutral popal/pop; 0x5141b8: 0 live reads, 27 dead paths, already exempt), or at functions with no call/jmp sites or data references (lead check 2026-10-22)."
+ },
+ "0x0051fb25": {
+  "flags": [
+   "pf",
+   "af"
+  ],
+  "evidence": "When esi != 0 the flags at the ret come from the compiled callee 0x49eeb0 (called inside pushal/popal, which do not write flags), whose last flag writer is 'add esp,0xc' (0x49ef61/0x49ef74), so PF/AF depend on the stack address (gp4::call_regs runs it on a different stack). tools/flag_live.py 0x51fb25: 0 live reads, 1 dead path. Found when the GetLastError skip was removed (lead check 2026-10-22)."
  }
 }

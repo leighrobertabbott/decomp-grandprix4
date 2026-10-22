@@ -104,6 +104,25 @@ class NarrowReturnTests(unittest.TestCase):
         self.assertEqual(res["status"], "fail", res)
         self.assertIn("reads more of eax", res["reason"])
 
+    def test_void_return_read_by_a_caller_fails(self):
+        body = bytes.fromhex("8bc1 c3")                     # mov eax, ecx; ret (returns this)
+        jump = b"\xE8" + struct.pack("<i", TARGET - (self.CALLER + 5))
+        reads = jump + bytes.fromhex("8b00 c3")             # mov eax, [eax]: uses the result
+        res = run(body, body, "cdecl() -> void", {self.CALLER: reads}, {TARGET, INIT, self.CALLER})
+        self.assertEqual(res["status"], "fail", res)
+        self.assertIn("return type void", res["reason"])
+        ignores = jump + bytes.fromhex("33c0 c3")           # xor eax, eax: overwrites it
+        res = run(body, body, "cdecl() -> void", {self.CALLER: ignores}, {TARGET, INIT, self.CALLER})
+        self.assertNotEqual(res["status"], "fail", res)
+
+    def test_setcc_needs_both_outcomes(self):
+        # mov eax,[esp+4]; cmp eax,[esp+8]; sete al; ret - a constant-false version must not pass
+        body = bytes.fromhex("8b442404 3b442408 0f94c0 c3")
+        never_equal = run(body, body, "cdecl(u32[0x10000..0xffffffff], u32[0..0xffff]) -> u8")
+        self.assertNotEqual(never_equal["status"], "pass", never_equal)
+        both = run(body, body, "cdecl(u32{=1,2}, u32{=1,2}) -> u8")
+        self.assertEqual(both["status"], "pass", both)
+
     def test_i32_still_sees_the_upper_bits(self):
         body = bytes.fromhex("b001 c3")
         res = run(body, bytes.fromhex("b801000000 c3"), "cdecl() -> i32")             # mov eax, 1

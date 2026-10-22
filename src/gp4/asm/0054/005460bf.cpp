@@ -22,4 +22,4 @@ void __cdecl FUN_005460bf(gp4::Regs* r) {
     gp4::call_regs(0x00546154, c);
     *r = c;
 }
-GP4_IMPL(0x005460bf, FUN_005460bf, "regs(esi:ptr[0x200]:bytes) -> (eax, esi, cf, pf, af, zf, sf, of); globals=fuzz:i32; emu=skip:win32 GetTextExtentPoint32A")
+GP4_IMPL(0x005460bf, FUN_005460bf, "regs(esi:ptr[0x200]:bytes) -> (eax, esi, cf, pf, af, zf, sf, of); globals=fuzz:i32")

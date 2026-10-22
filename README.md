@@ -48,17 +48,17 @@ refuses any other `GP4.exe` unless given `--allow-other-exe`.
 
 <!-- status:begin -->
 
-![code](https://img.shields.io/badge/code-26.66%25-blue) ![verified](https://img.shields.io/badge/verified-4%2C464_functions-brightgreen) ![pending in-game](https://img.shields.io/badge/pending_in--game-185-yellow) ![deferred](https://img.shields.io/badge/deferred-107-orange) ![todo](https://img.shields.io/badge/todo-3%2C748-lightgrey)
+![code](https://img.shields.io/badge/code-27.35%25-blue) ![verified](https://img.shields.io/badge/verified-4%2C624_functions-brightgreen) ![pending in-game](https://img.shields.io/badge/pending_in--game-197-yellow) ![deferred](https://img.shields.io/badge/deferred-71-orange) ![todo](https://img.shields.io/badge/todo-3%2C635-lightgrey)
 
-**26.66%** of GP4.exe's game code (421,538 of 1,580,985 bytes) is reconstructed and accepted: **4,464** functions verified by differential emulation, **185** accepted pending the in-game check, 107 deferred with a recorded blocker, 3,748 still to do.
+**27.35%** of GP4.exe's game code (432,362 of 1,580,985 bytes) is reconstructed and accepted: **4,624** functions verified by differential emulation, **197** accepted pending the in-game check, 71 deferred with a recorded blocker, 3,635 still to do.
 
 | Region | Address range | Verified | Pending in-game | Deferred | To do | Code accepted |
 |---|---|---:|---:|---:|---:|---:|
-| Simulation core (hand-written x87 assembly) | `0x00401000`-`0x00446160` | 1,849 | 3 | 31 | 12 | 93.8% |
-| Renderer and front end (Direct3D 8 C++) | `0x00446160`-`0x00510000` | 315 | 13 | 31 | 1,609 | 1.1% |
-| Game logic (GP3-heritage C and assembly) | `0x00510000`-`0x00560000` | 2,150 | 167 | 39 | 941 | 49.2% |
+| Simulation core (hand-written x87 assembly) | `0x00401000`-`0x00446160` | 1,846 | 3 | 16 | 27 | 93.8% |
+| Renderer and front end (Direct3D 8 C++) | `0x00446160`-`0x00510000` | 434 | 17 | 20 | 1,511 | 2.0% |
+| Game logic (GP3-heritage C and assembly) | `0x00510000`-`0x00560000` | 2,120 | 170 | 22 | 987 | 49.3% |
 | Libraries: D3DX, libpng, zlib (excluded) | `0x00560000`-`0x005a4000` | 0 | 0 | 0 | 0 | excluded |
-| Mixed C++ and DirectX error tables | `0x005a4000`-`0x005da800` | 150 | 2 | 6 | 1,186 | 1.2% |
+| Mixed C++ and DirectX error tables | `0x005a4000`-`0x005da800` | 224 | 7 | 13 | 1,110 | 2.7% |
 | Visual C++ 6 runtime | `0x005da800`-`0x005f0000` | 0 | 0 | 0 | 0 | excluded |
 
 <sub>Generated 2026-10-22 from the ledger by `python tools/readme_status.py`; per-function state is in [progress/ledger.txt](progress/ledger.txt).</sub>

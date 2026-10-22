@@ -1,0 +1,8 @@
+{
+ "_evidence": "0x10-byte member object +0xc of the sound-system object (ctor 0x5b4480: base 0x5a7ab0, then 'mov [esi],0x5fa094'). Its vtable slot +0x2c = 0x5b44a0 (deleting dtor: 0x5b44c0 'mov [ecx],0x5fa094; jmp 0x5a7b40' which stores vtable 0x5f9a10 and passes the dwords +8 and +0xc to 0x446a60 (HeapFree, logged; never dereferenced), then frees the object). Every pattern of +4/+8/+0xc is valid: random.",
+ "size": 16,
+ "fill": "bytes",
+ "fields": [
+  {"off": 0, "type": "u32", "values": ["0x5fa094"]}
+ ]
+}

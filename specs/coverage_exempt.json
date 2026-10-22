@@ -1068,5 +1068,11 @@
    "0x005a8946"
   ],
   "evidence": "0x5a8946 is 'jmp 0x5a8946' (jmp $): when byte [ecx+0x3c] == 1 the original never returns, so no finite run can cover it; specs exclude that input value (a non-returning input, like a fault). Lead check 2026-10-22."
+ },
+ "0x005b4340": {
+  "blocks": [
+   "0x005b434c"
+  ],
+  "evidence": "'mov eax,[ecx+4]; test eax,eax; je 0x5b434c': the branch is taken only when eax == 0, and 0x5b434c is 'mov eax,[eax]' - a read of address 0, an access violation in every run (page 0 is never mapped), so no valid case can cover it (inverted null check in the original; lead check 2026-10-22 from p09's report)."
  }
 }

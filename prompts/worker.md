@@ -61,6 +61,11 @@ Exactly one `// FUNCTION:` line and one `GP4_IMPL` (for your address). Small
 `cdecl` (ret), `stdcall` (`ret N`: N/4 args), thiscall written as
 `R __fastcall Name(Self* self, void* /*edx*/, args...)` with spec
 `thiscall(ptr[size]:fill, ...)`.
+`-> void` is checked too: if any direct caller of the original reads eax/ax/al after the call
+(a constructor returning `this`, a setter returning its argument, a bool in al) the gate fails -
+declare the return (`i32`/`u32`, or `u8`/`u16`) and return that value. `setcc`/`cmovcc` count
+for coverage like branches: both outcomes must occur, so draw compared operands from a shared
+value set (`ptr[N]:{0x18:i32{=0,1,-1,2}}, i32{=0,1,-1,2}`) when they are otherwise never equal.
 Known gap (defer at once with `--needs "regs stack args"`, do not burn attempts): a routine
 that takes STACK arguments (`ret N`) AND must leave caller register bits (an al/ax-only result
 whose callers read eax, so `u8`/`u16` are refused) or return an 80-bit st0 (sqrt/log of a stack
@@ -162,6 +167,10 @@ suggestion is provisional: a routine returning flags may need `regs`.
   +0x94 SetTransform, +0xc8 SetRenderState, +0xf4 SetTexture, +0xfc SetTextureStageState,
   +0x118 DrawPrimitive, +0x14c SetStreamSource; vertex buffer: +0x2c Lock, +0x30 Unlock).
   QueryInterface, GetPrivateData, GetContainer, GetInfo and patches end a case external.
+  If the original ignores an HRESULT and would crash when the call fails (writes through an
+  unfilled LockRect record, uses an unset out-pointer), add `; comfail=off`: injected failures
+  are then outside the domain the original survives. Never use it when the original checks
+  the result - its error path must be covered.
   **DirectInput 8 and DirectSound** are modelled too (gp4re/com_dx.py; headers
   `<gp4/dinput8.h>`, `<gp4/dsound.h>`; fills `com=IDirectInput8A`, `com=IDirectInputDevice8A`,
   `com=IDirectInputEffect`, `com=IDirectSound8`, `com=IDirectSoundBuffer` (or `...Buffer8`),
@@ -226,8 +235,14 @@ suggestion is provisional: a routine returning flags may need `regs`.
   `{4:nptr[0x48]:{0x44:nptr[0x48]:{0x44:nptr[0x48]:{0x44:u32{=0}}}}}`, a pointer biased into
   its block (`ptr[0x80]+4:{0:u32[0..3]}`: the value is buffer+4, the count at ptr-4). Use it before asking the
   lead; a lead layout is still needed for aliasing (`alias`, `points_into`, cyclic `self`
-  links), fixed globals and tables shared by many functions. No `;` inside (it separates
-  options).
+  links) and tables shared by many functions. No `;` inside (it separates options).
+- **Inline globals.** Fixed-address game data the function reads goes in the spec option
+  `gfields={addr:type, addr*count/stride:type, ...}` with the same field grammar, applied after
+  `globals=` (it wins on overlap): `cdecl() -> void; globals=fuzz:i32; gfields={0x00a52048:
+  nptr[0x234]:{0x230:nptr[0x234]:{0x230:u32{=0}}}, 0x00b1c8c8:u32{=0,1}}` (a list head, a flag),
+  `gfields={0x00a6e204:ptr[16]:com=IDirect3DSurface8}` (a COM global), `gfields={0x00b35afc*8/4:
+  ptr[0x100]:bytes}` (a pointer table; keep the index in range). Addresses must lie in GP4's
+  writable data. Only narrow a value where the original faults or its callers cannot pass it.
 
 - Pointer sizes: largest displacement used + 8. Fill floats where the code reads
   floats (`ptr[0x60]:f64`); random bytes become NaNs and the original's cases go

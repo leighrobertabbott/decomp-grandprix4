@@ -82,6 +82,8 @@ class ImportStubs:
         self.mark_dirty = mark_dirty          # (addr, size) -> None: pages the stub wrote
         self.stack_lo, self.stack_hi = stack_range
         self.seed = 0
+        # memory the oracle's init calls allocated (CRT onexit table, ...) survives every reset
+        self.floor, self.floor_blocks, self.floor_valloc = HEAP_BASE, {}, VALLOC_BASE
         self.com = ComModel(self)
         self.reset()
 
@@ -90,8 +92,8 @@ class ImportStubs:
         if seed is not None:
             self.seed = seed
         self.rng = random.Random((self.seed * 0x9E3779B1 ^ 0x5354554253) & 0xFFFFFFFFFFFF)
-        self.heap_next = HEAP_BASE
-        self.blocks: dict[int, int] = {}
+        self.heap_next = self.floor
+        self.blocks: dict[int, int] = dict(self.floor_blocks)
         self.log: list[tuple] = []
         self.clock = 0x01000000 + self.rng.randrange(1 << 24)
         self.qpc = (1 << 32) + self.rng.randrange(1 << 40)
@@ -103,7 +105,7 @@ class ImportStubs:
         self.last_error = 0
         self.tls: dict[int, int] = {}
         self.tls_next = 1
-        self.valloc_next = VALLOC_BASE
+        self.valloc_next = self.floor_valloc
 
     def handles(self, name: str) -> bool:
         return name in STUBS

@@ -1,4 +1,4 @@
-"""Static check behind the narrow return types ``u8``/``i8`` (al) and ``u16``/``i16`` (ax).
+"""Static check behind the narrow return types ``u8``/``i8`` (al), ``u16``/``i16`` (ax) and ``void``.
 
 A compiled ``bool``/``char`` function returns in al and leaves the upper bits of eax as
 whatever its last computation put there. A spec that compares only al is sound only if no
@@ -8,7 +8,9 @@ original this walks forward (both directions of conditional branches, direct jum
 full write of eax (or a call, which clobbers it) ends the path; a ``ret`` returns the value to
 the containing function's callers, which are checked the same way (up to ``depth`` levels).
 Tail jumps to the function, data references (vtables, handler tables) and indirect jumps are
-reported as unchecked: the gate passes them with a warning, never silently.
+reported as unchecked: the gate passes them with a warning, never silently. Width 0 is the
+``void`` check: a caller that reads any part of eax after the call consumes a return value the
+spec does not compare (a constructor returning ``this``, a setter returning its argument).
 """
 from __future__ import annotations
 
@@ -28,7 +30,7 @@ class _Walk:
     def __init__(self, binary, owner_of, width: int, depth: int = 3):
         self.b = binary
         self.owner_of = owner_of          # va -> start of the function containing it (or None)
-        self.width = width                # 1 (al) or 2 (ax)
+        self.width = width                # 0 (void: no part of eax), 1 (al) or 2 (ax)
         self.depth = depth
         self.md = capstone.Cs(capstone.CS_ARCH_X86, capstone.CS_MODE_32)
         self.md.detail = True
@@ -91,10 +93,12 @@ class _Walk:
                 read, written = (set(r) for r in ins.regs_access())
                 mn = ins.mnemonic
                 zero_idiom = mn in ("xor", "sub") and ins.op_str in ("eax, eax", "ax, ax")
-                beyond = _FULL | _WORD | _HIGH if self.width == 1 else _FULL
+                beyond = (_FULL | _WORD | _HIGH | _LOW if self.width == 0 else
+                          _FULL | _WORD | _HIGH if self.width == 1 else _FULL)
                 if not zero_idiom and read & beyond:
-                    self.violations.append(f"{chain}: {va:#x} {mn} {ins.op_str} reads beyond "
-                                           f"{'al' if self.width == 1 else 'ax'}")
+                    self.violations.append(f"{chain}: {va:#x} {mn} {ins.op_str} reads "
+                                           + ("eax" if self.width == 0 else
+                                              f"beyond {'al' if self.width == 1 else 'ax'}"))
                     return
                 if mn == "call" or zero_idiom or written & _FULL:
                     break                                  # eax overwritten: this path is fine

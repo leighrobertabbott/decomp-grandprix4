@@ -1,0 +1,8 @@
+{
+ "_evidence": "0xc-byte member object +8 of the sound-system object (ctor 0x5b42f0 'mov [eax],0x5fa068; mov [eax+8],0; mov [eax+4],0'). Its vtable slot +0x28 = 0x5b4310 (deleting dtor: 0x5b4330 'mov [ecx],0x5fa068', then 0x446a60 HeapFree of the object when the flag argument has bit 0) reads nothing else; +4/+8 are random.",
+ "size": 12,
+ "fill": "bytes",
+ "fields": [
+  {"off": 0, "type": "u32", "values": ["0x5fa068"]}
+ ]
+}

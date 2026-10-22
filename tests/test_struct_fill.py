@@ -5,6 +5,9 @@ import struct
 import unittest
 from unittest.mock import patch
 
+from pathlib import Path
+
+from gp4re.binary import Binary, Section
 from gp4re.emu import CaseGen, Impl, differential
 from gp4re.spec import SpecError, parse
 
@@ -60,6 +63,46 @@ class StructFillTests(unittest.TestCase):
         spec = "cdecl(ptr[0x10]:{8:ptr[0x20]:bytes}) -> i32"
         self.assertNotEqual(self.run_pair(load(4), load(4), spec)["status"], "fail")
         self.assertEqual(self.run_pair(load(4), load(8), spec)["status"], "fail")
+
+
+
+class GfieldsTests(unittest.TestCase):
+    """gfields={addr:type,...}: inline fixed-address game data (applied after globals=)."""
+    DATA = 0x501000
+
+    def images(self, original: bytes, reconstruction: bytes):
+        gp4, dll = images(original, reconstruction)
+        code = Section(".text", TARGET, 0xFF000, 0xFF000, 0x60000020, 0, True)
+        data = Section(".data", self.DATA, 0x27000, 0x27000, 0xC0000040, 0, True)
+        return Binary(Path("synthetic-gp4.exe"), b"", gp4.base, TARGET, gp4.image, [code, data]), dll
+
+    def run_pair(self, original: bytes, reconstruction: bytes, spec: str) -> dict:
+        gp4, dll = self.images(original, reconstruction)
+        with patch("gp4re.config.oracle", side_effect=CFG.__getitem__):
+            return differential(gp4, dll, Impl(TARGET, 0x10001000, "synthetic", spec), parse(spec),
+                                fpucw=0x037F, cases=4, function_starts={TARGET, INIT})
+
+    @staticmethod
+    def load(k: int) -> bytes:   # mov eax,[0x501000]; mov eax,[eax+k]; ret
+        return bytes.fromhex("a100105000 8b40") + bytes([k]) + bytes([0xC3])
+
+    def test_parse(self):
+        s = parse("cdecl() -> i32; gfields={0x501000:ptr[0x10]:{4:u32{=7,8}}, 0x501010*4/4:u8{=0,1}}")
+        self.assertEqual([(a, n) for a, n, _, _ in s.gfields], [(0x501000, 1), (0x501010, 4)])
+        with self.assertRaises(SpecError):
+            parse("cdecl() -> void; gfields=0x501000:u32")
+        with self.assertRaises(SpecError):
+            parse("cdecl() -> void; gfields={*bytes, 0x501000:u32}")
+
+    def test_global_pointer_is_generated_and_compared(self):
+        spec = "cdecl() -> i32; gfields={0x501000:ptr[0x10]:{4:u32{=7,8}, 8:u32{=1,2}}}"
+        self.assertNotEqual(self.run_pair(self.load(4), self.load(4), spec)["status"], "fail")
+        self.assertEqual(self.run_pair(self.load(4), self.load(8), spec)["status"], "fail")
+
+    def test_address_outside_writable_data_is_refused(self):
+        res = self.run_pair(self.load(4), self.load(4), "cdecl() -> i32; gfields={0x401800:u32}")
+        self.assertEqual(res["status"], "inconclusive")
+        self.assertIn("gfields", res["reason"])
 
 
 if __name__ == "__main__":

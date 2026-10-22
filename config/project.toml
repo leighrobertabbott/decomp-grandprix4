@@ -22,7 +22,10 @@ fpu_cw = 0x037F
 # 0x5da8f7 is the CRT's _cfltcvt_init (run by CRT startup before WinMain): it stores the six
 # float-format pointers 0x9ee0c8..0x9ee0dc that sprintf %f/%g/%e call through; without it
 # they point at _fptrap (R6002) and every float-printing case ends external (L51, 0x5297e4).
-init_calls = [0x527453, 0x527476, 0x5da8f7]
+# 0x5daa8b is the CRT's __onexitinit (malloc(0x80) -> __onexitbegin/__onexitend 0xb47e74/0xb47e70):
+# without it every atexit() call writes through NULL inside _onexit (0x5daa65); its heap block
+# lies below the stub heap's per-case floor (gp4re/stubs.py).
+init_calls = [0x527453, 0x527476, 0x5da8f7, 0x5daa8b]
 cases = 200                  # phase 1: random cases from the spec
 max_cases = 1500             # phase 2: coverage-guided cases (budget)
 time_budget_s = 25           # phase 2 wall-clock budget per function

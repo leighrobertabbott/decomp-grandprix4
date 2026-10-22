@@ -1,0 +1,8 @@
+{
+ "_evidence": "The 0x17d8-byte 'F1 Audio Data Transfer' object (0x509f49 'push 0x17d8; HeapAlloc; push [0xb1d3d8]; call 0x4cb7d0', error text 0x66d6a4; ctor 0x4cb7d0 'mov [esi],0x5f0d78; mov [esi+0x17d4],<arg>'). Its vtable 0x5f0d78 slots 6..11 are the forwarders 0x4cb890/8a0/8b0/8c0/8d0/8e0: 'mov ecx,[ecx+0x17d4]; test ecx,ecx; je ret; mov eax,[ecx]; jmp [eax+0x10/0x18/0x14/0x1c/0x20/0x24]'. +0x17d4 is the constructor argument [0xb1d3d8] = the 'F1 Audio Data Receiver' (dlg_004cb890, real vtable 0x5f0d14, so the forwarded virtual methods are the original ones); the forwarders test it for null, so it is nullable. No other byte is read.",
+ "size": 6104,
+ "fields": [
+  {"off": 0, "type": "u32", "values": ["0x5f0d78"]},
+  {"off": "0x17d4", "type": "ptr", "size": 20, "fill": "layout=dlg_004cb890", "nullable": true}
+ ]
+}

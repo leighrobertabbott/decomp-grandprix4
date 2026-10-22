@@ -1,0 +1,9 @@
+{
+ "_evidence": "GP4 sound manager ('GPAudio', 0x274 bytes, ctor 0x4d87e0 vtable 0x5f0f64) as read by 0x004d77a0 (vtable slot +0xc via 0x4d8930): 'mov ecx,[esi+0x234]; mov byte [esi+8],0; test ecx,ecx; je' then 'mov eax,[ecx]; call [eax+8]' and, after re-reading +0x234, 'mov edx,[ecx]; push 1; call [edx]' (deleting destructor) and 'mov [esi+0x234],0'. +0x234 is null after the base ctor (0x4d653d) and set by 0x4d8840 to the sound-system object (sobj_005b18c0), or cleared again when its init fails: nullable. Byte +8 is only written (random). The vtable dword +0 is not used here but is the real one.",
+ "size": 628,
+ "fields": [
+  {"off": 0, "type": "u32", "values": ["0x5f0f64"]},
+  {"off": 8, "type": "u8"},
+  {"off": "0x234", "type": "ptr", "size": 16, "fill": "layout=sobj_005b18c0", "nullable": true}
+ ]
+}

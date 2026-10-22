@@ -30,4 +30,4 @@ void __cdecl FUN_0051e380(void) {
                                         GP4_GLOBAL(uint32_t, 0x006f2d68));
     }
 }
-GP4_IMPL(0x0051e380, FUN_0051e380, "cdecl() -> void; globals=layout=cf_0041a2b2+ffb_0051e380")
+GP4_IMPL(0x0051e380, FUN_0051e380, "cdecl() -> u32; globals=layout=cf_0041a2b2+ffb_0051e380")
