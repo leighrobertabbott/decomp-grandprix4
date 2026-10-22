@@ -141,6 +141,11 @@ suggestion is provisional: a routine returning flags may need `regs`.
   (gp4re/stubs.py): no skip for those; the original's and your call sequence and
   arguments must match exactly (strings and written file data by content). For any
   other API add `; emu=skip:win32 <Api>` to the spec (accepted pending an in-game check).
+- **Reconstruct, do not defer as "compiler artefacts":** scalar/vector deleting destructors
+  (they hold the inlined destructor body: GP4's own cleanup) and static-initialiser wrappers
+  (`ctor; atexit(dtor)` for a global object, like the accepted 0x493920). Only excluded
+  library/compiler code (CRT, D3DX, EH funclets, compiler thunks) is called through its address.
+  The oracle initialises the CRT onexit table itself: do not put 0xb47e70/0xb47e74 in gfields.
 - **Never inline code the original reaches by `jmp` into another place.** A forwarder
   (`jmp X`, `mov ecx, imm; jmp X`) or a tail jump into a body that `work show` lists as part of
   your function but that lies elsewhere (a shared tail several functions jump to) is a call to
@@ -170,7 +175,8 @@ suggestion is provisional: a routine returning flags may need `regs`.
   If the original ignores an HRESULT and would crash when the call fails (writes through an
   unfilled LockRect record, uses an unset out-pointer), add `; comfail=off`: injected failures
   are then outside the domain the original survives. Never use it when the original checks
-  the result - its error path must be covered.
+  the result - its error path must be covered. `comfail=off:<Method>[+<Method>]` (e.g.
+  `off:IDirect3DDevice8::CreateVertexBuffer`) turns failures off only where the result is ignored.
   **DirectInput 8 and DirectSound** are modelled too (gp4re/com_dx.py; headers
   `<gp4/dinput8.h>`, `<gp4/dsound.h>`; fills `com=IDirectInput8A`, `com=IDirectInputDevice8A`,
   `com=IDirectInputEffect`, `com=IDirectSound8`, `com=IDirectSoundBuffer` (or `...Buffer8`),

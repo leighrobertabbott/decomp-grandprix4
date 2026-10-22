@@ -1,0 +1,10 @@
+{
+ "_doc": "Write-only memory the oracle never compares (no game or library code reads it); evidence per range.",
+ "ranges": [
+  {
+   "lo": "0x009edc4c",
+   "hi": "0x009edc58",
+   "evidence": "CRT __NLG_Destination fields +4/+8/+0xc (base 0x9edc48): written by __NLG_Notify/__NLG_Notify1 (0x5daea2/0x5dae99: mov ebx,0x9edc48; mov [ebx+8],ecx; mov [ebx+4],eax; mov [ebx+0xc],ebp) on every local unwind for the debugger; the only references to 0x9edc48 in the image are those two writers, so nothing reads it. It holds a frame pointer, so it differs between the original's and the reconstruction's frames (L68, 0x464b50; lead check 2026-10-22)."
+  }
+ ]
+}

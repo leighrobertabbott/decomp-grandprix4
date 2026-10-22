@@ -1074,5 +1074,14 @@
    "0x005b434c"
   ],
   "evidence": "'mov eax,[ecx+4]; test eax,eax; je 0x5b434c': the branch is taken only when eax == 0, and 0x5b434c is 'mov eax,[eax]' - a read of address 0, an access violation in every run (page 0 is never mapped), so no valid case can cover it (inverted null check in the original; lead check 2026-10-22 from p09's report)."
+ },
+ "0x004e5760": {
+  "blocks": [
+   "0x004e57a8",
+   "0x004e57bf",
+   "0x004e5836",
+   "0x004e584d"
+  ],
+  "evidence": "Each block subtracts 262144.0 when a value v = fild(int32 global) * [0x5f0a38] (= 2^-14 exactly) is greater than [0x5f0f90] = 131072.0 ('fcom; fnstsw; and eax,0x4100; jne skip' falls through only for st0 > src). |int32| <= 2^31 so v lies in [-131072, 131071.99994]; rounding (the fstp dword of the first value, or a 24-bit precision control) can reach 131072.0 but never exceed it, so all four wrap blocks are dead at every precision setting (L68 proof, lead check 2026-10-22)."
  }
 }

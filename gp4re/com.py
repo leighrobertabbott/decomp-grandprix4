@@ -721,7 +721,9 @@ class ComModel:
         self.stubs.log.append((name, norm(this)) + tuple(norm(v) for v in a) + hashes)
         rng = self.rng
         if m.ret == "hr":
-            ok = not (m.fails and self.failures and rng.randrange(m.rate) == 0)
+            inject = (self.failures if isinstance(self.failures, bool)
+                      else name not in self.failures and m.name not in self.failures)
+            ok = not (m.fails and inject and rng.randrange(m.rate) == 0)
             eax = S_OK if ok else rng.choice(m.fails)
         else:
             ok = True

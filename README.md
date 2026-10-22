@@ -48,17 +48,17 @@ refuses any other `GP4.exe` unless given `--allow-other-exe`.
 
 <!-- status:begin -->
 
-![code](https://img.shields.io/badge/code-27.35%25-blue) ![verified](https://img.shields.io/badge/verified-4%2C624_functions-brightgreen) ![pending in-game](https://img.shields.io/badge/pending_in--game-197-yellow) ![deferred](https://img.shields.io/badge/deferred-71-orange) ![todo](https://img.shields.io/badge/todo-3%2C635-lightgrey)
+![code](https://img.shields.io/badge/code-28.55%25-blue) ![verified](https://img.shields.io/badge/verified-4%2C799_functions-brightgreen) ![pending in-game](https://img.shields.io/badge/pending_in--game-211-yellow) ![deferred](https://img.shields.io/badge/deferred-71-orange) ![todo](https://img.shields.io/badge/todo-3%2C448-lightgrey)
 
-**27.35%** of GP4.exe's game code (432,362 of 1,580,985 bytes) is reconstructed and accepted: **4,624** functions verified by differential emulation, **197** accepted pending the in-game check, 71 deferred with a recorded blocker, 3,635 still to do.
+**28.55%** of GP4.exe's game code (451,387 of 1,580,985 bytes) is reconstructed and accepted: **4,799** functions verified by differential emulation, **211** accepted pending the in-game check, 71 deferred with a recorded blocker, 3,448 still to do.
 
 | Region | Address range | Verified | Pending in-game | Deferred | To do | Code accepted |
 |---|---|---:|---:|---:|---:|---:|
-| Simulation core (hand-written x87 assembly) | `0x00401000`-`0x00446160` | 1,846 | 3 | 16 | 27 | 93.8% |
-| Renderer and front end (Direct3D 8 C++) | `0x00446160`-`0x00510000` | 434 | 17 | 20 | 1,511 | 2.0% |
-| Game logic (GP3-heritage C and assembly) | `0x00510000`-`0x00560000` | 2,120 | 170 | 22 | 987 | 49.3% |
+| Simulation core (hand-written x87 assembly) | `0x00401000`-`0x00446160` | 1,856 | 4 | 18 | 16 | 95.0% |
+| Renderer and front end (Direct3D 8 C++) | `0x00446160`-`0x00510000` | 528 | 25 | 19 | 1,410 | 3.4% |
+| Game logic (GP3-heritage C and assembly) | `0x00510000`-`0x00560000` | 2,152 | 172 | 25 | 950 | 49.6% |
 | Libraries: D3DX, libpng, zlib (excluded) | `0x00560000`-`0x005a4000` | 0 | 0 | 0 | 0 | excluded |
-| Mixed C++ and DirectX error tables | `0x005a4000`-`0x005da800` | 224 | 7 | 13 | 1,110 | 2.7% |
+| Mixed C++ and DirectX error tables | `0x005a4000`-`0x005da800` | 263 | 10 | 9 | 1,072 | 4.4% |
 | Visual C++ 6 runtime | `0x005da800`-`0x005f0000` | 0 | 0 | 0 | 0 | excluded |
 
 <sub>Generated 2026-10-22 from the ledger by `python tools/readme_status.py`; per-function state is in [progress/ledger.txt](progress/ledger.txt).</sub>
@@ -119,11 +119,11 @@ which splits `.text` into contiguous regions ([progress/regions.json](progress/r
 | Region | Range | What it is |
 |---|---|---|
 | R1 core | `0x401000`-`0x446160` | Simulation core (physics, AI, maths): hand-written x87 assembly. Unaligned and unpadded; ~60% of functions take register, flag or x87-stack inputs; essentially no strings or imports. *Likely.* |
-| R2 renderer | `0x446160`-`0x510000` | Direct3D 8 renderer and front end: 16-byte-aligned, nop-padded, thiscall-heavy C++ (`CGP4*Shader`, `CSkyDome`, `CGP4Cockpit`, HUD text ids, memory manager). *Likely.* |
-| R3 game logic | `0x510000`-`0x560000` | Unaligned C mixed with assembly: game-state save/load (`f1gstate.dat`), `gconfig.txt`, `circuits\*.dat`, `.jam` textures, a `D:\grand prix 3` path and GP3 2000 network/two-player strings. *Likely.* |
-| R4 libraries | `0x560000`-`0x5a4000` | D3DX mesh code, DirectX-file loader, CPU-specific SIMD pipeline, libpng 1.0.5, zlib. *Provisional.* |
-| R5 mixed | `0x5a4000`-`0x5d8000` | C++ aligned like R2, plus dxerr8 error tables and zlib inflate strings. *Provisional; not yet triaged for library code.* |
-| R6 CRT | `0x5d8000`-`0x5f0000` | Visual C++ 6 runtime tail (entry point, heap selection, locale) with a few D3DX/game functions interleaved. *Provisional; CRT functions are excluded as they are identified.* |
+| R2 renderer | `0x446160`-`0x510000` | Direct3D 8 renderer, effects, HUD and game-side audio: 16-byte-aligned, nop-padded, thiscall-heavy VC6 C++ (`HW_*.CPP`, `GP4*.CPP` sources), ending in the Win32/DirectX platform layer inherited from GP3 2000. *Likely.* |
+| R3 game logic | `0x510000`-`0x560000` | GP3-heritage code, largely hand-written assembly with register calling conventions: session loop, front end, save/config files (`f1gstate.dat`, `gconfig.txt`, `f1system.txt`), post-race analysis, multiplayer link, track builder. *Likely.* |
+| R4 libraries | `0x560000`-`0x5a4000` | D3DX mesh code, DirectX-file loader, CPU-specific SIMD pipeline, libpng 1.0.5, zlib. Excluded. *Provisional.* |
+| R5 GP4 C++ | `0x5a4000`-`0x5da800` | DirectSound 8 / EAX audio library and audio engine, the "GP2001" front-end menu engine (`Menu.gpm`), menu widgets and input, Bink video player. Triaged 2026-10-22: no library code except DirectInput data formats and dxerr8's `DXGetErrorString8A`. |
+| R6 CRT | `0x5da800`-`0x5f0000` | Visual C++ 6 runtime (libcmt) and compiler EH funclets, identified function by function (each checked by a refuter) and excluded. |
 
 R3's strings, and the assembly it shares with R1 (identical modulo addresses), point to
 code carried over from Grand Prix 3; that reading rests on this evidence alone. 359 game
@@ -145,6 +145,36 @@ What the reconstruction has shown so far about how GP4 works. Addresses, record 
 counts are read from the code; what fields mean is a working interpretation, and every
 name is provisional. Only function behaviour is verified. Evidence for each item is in
 [specs/layouts/](specs/layouts/).
+
+### Subsystem map
+
+A read-only mapping pass (October 2026) read the game code in 44 address windows, and a
+second agent cross-checked every claim against the code (at the time of writing 841 claims
+confirmed, 116 refuted and corrected; the check is still running). VC6 links object files
+in order, so each source file's functions are contiguous: `__FILE__`-style strings and
+class-name strings mark the boundaries. The detailed per-subsystem write-up will go to
+`docs/MAP.md`; this is the outline so far.
+
+| Region | Range | What is there |
+|---|---|---|
+| Simulation core | `0x401000`-`0x446160` | Crammond's hand-written x86/x87 assembly. In address order: a shared maths library (integer square root, fixed-point helpers), circuit and pit-lane geometry setup, the per-car vehicle-physics sub-steps, then race management and AI support. Fixed point is Q14 and 16.16. |
+| Renderer | `0x446160`-`0x510000` | VC6 C++ on Direct3D 8. The `CGP4Shader` material family and its shader table; `CGP4Manager` resource bins (textures, materials, meshes, vertex and index buffers); frustum culling; sky dome, crowd (`CrowdManager`) and flags (`CFlagManager`); fonts and HUD text (`CGP4Font`); the pit-garage VDU and in-race text overlays; fractal cloud shadows; car rendering (a 25-node part hierarchy, LOD, steering wheels, brake glows, dynamic car textures); droplets, environment maps, fire, heat haze, reflections, start lights; track-surface rendering; the TV-broadcast overlay (`CGP4TVOverlay`: captions, timing tower, dials); weather and sky lighting; the game-side audio layer (`GPAudio`, engine-sound presets); the pit-crew and marshal animation system (`CTweenSys`, `C3DANIM_*`: skinned meshes, props such as hoses); and last, the Win32/DirectX platform layer inherited from GP3 2000 (device set-up, mode switching, DirectInput, force feedback). |
+| Game logic | `0x510000`-`0x560000` | GP3-heritage hand-written assembly: the glue between the GP3 game flow and GP4's renderer, in-race text messages, the session main loop and frame pacing, the front end (car set-up, controls, driver names, command line, the menu and widget engine), the system layer (graphics calibration in `gconfig.txt`, 2-D drawing, save files `f1gstate.dat` and `f1system.txt`), post-race analysis and telemetry output, the multiplayer link, and the track builder that turns a circuit's track-section command stream into geometry. |
+| GP4 C++ (R5) | `0x5a4000`-`0x5da800` | The DirectSound 8 / EAX 2.0 audio library (`CA*` classes: drivers with software 3-D, mixer configuration), the GP4 audio engine, the in-house "GP2001" front-end menu engine that loads `Menu.gpm` (menu runtime, image and texture services, widget classes, mouse and joystick input), the menu GUI widgets, and the Bink video player. |
+
+Source files named in the renderer by their own strings: `GP4OVERLAY.CPP`, `GP4UTILITY.CPP`,
+`GP4VB.CPP`, `GP4FONT.CPP`, `GP4PARTICLESYSTEM.CPP`, `GP4VDU.CPP`, `HW_CAR.CPP`,
+`HW_CARDYNAMICTEXTURE.CPP`, `HW_DROPLET.CPP`, `HW_ENVMAP.CPP`, `HW_FIRE.CPP`, `HW_HAZE.CPP`,
+`HW_ICONSPRITES.CPP`, `HW_PLOT.CPP`, `HW_REFLECTIONS.CPP`, `HW_STARTLIGHTS.CPP`,
+`HW_TRACKTEXTURE.CPP`, `HW_TVOVERLAY.CPP`, `MODEL.CPP`, `PROPSYS.CPP`, `PropSysFlag.cpp` and
+the header `D3DDYNAMICVB.H`. The `HW_*` files appear in alphabetical link order.
+
+Start-up and shutdown run through GP4's own `WinMain` (`0x508740`, called by the CRT
+entry point `0x5ddec6`), `Win95_Startup` (`0x508a90`), the GP3-style game main `0x53740d`,
+and the GPOS memory manager's init and shutdown (`0x46b480`, `0x46b490`). These names come
+from the functions' own strings and call graph.
+
+### Details
 
 - **Two angle formats.** 32-bit fixed-point angles (a full turn is 2^32 units) are
   converted to doubles; 16-bit car headings index a Q14 sine/cosine table. Beside the x87
@@ -249,7 +279,7 @@ name is provisional. Only function behaviour is verified. Evidence for each item
   Eight `0x34`-byte controller presets at `0x7ab5b4` (keyboard, joypad, joystick, wheel and
   four user slots); six DirectInput device slots at `0xae6b68` are filled by the
   `EnumDevices` callback `0x5078b0`; force-feedback effects go through `0x5069d0`
-  (currently excluded from the queue as suspected runtime code).
+  (`IDirectInputEffect::SetParameters`).
 - **Replay and network.** One opcode stream (buffer `0x62b19a`, cursor `0x62d1a0`)
   appears to serve both; `0x4450e5` writes 10-byte replay records, `0x4453d1` sends and
   `0x445423` receives, through the packet send wrapper `0x507410` and the DirectPlay

@@ -737,11 +737,39 @@ def _fmt(b8: bytes) -> str:
     return f"{b8.hex()} (f64 {d:.9g} | f32 {f0:.7g},{f1:.7g} | i32 {i0},{i1})"
 
 
+_MEMORY_EXEMPT: list[tuple[int, int]] | None = None
+
+
+def _memory_exempt() -> list[tuple[int, int]]:
+    """specs/memory_exempt.json: write-only bytes no game code reads (debugger notification data
+    such as the CRT's __NLG_Destination, which holds a frame pointer); never compared. Evidence
+    per range."""
+    global _MEMORY_EXEMPT
+    if _MEMORY_EXEMPT is None:
+        path = Path(__file__).resolve().parent.parent / "specs" / "memory_exempt.json"
+        try:
+            ranges = json.loads(path.read_text()).get("ranges", [])
+        except (OSError, ValueError):
+            ranges = []
+        _MEMORY_EXEMPT = [(int(r["lo"], 16), int(r["hi"], 16)) for r in ranges if r.get("evidence")]
+    return _MEMORY_EXEMPT
+
+
+def _mask_exempt(page: int, data: bytes) -> bytes:
+    hits = [(max(lo, page), min(hi, page + PAGE)) for lo, hi in _memory_exempt() if lo < page + PAGE and hi > page]
+    if not hits:
+        return data
+    buf = bytearray(data)
+    for lo, hi in hits:
+        buf[lo - page: hi - page] = bytes(hi - lo)
+    return bytes(buf)
+
+
 def compare_pages(a: dict[int, bytes], b: dict[int, bytes], pristine_of, tol: float) -> list[str]:
     diffs = []
     for p in sorted(set(a) | set(b)):
-        pa = a.get(p) or pristine_of(p)
-        pb = b.get(p) or pristine_of(p)
+        pa = _mask_exempt(p, a.get(p) or pristine_of(p))
+        pb = _mask_exempt(p, b.get(p) or pristine_of(p))
         if pa == pb:
             continue
         for o in range(0, PAGE, 8):

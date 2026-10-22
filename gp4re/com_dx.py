@@ -109,6 +109,17 @@ def _ascii(text: str, n: int) -> bytes:
     return text.encode()[: n - 1].ljust(n, b"\0")
 
 
+def _unptr(data: bytes, *offsets) -> bytes:
+    """Replace pointer fields inside a hashed structure by a presence marker: the pointees are
+    hashed on their own, and a pointer's value (often a stack address) differs between the
+    original's and the reconstruction's frames even when the calls are identical."""
+    b = bytearray(data)
+    for off in offsets:
+        if off + 4 <= len(b):
+            b[off: off + 4] = (b"\xff\xff\xff\xff" if any(b[off: off + 4]) else bytes(4))
+    return bytes(b)
+
+
 # ---------------------------------------------------------------- DirectInput
 def dieffect_size(flags_from):
     """Bytes of a DIEFFECT the method reads: header plus the arrays its dwFlags/DIEP flags select."""
@@ -121,7 +132,7 @@ def dieffect_size(flags_from):
             raise Unsupported(f"DIEFFECT dwSize {dw_size}")
         if axes > 8 or cb_ts > 0x400:
             raise Unsupported("DIEFFECT with more than 8 axes or large type-specific parameters")
-        parts = [head[:dw_size]]
+        parts = [_unptr(head[:dw_size], 32, 36, 40, 48)]   # rgdwAxes, rglDirection, lpEnvelope, lpvTypeSpecificParams
         if params & 0x20 and axes:        # DIEP_AXES
             parts.append(read(p_axes, 4 * axes))
         if params & 0x40 and axes:        # DIEP_DIRECTION
@@ -142,7 +153,8 @@ def didataformat_size(a, read):
     objs = read(p_objs, 16 * n_objs) if n_objs else b""
     guids = b"".join(read(struct.unpack_from("<I", objs, 16 * k)[0], 16) if struct.unpack_from("<I", objs, 16 * k)[0]
                      else b"null" for k in range(n_objs))
-    return ("bytes", head + objs + guids)
+    objs = _unptr(objs, *range(0, 16 * n_objs, 16))      # each object's pguid (hashed below)
+    return ("bytes", _unptr(head, 20) + objs + guids)
 
 
 def diprop_size(a, read):
@@ -284,7 +296,7 @@ def dsbufferdesc_size(a, read):
     size, flags, nbytes, _, p_wfx = struct.unpack("<5I", head)
     if size not in (20, 36):
         raise Unsupported(f"DSBUFFERDESC dwSize {size}")
-    out = read(a[0], size)
+    out = _unptr(read(a[0], size), 16)                    # lpwfxFormat (hashed below)
     if p_wfx:
         out += wfx_size(0)([p_wfx], read)[1]
     return ("bytes", out)

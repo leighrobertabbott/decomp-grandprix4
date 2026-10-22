@@ -11,6 +11,7 @@
 0x0046b490 GPOS_MemShutdown func provisional
 0x00483ac0 FractalCloud_getBmpSurface func provisional
 0x004b2a80 LoadGraphicsCfg func provisional
+0x004e61d0 CAI_DEBUG_OutputEventType func provisional
 0x00504da0 D3D_EnumerateDevice func provisional
 0x005052e0 D3D_DestroyD3DObject func provisional
 0x00505350 D3D_CreateD3DObject func provisional

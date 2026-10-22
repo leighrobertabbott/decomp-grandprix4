@@ -20,7 +20,8 @@ Grammar (whitespace-insensitive)::
     out     := eax|ebx|ecx|edx|esi|edi|ebp|st0..st7|cf|pf|af|zf|sf|of
     opt     := tol=<float> | cases=<n> | fpucw=<hex> | globals=keep|fuzz:<f32|f64|i32>|[fuzz:<k>+]layout=<name>[+<name>...]
              | emu=skip:<reason> | maxinsn=<n> | seed=<n>
-             | comfail=off      # no injected COM failures: for code that ignores an HRESULT and would
+             | comfail=off[:<Method>[+<Method>...]]   # no injected COM failures (for the named methods
+               # only, e.g. off:IDirect3DDevice8::CreateVertexBuffer or off:CreateVertexBuffer): for code that ignores an HRESULT and would
                # crash on a failed call (a failure is then outside the domain the original survives)
              | gfields={addr:type, addr*count/stride:type, ...}   # fixed-address game data, applied
                # after globals= (same field grammar as an inline buffer; addresses in writable data)
@@ -88,7 +89,7 @@ class Spec:
     wall: int = 0                     # emu gate wall clock (s) for very heavy routines; 0 = config default
     seed: int = 0
     gfields: list = field(default_factory=list)   # [(addr, count, stride, ArgType)] from gfields={...}
-    comfail: bool = True                          # comfail=off: COM methods always succeed
+    comfail: object = True                        # True, False (comfail=off) or the set of methods that always succeed
     raw: str = ""
 
     @property
@@ -295,9 +296,14 @@ def parse(text: str) -> Spec:
         elif k == "seed":
             spec.seed = int(v)
         elif k == "comfail":
-            if v not in ("off", "on"):
-                raise SpecError("comfail=off|on")
-            spec.comfail = v == "on"
+            if v == "on":
+                spec.comfail = True
+            elif v == "off":
+                spec.comfail = False
+            elif v.startswith("off:") and re.fullmatch(r"[A-Za-z0-9_]+(::[A-Za-z0-9_]+)?(\+[A-Za-z0-9_]+(::[A-Za-z0-9_]+)?)*", v[4:]):
+                spec.comfail = frozenset(v[4:].split("+"))
+            else:
+                raise SpecError("comfail=on|off|off:<Method>[+<Method>...]")
         elif k == "gfields":
             if not (v.startswith("{") and v.endswith("}")):
                 raise SpecError("gfields={addr:type, ...} needs braces")

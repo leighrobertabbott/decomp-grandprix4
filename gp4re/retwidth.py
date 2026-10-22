@@ -24,6 +24,7 @@ _FULL = {X.X86_REG_EAX}
 _WORD = {X.X86_REG_AX}
 _HIGH = {X.X86_REG_AH}
 _LOW = {X.X86_REG_AL}
+_BYTES = {X.X86_REG_AL: {0}, X.X86_REG_AH: {1}, X.X86_REG_AX: {0, 1}, X.X86_REG_EAX: {0, 1, 2}}
 
 
 class _Walk:
@@ -78,13 +79,17 @@ class _Walk:
             self.path(c + 5, level, chain + f"{fn:#x} <- {c:#x}")
 
     def path(self, start: int, level: int, chain: str) -> None:
-        todo, seen, budget = [start], set(), 64
+        # Per path: which bytes of eax the caller has overwritten since the call (0 = al, 1 = ah,
+        # 2 = the upper 16 bits). A read only consumes the callee's result where it touches a byte
+        # the callee still owns beyond the declared width (`mov al, [x]; test al, al` is fine).
+        beyond = {0: {0, 1, 2}, 1: {1, 2}, 2: {2}}[self.width]
+        todo, seen, budget = [(start, frozenset())], set(), 64
         while todo and budget > 0:
-            va = todo.pop()
+            va, mine = todo.pop()
             while budget > 0:
-                if va in seen:
+                if (va, mine) in seen:
                     break
-                seen.add(va)
+                seen.add((va, mine))
                 budget -= 1
                 ins = next(self.md.disasm(self.b.read(va, 16), va), None)
                 if ins is None:
@@ -93,19 +98,23 @@ class _Walk:
                 read, written = (set(r) for r in ins.regs_access())
                 mn = ins.mnemonic
                 zero_idiom = mn in ("xor", "sub") and ins.op_str in ("eax, eax", "ax, ax")
-                beyond = (_FULL | _WORD | _HIGH | _LOW if self.width == 0 else
-                          _FULL | _WORD | _HIGH if self.width == 1 else _FULL)
-                if not zero_idiom and read & beyond:
+                needed = set().union(*(_BYTES[r] for r in read if r in _BYTES)) if read else set()
+                if not zero_idiom and (needed - mine) & beyond:
                     self.violations.append(f"{chain}: {va:#x} {mn} {ins.op_str} reads "
                                            + ("eax" if self.width == 0 else
                                               f"beyond {'al' if self.width == 1 else 'ax'}"))
                     return
-                if mn == "call" or zero_idiom or written & _FULL:
+                if zero_idiom:
+                    written |= {X.X86_REG_EAX}
+                mine = mine | frozenset(set().union(*(_BYTES[r] for r in written if r in _BYTES)) if written else set())
+                if mn == "call" or {0, 1, 2} <= mine:
                     break                                  # eax overwritten: this path is fine
                 if mn in ("ret", "retf"):
                     fn = self.owner_of(va)
                     if fn is None or level >= self.depth:
                         self.unchecked.append(f"{chain}: value returned at {va:#x} (depth limit or unknown function)")
+                    elif not (beyond - mine):
+                        pass                               # every byte beyond the width is the caller's own
                     else:
                         self.function(fn, level + 1, chain + f" | ret {va:#x} of ")
                     break
@@ -117,11 +126,10 @@ class _Walk:
                     break
                 if mn.startswith("j") or mn.startswith("loop"):
                     if ins.op_str.startswith("0x"):
-                        todo.append(int(ins.op_str, 16))
+                        todo.append((int(ins.op_str, 16), mine))
                 va += ins.size
         if budget <= 0:
             self.unchecked.append(f"{chain}: no write of eax within 64 instructions")
-
 
 def check(binary, target: int, width: int, owner_of) -> tuple[list[str], list[str]]:
     """Return (violations, unchecked) for a function whose result is declared width bytes wide."""
